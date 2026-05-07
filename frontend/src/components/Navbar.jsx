@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiMenu, HiX } from 'react-icons/hi';
+import logo from '../../assets/Logo.png';
 
 const navLinks = [
   { label: 'Home', path: '/' },
   { label: 'Services', path: '/services' },
+  { label: 'Showcase', path: '/showcase' },
   { label: 'About', path: '/about' },
   { label: 'Contact', path: '/contact' },
 ];
@@ -29,17 +31,17 @@ export default function Navbar() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100' : 'bg-transparent'
+        scrolled
+          ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100'
+          : 'bg-white/88 backdrop-blur-md border-b border-gray-100/80'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-18 py-4">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-              <span className="text-white font-display font-bold text-sm">N</span>
-            </div>
-            <span className={`font-display font-bold text-xl ${scrolled ? 'text-gray-900' : 'text-white'}`}>
+            <img src={logo} alt="NexCode" className="w-9 h-9 rounded-xl object-cover shadow-lg group-hover:scale-110 transition-transform bg-white" />
+            <span className="font-display font-bold text-xl text-gray-900">
               Nex<span className="gradient-text">Code</span>
             </span>
           </Link>
@@ -53,9 +55,7 @@ export default function Navbar() {
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                   location.pathname === link.path
                     ? 'bg-blue-50 text-blue-600'
-                    : scrolled
-                    ? 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                    : 'text-white/80 hover:text-white hover:bg-white/10'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                 }`}
               >
                 {link.label}
@@ -72,7 +72,7 @@ export default function Navbar() {
 
           {/* Mobile Hamburger */}
           <button
-            className={`md:hidden p-2 rounded-lg ${scrolled ? 'text-gray-700' : 'text-white'}`}
+            className="md:hidden p-2 rounded-lg text-gray-700"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
             {mobileOpen ? <HiX size={24} /> : <HiMenu size={24} />}

@@ -3,6 +3,8 @@ import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiHome, HiMail, HiCode, HiPhone, HiMenu, HiX, HiLogout, HiUser } from 'react-icons/hi';
 import { useAuth } from '../context/AuthContext';
+import usePageTitle from '../utils/usePageTitle';
+import logo from '../../assets/Logo.png';
 import toast from 'react-hot-toast';
 
 const navItems = [
@@ -17,6 +19,14 @@ export default function AdminLayout() {
   const { admin, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  usePageTitle(
+    {
+      '/admin': 'Admin Dashboard',
+      '/admin/inquiries': 'Admin Inquiries',
+      '/admin/projects': 'Admin Projects',
+      '/admin/contacts': 'Admin Contacts',
+    }[location.pathname] || 'Admin Panel'
+  );
 
   const handleLogout = () => {
     logout();
@@ -29,9 +39,7 @@ export default function AdminLayout() {
       {/* Logo */}
       <div className="p-6 border-b border-gray-800">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center">
-            <span className="text-white font-bold text-sm">N</span>
-          </div>
+          <img src={logo} alt="NexCode" className="w-9 h-9 rounded-xl object-cover bg-white" />
           <div>
             <div className="font-display font-bold text-white text-sm">NexCode</div>
             <div className="text-xs text-gray-400">Admin Panel</div>

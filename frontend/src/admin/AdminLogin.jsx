@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { HiEye, HiEyeOff, HiLockClosed } from 'react-icons/hi';
 import { useAuth } from '../context/AuthContext';
+import usePageTitle from '../utils/usePageTitle';
+import logo from '../../assets/Logo.png';
 
 export default function AdminLogin() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -11,6 +13,7 @@ export default function AdminLogin() {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  usePageTitle('Admin Login');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,8 +41,8 @@ export default function AdminLogin() {
         className="relative w-full max-w-md"
       >
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center mx-auto mb-4 shadow-xl">
-            <HiLockClosed className="text-white" size={28} />
+          <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center mx-auto mb-4 shadow-xl overflow-hidden">
+            <img src={logo} alt="NexCode" className="w-full h-full object-cover" />
           </div>
           <h1 className="font-display text-2xl font-bold text-white">Admin Portal</h1>
           <p className="text-gray-400 text-sm mt-1">Sign in to access the NexCode dashboard</p>

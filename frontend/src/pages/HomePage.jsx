@@ -7,6 +7,7 @@ import {
 } from 'react-icons/hi';
 import { FaWhatsapp, FaPhone, FaRocket } from 'react-icons/fa';
 import ServiceCard from '../components/ServiceCard';
+import usePageTitle from '../utils/usePageTitle';
 
 const services = [
   { icon: HiGlobe, title: 'Web Development', description: 'Modern, responsive websites and web applications built with cutting-edge frameworks for maximum performance.', gradient: 'bg-gradient-to-br from-blue-500 to-blue-700' },
@@ -35,6 +36,7 @@ const faqs = [
 
 export default function HomePage() {
   const [openFaq, setOpenFaq] = useState(null);
+  usePageTitle('Home');
 
   return (
     <div className="min-h-screen">

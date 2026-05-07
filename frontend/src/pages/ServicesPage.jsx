@@ -5,6 +5,7 @@ import {
 } from 'react-icons/hi';
 import { FaRocket } from 'react-icons/fa';
 import ServiceCard from '../components/ServiceCard';
+import usePageTitle from '../utils/usePageTitle';
 
 const services = [
   {
@@ -52,6 +53,7 @@ const services = [
 ];
 
 export default function ServicesPage() {
+  usePageTitle('Services');
   return (
     <div className="min-h-screen">
       {/* Hero */}

@@ -8,6 +8,7 @@ import ServicesPage from './pages/ServicesPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import ProjectRequestPage from './pages/ProjectRequestPage';
+import ShowcasePage from './pages/ShowcasePage';
 
 // Admin Pages
 import AdminLogin from './admin/AdminLogin';
@@ -54,6 +55,7 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
           <Route path="/services" element={<PublicLayout><ServicesPage /></PublicLayout>} />
+          <Route path="/showcase" element={<PublicLayout><ShowcasePage /></PublicLayout>} />
           <Route path="/about" element={<PublicLayout><AboutPage /></PublicLayout>} />
           <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
           <Route path="/start-project" element={<PublicLayout><ProjectRequestPage /></PublicLayout>} />

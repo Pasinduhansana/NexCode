@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { HiCheckCircle } from 'react-icons/hi';
 import { FaRocket } from 'react-icons/fa';
 import api from '../utils/api';
+import usePageTitle from '../utils/usePageTitle';
 
 const serviceTypes = ['Web Development', 'Mobile App', 'Custom Software', 'UI/UX Design', 'Cloud Solution', 'AI & Automation', 'Database System', 'Other'];
 const timelines = ['1-2 weeks', '1 month', '2-3 months', '3-6 months', '6+ months', 'Flexible'];
@@ -18,6 +19,7 @@ export default function ProjectRequestPage() {
     projectTitle: '', projectType: '', description: '',
     features: '', timeline: '', budget: '', techPreferences: ''
   });
+  usePageTitle('Start a Project');
 
   const update = (k, v) => setForm(prev => ({ ...prev, [k]: v }));
 

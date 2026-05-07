@@ -4,11 +4,13 @@ import toast from 'react-hot-toast';
 import { HiPhone, HiMail, HiLocationMarker } from 'react-icons/hi';
 import { FaWhatsapp } from 'react-icons/fa';
 import api from '../utils/api';
+import usePageTitle from '../utils/usePageTitle';
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  usePageTitle('Contact');
 
   const validate = () => {
     const e = {};

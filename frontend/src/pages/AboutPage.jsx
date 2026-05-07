@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { HiCheckCircle, HiArrowRight, HiLightBulb, HiEye, HiHeart } from 'react-icons/hi';
 import { FaRocket } from 'react-icons/fa';
+import usePageTitle from '../utils/usePageTitle';
 
 const stats = [
   { value: '150+', label: 'Projects Delivered', description: 'Across various industries' },
@@ -27,6 +28,7 @@ const values = [
 ];
 
 export default function AboutPage() {
+  usePageTitle('About');
   return (
     <div className="min-h-screen">
       {/* Hero */}

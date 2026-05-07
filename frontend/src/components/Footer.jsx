@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
 import { FaWhatsapp, FaPhone, FaGlobe, FaLinkedin, FaTwitter, FaInstagram, FaGithub } from 'react-icons/fa';
 import { HiMail, HiLocationMarker } from 'react-icons/hi';
+import logo from '../../assets/Logo.png';
 
 const services = ['Web Development', 'Mobile App Development', 'Custom Software', 'UI/UX Design', 'Cloud Solutions', 'AI & Automation'];
 const quickLinks = [
   { label: 'Home', path: '/' },
   { label: 'Services', path: '/services' },
+  { label: 'Showcase', path: '/showcase' },
   { label: 'About Us', path: '/about' },
   { label: 'Contact', path: '/contact' },
   { label: 'Start a Project', path: '/start-project' },
@@ -19,9 +21,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-2.5 mb-5">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center">
-                <span className="text-white font-bold text-sm font-display">N</span>
-              </div>
+              <img src={logo} alt="NexCode" className="w-9 h-9 rounded-xl object-cover bg-white" />
               <span className="font-display font-bold text-xl text-white">NexCode</span>
             </div>
             <p className="text-sm text-gray-400 leading-relaxed mb-6">
