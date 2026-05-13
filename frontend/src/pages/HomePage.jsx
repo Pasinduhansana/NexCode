@@ -67,14 +67,14 @@ export default function HomePage() {
             >
               Nex<span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">Code</span>
               <br />
-              <span className="text-3xl md:text-4xl lg:text-5xl font-semibold text-white/70">Software Development</span>
+              <span className="text-3xl md:text-4xl lg:text-5xl font-semibold text-black/40">Software Development</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto"
+              className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto"
             >
               Custom Solutions. Modern Technology. Real Results.
             </motion.p>
@@ -90,9 +90,9 @@ export default function HomePage() {
                 Build Your Next Project
               </Link>
               <a href="https://wa.me/94769747244" target="_blank" rel="noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold border-2 border-white/20 text-white hover:bg-white/10 transition-all duration-300"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold bg-green-500 text-white hover:bg-green-600 transition-all duration-300 shadow-md"
               >
-                <FaWhatsapp className="text-green-400" />
+                <FaWhatsapp />
                 WhatsApp Us
               </a>
             </motion.div>

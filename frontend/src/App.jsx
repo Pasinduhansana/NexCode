@@ -9,6 +9,7 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import ProjectRequestPage from './pages/ProjectRequestPage';
 import ShowcasePage from './pages/ShowcasePage';
+import ProjectDetailPage from './pages/ProjectDetailPage';
 
 // Admin Pages
 import AdminLogin from './admin/AdminLogin';
@@ -56,6 +57,7 @@ function App() {
           <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
           <Route path="/services" element={<PublicLayout><ServicesPage /></PublicLayout>} />
           <Route path="/showcase" element={<PublicLayout><ShowcasePage /></PublicLayout>} />
+          <Route path="/showcase/:slug" element={<PublicLayout><ProjectDetailPage /></PublicLayout>} />
           <Route path="/about" element={<PublicLayout><AboutPage /></PublicLayout>} />
           <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
           <Route path="/start-project" element={<PublicLayout><ProjectRequestPage /></PublicLayout>} />
