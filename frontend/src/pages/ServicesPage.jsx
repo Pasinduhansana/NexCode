@@ -6,6 +6,7 @@ import {
 import { FaRocket } from 'react-icons/fa';
 import ServiceCard from '../components/ServiceCard';
 import usePageTitle from '../utils/usePageTitle';
+import { useThemeClasses } from '../utils/useThemeClasses';
 
 const services = [
   {
@@ -53,20 +54,29 @@ const services = [
 ];
 
 export default function ServicesPage() {
+  const themeClasses = useThemeClasses();
   usePageTitle('Services');
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="pt-32 pb-20 bg-hero-gradient dark-grid">
+      <section className={`pt-28 pb-16 ${themeClasses.bg.hero} dark-grid`}>
         <div className="max-w-4xl mx-auto px-4 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs mb-6">
+            <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs mb-5 ${
+              themeClasses.theme === 'light'
+                ? 'bg-blue-500/10 border border-blue-500/20 text-blue-600'
+                : 'bg-blue-500/10 border border-blue-500/30 text-blue-300'
+            }`}>
               Our Services
             </div>
-            <h1 className="font-display text-4xl md:text-6xl font-bold text-white mb-6">
-              What We <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">Build</span>
+            <h1 className={`font-display text-2xl md:text-3xl lg:text-4xl font-bold mb-4 ${
+              themeClasses.theme === 'light'
+                ? 'text-gray-900'
+                : 'text-white'
+            }`}>
+              What We <span className="gradient-text">Build</span>
             </h1>
-            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+            <p className={`text-sm md:text-base max-w-2xl mx-auto ${themeClasses.text.secondary}`}>
               From web to mobile to AI — NexCode offers a comprehensive suite of software services to transform your business digitally.
             </p>
           </motion.div>
@@ -74,18 +84,18 @@ export default function ServicesPage() {
       </section>
 
       {/* Service Cards Overview */}
-      <section className="py-16 bg-gray-50">
+      <section className={`py-12 ${themeClasses.bg.secondary}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {services.map((s, i) => <ServiceCard key={i} {...s} index={i} />)}
           </div>
         </div>
       </section>
 
       {/* Detailed service sections */}
-      <section className="py-20 bg-white">
+      <section className={`py-16 ${themeClasses.bg.primary}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-16">
+          <div className="space-y-12">
             {services.map((service, i) => (
               <motion.div
                 key={i}
@@ -93,10 +103,10 @@ export default function ServicesPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${i % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
+                className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${i % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
               >
                 <div className={i % 2 === 1 ? 'lg:order-2' : ''}>
-                  <div className={`w-16 h-16 rounded-2xl mb-6 flex items-center justify-center text-white text-3xl ${service.gradient}`}>
+                  <div className={`w-14 h-14 rounded-xl mb-4 flex items-center justify-center text-white text-2xl ${service.gradient}`}>
                     <service.icon />
                   </div>
                   <h2 className="font-display text-2xl md:text-3xl font-bold text-gray-900 mb-4">{service.title}</h2>
