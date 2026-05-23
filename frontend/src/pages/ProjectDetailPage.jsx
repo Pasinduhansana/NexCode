@@ -1,110 +1,140 @@
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
-import { HiArrowLeft, HiArrowRight } from 'react-icons/hi';
-import usePageTitle from '../utils/usePageTitle';
+import React from 'react';
+import { Navigate, useParams } from 'react-router-dom';
+import palmLeave from '../../assets/palm-leave.png';
 import { showcaseProjects } from '../data/showcaseProjects';
+import project_image from '../../assets/project_image.png';
+import project_image2_mobile from '../../assets/project_image1_mob.png';
+import laptop_mockup from '../../assets/laptop_mockup.png';
+import phone_mockup from '../../assets/phone_mockup.png';
 
-export default function ProjectDetailPage() {
+function App() {
   const { slug } = useParams();
-  const navigate = useNavigate();
   const project = showcaseProjects.find((item) => item.slug === slug);
-
-  usePageTitle(project ? `${project.name} | Showcase` : 'Project Not Found');
 
   if (!project) {
     return <Navigate to="/showcase" replace />;
   }
 
   return (
-    <div className="min-h-screen bg-[#73d2f6] text-slate-900">
-      <section className="relative min-h-[92vh] overflow-hidden pt-16">
-        <button
-          type="button"
-          onClick={() => navigate('/showcase')}
-          className="absolute top-5 left-5 z-30 inline-flex items-center gap-2 rounded-full bg-black/20 px-4 py-2 text-sm font-semibold text-white backdrop-blur hover:bg-black/35 transition-colors"
-        >
-          <HiArrowLeft size={18} />
-          Back
-        </button>
-
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-36 left-1/2 -translate-x-1/2 text-[18vw] md:text-[11rem] leading-[0.83] font-black tracking-tight uppercase text-slate-900/85 text-center">
-            showcase
-            <br />
-            presentation
-          </div>
+    <div className='flex flex-col h-full bg-[#f5f5f7]'>
+      <div className="relative w-full min-h-screen bg-[#54b2e6] text-white overflow-x-hidden overflow-y-visible flex flex-col items-center justify-between py-10 pt-20 px-5 z-10 select-none">
+        
+        {/* Background Watermark Text Layer */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[48%] w-full max-w-[1200px] flex flex-col items-center justify-center -z-10 pointer-events-none">
+          <span className="text-[6rem] md:text-[12rem] font-extrabold text-black/20 tracking-wider leading-[0.95] text-center uppercase">
+            project
+          </span>
+                  <span className="text-[6rem] md:text-[12rem] font-extrabold text-black/20 tracking-wider leading-[0.95] text-center uppercase">
+            Overview
+          </span>
         </div>
 
-        <div className="relative z-10 max-w-5xl mx-auto px-4 pt-6 text-center">
-          <div className="text-white">
-            <h1 className="font-display text-4xl md:text-5xl font-bold tracking-tight">{project.name}</h1>
-            <p className="mt-2 text-xs md:text-sm uppercase tracking-[0.45em] text-white/85">{project.type}</p>
+        {/* Brand Header */}
+        <header className="text-center mt-2">
+          <h1 className="text-4xl font-bold tracking-tight">{project.name}</h1>
+          <p className="text-[10px] tracking-[4px] mt-1 text-white/80 font-medium">WEB ELEMENTS RESOURCE</p>
+        </header>
+
+        {/* Central Interactive Content Frame */}
+        <main className="flex flex-col items-center w-full">
+          <div className="relative w-[400px] md:w-[700px] max-w-[90vw] my-5 perspective-[1000px]">
+            
+            {/* Laptop Screen Bezel */}
+            <div className='relative'>
+              <img src={laptop_mockup} alt="Laptop Mockup" className="w-full h-full relative z-20" />
+                <div className="absolute overflow-hidden w-[77%]  h-[84%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-[52%] ">
+                <img src={project_image} alt="Project Screenshot" className="object-coverz-10 transform transition-transform duration-300 hover:scale-105 w-full h-full" />
+                </div>
+            </div>
+
+            {/* Phone Screen */}
+            <div className='absolute bottom-0 left-0  w-[120px] h-auto mt-10 z-50'>
+              <img src={phone_mockup} alt="Phone Mockup" className="w-full  h-full relative z-20" />
+                <div className="absolute overflow-hidden bg-white w-[99%] h-[99%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-[50.5%] rounded-3xl ">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-8 bg-gray-100 rounded-full">
+                <div className="flex justify-between px-3 pt-0">
+                  <span className='text-black text-[4px] font-semibold'>Dialog</span>
+                  <div className="flex">
+                  <span className='text-black text-[4px] mr-1'>📶</span>
+                  <span className='text-black text-[4px] font-semibold'>100%</span></div>
+                </div>
+                </div>
+                <img src={project_image2_mobile} alt="Project Screenshot" className="object-coverz-10 pt-6 transform transition-transform duration-300 hover:scale-105 w-full h-full" />
+                </div>
+            </div>
+
           </div>
 
-          <div className="mt-8 md:mt-10 mx-auto max-w-4xl rounded-[1.8rem] bg-slate-100 border-8 border-slate-100 shadow-[0_26px_45px_rgba(2,18,40,0.34)]">
-            <div className="rounded-[1.2rem] overflow-hidden border border-slate-300 bg-white">
-              <div className="h-9 bg-slate-900 text-white text-[10px] uppercase tracking-[0.2em] flex items-center justify-center">
-                Project Showcase Preview
+          {/* Dynamic Presentation Typography */}
+          <div className="text-center ">
+            <p className="text-[11px] tracking-[5px] text-white/60 mb-3.5 uppercase font-semibold">
+              SELECTED PROJECT DETAILS
+            </p>
+            <p className="text-l md:text-xl max-w-[800px] font-normal leading-relaxed text-white/95 balance line-clamp-2">
+              {project.summary}
+            </p>
+          </div>
+        </main>
+
+        {/* Decorative Overlapping Foreground Botanical Corner Asset - right */}
+        <div className="absolute -bottom-5 right-10 -translate-x-1/5 w-[400px] h-auto mb-[8%] pointer-events-none z-30 transform select-none">
+          {/* Adding Shadow for Depth and Visual Interest (sent behind the image) */}
+          <div className="absolute bottom-4 left-[43%] z-0 w-20 h-5 bg-black/80 rounded-lg filter blur-lg opacity-70"></div>
+          <img src={palmLeave} alt="Decorative Palm Corner Graphic" className="w-full h-auto relative z-20" />
+        </div>
+      </div>
+
+      <div className="w-full h-[400px] bg-white px-20 py-6 text-slate-900">
+          <div className="h-full grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-8 items-stretch">
+            <div className="md:col-span-7 flex flex-col justify-between min-h-0">
+              <div>
+                <p className="text-[11px] tracking-[0.22em] uppercase text-slate-500 font-semibold mb-3">Case Study</p>
+                <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] leading-tight line-clamp-2">{project.name}</h2>
+                <p className="mt-3 text-sm md:text-[15px] text-slate-600 leading-relaxed line-clamp-[6]">{project.summary}</p>
               </div>
 
-              <div className="grid grid-cols-12 min-h-[320px]">
-                <div className="col-span-8 bg-[#efbe79] p-5 md:p-7 text-left">
-                  <div className="text-[10px] uppercase tracking-[0.18em] text-slate-700 font-semibold">Showcase Presentation</div>
-                  <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight">{project.name}</h2>
-                  <p className="mt-3 text-sm text-slate-700 max-w-md">{project.summary}</p>
-                </div>
-                <div className="col-span-4 bg-slate-100 p-4 md:p-6 border-l border-slate-200 text-left">
-                  <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Stack</div>
-                  <ul className="mt-3 space-y-2">
-                    {project.stack.slice(0, 4).map((item) => (
-                      <li key={item} className="text-sm text-slate-700">{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div className="h-5 mx-auto w-[16rem] md:w-[22rem] rounded-b-[999px] bg-slate-100/80" />
-          </div>
-
-          <p className="mt-12 text-white text-2xl md:text-4xl max-w-3xl mx-auto leading-tight font-medium">
-            Easily adapt the project architecture and presentation style to your business need.
-          </p>
-        </div>
-
-        <div className="absolute -bottom-16 -right-14 w-72 h-72 md:w-[24rem] md:h-[24rem] opacity-90 pointer-events-none">
-          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-green-300 to-green-600 blur-3xl opacity-35" />
-          <div className="absolute right-7 top-2 w-48 h-48 md:w-64 md:h-64 rounded-full border-l-[12px] border-b-[12px] border-green-700/80 rotate-[-22deg]" />
-          <div className="absolute right-16 top-12 w-44 h-44 md:w-56 md:h-56 rounded-full border-r-[10px] border-t-[10px] border-green-500/80 rotate-[14deg]" />
-        </div>
-      </section>
-
-      <section className="bg-white py-14">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-2 rounded-2xl border border-slate-200 p-6">
-              <h3 className="font-display text-2xl font-bold text-slate-900 mb-3">Project Overview</h3>
-              <p className="text-slate-600 leading-relaxed">{project.summary}</p>
-            </div>
-            <div className="rounded-2xl border border-slate-200 p-6">
-              <h3 className="font-display text-xl font-bold text-slate-900 mb-3">Key Results</h3>
-              <ul className="space-y-2">
-                {project.results.map((item) => (
-                  <li key={item} className="text-sm text-slate-700 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-cyan-500" />
-                    {item}
-                  </li>
+              <div className="mt-2 flex flex-wrap gap-2.5">
+                {project.stack.slice(0, 5).map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-3.5 py-1.5 rounded-full  bg-[#f7f7fa] text-[12px] font-medium text-slate-700"
+                  >
+                    {tech}
+                  </span>
                 ))}
-              </ul>
+              </div>
+            </div>
+
+            <div className="md:col-span-5 min-h-0 grid grid-rows-[1fr_auto] gap-3.5">
+              <div className="rounded-2xl border border-[#ececf1] bg-[#fafafc] p-4 min-h-0">
+                <p className="text-[11px] tracking-[0.2em] uppercase text-slate-500 font-semibold mb-2.5">Impact</p>
+                <div className="space-y-2">
+                  {project.results.slice(0, 2).map((result) => (
+                    <div key={result} className="flex items-start gap-2.5 text-sm text-slate-700 leading-snug">
+                      <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-slate-400 flex-shrink-0" />
+                      <span className="line-clamp-2">{result}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-xl border border-[#ececf1] bg-white p-3">
+                  <p className="text-[11px] uppercase tracking-[0.15em] text-slate-500">Type</p>
+                  <p className="mt-1 text-sm font-semibold text-[#1d1d1f] line-clamp-1">{project.type}</p>
+                </div>
+                <div className="rounded-xl border border-[#ececf1] bg-white p-3">
+                  <p className="text-[11px] uppercase tracking-[0.15em] text-slate-500">Tech Count</p>
+                  <p className="mt-1 text-sm font-semibold text-[#1d1d1f]">{project.stack.length}</p>
+                </div>
+              </div>
             </div>
           </div>
+      </div>
 
-          <div className="mt-8 flex flex-col sm:flex-row gap-4">
-            <Link to="/start-project" className="btn-primary px-8 py-4">Start Similar Project</Link>
-            <Link to="/showcase" className="btn-secondary px-8 py-4 inline-flex items-center gap-2">
-              View Other Projects <HiArrowRight />
-            </Link>
-          </div>
-        </div>
-      </section>
+
     </div>
   );
 }
+
+export default App;
