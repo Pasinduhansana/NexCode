@@ -84,8 +84,8 @@ function App() {
         </div>
       </div>
 
-      <div className="w-full h-[400px] bg-white px-20 py-6 text-slate-900">
-          <div className="h-full grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-8 items-stretch">
+      <div className="w-full h-[400px] bg-white flex justify-center py-6 text-slate-900">
+          <div className="h-full grid grid-cols-1 max-w-7xl md:grid-cols-12 gap-5 md:gap-8 items-stretch">
             <div className="md:col-span-7 flex flex-col justify-between min-h-0">
               <div>
                 <p className="text-[11px] tracking-[0.22em] uppercase text-slate-500 font-semibold mb-3">Case Study</p>
