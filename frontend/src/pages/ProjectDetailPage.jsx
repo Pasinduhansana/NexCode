@@ -1,22 +1,46 @@
-import React from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import palmLeave from '../../assets/palm-leave.png';
 import { showcaseProjects } from '../data/showcaseProjects';
 import project_image from '../../assets/project_image.png';
 import project_image2_mobile from '../../assets/project_image1_mob.png';
 import laptop_mockup from '../../assets/laptop_mockup.png';
 import phone_mockup from '../../assets/phone_mockup.png';
+import { useThemeClasses } from '../utils/useThemeClasses';
+
+const limitWords = (text, maxWords) => text.split(/\s+/).slice(0, maxWords).join(' ');
 
 function App() {
   const { slug } = useParams();
   const project = showcaseProjects.find((item) => item.slug === slug);
+  const [isSummaryExpanded, setIsSummaryExpanded] = useState(false);
+  const themeClasses = useThemeClasses();
 
   if (!project) {
     return <Navigate to="/showcase" replace />;
   }
 
+  const relatedProjects = (project.relatedSlugs ?? [])
+    .map((relatedSlug) => showcaseProjects.find((item) => item.slug === relatedSlug))
+    .filter(Boolean);
+  const summaryText = limitWords(project.summary, 60);
+  const whatIsText = limitWords(project.whatIs, 28);
+  const whyDevelopedText = limitWords(project.whyDeveloped, 30);
+  const businessValueText = limitWords(project.businessValue, 30);
+  const challengeText = limitWords(project.challengeBefore, 30);
+  const relatedSummary = (text) => limitWords(text, 28);
+  const sectionLabelClass = themeClasses.theme === 'primary' ? 'text-sky-600' : 'text-slate-500';
+  const sectionTitleClass = themeClasses.theme === 'primary' ? 'text-sky-700' : 'text-[#1d1d1f]';
+  const requestButtonClass = themeClasses.theme === 'light'
+    ? 'inline-flex items-center justify-center rounded-2xl border border-[#d7dbe0] bg-white px-5 py-3 text-sm font-semibold text-[#1d1d1f] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md active:translate-y-0'
+    : themeClasses.theme === 'dark'
+      ? 'inline-flex items-center justify-center rounded-xl border border-slate-700 bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-600 hover:shadow-md active:translate-y-0'
+      : 'inline-flex items-center justify-center rounded-full border border-sky-200 bg-sky-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-sky-700 hover:shadow-md active:translate-y-0';
+
   return (
     <div className='flex flex-col h-full bg-[#f5f5f7]'>
+
+      {/* Hero Section */}
       <div className="relative w-full min-h-screen bg-[#54b2e6] text-white overflow-x-hidden overflow-y-visible flex flex-col items-center justify-between py-10 pt-20 px-5 z-10 select-none">
         
         {/* Background Watermark Text Layer */}
@@ -37,9 +61,8 @@ function App() {
 
         {/* Central Interactive Content Frame */}
         <main className="flex flex-col items-center w-full">
-          <div className="relative w-[400px] md:w-[700px] max-w-[90vw] my-5 perspective-[1000px]">
-            
-            {/* Laptop Screen Bezel */}
+        <div className="relative mx-auto w-full max-w-[320px] sm:max-w-[420px] md:max-w-[500px] lg:max-w-[700px] [@media(min-width:1600px)]:max-w-[1000px] my-5 perspective-[1000px] px-2 sm:px-0">
+              {/* Laptop Screen Bezel */}
             <div className='relative'>
               <img src={laptop_mockup} alt="Laptop Mockup" className="w-full h-full relative z-20" />
                 <div className="absolute overflow-hidden w-[77%]  h-[84%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-[52%] ">
@@ -84,49 +107,150 @@ function App() {
         </div>
       </div>
 
-      <div className="w-full h-[400px] bg-white flex justify-center py-6 text-slate-900">
-          <div className="h-full grid grid-cols-1 max-w-7xl md:grid-cols-12 gap-5 md:gap-8 items-stretch">
-            <div className="md:col-span-7 flex flex-col justify-between min-h-0">
-              <div>
-                <p className="text-[11px] tracking-[0.22em] uppercase text-slate-500 font-semibold mb-3">Case Study</p>
-                <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] leading-tight line-clamp-2">{project.name}</h2>
-                <p className="mt-3 text-sm md:text-[15px] text-slate-600 leading-relaxed line-clamp-[6]">{project.summary}</p>
-              </div>
 
-              <div className="mt-2 flex flex-wrap gap-2.5">
-                {project.stack.slice(0, 5).map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-3.5 py-1.5 rounded-full  bg-[#f7f7fa] text-[12px] font-medium text-slate-700"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
+        {/* Main Content Area */}
+      <div className="w-full bg-white px-5 py-10 text-slate-900">
+          <div className="max-w-7xl mx-auto space-y-10">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-8 items-start">
+              <div className="md:col-span-8 flex flex-col gap-6">
+                <div>
+                  <p className={`text-[11px] tracking-[0.22em] uppercase font-semibold mb-3 ${sectionLabelClass}`}>Case Study</p>
+                  <h2 className={`text-2xl md:text-3xl font-semibold leading-tight line-clamp-2 ${sectionTitleClass}`}>{project.name}</h2>
+                  <p className="mt-3 text-sm md:text-[15px] text-slate-600 leading-relaxed">
+                    {isSummaryExpanded ? project.summary : summaryText}
+                    {!isSummaryExpanded && summaryText.length < project.summary.length ? (
+                      <button
+                        type="button"
+                        onClick={() => setIsSummaryExpanded(true)}
+                        className="ml-2 inline-flex items-center text-slate-900 font-semibold hover:underline"
+                      >
+                        Read more
+                      </button>
+                    ) : null}
+                    {isSummaryExpanded ? (
+                      <button
+                        type="button"
+                        onClick={() => setIsSummaryExpanded(false)}
+                        className="ml-2 inline-flex items-center text-slate-500 font-semibold hover:underline"
+                      >
+                        Show less
+                      </button>
+                    ) : null}
+                  </p>
+                </div>
 
-            <div className="md:col-span-5 min-h-0 grid grid-rows-[1fr_auto] gap-3.5">
-              <div className="rounded-2xl border border-[#ececf1] bg-[#fafafc] p-4 min-h-0">
-                <p className="text-[11px] tracking-[0.2em] uppercase text-slate-500 font-semibold mb-2.5">Impact</p>
-                <div className="space-y-2">
-                  {project.results.slice(0, 2).map((result) => (
-                    <div key={result} className="flex items-start gap-2.5 text-sm text-slate-700 leading-snug">
-                      <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-slate-400 flex-shrink-0" />
-                      <span className="line-clamp-2">{result}</span>
-                    </div>
+                <div>
+                  <p className={`text-[11px] tracking-[0.2em] uppercase font-semibold mb-2.5 ${sectionLabelClass}`}>What the project is</p>
+                  <p className="text-sm md:text-[15px] text-slate-700 leading-relaxed">{whatIsText}</p>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="rounded-2xl border border-[#ececf1] bg-[#fafafc] p-4">
+                    <p className={`text-[11px] tracking-[0.2em] uppercase font-semibold mb-2 ${sectionLabelClass}`}>Why it was developed</p>
+                    <p className="text-sm text-slate-700 leading-relaxed">{whyDevelopedText}</p>
+                  </div>
+                  <div className="rounded-2xl border border-[#ececf1] bg-[#fafafc] p-4">
+                    <p className={`text-[11px] tracking-[0.2em] uppercase font-semibold mb-2 ${sectionLabelClass}`}>Business value</p>
+                    <p className="text-sm text-slate-700 leading-relaxed">{businessValueText}</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-2.5">
+                  {project.stack.slice(0, 5).map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-3.5 py-1.5 rounded-full bg-[#f7f7fa] text-[12px] font-medium text-slate-700"
+                    >
+                      {tech}
+                    </span>
                   ))}
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-xl border border-[#ececf1] bg-white p-3">
-                  <p className="text-[11px] uppercase tracking-[0.15em] text-slate-500">Type</p>
-                  <p className="mt-1 text-sm font-semibold text-[#1d1d1f] line-clamp-1">{project.type}</p>
+              <div className="md:col-span-4 min-h-0 grid gap-3.5">
+                <div className="rounded-2xl border border-[#ececf1] bg-[#fafafc] p-4 min-h-0">
+                  <p className={`text-[11px] tracking-[0.2em] uppercase font-semibold mb-2.5 ${sectionLabelClass}`}>Client challenge</p>
+                  <p className="text-sm text-slate-700 leading-relaxed">{challengeText}</p>
                 </div>
-                <div className="rounded-xl border border-[#ececf1] bg-white p-3">
-                  <p className="text-[11px] uppercase tracking-[0.15em] text-slate-500">Tech Count</p>
-                  <p className="mt-1 text-sm font-semibold text-[#1d1d1f]">{project.stack.length}</p>
+
+                <div className="rounded-2xl border border-[#ececf1] bg-white p-4 min-h-0">
+                  <p className={`text-[11px] tracking-[0.2em] uppercase font-semibold mb-2.5 ${sectionLabelClass}`}>Project outcomes</p>
+                  <div className="space-y-2">
+                    {project.outcomes.map((item) => (
+                      <div key={item} className="flex items-start gap-2.5 text-sm text-slate-700 leading-snug">
+                        <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-slate-400 flex-shrink-0" />
+                        <span>{limitWords(item, 14)}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
+
+                <div className="rounded-2xl border border-[#ececf1] bg-[#fafafc] p-4 min-h-0">
+                  <p className={`text-[11px] tracking-[0.2em] uppercase font-semibold mb-2.5 ${sectionLabelClass}`}>Measured results</p>
+                  <div className="space-y-2">
+                    {project.results.map((result) => (
+                      <div key={result} className="flex items-start gap-2.5 text-sm text-slate-700 leading-snug">
+                        <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-slate-400 flex-shrink-0" />
+                        <span>{result}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <a
+                  href="/contact"
+                  className={requestButtonClass}
+                >
+                  Request Similar Solution
+                </a>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-[#ececf1] bg-white p-5 md:p-6">
+              <div className="flex items-center justify-between gap-4 mb-4">
+                <div>
+                  <p className={`text-[11px] tracking-[0.2em] uppercase font-semibold mb-1 ${sectionLabelClass}`}>Feature list</p>
+                  <h3 className={`text-lg font-semibold ${sectionTitleClass}`}>What this solution includes</h3>
+                </div>
+                <div className="text-sm text-slate-500">{project.features.length} core capabilities</div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {project.features.map((feature) => (
+                  <div key={feature} className="rounded-xl border border-[#ececf1] bg-[#fafafc] px-4 py-3 text-sm text-slate-700">
+                    {feature}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <div className="flex items-end justify-between gap-4 mb-5">
+                <div>
+                  <p className={`text-[11px] tracking-[0.2em] uppercase font-semibold mb-1 ${sectionLabelClass}`}>Related projects</p>
+                  <h3 className={`text-lg font-semibold ${sectionTitleClass}`}>Explore similar solutions</h3>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {relatedProjects.map((relatedProject) => (
+                  <Link
+                    key={relatedProject.slug}
+                    to={`/showcase/${relatedProject.slug}`}
+                    className="group overflow-hidden rounded-2xl border border-[#ececf1] bg-white transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+                  >
+                    <div className="aspect-[16/10] overflow-hidden bg-slate-100">
+                      <img
+                        src={relatedProject.image}
+                        alt={relatedProject.name}
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </div>
+                    <div className="p-4">
+                      <div className="text-[11px] tracking-[0.2em] uppercase text-slate-500 font-semibold mb-2">{relatedProject.type}</div>
+                      <h4 className="text-base font-semibold text-[#1d1d1f] group-hover:text-black">{relatedProject.name}</h4>
+                      <p className="mt-2 text-sm text-slate-600 line-clamp-3">{relatedSummary(relatedProject.summary)}</p>
+                    </div>
+                  </Link>
+                ))}
               </div>
             </div>
           </div>
