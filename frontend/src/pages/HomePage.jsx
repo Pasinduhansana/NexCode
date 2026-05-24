@@ -41,16 +41,11 @@ export default function HomePage() {
   usePageTitle('Home');
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen h-full">
       {/* HERO */}
-      <section className={`relative min-h-screen ${themeClasses.bg.hero} dark-grid flex items-center overflow-hidden`}>
-        {/* Glows */}
-        <div className="absolute top-20 left-1/4 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-20 right-1/4 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl" />
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="max-w-4xl mx-auto text-center">
+      <section className={`relative min-h-screen ${themeClasses.bg.hero} dark-grid m-auto flex flex-col items-center overflow-hidden h-full`}>
+        <div className="relative w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex-1 ">
+          <div className="w-full mx-auto text-center h-full pt-24">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -65,20 +60,19 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
-              className={`font-display text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight ${themeClasses.text.primary}`}
+              className={`font-display text-xl md:text-2xl lg:text-3xl font-semibold mb-4 leading-tight ${themeClasses.text.primary}`}
             >
-              Nex<span className="gradient-text">Code</span>
+              ELAVATE YOUR BUSINESS WITH<br/> SOFTWARE SOLUTIONS
               <br />
-              <span className={`text-lg md:text-2xl lg:text-3xl font-semibold opacity-60`}>Software Development</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className={`text-sm md:text-base mb-8 max-w-2xl mx-auto ${themeClasses.text.secondary}`}
+              className={`text-sm md:text-[14px] my-8 max-w-xl mx-auto ${themeClasses.text.secondary} leading-relaxed`}
             >
-              Custom Solutions. Modern Technology. Real Results.
+              Unlock your business's full potential with NexCode. From sleek websites to powerful enterprise systems, we deliver digital products that actually work.
             </motion.p>
 
             <motion.div
@@ -87,16 +81,16 @@ export default function HomePage() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="flex flex-col sm:flex-row gap-3 justify-center"
             >
-              <Link to="/start-project" className="btn-primary text-xs px-5 py-2.5 justify-center">
+              <Link to="/start-project" className="btn-primary text-xs px-5 py-2.5 justify-center bg-blue-500/80 hover:bg-blue-500 text-white transition-colors">
                 <FaRocket size={14} />
                 Build Your Next Project
               </Link>
-              <a href="https://wa.me/94769747244" target="_blank" rel="noreferrer"
+              {/* <a href="https://wa.me/94769747244" target="_blank" rel="noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-semibold bg-green-600 hover:bg-green-700 text-white transition-colors text-xs"
               >
                 <FaWhatsapp size={14} />
                 WhatsApp Us
-              </a>
+              </a> */}
             </motion.div>
 
             {/* Stats */}
@@ -104,11 +98,11 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className={`grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 pt-6 border-t ${themeClasses.border.primary}`}
+              className={`absolute right-0 bg-red-400 grid grid-cols-2 md:grid-cols-4 gap-4 bottom-0 pt-6 border-t ${themeClasses.border.primary}`}
             >
               {stats.map((s, i) => (
                 <div key={i} className="text-center">
-                  <div className="font-display text-2xl font-bold gradient-text">{s.value}</div>
+                  <div className="font-display text-2xl font-bold text-text_primary">{s.value}</div>
                   <div className={`text-xs ${themeClasses.text.tertiary} mt-1`}>{s.label}</div>
                 </div>
               ))}
