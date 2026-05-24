@@ -17,9 +17,9 @@ const quickLinks = [
 export default function Footer() {
   const themeClasses = useThemeClasses();
 
-  const footerBg = themeClasses.theme === 'light' ? 'bg-gray-100' : themeClasses.theme === 'dark' ? 'bg-slate-900' : 'bg-slate-950';
-  const footerText = themeClasses.theme === 'light' ? 'text-gray-600' : 'text-gray-400';
-  const footerHeading = themeClasses.theme === 'light' ? 'text-gray-900' : 'text-white';
+  const footerBg = 'bg-muted';
+  const footerText = 'text-muted';
+  const footerHeading = 'text-foreground';
 
   return (
     <footer className={`${footerBg} ${footerText} `}>
@@ -28,23 +28,23 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              <img src={logo} alt="NexCode" className="w-8 h-8 rounded-lg object-cover bg-white" />
+              <img src={logo} alt="NexCode" className="w-8 h-8 rounded-lg object-cover bg-background" />
               <span className={`font-display font-bold text-lg ${footerHeading}`}>NexCode</span>
             </div>
             <p className={`text-xs leading-relaxed mb-4 ${footerText}`}>
               Custom Solutions. Modern Technology. Real Results. We build digital products that power your business forward.
             </p>
             <div className="space-y-2">
-              <a href="tel:+94753125140" className={`flex items-center gap-2 text-xs ${footerText} hover:text-blue-600 transition-colors`}>
+                <a href="tel:+94753125140" className={`flex items-center gap-2 text-xs ${footerText} hover:text-primary transition-colors`}>
                 <FaPhone size={12} className="text-blue-400" />
                 +94 75 312 5140
               </a>
-              <a href="https://wa.me/94769747244" target="_blank" rel="noreferrer" className={`flex items-center gap-2 text-xs ${footerText} hover:text-green-600 transition-colors`}>
-                <FaWhatsapp size={12} className="text-green-400" />
+              <a href="https://wa.me/94769747244" target="_blank" rel="noreferrer" className={`flex items-center gap-2 text-xs ${footerText} hover:text-accent transition-colors`}>
+                <FaWhatsapp size={12} className="text-accent" />
                 +94 76 974 7244
               </a>
-              <a href="https://nexcode.lk" target="_blank" rel="noreferrer" className={`flex items-center gap-2 text-xs ${footerText} hover:text-cyan-600 transition-colors`}>
-                <FaGlobe size={12} className="text-cyan-400" />
+              <a href="https://nexcode.lk" target="_blank" rel="noreferrer" className={`flex items-center gap-2 text-xs ${footerText} hover:text-accent transition-colors`}>
+                <FaGlobe size={12} className="text-accent" />
                 www.nexcode.lk
               </a>
             </div>
@@ -89,11 +89,7 @@ export default function Footer() {
             </Link>
             <div className="flex items-center gap-2 mt-3">
               {[FaLinkedin, FaTwitter, FaInstagram, FaGithub].map((Icon, i) => (
-                <a key={i} href="#" className={`w-7 h-7 rounded-lg flex items-center justify-center text-sm transition-all duration-200 ${
-                  themeClasses.theme === 'light'
-                    ? 'bg-gray-200 text-gray-600 hover:bg-blue-600 hover:text-white'
-                    : 'bg-slate-800 text-gray-400 hover:bg-blue-600 hover:text-white'
-                }`}>
+                <a key={i} href="#" className={`w-7 h-7 rounded-lg flex items-center justify-center text-sm transition-all duration-200 bg-muted text-muted hover:bg-primary hover:text-white`}>
                   <Icon size={12} />
                 </a>
               ))}

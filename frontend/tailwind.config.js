@@ -1,10 +1,27 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
-        primary: {
+        // Semantic color tokens mapped to CSS variables (RGB triplet + alpha support)
+        background: 'rgb(var(--background) / <alpha-value>)',
+        foreground: 'rgb(var(--foreground) / <alpha-value>)',
+        primary: 'rgb(var(--primary) / <alpha-value>)',
+        secondary: 'rgb(var(--secondary) / <alpha-value>)',
+        card: 'rgb(var(--card) / <alpha-value>)',
+        border: 'rgb(var(--border) / <alpha-value>)',
+        border_hard: 'rgb(var(--border-hard) / <alpha-value>)',
+        muted: 'rgb(var(--muted) / <alpha-value>)',
+        accent: 'rgb(var(--accent) / <alpha-value>)',
+        text_primary: 'rgb(var(--text-primary) / <alpha-value>)',
+        text_secondary: 'rgb(var(--text-secondary) / <alpha-value>)',
+        text_muted: 'rgb(var(--text-muted) / <alpha-value>)',
+        hero : 'rgb(var(--page-hero) / <alpha-value>)',
+
+        // Preserve legacy color palette for safe incremental migration
+        legacyPrimary: {
           50: '#eff8ff',
           100: '#dbeffe',
           200: '#bfe3fd',
@@ -17,15 +34,6 @@ export default {
           900: '#0d2d6b',
           950: '#071b47',
         },
-        cyan: {
-          400: '#22d3ee',
-          500: '#06b6d4',
-        },
-        dark: {
-          900: '#0a0f1e',
-          800: '#0d1730',
-          700: '#111f42',
-        }
       },
       fontFamily: {
         display: ['"Plus Jakarta Sans"', 'sans-serif'],
@@ -58,9 +66,9 @@ export default {
         }
       },
       backgroundImage: {
-        'hero-gradient': 'linear-gradient(135deg, #0d1730 0%, #0a0f1e 50%, #071b47 100%)',
-        'card-gradient': 'linear-gradient(135deg, rgba(26,125,232,0.1) 0%, rgba(6,182,212,0.05) 100%)',
-        'btn-gradient': 'linear-gradient(135deg, #1a7de8 0%, #06b6d4 100%)',
+        'hero-gradient': 'linear-gradient(180deg, rgb(var(--page-hero) / 1) 0%, rgb(var(--page-hero-secondary) / 0.9) 50%, rgb(var(--page-hero) / 1) 100%)',
+        'card-gradient': 'linear-gradient(135deg, rgba(var(--primary),0.08) 0%, rgba(var(--accent),0.04) 100%)',
+        'btn-gradient': 'linear-gradient(135deg, rgb(var(--primary) / 1) 0%, rgb(var(--accent) / 1) 100%)',
       }
     },
   },

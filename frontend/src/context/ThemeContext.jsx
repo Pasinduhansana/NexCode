@@ -11,11 +11,18 @@ export const ThemeProvider = ({ children }) => {
     setTheme(savedTheme);
   }, []);
 
-  // Save theme to localStorage when it changes
-  const updateTheme = (newTheme) => {
-    setTheme(newTheme);
-    localStorage.setItem('nexcode_theme', newTheme);
-  };
+  // Apply theme to the document (toggle dark class + data-theme attribute)
+  useEffect(() => {
+    const root = document.documentElement;
+    // toggle Tailwind dark class
+    if (theme === 'dark') root.classList.add('dark'); else root.classList.remove('dark');
+    // set a data-theme attribute for variant-specific overrides
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('nexcode_theme', theme);
+  }, [theme]);
+
+  // Save theme to localStorage when it changes (via updateTheme)
+  const updateTheme = (newTheme) => setTheme(newTheme);
 
   return (
     <ThemeContext.Provider value={{ theme, updateTheme }}>
