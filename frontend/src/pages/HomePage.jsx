@@ -55,11 +55,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full ${
-                themeClasses.theme === 'light'
-                  ? 'bg-blue-500/10 border border-blue-500/20 text-blue-600'
-                  : 'bg-blue-500/10 border border-blue-500/30 text-blue-300'
-              } text-xs mb-6`}
+              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 text-xs mb-6`}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
               Newest Tech Trends · Software Development

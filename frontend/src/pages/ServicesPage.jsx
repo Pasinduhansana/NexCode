@@ -62,18 +62,10 @@ export default function ServicesPage() {
       <section className={`pt-28 pb-16 ${themeClasses.bg.hero} dark-grid`}>
         <div className="max-w-4xl mx-auto px-4 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs mb-5 ${
-              themeClasses.theme === 'light'
-                ? 'bg-blue-500/10 border border-blue-500/20 text-blue-600'
-                : 'bg-blue-500/10 border border-blue-500/30 text-blue-300'
-            }`}>
+            <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 text-xs mb-5`}>
               Our Services
             </div>
-            <h1 className={`font-display text-2xl md:text-3xl lg:text-4xl font-bold mb-4 ${
-              themeClasses.theme === 'light'
-                ? 'text-gray-900'
-                : 'text-white'
-            }`}>
+            <h1 className={`font-display text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-foreground`}>
               What We <span className="gradient-text">Build</span>
             </h1>
             <p className={`text-sm md:text-base max-w-2xl mx-auto ${themeClasses.text.secondary}`}>

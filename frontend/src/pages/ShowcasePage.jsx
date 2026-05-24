@@ -14,16 +14,14 @@ const ProjectCard = ({ project, onNavigate, themeClasses }) => {
       whileHover={{ translateY: -4 }}
       className={`group cursor-pointer ${themeClasses.bg.card} rounded-xl border ${themeClasses.border.primary} overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300`}
     >
-      <div className={`relative h-40 overflow-hidden ${themeClasses.theme === 'light' ? 'bg-gray-100' : 'bg-slate-700'}`}>
+      <div className={`relative h-40 overflow-hidden bg-muted`}>
         <img 
           src={project.image} 
           alt={project.name} 
           className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500" 
         />
         <div className={`absolute inset-0 bg-gradient-to-t ${project.color} opacity-40`} />
-        <div className={`absolute top-2 right-2 inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-semibold ${
-          themeClasses.theme === 'light' ? 'bg-white/90 text-gray-900' : 'bg-slate-900/90 text-white'
-        } backdrop-blur`}>
+        <div className={`absolute top-2 right-2 inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-semibold bg-card/90 text-foreground backdrop-blur`}>
           {project.type}
         </div>
       </div>
@@ -36,11 +34,7 @@ const ProjectCard = ({ project, onNavigate, themeClasses }) => {
         <div className="mb-3">
           <div className="space-y-1.5">
             {project.results.slice(0, 2).map((result, idx) => (
-              <div key={idx} className={`flex items-center gap-2 text-xs font-medium ${
-                themeClasses.theme === 'light'
-                  ? 'text-blue-600'
-                  : 'text-blue-400'
-              }`}>
+              <div key={idx} className={`flex items-center gap-2 text-xs font-medium text-blue-600`}>
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
                 {result}
               </div>
@@ -127,11 +121,7 @@ export default function ShowcasePage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-md mb-6 ${
-                themeClasses.theme === 'light'
-                  ? 'bg-blue-100/40 border border-blue-200 text-blue-700'
-                  : 'bg-white/5 border border-white/10 text-white/80'
-              }`}
+              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-md mb-6 bg-blue-100/40 border border-blue-200 text-blue-700`}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
               <span className="text-xs font-medium">Explore Our Portfolio</span>
@@ -142,11 +132,8 @@ export default function ShowcasePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className={`font-display text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-4 ${
-                themeClasses.theme === 'light'
-                  ? 'bg-gradient-to-r from-blue-900 via-blue-700 to-cyan-600 bg-clip-text text-transparent'
-                  : 'bg-gradient-to-r from-white via-blue-200 to-cyan-300 bg-clip-text text-transparent'
-              }`}
+              className={`font-display text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-4 bg-clip-text text-transparent`}
+              style={{ backgroundImage: 'linear-gradient(90deg, rgb(var(--primary) / 1), rgb(var(--accent) / 1))' }}
             >
               <span>Project</span>
               <br />
@@ -158,11 +145,7 @@ export default function ShowcasePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className={`text-sm md:text-base max-w-2xl mx-auto leading-relaxed mb-6 ${
-                themeClasses.theme === 'light'
-                  ? 'text-gray-600'
-                  : 'text-white/70'
-              }`}
+              className={`text-sm md:text-base max-w-2xl mx-auto leading-relaxed mb-6 text-muted`}
             >
               Discover how we transform business ideas into digital excellence. Explore our portfolio of innovative solutions built with cutting-edge technology and strategic vision.
             </motion.p>
@@ -191,13 +174,7 @@ export default function ShowcasePage() {
         </div>
       </section>
 
-      <section className={`py-16 bg-gradient-to-b ${
-        themeClasses.theme === 'light'
-          ? 'from-white via-blue-50/30 to-white'
-          : themeClasses.theme === 'dark'
-          ? 'from-slate-900 via-slate-800/50 to-slate-900'
-          : 'from-slate-900/50 via-blue-950/30 to-slate-900/50'
-      }`}>
+      <section className="py-16 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <motion.div
@@ -207,11 +184,7 @@ export default function ShowcasePage() {
             transition={{ duration: 0.6 }}
             className="mb-12"
           >
-            <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-3 ${
-              themeClasses.theme === 'light'
-                ? 'bg-blue-100 border border-blue-200 text-blue-700'
-                : 'bg-blue-950/40 border border-blue-700/50 text-blue-300'
-            }`}>
+            <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-3 bg-blue-100 border border-blue-200 text-blue-700`}>
               <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
               Featured Collection
             </div>
@@ -238,11 +211,7 @@ export default function ShowcasePage() {
               onClick={() => mobileFiltersOpen && setMobileFiltersOpen(false)}
             >
               <div
-                className={`w-full lg:w-auto rounded-xl border p-4 lg:sticky lg:top-24 backdrop-blur-sm ${
-                  themeClasses.theme === 'light'
-                    ? 'bg-white border-gray-200 shadow-sm'
-                    : 'bg-slate-800/50 border-slate-700/50 shadow-lg shadow-black/20'
-                }`}
+                className={`w-full lg:w-auto rounded-xl border p-4 lg:sticky lg:top-24 backdrop-blur-sm bg-card border-border shadow-sm`}
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex items-center justify-between mb-4">
@@ -260,11 +229,7 @@ export default function ShowcasePage() {
                 {hasActiveFilters && (
                   <button
                     onClick={clearFilters}
-                    className={`w-full mb-3 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors border ${
-                      themeClasses.theme === 'light'
-                        ? 'text-blue-600 bg-blue-50 hover:bg-blue-100 border-blue-200'
-                        : 'text-blue-400 bg-blue-950/40 hover:bg-blue-950/60 border-blue-700/50'
-                    }`}
+                    className={`w-full mb-3 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors border text-blue-600 bg-blue-50 hover:bg-blue-100 border-blue-200`}
                   >
                     Clear All
                   </button>
@@ -285,13 +250,7 @@ export default function ShowcasePage() {
                             className="w-3.5 h-3.5 rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500 cursor-pointer"
                           />
                           <span className={`text-xs ${themeClasses.text.secondary} group-hover:text-blue-600 transition-colors flex-1`}>{category}</span>
-                          <span className={`text-xs font-medium px-1.5 py-0.5 rounded-md ${
-                            themeClasses.theme === 'light'
-                              ? 'text-gray-500 bg-gray-100'
-                              : 'text-gray-400 bg-slate-700/50'
-                          }`}>
-                            {count}
-                          </span>
+                          <span className="text-xs font-medium px-1.5 py-0.5 rounded-md text-muted bg-muted">{count}</span>
                         </label>
                       );
                     })}
@@ -313,13 +272,7 @@ export default function ShowcasePage() {
                             className="w-3.5 h-3.5 rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500 cursor-pointer"
                           />
                           <span className={`text-xs ${themeClasses.text.secondary} group-hover:text-blue-600 transition-colors flex-1`}>{stack}</span>
-                          <span className={`text-xs font-medium px-1.5 py-0.5 rounded-md ${
-                            themeClasses.theme === 'light'
-                              ? 'text-gray-500 bg-gray-100'
-                              : 'text-gray-400 bg-slate-700/50'
-                          }`}>
-                            {count}
-                          </span>
+                          <span className="text-xs font-medium px-1.5 py-0.5 rounded-md text-muted bg-muted">{count}</span>
                         </label>
                       );
                     })}
@@ -349,11 +302,7 @@ export default function ShowcasePage() {
                 </div>
                 <button
                   onClick={() => setMobileFiltersOpen(true)}
-                  className={`lg:hidden px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors border ${
-                    themeClasses.theme === 'light'
-                      ? 'bg-blue-50 text-blue-700 hover:bg-blue-100 border-blue-200'
-                      : 'bg-blue-950/40 text-blue-400 hover:bg-blue-950/60 border-blue-700/50'
-                  }`}
+                  className={`lg:hidden px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors border bg-blue-50 text-blue-700 hover:bg-blue-100 border-blue-200`}
                 >
                   Filters
                 </button>
@@ -378,11 +327,7 @@ export default function ShowcasePage() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.4 }}
-                  className={`text-center py-12 rounded-xl border-2 border-dashed ${
-                    themeClasses.theme === 'light'
-                      ? 'bg-gray-50 border-gray-300'
-                      : 'bg-slate-800/30 border-slate-600/50'
-                  }`}
+                  className={`text-center py-12 rounded-xl border-2 border-dashed bg-muted border-border`}
                 >
                   <div className="text-4xl mb-3">🔍</div>
                   <h3 className={`font-display text-sm font-bold ${themeClasses.text.primary} mb-1`}>No Projects Found</h3>
@@ -391,11 +336,7 @@ export default function ShowcasePage() {
                   </p>
                   <button
                     onClick={clearFilters}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
-                      themeClasses.theme === 'light'
-                        ? 'text-blue-600 bg-blue-50 hover:bg-blue-100 border-blue-200'
-                        : 'text-blue-400 bg-blue-950/40 hover:bg-blue-950/60 border-blue-700/50'
-                    }`}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors text-blue-600 bg-blue-50 hover:bg-blue-100 border-blue-200`}
                   >
                     <HiArrowLeft size={14} />
                     Reset Filters
@@ -407,13 +348,7 @@ export default function ShowcasePage() {
         </div>
       </section>
 
-      <section className={`relative py-20 bg-gradient-to-r ${
-        themeClasses.theme === 'light'
-          ? 'from-blue-600 to-cyan-500'
-          : themeClasses.theme === 'dark'
-          ? 'from-blue-700 to-cyan-600'
-          : 'from-blue-600 to-cyan-500'
-      } overflow-hidden`}>
+      <section className="relative py-20 bg-gradient-to-r from-blue-600 to-cyan-500 overflow-hidden">
         {/* Animated background */}
         <div className="absolute inset-0 overflow-hidden opacity-20">
           <div className="absolute top-1/2 right-1/3 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow" />
