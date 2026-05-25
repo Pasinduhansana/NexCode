@@ -12,6 +12,7 @@ const quickLinks = [
   { label: 'About Us', path: '/about' },
   { label: 'Contact', path: '/contact' },
   { label: 'Start a Project', path: '/start-project' },
+  { label: 'Admin Panel', path: '/admin-panel' },
 ];
 
 export default function Footer() {

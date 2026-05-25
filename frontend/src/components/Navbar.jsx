@@ -138,6 +138,9 @@ export default function Navbar() {
             <Link to="/start-project" className="btn-primary text-xs">
               Start Project
             </Link>
+            <Link to="/admin-panel" className="px-3 py-2 rounded-lg text-xs font-medium border border-blue-200/70 text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors">
+              Admin Panel
+            </Link>
           </div>
 
           {/* Mobile Hamburger */}
@@ -204,6 +207,9 @@ export default function Navbar() {
               ))}
               <Link to="/start-project" className="btn-primary w-full justify-center text-xs mt-2">
                 Start Project
+              </Link>
+              <Link to="/admin-panel" className="block px-3 py-2 rounded-lg text-xs font-medium border border-blue-200/70 text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors text-center">
+                Admin Panel
               </Link>
             </div>
           </motion.div>

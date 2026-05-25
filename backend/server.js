@@ -20,6 +20,7 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(async () => {
     console.log('✅ MongoDB Connected');
     await seedAdmin();
+    await seedShowcase();
   })
   .catch(err => console.error('❌ MongoDB Error:', err));
 
@@ -40,12 +41,24 @@ const seedAdmin = async () => {
   }
 };
 
+const seedShowcase = async () => {
+  const ShowcaseProject = require('./models/ShowcaseProject');
+  const showcaseSeed = require('./seed/showcaseProjects');
+  const existingCount = await ShowcaseProject.countDocuments();
+  if (existingCount === 0 && showcaseSeed.length > 0) {
+    await ShowcaseProject.insertMany(showcaseSeed);
+    console.log(`✅ Showcase seeded: ${showcaseSeed.length} projects`);
+  }
+};
+
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/inquiries', require('./routes/inquiries'));
 app.use('/api/projects', require('./routes/projects'));
 app.use('/api/contacts', require('./routes/contacts'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/showcase', require('./routes/showcase'));
+app.use('/api/admin/showcase', require('./routes/adminShowcase'));
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'NexCode API Running', time: new Date() }));

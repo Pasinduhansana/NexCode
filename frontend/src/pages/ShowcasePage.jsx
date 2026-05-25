@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { HiArrowRight, HiArrowLeft, HiExternalLink, HiX } from 'react-icons/hi';
@@ -6,6 +6,7 @@ import { FaRocket } from 'react-icons/fa';
 import usePageTitle from '../utils/usePageTitle';
 import { useThemeClasses } from '../utils/useThemeClasses';
 import { showcaseProjects } from '../data/showcaseProjects';
+import api from '../utils/api';
 
 const ProjectCard = ({ project, onNavigate, themeClasses }) => {
   return (
@@ -59,25 +60,48 @@ const ProjectCard = ({ project, onNavigate, themeClasses }) => {
 
 export default function ShowcasePage() {
   const navigate = useNavigate();
+  const [projects, setProjects] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedStacks, setSelectedStacks] = useState([]);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const themeClasses = useThemeClasses();
 
   usePageTitle('Showcase');
 
+  useEffect(() => {
+    let mounted = true;
+
+    const loadProjects = async () => {
+      try {
+        const res = await api.get('/showcase');
+        if (mounted) setProjects(Array.isArray(res.data.data) ? res.data.data : []);
+      } catch {
+        if (mounted) setProjects(showcaseProjects);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+
+    loadProjects();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   // Extract unique categories and stacks
-  const allCategories = Array.from(new Set(showcaseProjects.map(p => p.type))).sort();
-  const allStacks = Array.from(new Set(showcaseProjects.flatMap(p => p.stack))).sort();
+  const allCategories = Array.from(new Set(projects.map(p => p.type))).sort();
+  const allStacks = Array.from(new Set(projects.flatMap(p => p.stack))).sort();
 
   // Filter projects
   const filteredProjects = useMemo(() => {
-    return showcaseProjects.filter(project => {
+    return projects.filter(project => {
       const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(project.type);
       const stackMatch = selectedStacks.length === 0 || selectedStacks.some(stack => project.stack.includes(stack));
       return categoryMatch && stackMatch;
     });
-  }, [selectedCategories, selectedStacks]);
+  }, [projects, selectedCategories, selectedStacks]);
 
   const toggleCategory = (category) => {
     setSelectedCategories(prev =>
