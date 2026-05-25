@@ -9,6 +9,7 @@ import { FaWhatsapp, FaPhone, FaRocket } from 'react-icons/fa';
 import ServiceCard from '../components/ServiceCard';
 import usePageTitle from '../utils/usePageTitle';
 import { useThemeClasses } from '../utils/useThemeClasses';
+import Hero from '../components/Hero';
 
 const services = [
   { icon: HiGlobe, title: 'Web Development', description: 'Modern, responsive websites and web applications built with cutting-edge frameworks for maximum performance.', gradient: 'bg-gradient-to-br from-blue-500 to-blue-700' },
@@ -43,82 +44,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen h-full">
       {/* HERO */}
-      <section className={`relative min-h-screen ${themeClasses.bg.hero} dark-grid m-auto flex flex-col items-center overflow-hidden h-full`}>
-        <div className="relative w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex-1 ">
-          <div className="w-full mx-auto text-center h-full pt-24">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 text-xs mb-6`}
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-              Newest Tech Trends · Software Development
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              className={`font-display text-xl md:text-2xl lg:text-3xl font-semibold mb-4 leading-tight ${themeClasses.text.primary}`}
-            >
-              ELAVATE YOUR BUSINESS WITH<br/> SOFTWARE SOLUTIONS
-              <br />
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className={`text-sm md:text-[14px] my-8 max-w-xl mx-auto ${themeClasses.text.secondary} leading-relaxed`}
-            >
-              Unlock your business's full potential with NexCode. From sleek websites to powerful enterprise systems, we deliver digital products that actually work.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-3 justify-center"
-            >
-              <Link to="/start-project" className="btn-primary text-xs px-5 py-2.5 justify-center bg-blue-500/80 hover:bg-blue-500 text-white transition-colors">
-                <FaRocket size={14} />
-                Build Your Next Project
-              </Link>
-              {/* <a href="https://wa.me/94769747244" target="_blank" rel="noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-semibold bg-green-600 hover:bg-green-700 text-white transition-colors text-xs"
-              >
-                <FaWhatsapp size={14} />
-                WhatsApp Us
-              </a> */}
-            </motion.div>
-
-            {/* Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className={`absolute right-0 bg-red-400 grid grid-cols-2 md:grid-cols-4 gap-4 bottom-0 pt-6 border-t ${themeClasses.border.primary}`}
-            >
-              {stats.map((s, i) => (
-                <div key={i} className="text-center">
-                  <div className="font-display text-2xl font-bold text-text_primary">{s.value}</div>
-                  <div className={`text-xs ${themeClasses.text.tertiary} mt-1`}>{s.label}</div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/40"
-        >
-          <HiChevronDown size={28} />
-        </motion.div>
-      </section>
+      <Hero stats={stats} />
 
       {/* SERVICES PREVIEW */}
       <section className="py-24 bg-gray-50">
