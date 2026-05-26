@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { HiHome, HiMail, HiCode, HiPhone, HiMenu, HiX, HiLogout, HiUser } from 'react-icons/hi';
+import { HiHome, HiMail, HiCode, HiPhone, HiMenu, HiX, HiLogout, HiUser, HiSparkles } from 'react-icons/hi';
 import { useAuth } from '../context/AuthContext';
 import usePageTitle from '../utils/usePageTitle';
 import logo from '../../assets/Logo.png';
@@ -11,6 +11,7 @@ const navItems = [
   { icon: HiHome, label: 'Dashboard', path: '/admin' },
   { icon: HiMail, label: 'Inquiries', path: '/admin/inquiries' },
   { icon: HiCode, label: 'Projects', path: '/admin/projects' },
+  { icon: HiSparkles, label: 'Showcase', path: '/admin/showcase' },
   { icon: HiPhone, label: 'Contact Messages', path: '/admin/contacts' },
 ];
 
@@ -24,6 +25,7 @@ export default function AdminLayout() {
       '/admin': 'Admin Dashboard',
       '/admin/inquiries': 'Admin Inquiries',
       '/admin/projects': 'Admin Projects',
+      '/admin/showcase': 'Admin Showcase',
       '/admin/contacts': 'Admin Contacts',
     }[location.pathname] || 'Admin Panel'
   );
@@ -31,7 +33,7 @@ export default function AdminLayout() {
   const handleLogout = () => {
     logout();
     toast.success('Logged out successfully');
-    navigate('/admin/login');
+    navigate('/admin-panel');
   };
 
   const SidebarContent = () => (

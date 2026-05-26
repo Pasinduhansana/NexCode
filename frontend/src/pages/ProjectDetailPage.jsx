@@ -1,20 +1,57 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import palmLeave from '../../assets/palm-leave.png';
-import { showcaseProjects } from '../data/showcaseProjects';
 import project_image from '../../assets/project_image.png';
 import project_image2_mobile from '../../assets/project_image1_mob.png';
 import laptop_mockup from '../../assets/laptop_mockup.png';
 import phone_mockup from '../../assets/phone_mockup.png';
 import { useThemeClasses } from '../utils/useThemeClasses';
+import { showcaseProjects } from '../data/showcaseProjects';
+import api from '../utils/api';
+import usePageTitle from '../utils/usePageTitle';
 
 const limitWords = (text, maxWords) => text.split(/\s+/).slice(0, maxWords).join(' ');
 
 function App() {
   const { slug } = useParams();
-  const project = showcaseProjects.find((item) => item.slug === slug);
+  const [project, setProject] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [isSummaryExpanded, setIsSummaryExpanded] = useState(false);
   const themeClasses = useThemeClasses();
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadProject = async () => {
+      try {
+        const res = await api.get('/showcase');
+        const match = res.data.data?.find((item) => item.slug === slug);
+        if (mounted) setProject(match || null);
+      } catch {
+        if (mounted) {
+          setProject(showcaseProjects.find((item) => item.slug === slug));
+        }
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+
+    loadProject();
+
+    return () => {
+      mounted = false;
+    };
+  }, [slug]);
+
+  usePageTitle(project ? `${project.name} | Showcase` : 'Project Not Found');
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white">
+        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   if (!project) {
     return <Navigate to="/showcase" replace />;
