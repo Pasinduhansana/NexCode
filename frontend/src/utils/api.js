@@ -18,7 +18,7 @@ api.interceptors.response.use(
     if (err.response?.status === 401) {
       localStorage.removeItem('nexcode_admin_token');
       if (window.location.pathname.startsWith('/admin')) {
-        window.location.href = '/admin/login';
+        window.location.href = '/admin-panel';
       }
     }
     return Promise.reject(err);
