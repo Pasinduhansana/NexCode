@@ -15,7 +15,7 @@ import phone_mockup from "../../assets/phone_mockup.png";
 export default function Hero({ stats = [] }) {
   const { theme } = useTheme();
 
-  const bgImage = theme === "dark" ? darkBg : theme === "primary" ? primaryBg : lightBg;
+  const bgImage = theme === "dark" ? primaryBg : theme === "primary" ? primaryBg : primaryBg;
 
   return (
     <section
