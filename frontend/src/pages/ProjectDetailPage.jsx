@@ -5,7 +5,7 @@ import project_image from '../../assets/project_image.png';
 import project_image2_mobile from '../../assets/project_image1_mob.png';
 import laptop_mockup from '../../assets/laptop_mockup.png';
 import phone_mockup from '../../assets/phone_mockup.png';
-import { useThemeClasses } from '../utils/useThemeClasses';
+import { useTheme } from '../context/ThemeContext';
 import { showcaseProjects } from '../data/showcaseProjects';
 import api from '../utils/api';
 import usePageTitle from '../utils/usePageTitle';
@@ -17,7 +17,7 @@ function App() {
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isSummaryExpanded, setIsSummaryExpanded] = useState(false);
-  const themeClasses = useThemeClasses();
+  const { theme } = useTheme();
 
   useEffect(() => {
     let mounted = true;
@@ -66,10 +66,10 @@ function App() {
   const businessValueText = limitWords(project.businessValue, 30);
   const challengeText = limitWords(project.challengeBefore, 30);
   const relatedSummary = (text) => limitWords(text, 28);
-  const themeName = themeClasses.theme || 'light';
+  const watermarkColor = theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(17, 24, 39, 0.2)';
 
   return (
-    <div className={`theme-${themeName} flex flex-col h-full`}>
+    <div className="flex flex-col h-full">
 
       {/* Hero Section */}
       <div
@@ -78,10 +78,10 @@ function App() {
         
         {/* Background Watermark Text Layer */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[48%] lg:scale-100 w-full lg:max-w-[1200px] [@media(min-width:1600px)]:scale-125 flex flex-col items-center justify-center -z-10 pointer-events-none">
-          <span className={`text-[6rem] md:text-[12rem] font-extrabold tracking-wider leading-[0.95] text-center uppercase`} style={{ color: 'rgb(var(--foreground) / var(--watermark-opacity))' }}>
+          <span className={`text-[6rem] md:text-[12rem] font-extrabold tracking-wider leading-[0.95] text-center uppercase`} style={{ color: watermarkColor }}>
             project
           </span>
-                  <span className={`text-[6rem] md:text-[12rem] font-extrabold tracking-wider leading-[0.95] text-center uppercase`} style={{ color: 'rgb(var(--foreground) / var(--watermark-opacity))' }}>
+          <span className={`text-[6rem] md:text-[12rem] font-extrabold tracking-wider leading-[0.95] text-center uppercase`} style={{ color: watermarkColor }}>
             Overview
           </span>
         </div>

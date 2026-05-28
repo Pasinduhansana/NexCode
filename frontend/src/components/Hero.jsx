@@ -15,7 +15,8 @@ import phone_mockup from "../../assets/phone_mockup.png";
 export default function Hero({ stats = [] }) {
   const { theme } = useTheme();
 
-  const bgImage = theme === "dark" ? primaryBg : theme === "primary" ? primaryBg : primaryBg;
+  const bgImage = theme === "dark" ? darkBg : theme === "light" ? lightBg : primaryBg;
+  const watermarkColor = theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(17, 24, 39, 0.2)";
 
   return (
     <section
@@ -36,13 +37,13 @@ export default function Hero({ stats = [] }) {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[40%] lg:scale-100 w-full lg:max-w-[1200px] [@media(min-width:1600px)]:scale-125 flex flex-col items-center justify-center -z-10 pointer-events-none">
             <span
               className={`text-[6rem] md:text-[12rem] font-extrabold tracking-wider leading-[0.95] text-center uppercase`}
-              style={{ color: "rgb(var(--foreground) / var(--watermark-opacity))" }}
+              style={{ color: watermarkColor }}
             >
-              Software
+              Digital
             </span>
             <span
               className={`text-[6rem] md:text-[12rem] font-extrabold tracking-wider leading-[0.95] text-center uppercase`}
-              style={{ color: "rgb(var(--foreground) / var(--watermark-opacity))" }}
+              style={{ color: watermarkColor }}
             >
               SOLUTIONS
             </span>
@@ -51,7 +52,7 @@ export default function Hero({ stats = [] }) {
           {/* Brand Header */}
 
           {/* Central Interactive Content Frame */}
-          <main className="flex flex-col items-center w-full mt-44  h-full">
+          <main className="flex flex-col items-center w-full mt-32  h-full">
             <div className="relative mx-auto w-full max-w-[320px] h-full sm:max-w-[420px] md:max-w-[500px] lg:max-w-[600px] [@media(min-width:1600px)]:max-w-[800px] my-5 perspective-[1000px] px-2 sm:px-0">
               {/* Laptop Screen Bezel */}
               <div className="relative">
@@ -99,7 +100,7 @@ export default function Hero({ stats = [] }) {
 
       <div className="relative w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex-1 ">
         <div className="w-full mx-auto text-center h-full pt-24 ">
-          <header className="text-center mt-10">
+          <header className="text-center mt-4">
             <h1 className="text-4xl font-semibold tracking-tight text-foreground opacity-100">Empower Digital Growth</h1>
             <p className="text-[12px] tracking-[3px] mt-3 text-text_muted font-medium opacity-100">Newest Tech Trends · Software Development</p>
           </header>
@@ -112,7 +113,7 @@ export default function Hero({ stats = [] }) {
           >
             <Link
               to="/start-project"
-              className="btn-primary text-xs px-5 my-5 py-2.5 justify-center bg-primary hover:bg-primary/90 text-white transition-colors"
+              className="inline-flex gap-4 items-center justify-center px-4 py-2 my-5 rounded-lg text-xs font-semibold bg-legacyPrimary-500 duration-200 transition-all text-white/80 hover:bg-legacyPrimary-600 shadow-sm"
             >
               <FaRocket size={14} />
               Build Your Next Project
