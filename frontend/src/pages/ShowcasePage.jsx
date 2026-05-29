@@ -283,7 +283,7 @@ export default function ShowcasePage() {
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-24">
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-16 items-center">
             {/* Left Column Content */}
-            <div className="text-left">
+            <div className="text-center lg:text-left">
               <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
                 <SectionLabel icon={HiSparkles}>Engineered Case Studies</SectionLabel>
               </motion.div>
@@ -306,14 +306,20 @@ export default function ShowcasePage() {
                 initial="hidden"
                 animate="show"
                 custom={2}
-                className="text-base text-text_secondary leading-relaxed mb-10 max-w-2xl"
+                className="text-base text-text_secondary leading-relaxed mb-10 max-w-2xl mx-auto lg:mx-0"
               >
                 Explore our portfolio of bespoke software solutions, cloud systems, e-commerce suites, and custom web builds. Every product is
                 engineered with extreme performance and clean UI design to drive measurable business outcomes.
               </motion.p>
 
               {/* Main action CTAs */}
-              <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="flex flex-wrap gap-4 mb-12">
+              <motion.div
+                variants={fadeUp}
+                initial="hidden"
+                animate="show"
+                custom={3}
+                className="flex flex-wrap gap-4 mb-12 justify-center lg:justify-start"
+              >
                 <a
                   href="#collection"
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-blue-500 to-cyan-500 shadow-glow-blue hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200"
@@ -334,14 +340,14 @@ export default function ShowcasePage() {
                 initial="hidden"
                 animate="show"
                 custom={4}
-                className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8 border-t border-border max-w-xl"
+                className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8 border-t border-border max-w-xl mx-auto lg:mx-0"
               >
                 {[
                   { value: "150+", label: "Delivered Projects" },
                   { value: "98%", label: "Retention & Satisfaction" },
                   { value: "20+", label: "Modern Technologies" },
                 ].map((stat, i) => (
-                  <div key={i} className="text-left">
+                  <div key={i} className="text-center lg:text-left">
                     <div className="font-display text-2xl md:text-3xl font-extrabold gradient-text leading-none mb-1">{stat.value}</div>
                     <div className="text-[10px] font-bold text-text_muted uppercase tracking-wider">{stat.label}</div>
                   </div>

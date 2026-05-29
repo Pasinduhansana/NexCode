@@ -151,14 +151,14 @@ function App() {
       </div>
 
       {/* Main Content Area */}
-      <div className="w-full bg-background px-5 py-10 text-foreground">
+      <div className="w-full bg-background px-5 py-10 text-foreground text-center md:text-left">
         <div className="max-w-7xl mx-auto space-y-10">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-8 items-start">
-            <div className="md:col-span-8 flex flex-col gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-8 items-start justify-items-center md:justify-items-stretch">
+            <div className="md:col-span-8 flex flex-col gap-6 items-center md:items-start">
               <div>
                 <p className="text-[11px] tracking-[0.22em] uppercase font-semibold mb-3 text-text_muted">Case Study</p>
                 <h2 className="text-2xl md:text-3xl font-semibold leading-tight line-clamp-2 text-text_primary">{project.name}</h2>
-                <p className="mt-3 text-sm md:text-[15px] text-text_muted leading-relaxed">
+                <p className="mt-3 text-sm md:text-[15px] text-text_muted leading-relaxed mx-auto md:mx-0">
                   {isSummaryExpanded ? project.summary : summaryText}
                   {!isSummaryExpanded && summaryText.length < project.summary.length ? (
                     <button

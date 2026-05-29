@@ -156,12 +156,12 @@ export default function Hero({ stats = [] }) {
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row justify-between px-4 sm:px-5 items-stretch lg:items-center gap-4 w-full">
+      <div className="flex flex-col lg:flex-row justify-between px-4 sm:px-5 items-center lg:items-center gap-4 w-full text-center lg:text-left">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-sm w-full md:text-[14px] my-2 lg:my-8 max-w-xl mx-0 lg:mx-10 !text-left text-text_secondary leading-relaxed"
+          className="text-sm w-full md:text-[14px] my-2 lg:my-8 max-w-xl mx-0 lg:mx-10 text-center lg:!text-left text-text_secondary leading-relaxed"
         >
           Build What Matters,
           <br />
@@ -172,7 +172,7 @@ export default function Hero({ stats = [] }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-sm w-full md:text-[14px] my-2 lg:my-8 max-w-xl mx-0 lg:mx-10 !text-right text-text_muted leading-relaxed"
+          className="text-sm w-full md:text-[14px] my-2 lg:my-8 max-w-xl mx-0 lg:mx-10 text-center lg:!text-right text-text_muted leading-relaxed"
         >
           Unlock your business's full potential with NexCode. <br />
           From sleek websites to powerful enterprise systems.
