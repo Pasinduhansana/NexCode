@@ -5,11 +5,11 @@ import { HiSearch, HiTrash, HiPencil, HiEye, HiX } from 'react-icons/hi';
 import api from '../utils/api';
 
 const STATUS_COLORS = {
-  'new': `bg-[rgb(var(--status-new)/0.16)] text-[rgb(var(--status-new)/0.85)] border-[rgb(var(--status-new)/0.28)]`,
-  'in-review': `bg-[rgb(var(--status-in-review)/0.16)] text-[rgb(var(--status-in-review)/0.85)] border-[rgb(var(--status-in-review)/0.28)]`,
-  'contacted': `bg-[rgb(var(--status-contacted)/0.16)] text-[rgb(var(--status-contacted)/0.85)] border-[rgb(var(--status-contacted)/0.28)]`,
-  'converted': `bg-[rgb(var(--status-converted)/0.16)] text-[rgb(var(--status-converted)/0.85)] border-[rgb(var(--status-converted)/0.28)]`,
-  'closed': `bg-[rgb(var(--status-closed)/0.16)] text-[rgb(var(--status-closed)/0.85)] border-[rgb(var(--status-closed)/0.28)]`,
+  'new': 'bg-sky-500/10 text-sky-700 border-sky-500/20',
+  'in-review': 'bg-amber-500/10 text-amber-700 border-amber-500/20',
+  'contacted': 'bg-cyan-500/10 text-cyan-700 border-cyan-500/20',
+  'converted': 'bg-emerald-500/10 text-emerald-700 border-emerald-500/20',
+  'closed': 'bg-slate-500/10 text-slate-700 border-slate-500/20',
 };
 
 export default function AdminInquiries() {

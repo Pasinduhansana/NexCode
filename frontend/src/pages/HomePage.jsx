@@ -151,7 +151,12 @@ export default function HomePage() {
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="text-center lg:text-left"
+            >
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-medium mb-6">
                 Why NexCode?
               </div>
@@ -172,7 +177,7 @@ export default function HomePage() {
                 "Modern tech stack & best practices",
                 "Client-first communication approach",
               ].map((item, i) => (
-                <div key={i} className="flex items-center gap-3 mb-3">
+                <div key={i} className="flex items-center justify-center lg:justify-start gap-3 mb-3">
                   <HiCheckCircle className="text-blue-500 flex-shrink-0" size={20} />
                   <span className="text-gray-700 text-sm">{item}</span>
                 </div>

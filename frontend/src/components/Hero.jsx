@@ -15,7 +15,8 @@ import phone_mockup from "../../assets/phone_mockup.png";
 export default function Hero({ stats = [] }) {
   const { theme } = useTheme();
 
-  const bgImage = theme === "dark" ? primaryBg : theme === "primary" ? primaryBg : primaryBg;
+  const bgImage = theme === "dark" ? darkBg : theme === "light" ? lightBg : primaryBg;
+  const watermarkColor = theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(17, 24, 39, 0.2)";
 
   return (
     <section
@@ -31,18 +32,18 @@ export default function Hero({ stats = [] }) {
 
       <div className="absolute left-1/2 -bottom-10 -translate-x-1/2 scale-100 w-full pointer-events-none">
         {/* Hero Section */}
-        <div className="relative w-full min-h-screen text-white overflow-x-hidden overflow-y-visible flex flex-col items-center justify-between py-10 pt-20 px-5 z-10 select-none">
+        <div className="relative w-full min-h-screen text-white overflow-x-hidden overflow-y-visible flex flex-col items-center justify-between py-10 pt-20 px-4 sm:px-5 z-10 select-none">
           {/* Background Watermark Text Layer */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[40%] lg:scale-100 w-full lg:max-w-[1200px] [@media(min-width:1600px)]:scale-125 flex flex-col items-center justify-center -z-10 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[40%] scale-[0.62] sm:scale-75 lg:scale-100 w-full lg:max-w-[1200px] [@media(min-width:1600px)]:scale-125 flex flex-col items-center justify-center -z-10 pointer-events-none">
             <span
               className={`text-[6rem] md:text-[12rem] font-extrabold tracking-wider leading-[0.95] text-center uppercase`}
-              style={{ color: "rgb(var(--foreground) / var(--watermark-opacity))" }}
+              style={{ color: watermarkColor }}
             >
-              Software
+              Digital
             </span>
             <span
               className={`text-[6rem] md:text-[12rem] font-extrabold tracking-wider leading-[0.95] text-center uppercase`}
-              style={{ color: "rgb(var(--foreground) / var(--watermark-opacity))" }}
+              style={{ color: watermarkColor }}
             >
               SOLUTIONS
             </span>
@@ -51,8 +52,8 @@ export default function Hero({ stats = [] }) {
           {/* Brand Header */}
 
           {/* Central Interactive Content Frame */}
-          <main className="flex flex-col items-center w-full mt-44  h-full">
-            <div className="relative mx-auto w-full max-w-[320px] h-full sm:max-w-[420px] md:max-w-[500px] lg:max-w-[600px] [@media(min-width:1600px)]:max-w-[800px] my-5 perspective-[1000px] px-2 sm:px-0">
+          <main className="flex flex-col items-center w-full mt-28 sm:mt-32 h-full">
+            <div className="relative mx-auto w-full max-w-[280px] sm:max-w-[420px] h-full md:max-w-[500px] lg:max-w-[600px] [@media(min-width:1600px)]:max-w-[800px] my-5 perspective-[1000px] px-2 sm:px-0">
               {/* Laptop Screen Bezel */}
               <div className="relative">
                 <img src={laptop_mockup} alt="Laptop Mockup" className="w-full h-full relative z-20" />
@@ -66,7 +67,7 @@ export default function Hero({ stats = [] }) {
               </div>
 
               {/* Phone Screen */}
-              <div className="absolute bottom-0 left-0  w-[120px] h-auto mt-10 z-50">
+              <div className="absolute bottom-0 left-0 w-[92px] sm:w-[120px] h-auto mt-10 z-50">
                 <img src={phone_mockup} alt="Phone Mockup" className="w-full  h-full relative z-20" />
                 <div className="absolute overflow-hidden bg-card w-[99%] h-[99%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-[50.5%] rounded-3xl ">
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-8 bg-muted rounded-full">
@@ -89,7 +90,7 @@ export default function Hero({ stats = [] }) {
           </main>
 
           {/* Decorative Overlapping Foreground Botanical Corner Asset - right */}
-          <div className="absolute -bottom-5 right-12 -translate-x-1/5 w-[350px] h-auto mb-[10%] pointer-events-none z-30 transform select-none">
+          <div className="absolute -bottom-5 right-12 hidden sm:block -translate-x-1/5 w-[350px] h-auto mb-[10%] pointer-events-none z-30 transform select-none">
             {/* Adding Shadow for Depth and Visual Interest (sent behind the image) */}
             <div className="absolute bottom-4 left-[43%] z-0 w-20 h-5 bg-black/80 rounded-lg filter blur-lg opacity-70"></div>
             <img src={palmLeave} alt="Decorative Palm Corner Graphic" className="w-full h-auto relative z-20" />
@@ -98,21 +99,23 @@ export default function Hero({ stats = [] }) {
       </div>
 
       <div className="relative w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex-1 ">
-        <div className="w-full mx-auto text-center h-full pt-24 ">
-          <header className="text-center mt-10">
-            <h1 className="text-4xl font-semibold tracking-tight text-foreground opacity-100">Empower Digital Growth</h1>
-            <p className="text-[12px] tracking-[3px] mt-3 text-text_muted font-medium opacity-100">Newest Tech Trends · Software Development</p>
+        <div className="w-full mx-auto text-center h-full pt-20 sm:pt-24 ">
+          <header className="text-center mt-4">
+            <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground opacity-100">Empower Digital Growth</h1>
+            <p className="text-[11px] sm:text-[12px] tracking-[2px] sm:tracking-[3px] mt-3 text-text_muted font-medium opacity-100">
+              Newest Tech Trends · Software Development
+            </p>
           </header>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-3 justify-center"
+            className="flex flex-col sm:flex-row gap-3 justify-center px-2 sm:px-0"
           >
             <Link
               to="/start-project"
-              className="btn-primary text-xs px-5 my-5 py-2.5 justify-center bg-primary hover:bg-primary/90 text-white transition-colors"
+              className="inline-flex gap-4 items-center justify-center px-4 py-2 my-5 rounded-lg text-xs font-semibold bg-legacyPrimary-500 duration-200 transition-all text-white/80 hover:bg-legacyPrimary-600 shadow-sm w-full sm:w-auto"
             >
               <FaRocket size={14} />
               Build Your Next Project
@@ -124,7 +127,7 @@ export default function Hero({ stats = [] }) {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="absolute bottom-[45%] right-[10%] -translate-x-1/2 grid grid-cols-2 md:grid-cols-2 gap-2 px-6 py-4 rounded-2xl  bg-card/60 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.15)] w-[95%] md:w-auto"
+            className="absolute hidden md:grid bottom-[45%] right-[10%] -translate-x-1/2 grid-cols-2 gap-2 px-6 py-4 rounded-2xl bg-card/60 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.15)] w-[95%] md:w-auto"
           >
             {stats.slice(0, 2).map((s, i) => (
               <div key={i} className="text-center px-4 relative">
@@ -140,7 +143,7 @@ export default function Hero({ stats = [] }) {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="absolute bottom-[25%] left-[5%] -translate-x-1/2 grid grid-cols-2 md:grid-cols-2 gap-2 px-6 py-4 rounded-2xl  bg-card/60 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.15)] w-[95%] md:w-auto"
+            className="absolute hidden md:grid bottom-[25%] left-[5%] -translate-x-1/2 grid-cols-2 gap-2 px-6 py-4 rounded-2xl bg-card/60 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.15)] w-[95%] md:w-auto"
           >
             {stats.slice(2, 4).map((s, i) => (
               <div key={i} className="text-center px-4 relative">
@@ -153,12 +156,12 @@ export default function Hero({ stats = [] }) {
         </div>
       </div>
 
-      <div className="flex justify-between px-5 items-center  w-full">
+      <div className="flex flex-col lg:flex-row justify-between px-4 sm:px-5 items-center lg:items-center gap-4 w-full text-center lg:text-left">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-sm w-full md:text-[14px] my-8 max-w-xl mx-10 !text-left text-text_secondary leading-relaxed"
+          className="text-sm w-full md:text-[14px] my-2 lg:my-8 max-w-xl mx-0 lg:mx-10 text-center lg:!text-left text-text_secondary leading-relaxed"
         >
           Build What Matters,
           <br />
@@ -169,7 +172,7 @@ export default function Hero({ stats = [] }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-sm w-full md:text-[14px] my-8 max-w-xl mx-10 !text-right text-text_muted leading-relaxed"
+          className="text-sm w-full md:text-[14px] my-2 lg:my-8 max-w-xl mx-0 lg:mx-10 text-center lg:!text-right text-text_muted leading-relaxed"
         >
           Unlock your business's full potential with NexCode. <br />
           From sleek websites to powerful enterprise systems.
