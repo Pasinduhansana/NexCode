@@ -167,8 +167,8 @@ export default function Navbar() {
           </div>
 
           {/* Mobile CTA + Hamburger */}
-          <div className="md:hidden flex items-center gap-2 ">
-            <Link to="/start-project" className={`${ui.ctaBtn} px-3 py-1.5 text-[11px]`}>
+          <div className="md:hidden flex items-center gap-2">
+            <Link to="/start-project" className={`${ui.ctaBtn} hidden sm:inline-flex px-3 py-1.5 text-[11px]`}>
               Start Project
             </Link>
             <button
@@ -224,7 +224,7 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <Link to="/start-project" className={`${ui.ctaBtn} w-full mt-2`}>
+              <Link to="/start-project" className={`${ui.ctaBtn} w-full mt-2 sm:hidden`}>
                 Start Project
               </Link>
               <Link

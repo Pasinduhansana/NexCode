@@ -3,19 +3,30 @@
  * Modern portfolio landing-page design with full support for:
  *   light | dark | primary themes via Tailwind semantic tokens.
  */
-import { useEffect, useMemo, useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
 import {
-  HiArrowRight, HiArrowLeft, HiX, HiFilter, HiSearch,
-  HiSparkles, HiCheckCircle, HiStar, HiDatabase, HiCode,
-  HiLightningBolt, HiExternalLink, HiMenu, HiChevronDown,
-} from 'react-icons/hi';
-import { FaRocket, FaWhatsapp } from 'react-icons/fa';
-import usePageTitle from '../utils/usePageTitle';
-import { useThemeClasses } from '../utils/useThemeClasses';
-import { showcaseProjects } from '../data/showcaseProjects';
-import api from '../utils/api';
+  HiArrowRight,
+  HiArrowLeft,
+  HiX,
+  HiFilter,
+  HiSearch,
+  HiSparkles,
+  HiCheckCircle,
+  HiStar,
+  HiDatabase,
+  HiCode,
+  HiLightningBolt,
+  HiExternalLink,
+  HiMenu,
+  HiChevronDown,
+} from "react-icons/hi";
+import { FaRocket, FaWhatsapp } from "react-icons/fa";
+import usePageTitle from "../utils/usePageTitle";
+import { useThemeClasses } from "../utils/useThemeClasses";
+import { showcaseProjects } from "../data/showcaseProjects";
+import api from "../utils/api";
 
 /* ═══════════════════════════════════════════════════════════════════════
    ANIMATION CONFIGS
@@ -54,9 +65,11 @@ const scaleIn = {
 function SectionLabel({ icon: Icon, children }) {
   return (
     <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border bg-card text-xs font-semibold text-text_secondary mb-5 select-none shadow-sm">
-      {Icon
-        ? <Icon className="text-primary text-sm flex-shrink-0 animate-pulse" />
-        : <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 flex-shrink-0" />}
+      {Icon ? (
+        <Icon className="text-primary text-sm flex-shrink-0 animate-pulse" />
+      ) : (
+        <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 flex-shrink-0" />
+      )}
       {children}
     </div>
   );
@@ -65,8 +78,8 @@ function SectionLabel({ icon: Icon, children }) {
 /** Premium Project Card with hover-active effects */
 function ProjectCard({ project, onNavigate, themeClasses }) {
   // Extract accent styles from project colors
-  const gradientClass = project.color || 'from-blue-600 to-indigo-600';
-  const rgbValues = gradientClass.includes('cyan') ? '6,182,212' : '54,153,243';
+  const gradientClass = project.color || "from-blue-600 to-indigo-600";
+  const rgbValues = gradientClass.includes("cyan") ? "6,182,212" : "54,153,243";
 
   return (
     <motion.article
@@ -79,7 +92,7 @@ function ProjectCard({ project, onNavigate, themeClasses }) {
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{
-          background: `radial-gradient(ellipse at 50% 0%, rgba(${rgbValues}, 0.09) 0%, transparent 70%)`
+          background: `radial-gradient(ellipse at 50% 0%, rgba(${rgbValues}, 0.09) 0%, transparent 70%)`,
         }}
       />
 
@@ -93,7 +106,7 @@ function ProjectCard({ project, onNavigate, themeClasses }) {
         />
         {/* Soft color overlay */}
         <div className={`absolute inset-0 bg-gradient-to-t ${gradientClass} opacity-20 group-hover:opacity-30 transition-opacity duration-300`} />
-        
+
         {/* Category tag */}
         <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider uppercase bg-card/90 text-foreground backdrop-blur border border-border/40 shadow-sm">
           <HiSparkles className="text-primary text-[10px]" />
@@ -116,9 +129,7 @@ function ProjectCard({ project, onNavigate, themeClasses }) {
         </h3>
 
         {/* Summary */}
-        <p className="text-xs text-text_secondary leading-relaxed mb-5 line-clamp-3 flex-1">
-          {project.summary}
-        </p>
+        <p className="text-xs text-text_secondary leading-relaxed mb-5 line-clamp-3 flex-1">{project.summary}</p>
 
         {/* Results / Achievements metrics list */}
         {project.results && project.results.length > 0 && (
@@ -162,25 +173,25 @@ export default function ShowcasePage() {
   const [projects, setProjects] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedStacks, setSelectedStacks] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const themeClasses = useThemeClasses();
   const heroRef = useRef(null);
 
-  usePageTitle('Showcase — NexCode');
+  usePageTitle("Showcase — NexCode");
 
   // Load Showcase Projects from database API or static data fallback
   useEffect(() => {
     let mounted = true;
     const fetchProjects = async () => {
       try {
-        const res = await api.get('/showcase');
+        const res = await api.get("/showcase");
         if (mounted) {
           setProjects(Array.isArray(res.data.data) ? res.data.data : []);
         }
       } catch (err) {
-        console.warn('API fetch error, falling back to static data:', err);
+        console.warn("API fetch error, falling back to static data:", err);
         if (mounted) {
           setProjects(showcaseProjects);
         }
@@ -209,18 +220,14 @@ export default function ShowcasePage() {
   const filteredProjects = useMemo(() => {
     return projects.filter((project) => {
       const matchSearch =
-        searchQuery === '' ||
+        searchQuery === "" ||
         project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         project.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
         project.stack.some((s) => s.toLowerCase().includes(searchQuery.toLowerCase()));
 
-      const matchCategory =
-        selectedCategories.length === 0 ||
-        selectedCategories.includes(project.type);
+      const matchCategory = selectedCategories.length === 0 || selectedCategories.includes(project.type);
 
-      const matchStack =
-        selectedStacks.length === 0 ||
-        selectedStacks.some((stk) => project.stack.includes(stk));
+      const matchStack = selectedStacks.length === 0 || selectedStacks.some((stk) => project.stack.includes(stk));
 
       return matchSearch && matchCategory && matchStack;
     });
@@ -228,31 +235,23 @@ export default function ShowcasePage() {
 
   // Category Filter Toggle Action
   const toggleCategory = (category) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
-    );
+    setSelectedCategories((prev) => (prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]));
   };
 
   // Tech Stack Filter Toggle Action
   const toggleStack = (stack) => {
-    setSelectedStacks((prev) =>
-      prev.includes(stack)
-        ? prev.filter((s) => s !== stack)
-        : [...prev, stack]
-    );
+    setSelectedStacks((prev) => (prev.includes(stack) ? prev.filter((s) => s !== stack) : [...prev, stack]));
   };
 
   // Reset filter settings
   const resetFilters = () => {
     setSelectedCategories([]);
     setSelectedStacks([]);
-    setSearchQuery('');
+    setSearchQuery("");
   };
 
   // Check if any filters are active
-  const hasActiveFilters = selectedCategories.length > 0 || selectedStacks.length > 0 || searchQuery !== '';
+  const hasActiveFilters = selectedCategories.length > 0 || selectedStacks.length > 0 || searchQuery !== "";
 
   // Identify featured projects to spotlight (first 2 projects)
   const spotlightProjects = useMemo(() => {
@@ -261,64 +260,60 @@ export default function ShowcasePage() {
 
   return (
     <div className="min-h-screen bg-background">
-      
       {/* ──────────────────────────────────────────────────────────────
           § 1 HERO — Cinematic opening banner with background grids
       ────────────────────────────────────────────────────────────── */}
-      <section
-        ref={heroRef}
-        className="relative min-h-screen flex items-center overflow-hidden bg-background dark-grid"
-      >
+      <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden bg-background dark-grid">
         {/* Ambient background glows */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
-            className="absolute -top-32 -left-32 w-[650px] h-[650px] rounded-full animate-pulse-slow"
-            style={{ background: 'radial-gradient(circle, rgba(54,153,243,0.12) 0%, transparent 65%)' }}
+            className="absolute hidden sm:block -top-32 -left-32 w-[650px] h-[650px] rounded-full animate-pulse-slow"
+            style={{ background: "radial-gradient(circle, rgba(54,153,243,0.12) 0%, transparent 65%)" }}
           />
           <div
-            className="absolute top-1/4 right-[-10%] w-[580px] h-[580px] rounded-full animate-float"
-            style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.13) 0%, transparent 65%)', animationDelay: '1s' }}
+            className="absolute hidden sm:block top-1/4 right-[-10%] w-[580px] h-[580px] rounded-full animate-float"
+            style={{ background: "radial-gradient(circle, rgba(6,182,212,0.13) 0%, transparent 65%)", animationDelay: "1s" }}
           />
           <div
-            className="absolute bottom-[-10%] left-[30%] w-[450px] h-[450px] rounded-full animate-pulse-slow"
-            style={{ background: 'radial-gradient(circle, rgba(168,85,247,0.08) 0%, transparent 65%)', animationDelay: '2s' }}
+            className="absolute hidden sm:block bottom-[-10%] left-[30%] w-[450px] h-[450px] rounded-full animate-pulse-slow"
+            style={{ background: "radial-gradient(circle, rgba(168,85,247,0.08) 0%, transparent 65%)", animationDelay: "2s" }}
           />
         </div>
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-24">
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-16 items-center">
-            
             {/* Left Column Content */}
             <div className="text-left">
               <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
-                <SectionLabel icon={HiSparkles}>
-                  Engineered Case Studies
-                </SectionLabel>
+                <SectionLabel icon={HiSparkles}>Engineered Case Studies</SectionLabel>
               </motion.div>
 
               <motion.h1
-                variants={fadeUp} initial="hidden" animate="show" custom={1}
+                variants={fadeUp}
+                initial="hidden"
+                animate="show"
+                custom={1}
                 className="font-display font-extrabold text-foreground tracking-tight mb-6 leading-[1.08]"
-                style={{ fontSize: 'clamp(2.6rem, 5.5vw, 4.8rem)' }}
+                style={{ fontSize: "clamp(2.6rem, 5.5vw, 4.8rem)" }}
               >
-                Stunning Digital Products,<br />
+                Stunning Digital Products,
+                <br />
                 Engineered for <span className="gradient-text">Impact.</span>
               </motion.h1>
 
               <motion.p
-                variants={fadeUp} initial="hidden" animate="show" custom={2}
+                variants={fadeUp}
+                initial="hidden"
+                animate="show"
+                custom={2}
                 className="text-base text-text_secondary leading-relaxed mb-10 max-w-2xl"
               >
-                Explore our portfolio of bespoke software solutions, cloud systems,
-                e-commerce suites, and custom web builds. Every product is engineered with
-                extreme performance and clean UI design to drive measurable business outcomes.
+                Explore our portfolio of bespoke software solutions, cloud systems, e-commerce suites, and custom web builds. Every product is
+                engineered with extreme performance and clean UI design to drive measurable business outcomes.
               </motion.p>
 
               {/* Main action CTAs */}
-              <motion.div
-                variants={fadeUp} initial="hidden" animate="show" custom={3}
-                className="flex flex-wrap gap-4 mb-12"
-              >
+              <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="flex flex-wrap gap-4 mb-12">
                 <a
                   href="#collection"
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-blue-500 to-cyan-500 shadow-glow-blue hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200"
@@ -335,18 +330,19 @@ export default function ShowcasePage() {
 
               {/* Stat counters block */}
               <motion.div
-                variants={fadeUp} initial="hidden" animate="show" custom={4}
-                className="grid grid-cols-3 gap-4 pt-8 border-t border-border max-w-xl"
+                variants={fadeUp}
+                initial="hidden"
+                animate="show"
+                custom={4}
+                className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8 border-t border-border max-w-xl"
               >
                 {[
-                  { value: '150+', label: 'Delivered Projects' },
-                  { value: '98%', label: 'Retention & Satisfaction' },
-                  { value: '20+', label: 'Modern Technologies' },
+                  { value: "150+", label: "Delivered Projects" },
+                  { value: "98%", label: "Retention & Satisfaction" },
+                  { value: "20+", label: "Modern Technologies" },
                 ].map((stat, i) => (
                   <div key={i} className="text-left">
-                    <div className="font-display text-2xl md:text-3xl font-extrabold gradient-text leading-none mb-1">
-                      {stat.value}
-                    </div>
+                    <div className="font-display text-2xl md:text-3xl font-extrabold gradient-text leading-none mb-1">{stat.value}</div>
                     <div className="text-[10px] font-bold text-text_muted uppercase tracking-wider">{stat.label}</div>
                   </div>
                 ))}
@@ -362,14 +358,14 @@ export default function ShowcasePage() {
             >
               {/* Outer decorative ring */}
               <div className="absolute -inset-10 border border-border/40 rounded-full pointer-events-none -z-10 animate-spin-slow opacity-20" />
-              
+
               {/* Showcase image mini card orbs */}
               {projects.slice(0, 6).map((proj, idx) => (
                 <motion.div
                   key={proj.slug}
                   animate={{ y: [0, idx % 2 === 0 ? -12 : 8, 0] }}
-                  transition={{ repeat: Infinity, duration: 4 + idx * 0.4, ease: 'easeInOut', delay: idx * 0.15 }}
-                  whileHover={{ scale: 1.05, border: '1px solid rgba(54,153,243,0.45)' }}
+                  transition={{ repeat: Infinity, duration: 4 + idx * 0.4, ease: "easeInOut", delay: idx * 0.15 }}
+                  whileHover={{ scale: 1.05, border: "1px solid rgba(54,153,243,0.45)" }}
                   onClick={() => navigate(`/showcase/${proj.slug}`)}
                   className="group relative flex flex-col items-center justify-center bg-card border border-border rounded-2xl p-4 text-center cursor-pointer shadow-sm transition-all duration-300"
                 >
@@ -377,15 +373,12 @@ export default function ShowcasePage() {
                     <img src={proj.image} alt={proj.name} className="w-full h-full object-cover" />
                   </div>
                   <span className="text-[10px] font-bold text-foreground line-clamp-1 uppercase tracking-wide group-hover:text-primary">
-                    {proj.name.split(' ')[0]}
+                    {proj.name.split(" ")[0]}
                   </span>
-                  <span className="text-[8px] font-semibold text-text_muted line-clamp-1">
-                    {proj.type.split(' ')[0]}
-                  </span>
+                  <span className="text-[8px] font-semibold text-text_muted line-clamp-1">{proj.type.split(" ")[0]}</span>
                 </motion.div>
               ))}
             </motion.div>
-
           </div>
         </div>
 
@@ -399,7 +392,6 @@ export default function ShowcasePage() {
       {spotlightProjects.length > 0 && (
         <section className="py-24 bg-page-alt border-y border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
             {/* Header */}
             <div className="flex flex-col items-center text-center mb-20">
               <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
@@ -417,8 +409,8 @@ export default function ShowcasePage() {
             <div className="space-y-28">
               {spotlightProjects.map((proj, idx) => {
                 const isRight = idx % 2 === 1;
-                const strokeColor = proj.color?.includes('cyan') ? '#06b6d4' : '#3699f3';
-                const rgbOverlay = proj.color?.includes('cyan') ? '6,182,212' : '54,153,243';
+                const strokeColor = proj.color?.includes("cyan") ? "#06b6d4" : "#3699f3";
+                const rgbOverlay = proj.color?.includes("cyan") ? "6,182,212" : "54,153,243";
 
                 return (
                   <motion.div
@@ -426,15 +418,14 @@ export default function ShowcasePage() {
                     variants={fadeUp}
                     initial="hidden"
                     whileInView="show"
-                    viewport={{ once: true, margin: '-50px' }}
+                    viewport={{ once: true, margin: "-50px" }}
                     className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
                   >
-                    
                     {/* Text Block */}
-                    <div className={isRight ? 'lg:order-2' : ''}>
+                    <div className={isRight ? "lg:order-2" : ""}>
                       <div className="flex items-center gap-3 mb-6">
                         <span className="font-mono text-xs font-black tracking-widest uppercase opacity-45" style={{ color: strokeColor }}>
-                          Featured Case {String(idx + 1).padStart(2, '0')}
+                          Featured Case {String(idx + 1).padStart(2, "0")}
                         </span>
                         <div className="h-px w-10 opacity-25" style={{ background: strokeColor }} />
                       </div>
@@ -443,14 +434,10 @@ export default function ShowcasePage() {
                         <span className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: strokeColor }}>
                           {proj.type}
                         </span>
-                        <h3 className="font-display text-2xl md:text-3.5xl font-extrabold text-foreground tracking-tight">
-                          {proj.name}
-                        </h3>
+                        <h3 className="font-display text-2xl md:text-3.5xl font-extrabold text-foreground tracking-tight">{proj.name}</h3>
                       </div>
 
-                      <p className="text-sm text-text_secondary leading-relaxed mb-8">
-                        {proj.summary}
-                      </p>
+                      <p className="text-sm text-text_secondary leading-relaxed mb-8">{proj.summary}</p>
 
                       {/* Display Results details */}
                       {proj.results && proj.results.length > 0 && (
@@ -478,14 +465,14 @@ export default function ShowcasePage() {
                     </div>
 
                     {/* Graphics / Image Mockup Frame */}
-                    <div className={isRight ? 'lg:order-1' : ''}>
+                    <div className={isRight ? "lg:order-1" : ""}>
                       <div className="relative rounded-3xl p-8 flex items-center justify-center min-h-[330px] overflow-hidden border border-border bg-card shadow-md">
                         {/* Dot background texture grid */}
                         <div
                           className="absolute inset-0 opacity-[0.07]"
                           style={{
                             backgroundImage: `radial-gradient(circle, ${strokeColor} 1px, transparent 1px)`,
-                            backgroundSize: '24px 24px',
+                            backgroundSize: "24px 24px",
                           }}
                         />
 
@@ -495,7 +482,8 @@ export default function ShowcasePage() {
                             key={ri}
                             className="absolute rounded-full border pointer-events-none"
                             style={{
-                              width: sz, height: sz,
+                              width: sz,
+                              height: sz,
                               borderColor: `rgba(${rgbOverlay}, ${0.12 - ri * 0.03})`,
                             }}
                           />
@@ -504,7 +492,7 @@ export default function ShowcasePage() {
                         {/* Centered Image Mockup Card */}
                         <motion.div
                           animate={{ y: [0, -12, 0] }}
-                          transition={{ repeat: Infinity, duration: 4.2 + idx * 0.3, ease: 'easeInOut' }}
+                          transition={{ repeat: Infinity, duration: 4.2 + idx * 0.3, ease: "easeInOut" }}
                           className="relative z-10 w-full max-w-[360px] rounded-2xl overflow-hidden shadow-2xl border border-border/80 bg-background"
                         >
                           <img src={proj.image} alt={proj.name} className="w-full h-48 object-cover" />
@@ -515,35 +503,34 @@ export default function ShowcasePage() {
                         </motion.div>
 
                         {/* Floating Tooltips */}
-                        {proj.stack && proj.stack.slice(0, 3).map((tech, ti) => {
-                          const tooltipsPos = [
-                            { top: '12%', right: '8%' },
-                            { bottom: '12%', left: '8%' },
-                            { top: '48%', left: '6%' },
-                          ];
-                          return (
-                            <motion.div
-                              key={tech}
-                              initial={{ opacity: 0, scale: 0.8 }}
-                              whileInView={{ opacity: 1, scale: 1 }}
-                              viewport={{ once: true }}
-                              transition={{ delay: 0.2 + ti * 0.1 }}
-                              className="absolute flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold border border-border bg-card shadow-sm"
-                              style={{ ...tooltipsPos[ti] }}
-                            >
-                              <span className="w-1.5 h-1.5 rounded-full" style={{ background: strokeColor }} />
-                              {tech}
-                            </motion.div>
-                          );
-                        })}
+                        {proj.stack &&
+                          proj.stack.slice(0, 3).map((tech, ti) => {
+                            const tooltipsPos = [
+                              { top: "12%", right: "8%" },
+                              { bottom: "12%", left: "8%" },
+                              { top: "48%", left: "6%" },
+                            ];
+                            return (
+                              <motion.div
+                                key={tech}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.2 + ti * 0.1 }}
+                                className="absolute flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold border border-border bg-card shadow-sm"
+                                style={{ ...tooltipsPos[ti] }}
+                              >
+                                <span className="w-1.5 h-1.5 rounded-full" style={{ background: strokeColor }} />
+                                {tech}
+                              </motion.div>
+                            );
+                          })}
                       </div>
                     </div>
-
                   </motion.div>
                 );
               })}
             </div>
-
           </div>
         </section>
       )}
@@ -553,7 +540,6 @@ export default function ShowcasePage() {
       ────────────────────────────────────────────────────────────── */}
       <section id="collection" className="py-24 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
           {/* Header */}
           <div className="flex flex-col items-center text-center mb-16">
             <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
@@ -568,19 +554,14 @@ export default function ShowcasePage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            
             {/* Side column: Filtering Controls */}
             <aside className="hidden lg:block lg:col-span-1">
               <div className="sticky top-24 bg-card border border-border rounded-3xl p-6 shadow-sm">
-                
                 {/* Heading */}
                 <div className="flex items-center justify-between mb-5 pb-4 border-b border-border">
                   <h3 className="font-display font-extrabold text-sm text-foreground uppercase tracking-wider">Refine Search</h3>
                   {hasActiveFilters && (
-                    <button
-                      onClick={resetFilters}
-                      className="text-[11px] font-bold text-primary hover:underline"
-                    >
+                    <button onClick={resetFilters} className="text-[11px] font-bold text-primary hover:underline">
                       Clear All
                     </button>
                   )}
@@ -612,12 +593,14 @@ export default function ShowcasePage() {
                           onClick={() => toggleCategory(cat)}
                           className={`w-full flex items-center justify-between text-left px-3 py-2 rounded-xl text-xs font-semibold border transition-all duration-200 ${
                             isActive
-                              ? 'border-primary/40 bg-primary/8 text-primary shadow-sm'
-                              : 'border-border bg-background/50 text-text_secondary hover:bg-muted/30'
+                              ? "border-primary/40 bg-primary/8 text-primary shadow-sm"
+                              : "border-border bg-background/50 text-text_secondary hover:bg-muted/30"
                           }`}
                         >
                           <span className="truncate">{cat}</span>
-                          <span className={`text-[9px] px-1.5 py-0.5 rounded-md ${isActive ? 'bg-primary/20 text-primary' : 'bg-muted text-text_muted'}`}>
+                          <span
+                            className={`text-[9px] px-1.5 py-0.5 rounded-md ${isActive ? "bg-primary/20 text-primary" : "bg-muted text-text_muted"}`}
+                          >
                             {projects.filter((p) => p.type === cat).length}
                           </span>
                         </button>
@@ -638,8 +621,8 @@ export default function ShowcasePage() {
                           onClick={() => toggleStack(stk)}
                           className={`text-[10px] font-bold px-3 py-1.5 rounded-xl border transition-all duration-200 ${
                             isActive
-                              ? 'border-primary/45 bg-primary/10 text-primary shadow-sm'
-                              : 'border-border bg-background/40 text-text_secondary hover:bg-muted/40'
+                              ? "border-primary/45 bg-primary/10 text-primary shadow-sm"
+                              : "border-border bg-background/40 text-text_secondary hover:bg-muted/40"
                           }`}
                         >
                           {stk}
@@ -648,21 +631,19 @@ export default function ShowcasePage() {
                     })}
                   </div>
                 </div>
-
               </div>
             </aside>
 
             {/* Main project collection grid (col-span 3) */}
             <main className="lg:col-span-3">
-              
               {/* Toolbar controls */}
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 pb-5 border-b border-border">
                 <div className="text-left w-full">
                   <h3 className="font-display font-extrabold text-lg text-foreground leading-none mb-1.5">
-                    {hasActiveFilters ? 'Search Results' : 'All Case Studies'}
+                    {hasActiveFilters ? "Search Results" : "All Case Studies"}
                   </h3>
                   <p className="text-xs text-text_muted font-medium">
-                    Found {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'} matching criteria.
+                    Found {filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"} matching criteria.
                   </p>
                 </div>
 
@@ -706,16 +687,11 @@ export default function ShowcasePage() {
                 <motion.div
                   initial="hidden"
                   whileInView="show"
-                  viewport={{ once: true, margin: '-20px' }}
+                  viewport={{ once: true, margin: "-20px" }}
                   className="grid grid-cols-1 md:grid-cols-2 gap-6"
                 >
                   {filteredProjects.map((proj, idx) => (
-                    <ProjectCard
-                      key={proj.slug}
-                      project={proj}
-                      onNavigate={navigate}
-                      themeClasses={themeClasses}
-                    />
+                    <ProjectCard key={proj.slug} project={proj} onNavigate={navigate} themeClasses={themeClasses} />
                   ))}
                 </motion.div>
               ) : (
@@ -725,9 +701,7 @@ export default function ShowcasePage() {
                   animate={{ opacity: 1, scale: 1 }}
                   className="text-center py-16 px-6 border-2 border-dashed border-border rounded-3xl bg-card"
                 >
-                  <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center text-2xl mx-auto mb-4 text-text_muted">
-                    🔍
-                  </div>
+                  <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center text-2xl mx-auto mb-4 text-text_muted">🔍</div>
                   <h3 className="font-display font-bold text-foreground text-sm mb-1.5">No Matching Case Studies</h3>
                   <p className="text-xs text-text_secondary mb-6 max-w-xs mx-auto">
                     Try adjusting your keyword query, selected categories, or active technologies stack to explore other case studies.
@@ -740,7 +714,6 @@ export default function ShowcasePage() {
                   </button>
                 </motion.div>
               )}
-
             </main>
           </div>
         </div>
@@ -759,10 +732,10 @@ export default function ShowcasePage() {
             className="fixed inset-0 z-[250] bg-black/60 backdrop-blur-xs flex justify-end"
           >
             <motion.div
-              initial={{ x: '100%' }}
+              initial={{ x: "100%" }}
               animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'tween', duration: 0.3 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "tween", duration: 0.3 }}
               onClick={(e) => e.stopPropagation()}
               className="w-full max-w-xs h-full bg-card border-l border-border p-6 overflow-y-auto flex flex-col justify-between"
             >
@@ -788,7 +761,7 @@ export default function ShowcasePage() {
                           key={cat}
                           onClick={() => toggleCategory(cat)}
                           className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium border text-left ${
-                            isActive ? 'border-primary bg-primary/5 text-primary' : 'border-border bg-background text-text_secondary'
+                            isActive ? "border-primary bg-primary/5 text-primary" : "border-border bg-background text-text_secondary"
                           }`}
                         >
                           <span>{cat}</span>
@@ -812,7 +785,7 @@ export default function ShowcasePage() {
                           key={stk}
                           onClick={() => toggleStack(stk)}
                           className={`text-[9px] font-bold px-2.5 py-1.5 rounded-lg border ${
-                            isActive ? 'border-primary bg-primary/10 text-primary' : 'border-border bg-background text-text_secondary'
+                            isActive ? "border-primary bg-primary/10 text-primary" : "border-border bg-background text-text_secondary"
                           }`}
                         >
                           {stk}
@@ -842,7 +815,6 @@ export default function ShowcasePage() {
                   Apply Filters
                 </button>
               </div>
-
             </motion.div>
           </motion.div>
         )}
@@ -854,7 +826,6 @@ export default function ShowcasePage() {
       <section className="py-24 bg-page-alt border-t border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            
             {/* Left Column info */}
             <div>
               <SectionLabel icon={HiCode}>NexCode Standards</SectionLabel>
@@ -862,18 +833,32 @@ export default function ShowcasePage() {
                 Engineering for <span className="gradient-text">Uptime & Scale.</span>
               </h2>
               <p className="text-sm text-text_secondary leading-relaxed mb-8">
-                NexCode doesn't just design interfaces; we deliver core software architectures
-                built to grow with your user base. Every client receives high-performance code
-                compliant with leading security standards.
+                NexCode doesn't just design interfaces; we deliver core software architectures built to grow with your user base. Every client
+                receives high-performance code compliant with leading security standards.
               </p>
 
               <div className="space-y-4">
                 {[
-                  { icon: HiLightningBolt, title: 'Optimized Assets Pipeline', desc: 'Pre-rendered chunks and lazy loadings deliver sub-second loading states.' },
-                  { icon: HiCheckCircle, title: 'Clean Architecture', desc: 'Strict separation of concern rules ensures simple scalability and clean integrations.' },
-                  { icon: HiDatabase, title: 'Resilient DB Scaling', desc: 'Custom connection indexes, indexing optimizations, and query profiling minimize server bottlenecks.' },
+                  {
+                    icon: HiLightningBolt,
+                    title: "Optimized Assets Pipeline",
+                    desc: "Pre-rendered chunks and lazy loadings deliver sub-second loading states.",
+                  },
+                  {
+                    icon: HiCheckCircle,
+                    title: "Clean Architecture",
+                    desc: "Strict separation of concern rules ensures simple scalability and clean integrations.",
+                  },
+                  {
+                    icon: HiDatabase,
+                    title: "Resilient DB Scaling",
+                    desc: "Custom connection indexes, indexing optimizations, and query profiling minimize server bottlenecks.",
+                  },
                 ].map((item, i) => (
-                  <div key={i} className="flex gap-4 p-4 rounded-2xl bg-card border border-border hover:border-primary/25 transition-colors duration-250 group">
+                  <div
+                    key={i}
+                    className="flex gap-4 p-4 rounded-2xl bg-card border border-border hover:border-primary/25 transition-colors duration-250 group"
+                  >
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 text-white flex items-center justify-center flex-shrink-0 shadow shadow-blue-500/20 group-hover:scale-105 transition-transform duration-200">
                       <item.icon className="text-lg" />
                     </div>
@@ -912,7 +897,6 @@ export default function ShowcasePage() {
                 </div>
               </div>
             </motion.div>
-
           </div>
         </div>
       </section>
@@ -925,14 +909,17 @@ export default function ShowcasePage() {
         <div
           className="absolute inset-0 opacity-[0.1]"
           style={{
-            backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px)',
-            backgroundSize: '24px 24px',
+            backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
           }}
         />
-        
+
         {/* Glow float shapes */}
         <div className="absolute -top-32 -left-20 w-80 h-80 rounded-full bg-white/10 blur-2xl animate-float pointer-events-none" />
-        <div className="absolute -bottom-24 right-10 w-80 h-80 rounded-full bg-white/10 blur-2xl animate-pulse-slow pointer-events-none" style={{ animationDelay: '1.5s' }} />
+        <div
+          className="absolute -bottom-24 right-10 w-80 h-80 rounded-full bg-white/10 blur-2xl animate-pulse-slow pointer-events-none"
+          style={{ animationDelay: "1.5s" }}
+        />
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
           <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
@@ -940,11 +927,9 @@ export default function ShowcasePage() {
               <HiLightningBolt size={10} className="text-yellow-300 animate-bounce" /> Build with NexCode
             </div>
 
-            <h2 className="font-display font-extrabold mb-5 tracking-tight leading-[1.1]" style={{ fontSize: 'clamp(2.2rem, 5.5vw, 3.8rem)' }}>
+            <h2 className="font-display font-extrabold mb-5 tracking-tight leading-[1.1]" style={{ fontSize: "clamp(2.2rem, 5.5vw, 3.8rem)" }}>
               Let's Collaborate to <br />
-              <span className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
-                Launch Your Platform.
-              </span>
+              <span className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">Launch Your Platform.</span>
             </h2>
 
             <p className="text-white/70 text-sm md:text-base max-w-lg mx-auto mb-10 leading-relaxed">
@@ -970,7 +955,6 @@ export default function ShowcasePage() {
           </motion.div>
         </div>
       </section>
-
     </div>
   );
 }

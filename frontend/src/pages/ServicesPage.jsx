@@ -3,188 +3,159 @@
  * Modern landing-page-feel design with full support for:
  *   light | dark | primary  themes via Tailwind semantic tokens.
  */
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import {
-  HiGlobe, HiDeviceMobile, HiCode, HiColorSwatch, HiCloud, HiChip,
-  HiDatabase, HiArrowRight, HiCheckCircle, HiLightningBolt,
-  HiShieldCheck, HiTrendingUp, HiStar, HiX, HiChevronDown, HiSparkles,
-} from 'react-icons/hi';
-import { FaRocket, FaWhatsapp } from 'react-icons/fa';
-import usePageTitle from '../utils/usePageTitle';
+  HiGlobe,
+  HiDeviceMobile,
+  HiCode,
+  HiColorSwatch,
+  HiCloud,
+  HiChip,
+  HiDatabase,
+  HiArrowRight,
+  HiCheckCircle,
+  HiLightningBolt,
+  HiShieldCheck,
+  HiTrendingUp,
+  HiStar,
+  HiX,
+  HiChevronDown,
+  HiSparkles,
+} from "react-icons/hi";
+import { FaRocket, FaWhatsapp } from "react-icons/fa";
+import usePageTitle from "../utils/usePageTitle";
 
 /* ═══════════════════════════════════════════════════════════════════════
    DATA
 ═══════════════════════════════════════════════════════════════════════ */
 const SERVICES = [
   {
-    id: 'web',
+    id: "web",
     icon: HiGlobe,
-    title: 'Web Development',
-    tagline: 'Blazing-fast & SEO-ready',
+    title: "Web Development",
+    tagline: "Blazing-fast & SEO-ready",
     description:
-      'High-performance web applications using React, Next.js & full-stack technologies. From polished marketing sites to complex enterprise portals built for speed and scale.',
-    features: [
-      'React / Next.js / Vue.js',
-      'REST & GraphQL APIs',
-      'E-commerce Solutions',
-      'CMS Integration',
-      'Performance Optimisation',
-    ],
-    accent: '#3b82f6',
-    rgb: '59,130,246',
-    from: 'from-blue-500',
-    to: 'to-indigo-600',
+      "High-performance web applications using React, Next.js & full-stack technologies. From polished marketing sites to complex enterprise portals built for speed and scale.",
+    features: ["React / Next.js / Vue.js", "REST & GraphQL APIs", "E-commerce Solutions", "CMS Integration", "Performance Optimisation"],
+    accent: "#3b82f6",
+    rgb: "59,130,246",
+    from: "from-blue-500",
+    to: "to-indigo-600",
   },
   {
-    id: 'mobile',
+    id: "mobile",
     icon: HiDeviceMobile,
-    title: 'Mobile Development',
-    tagline: 'iOS & Android excellence',
+    title: "Mobile Development",
+    tagline: "iOS & Android excellence",
     description:
-      'Native iOS and Android apps plus cross-platform solutions with React Native and Flutter — delivering experiences users love and businesses depend on.',
-    features: [
-      'React Native / Flutter',
-      'iOS & Android Native',
-      'Push Notifications',
-      'Offline-First Support',
-      'App Store Deployment',
-    ],
-    accent: '#a855f7',
-    rgb: '168,85,247',
-    from: 'from-purple-500',
-    to: 'to-violet-600',
+      "Native iOS and Android apps plus cross-platform solutions with React Native and Flutter — delivering experiences users love and businesses depend on.",
+    features: ["React Native / Flutter", "iOS & Android Native", "Push Notifications", "Offline-First Support", "App Store Deployment"],
+    accent: "#a855f7",
+    rgb: "168,85,247",
+    from: "from-purple-500",
+    to: "to-violet-600",
   },
   {
-    id: 'software',
+    id: "software",
     icon: HiCode,
-    title: 'Custom Software',
-    tagline: 'Tailored to your workflow',
+    title: "Custom Software",
+    tagline: "Tailored to your workflow",
     description:
-      'End-to-end bespoke software built specifically for your business — from workflow automation and ERPs to full SaaS product development.',
-    features: [
-      'Business Process Automation',
-      'ERP & CRM Systems',
-      'API Development',
-      'Legacy Modernisation',
-      'SaaS Development',
-    ],
-    accent: '#6366f1',
-    rgb: '99,102,241',
-    from: 'from-indigo-500',
-    to: 'to-purple-600',
+      "End-to-end bespoke software built specifically for your business — from workflow automation and ERPs to full SaaS product development.",
+    features: ["Business Process Automation", "ERP & CRM Systems", "API Development", "Legacy Modernisation", "SaaS Development"],
+    accent: "#6366f1",
+    rgb: "99,102,241",
+    from: "from-indigo-500",
+    to: "to-purple-600",
   },
   {
-    id: 'design',
+    id: "design",
     icon: HiColorSwatch,
-    title: 'UI/UX Design',
-    tagline: 'Design that converts',
+    title: "UI/UX Design",
+    tagline: "Design that converts",
     description:
-      'Research-driven design that delights and converts. Wireframes, prototypes, and pixel-perfect interfaces aligned to measurable business goals.',
-    features: [
-      'User Research',
-      'Wireframing & Prototyping',
-      'Figma Design Systems',
-      'Brand Identity',
-      'Usability Testing',
-    ],
-    accent: '#ec4899',
-    rgb: '236,72,153',
-    from: 'from-pink-500',
-    to: 'to-rose-600',
+      "Research-driven design that delights and converts. Wireframes, prototypes, and pixel-perfect interfaces aligned to measurable business goals.",
+    features: ["User Research", "Wireframing & Prototyping", "Figma Design Systems", "Brand Identity", "Usability Testing"],
+    accent: "#ec4899",
+    rgb: "236,72,153",
+    from: "from-pink-500",
+    to: "to-rose-600",
   },
   {
-    id: 'cloud',
+    id: "cloud",
     icon: HiCloud,
-    title: 'Cloud Solutions',
-    tagline: 'Scale with confidence',
+    title: "Cloud Solutions",
+    tagline: "Scale with confidence",
     description:
-      'Resilient cloud infrastructure on AWS, Azure, and GCP. We handle migration, architecture design, CI/CD and ongoing DevOps management.',
-    features: [
-      'AWS / Azure / GCP',
-      'Cloud Migration',
-      'Docker & Kubernetes',
-      'CI/CD Pipelines',
-      'Cost Optimisation',
-    ],
-    accent: '#0ea5e9',
-    rgb: '14,165,233',
-    from: 'from-sky-500',
-    to: 'to-cyan-600',
+      "Resilient cloud infrastructure on AWS, Azure, and GCP. We handle migration, architecture design, CI/CD and ongoing DevOps management.",
+    features: ["AWS / Azure / GCP", "Cloud Migration", "Docker & Kubernetes", "CI/CD Pipelines", "Cost Optimisation"],
+    accent: "#0ea5e9",
+    rgb: "14,165,233",
+    from: "from-sky-500",
+    to: "to-cyan-600",
   },
   {
-    id: 'ai',
+    id: "ai",
     icon: HiChip,
-    title: 'AI & Automation',
-    tagline: 'Intelligent by design',
+    title: "AI & Automation",
+    tagline: "Intelligent by design",
     description:
-      'Harness AI to automate tasks, gain deep insights from data, and embed intelligence into your products — making every process smarter.',
-    features: [
-      'Machine Learning Models',
-      'NLP & Chatbots',
-      'Process Automation',
-      'Data Analytics',
-      'Computer Vision',
-    ],
-    accent: '#06b6d4',
-    rgb: '6,182,212',
-    from: 'from-cyan-500',
-    to: 'to-teal-600',
+      "Harness AI to automate tasks, gain deep insights from data, and embed intelligence into your products — making every process smarter.",
+    features: ["Machine Learning Models", "NLP & Chatbots", "Process Automation", "Data Analytics", "Computer Vision"],
+    accent: "#06b6d4",
+    rgb: "6,182,212",
+    from: "from-cyan-500",
+    to: "to-teal-600",
   },
   {
-    id: 'database',
+    id: "database",
     icon: HiDatabase,
-    title: 'Database & Systems',
-    tagline: 'Built for reliability',
+    title: "Database & Systems",
+    tagline: "Built for reliability",
     description:
-      'Robust database design, migration, and optimisation ensuring your data infrastructure scales reliably alongside your growing business.',
-    features: [
-      'MongoDB / PostgreSQL',
-      'Database Architecture',
-      'Data Migration',
-      'Performance Tuning',
-      'Backup & Recovery',
-    ],
-    accent: '#f97316',
-    rgb: '249,115,22',
-    from: 'from-orange-500',
-    to: 'to-amber-600',
+      "Robust database design, migration, and optimisation ensuring your data infrastructure scales reliably alongside your growing business.",
+    features: ["MongoDB / PostgreSQL", "Database Architecture", "Data Migration", "Performance Tuning", "Backup & Recovery"],
+    accent: "#f97316",
+    rgb: "249,115,22",
+    from: "from-orange-500",
+    to: "to-amber-600",
   },
 ];
 
 const PROCESS = [
   {
-    step: '01',
+    step: "01",
     icon: HiSparkles,
-    title: 'Discovery',
-    desc: 'We deep-dive into your goals, audience, and technical requirements to build a precise project blueprint.',
+    title: "Discovery",
+    desc: "We deep-dive into your goals, audience, and technical requirements to build a precise project blueprint.",
   },
   {
-    step: '02',
+    step: "02",
     icon: HiColorSwatch,
-    title: 'Design & Architect',
-    desc: 'Stunning prototypes meet scalable system architecture — built to last and grow from day one.',
+    title: "Design & Architect",
+    desc: "Stunning prototypes meet scalable system architecture — built to last and grow from day one.",
   },
   {
-    step: '03',
+    step: "03",
     icon: HiLightningBolt,
-    title: 'Build & Iterate',
-    desc: 'Agile sprints with weekly demos so you see real progress and steer direction continuously.',
+    title: "Build & Iterate",
+    desc: "Agile sprints with weekly demos so you see real progress and steer direction continuously.",
   },
   {
-    step: '04',
+    step: "04",
     icon: HiShieldCheck,
-    title: 'Launch & Support',
-    desc: 'Rigorous QA, smooth deployment, then ongoing monitoring and maintenance.',
+    title: "Launch & Support",
+    desc: "Rigorous QA, smooth deployment, then ongoing monitoring and maintenance.",
   },
 ];
 
 const STATS = [
-  { value: '150+', label: 'Projects Delivered' },
-  { value: '98%', label: 'Client Satisfaction' },
-  { value: '7', label: 'Service Domains' },
-  { value: '24/7', label: 'Support' },
+  { value: "150+", label: "Projects Delivered" },
+  { value: "98%", label: "Client Satisfaction" },
+  { value: "7", label: "Service Domains" },
+  { value: "24/7", label: "Support" },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -220,17 +191,19 @@ const scaleIn = {
 function SectionLabel({ icon: Icon, children }) {
   return (
     <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border bg-card text-xs font-semibold text-text_secondary mb-5 select-none">
-      {Icon
-        ? <Icon className="text-primary text-sm flex-shrink-0" />
-        : <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 flex-shrink-0" />}
+      {Icon ? (
+        <Icon className="text-primary text-sm flex-shrink-0" />
+      ) : (
+        <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 flex-shrink-0" />
+      )}
       {children}
     </div>
   );
 }
 
 /** Gradient icon box */
-function IconBox({ service, size = 'md', className = '' }) {
-  const sizes = { sm: 'w-10 h-10 text-lg', md: 'w-12 h-12 text-xl', lg: 'w-16 h-16 text-3xl', xl: 'w-24 h-24 text-5xl' };
+function IconBox({ service, size = "md", className = "" }) {
+  const sizes = { sm: "w-10 h-10 text-lg", md: "w-12 h-12 text-xl", lg: "w-16 h-16 text-3xl", xl: "w-24 h-24 text-5xl" };
   return (
     <div
       className={`${sizes[size]} rounded-2xl bg-gradient-to-br ${service.from} ${service.to} flex items-center justify-center text-white shadow-lg flex-shrink-0 ${className}`}
@@ -256,7 +229,7 @@ function ServiceModal({ service, onClose }) {
           transition={{ duration: 0.2 }}
           onClick={onClose}
           className="fixed inset-0 z-[200] flex items-center justify-center p-4"
-          style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)' }}
+          style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)" }}
         >
           <motion.div
             key="modal"
@@ -279,9 +252,7 @@ function ServiceModal({ service, onClose }) {
                     <div className="text-xs font-semibold mb-1" style={{ color: service.accent }}>
                       {service.tagline}
                     </div>
-                    <h3 className="font-display text-xl font-bold text-foreground">
-                      {service.title}
-                    </h3>
+                    <h3 className="font-display text-xl font-bold text-foreground">{service.title}</h3>
                   </div>
                 </div>
                 <button
@@ -293,20 +264,13 @@ function ServiceModal({ service, onClose }) {
                 </button>
               </div>
 
-              <p className="text-sm text-text_secondary leading-relaxed mb-6">
-                {service.description}
-              </p>
+              <p className="text-sm text-text_secondary leading-relaxed mb-6">{service.description}</p>
 
               {/* Features */}
-              <p className="text-[10px] font-bold uppercase tracking-widest text-text_muted mb-3">
-                What's Included
-              </p>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-text_muted mb-3">What's Included</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6">
                 {service.features.map((f, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-border bg-background"
-                  >
+                  <div key={i} className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-border bg-background">
                     <HiCheckCircle className="flex-shrink-0" style={{ color: service.accent }} />
                     <span className="text-sm text-foreground font-medium">{f}</span>
                   </div>
@@ -345,7 +309,7 @@ function ServiceCard({ service, index, onSelect }) {
       custom={index}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, margin: '-40px' }}
+      viewport={{ once: true, margin: "-40px" }}
       whileHover={{ y: -5, transition: { duration: 0.2 } }}
       onClick={() => onSelect(service)}
       className="group relative rounded-2xl border border-border bg-card overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-card-hover hover:border-opacity-70"
@@ -390,17 +354,12 @@ function ServiceCard({ service, index, onSelect }) {
         </h3>
 
         {/* Description */}
-        <p className="text-xs text-text_secondary leading-relaxed flex-1 line-clamp-3">
-          {service.description}
-        </p>
+        <p className="text-xs text-text_secondary leading-relaxed flex-1 line-clamp-3">{service.description}</p>
 
         {/* Feature chips */}
         <div className="flex flex-wrap gap-1.5 mt-4 pt-3.5 border-t border-border">
           {service.features.slice(0, 2).map((f, fi) => (
-            <span
-              key={fi}
-              className="text-[10px] px-2 py-0.5 rounded-full bg-background border border-border text-text_muted"
-            >
+            <span key={fi} className="text-[10px] px-2 py-0.5 rounded-full bg-background border border-border text-text_muted">
               {f}
             </span>
           ))}
@@ -417,80 +376,72 @@ function ServiceCard({ service, index, onSelect }) {
    MAIN PAGE
 ═══════════════════════════════════════════════════════════════════════ */
 export default function ServicesPage() {
-  usePageTitle('Services — NexCode');
+  usePageTitle("Services — NexCode");
   const [selected, setSelected] = useState(null);
   const [openFaq, setOpenFaq] = useState(null);
   const heroRef = useRef(null);
 
   /* Parallax on hero text */
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
-  const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
     <div className="min-h-screen bg-background">
-
       {/* ──────────────────────────────────────────────────────────────
           § 1  HERO — cinematic full-screen opener
       ────────────────────────────────────────────────────────────── */}
-      <section
-        ref={heroRef}
-        className="relative min-h-screen flex items-center overflow-hidden bg-background dark-grid"
-      >
+      <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden bg-background dark-grid">
         {/* Ambient orbs — use CSS vars so they respond to any background */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
             className="absolute -top-40 -left-40 w-[680px] h-[680px] rounded-full animate-pulse-slow"
-            style={{ background: 'radial-gradient(circle, rgba(54,153,243,0.14) 0%, transparent 65%)' }}
+            style={{ background: "radial-gradient(circle, rgba(54,153,243,0.14) 0%, transparent 65%)" }}
           />
           <div
             className="absolute top-1/3 right-[-12%] w-[520px] h-[520px] rounded-full animate-float"
-            style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 65%)' }}
+            style={{ background: "radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 65%)" }}
           />
           <div
             className="absolute bottom-[-8%] left-[28%] w-[400px] h-[400px] rounded-full animate-pulse-slow"
-            style={{ background: 'radial-gradient(circle, rgba(168,85,247,0.10) 0%, transparent 65%)', animationDelay: '1.5s' }}
+            style={{ background: "radial-gradient(circle, rgba(168,85,247,0.10) 0%, transparent 65%)", animationDelay: "1.5s" }}
           />
         </div>
 
-        <motion.div
-          style={{ y: heroY, opacity: heroOpacity }}
-          className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24"
-        >
+        <motion.div style={{ y: heroY, opacity: heroOpacity }} className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.9fr] gap-16 items-center">
-
             {/* ── Left: headline ── */}
             <div>
               <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
-                <SectionLabel icon={HiSparkles}>
-                  Full-Spectrum Digital Services
-                </SectionLabel>
+                <SectionLabel icon={HiSparkles}>Full-Spectrum Digital Services</SectionLabel>
               </motion.div>
 
               <motion.h1
-                variants={fadeUp} initial="hidden" animate="show" custom={1}
+                variants={fadeUp}
+                initial="hidden"
+                animate="show"
+                custom={1}
                 className="font-display font-extrabold text-foreground tracking-tight mb-6 leading-[1.07]"
-                style={{ fontSize: 'clamp(2.6rem, 6vw, 5rem)' }}
+                style={{ fontSize: "clamp(2.6rem, 6vw, 5rem)" }}
               >
-                Build Every{' '}
-                <span className="gradient-text">Digital Layer</span>
-                <br />of Your Business.
+                Build Every <span className="gradient-text">Digital Layer</span>
+                <br />
+                of Your Business.
               </motion.h1>
 
               <motion.p
-                variants={fadeUp} initial="hidden" animate="show" custom={2}
+                variants={fadeUp}
+                initial="hidden"
+                animate="show"
+                custom={2}
                 className="text-base text-text_secondary leading-relaxed mb-10 max-w-xl"
               >
-                From blazing-fast web apps to intelligent AI systems — NexCode
-                engineers every layer of your digital presence with precision,
+                From blazing-fast web apps to intelligent AI systems — NexCode engineers every layer of your digital presence with precision,
                 creativity, and a relentless focus on results.
               </motion.p>
 
               {/* CTAs */}
-              <motion.div
-                variants={fadeUp} initial="hidden" animate="show" custom={3}
-                className="flex flex-wrap gap-3 mb-12"
-              >
+              <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="flex flex-wrap gap-3 mb-12">
                 <Link
                   to="/start-project"
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-blue-500 to-cyan-500 shadow-glow-blue hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200"
@@ -507,14 +458,15 @@ export default function ServicesPage() {
 
               {/* Stats */}
               <motion.div
-                variants={fadeUp} initial="hidden" animate="show" custom={4}
-                className="grid grid-cols-4 gap-3 pt-8 border-t border-border"
+                variants={fadeUp}
+                initial="hidden"
+                animate="show"
+                custom={4}
+                className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-8 border-t border-border"
               >
                 {STATS.map((s, i) => (
                   <div key={i} className="text-center">
-                    <div className="font-display text-xl md:text-2xl font-extrabold gradient-text leading-none">
-                      {s.value}
-                    </div>
+                    <div className="font-display text-xl md:text-2xl font-extrabold gradient-text leading-none">{s.value}</div>
                     <div className="text-[10px] text-text_muted mt-1 leading-tight">{s.label}</div>
                   </div>
                 ))}
@@ -532,21 +484,19 @@ export default function ServicesPage() {
                 <motion.div
                   key={svc.id}
                   animate={{ y: [0, i % 2 === 0 ? -10 : 8, 0] }}
-                  transition={{ repeat: Infinity, duration: 3.5 + i * 0.35, ease: 'easeInOut', delay: i * 0.1 }}
+                  transition={{ repeat: Infinity, duration: 3.5 + i * 0.35, ease: "easeInOut", delay: i * 0.1 }}
                   whileHover={{
                     scale: 1.05,
                     boxShadow: `0 16px 40px rgba(${svc.rgb},0.22)`,
                     borderColor: `rgba(${svc.rgb},0.4)`,
                   }}
                   onClick={() => setSelected(svc)}
-                  className={`group flex flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-card p-5 cursor-pointer transition-all duration-300 ${i === 3 ? 'col-start-2' : ''}`}
+                  className={`group flex flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-card p-5 cursor-pointer transition-all duration-300 ${i === 3 ? "col-start-2" : ""}`}
                 >
                   <div className="group-hover:scale-110 transition-transform duration-300">
                     <IconBox service={svc} size="md" />
                   </div>
-                  <span className="text-[11px] font-semibold text-text_secondary text-center leading-tight">
-                    {svc.title}
-                  </span>
+                  <span className="text-[11px] font-semibold text-text_secondary text-center leading-tight">{svc.title}</span>
                 </motion.div>
               ))}
             </motion.div>
@@ -562,25 +512,30 @@ export default function ServicesPage() {
       ────────────────────────────────────────────────────────────── */}
       <section id="services-grid" className="py-24 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
           {/* Header */}
           <div className="flex flex-col items-center text-center mb-14">
             <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
               <SectionLabel>Our Capabilities</SectionLabel>
             </motion.div>
             <motion.h2
-              variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} custom={1}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              custom={1}
               className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold text-foreground tracking-tight mb-4"
             >
-              Everything You Need to{' '}
-              <span className="gradient-text">Build Digitally</span>
+              Everything You Need to <span className="gradient-text">Build Digitally</span>
             </motion.h2>
             <motion.p
-              variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} custom={2}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              custom={2}
               className="text-sm text-text_secondary max-w-lg"
             >
-              Click any card to explore full details — each service is delivered with precision
-              and a commitment to measurable outcomes.
+              Click any card to explore full details — each service is delivered with precision and a commitment to measurable outcomes.
             </motion.p>
           </div>
 
@@ -598,18 +553,20 @@ export default function ServicesPage() {
       ────────────────────────────────────────────────────────────── */}
       <section className="py-24 bg-page-alt">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
           {/* Header */}
           <div className="flex flex-col items-center text-center mb-20">
             <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
               <SectionLabel icon={HiLightningBolt}>Deep Dive</SectionLabel>
             </motion.div>
             <motion.h2
-              variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} custom={1}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              custom={1}
               className="font-display text-3xl md:text-4xl font-extrabold text-foreground tracking-tight"
             >
-              What We Deliver,{' '}
-              <span className="gradient-text">End to End</span>
+              What We Deliver, <span className="gradient-text">End to End</span>
             </motion.h2>
           </div>
 
@@ -622,17 +579,14 @@ export default function ServicesPage() {
                   variants={fadeUp}
                   initial="hidden"
                   whileInView="show"
-                  viewport={{ once: true, margin: '-60px' }}
+                  viewport={{ once: true, margin: "-60px" }}
                   className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
                 >
                   {/* Text */}
-                  <div className={isRight ? 'lg:order-2' : ''}>
+                  <div className={isRight ? "lg:order-2" : ""}>
                     <div className="flex items-center gap-3 mb-6">
-                      <span
-                        className="font-mono text-xs font-black tracking-widest opacity-40"
-                        style={{ color: svc.accent }}
-                      >
-                        {String(i + 1).padStart(2, '0')}
+                      <span className="font-mono text-xs font-black tracking-widest opacity-40" style={{ color: svc.accent }}>
+                        {String(i + 1).padStart(2, "0")}
                       </span>
                       <div className="h-px w-8 opacity-25 rounded-full" style={{ background: svc.accent }} />
                     </div>
@@ -643,22 +597,15 @@ export default function ServicesPage() {
                         <div className="text-xs font-semibold mb-1.5" style={{ color: svc.accent }}>
                           {svc.tagline}
                         </div>
-                        <h2 className="font-display text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">
-                          {svc.title}
-                        </h2>
+                        <h2 className="font-display text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">{svc.title}</h2>
                       </div>
                     </div>
 
-                    <p className="text-sm text-text_secondary leading-relaxed mb-8">
-                      {svc.description}
-                    </p>
+                    <p className="text-sm text-text_secondary leading-relaxed mb-8">{svc.description}</p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-8">
                       {svc.features.map((f, fi) => (
-                        <div
-                          key={fi}
-                          className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border border-border bg-card"
-                        >
+                        <div key={fi} className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border border-border bg-card">
                           <HiCheckCircle className="flex-shrink-0 text-sm" style={{ color: svc.accent }} />
                           <span className="text-sm text-foreground font-medium">{f}</span>
                         </div>
@@ -678,14 +625,14 @@ export default function ServicesPage() {
                   </div>
 
                   {/* Visual panel */}
-                  <div className={isRight ? 'lg:order-1' : ''}>
+                  <div className={isRight ? "lg:order-1" : ""}>
                     <div className="relative rounded-3xl p-10 flex items-center justify-center min-h-72 overflow-hidden border border-border bg-card">
                       {/* Dot grid */}
                       <div
                         className="absolute inset-0 opacity-[0.06]"
                         style={{
                           backgroundImage: `radial-gradient(circle, rgba(${svc.rgb},1) 1px, transparent 1px)`,
-                          backgroundSize: '26px 26px',
+                          backgroundSize: "26px 26px",
                         }}
                       />
                       {/* Concentric rings */}
@@ -694,7 +641,8 @@ export default function ServicesPage() {
                           key={si}
                           className="absolute rounded-full border pointer-events-none"
                           style={{
-                            width: sz, height: sz,
+                            width: sz,
+                            height: sz,
                             borderColor: `rgba(${svc.rgb},${0.14 - si * 0.04})`,
                           }}
                         />
@@ -703,22 +651,19 @@ export default function ServicesPage() {
                       {/* Floating icon */}
                       <motion.div
                         animate={{ y: [0, -14, 0] }}
-                        transition={{ repeat: Infinity, duration: 3.8 + i * 0.22, ease: 'easeInOut' }}
+                        transition={{ repeat: Infinity, duration: 3.8 + i * 0.22, ease: "easeInOut" }}
                         className="relative z-10"
                       >
                         <IconBox service={svc} size="xl" />
-                        <div
-                          className="absolute -inset-6 rounded-3xl blur-2xl -z-10 opacity-35"
-                          style={{ background: `rgba(${svc.rgb},0.45)` }}
-                        />
+                        <div className="absolute -inset-6 rounded-3xl blur-2xl -z-10 opacity-35" style={{ background: `rgba(${svc.rgb},0.45)` }} />
                       </motion.div>
 
                       {/* Feature chips floating around */}
                       {svc.features.slice(0, 3).map((f, fi) => {
                         const poses = [
-                          { top: '10%', right: '6%' },
-                          { bottom: '10%', left: '6%' },
-                          { top: '50%', right: '4%', transform: 'translateY(-50%)' },
+                          { top: "10%", right: "6%" },
+                          { bottom: "10%", left: "6%" },
+                          { top: "50%", right: "4%", transform: "translateY(-50%)" },
                         ];
                         return (
                           <motion.div
@@ -749,24 +694,29 @@ export default function ServicesPage() {
       ────────────────────────────────────────────────────────────── */}
       <section className="py-24 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
           <div className="flex flex-col items-center text-center mb-16">
             <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
               <SectionLabel icon={HiTrendingUp}>How We Work</SectionLabel>
             </motion.div>
             <motion.h2
-              variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} custom={1}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              custom={1}
               className="font-display text-3xl md:text-4xl font-extrabold text-foreground tracking-tight mb-4"
             >
-              A Process Built for{' '}
-              <span className="gradient-text">Excellence</span>
+              A Process Built for <span className="gradient-text">Excellence</span>
             </motion.h2>
             <motion.p
-              variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} custom={2}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              custom={2}
               className="text-sm text-text_secondary max-w-lg"
             >
-              Four battle-tested phases that consistently ship remarkable software
-              products on time and on budget.
+              Four battle-tested phases that consistently ship remarkable software products on time and on budget.
             </motion.p>
           </div>
 
@@ -797,12 +747,8 @@ export default function ServicesPage() {
                     </div>
                   </div>
 
-                  <div className="text-[10px] font-black tracking-[0.2em] text-text_muted font-mono mb-2">
-                    {step.step}
-                  </div>
-                  <h3 className="font-display text-base font-bold text-foreground mb-2.5">
-                    {step.title}
-                  </h3>
+                  <div className="text-[10px] font-black tracking-[0.2em] text-text_muted font-mono mb-2">{step.step}</div>
+                  <h3 className="font-display text-base font-bold text-foreground mb-2.5">{step.title}</h3>
                   <p className="text-xs text-text_secondary leading-relaxed">{step.desc}</p>
                 </motion.div>
               ))}
@@ -817,28 +763,31 @@ export default function ServicesPage() {
       <section className="py-24 bg-page-alt">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-
             {/* Left */}
-            <motion.div
-              variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}
-            >
+            <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
               <SectionLabel icon={HiStar}>Why NexCode?</SectionLabel>
               <h2 className="font-display text-3xl md:text-4xl font-extrabold text-foreground tracking-tight mb-5">
-                We Build Software That{' '}
-                <span className="gradient-text">Actually Works.</span>
+                We Build Software That <span className="gradient-text">Actually Works.</span>
               </h2>
               <p className="text-sm text-text_secondary leading-relaxed mb-8">
-                We're not just developers — we're digital partners invested in your
-                success. Our team blends deep expertise, creative design, and engineering
-                excellence to deliver solutions that drive real, measurable growth.
+                We're not just developers — we're digital partners invested in your success. Our team blends deep expertise, creative design, and
+                engineering excellence to deliver solutions that drive real, measurable growth.
               </p>
 
               <div className="space-y-3 mb-8">
                 {[
-                  { icon: HiTrendingUp, title: 'Outcome-Focused', desc: 'We measure success by the results you achieve, not just deliverables handed over.' },
-                  { icon: HiShieldCheck, title: 'Enterprise Security', desc: 'Bank-grade security practices baked into every layer from day one.' },
-                  { icon: HiLightningBolt, title: 'Lightning Delivery', desc: 'Our agile process gets you to market significantly faster than traditional agencies.' },
-                  { icon: HiStar, title: '98% Satisfaction Rate', desc: 'Proven track record across 150+ delivered projects globally.' },
+                  {
+                    icon: HiTrendingUp,
+                    title: "Outcome-Focused",
+                    desc: "We measure success by the results you achieve, not just deliverables handed over.",
+                  },
+                  { icon: HiShieldCheck, title: "Enterprise Security", desc: "Bank-grade security practices baked into every layer from day one." },
+                  {
+                    icon: HiLightningBolt,
+                    title: "Lightning Delivery",
+                    desc: "Our agile process gets you to market significantly faster than traditional agencies.",
+                  },
+                  { icon: HiStar, title: "98% Satisfaction Rate", desc: "Proven track record across 150+ delivered projects globally." },
                 ].map((d, i) => (
                   <motion.div
                     key={i}
@@ -883,8 +832,8 @@ export default function ServicesPage() {
                 <div
                   className="absolute inset-0 opacity-[0.07] pointer-events-none"
                   style={{
-                    backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px)',
-                    backgroundSize: '22px 22px',
+                    backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px)",
+                    backgroundSize: "22px 22px",
                   }}
                 />
 
@@ -948,21 +897,39 @@ export default function ServicesPage() {
               <SectionLabel>Common Questions</SectionLabel>
             </motion.div>
             <motion.h2
-              variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} custom={1}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              custom={1}
               className="font-display text-3xl md:text-4xl font-extrabold text-foreground tracking-tight"
             >
-              Frequently Asked{' '}
-              <span className="gradient-text">Questions</span>
+              Frequently Asked <span className="gradient-text">Questions</span>
             </motion.h2>
           </div>
 
           <div className="space-y-3">
             {[
-              { q: 'How long does a typical project take?', a: 'Timelines vary by scope. A simple website takes 2–4 weeks; a full enterprise application typically 3–6 months. We provide a detailed timeline after the discovery session.' },
-              { q: 'What technologies do you work with?', a: 'React, Next.js, Node.js, Python, Flutter, React Native, AWS, MongoDB, PostgreSQL and many more modern technologies — always selected to best serve your specific needs.' },
-              { q: 'Do you provide post-launch support?', a: 'Yes — we offer maintenance packages covering bug fixes, updates, performance monitoring and feature additions. Long-term partnerships are our preference.' },
-              { q: 'How much does a project cost?', a: 'Pricing depends on scope, complexity and timeline. We provide transparent, itemised quotes after an initial free consultation. No hidden costs, ever.' },
-              { q: 'Can you integrate with our existing systems?', a: 'Absolutely. We specialise in API integration, legacy system modernisation and working as an extension of your existing team without friction.' },
+              {
+                q: "How long does a typical project take?",
+                a: "Timelines vary by scope. A simple website takes 2–4 weeks; a full enterprise application typically 3–6 months. We provide a detailed timeline after the discovery session.",
+              },
+              {
+                q: "What technologies do you work with?",
+                a: "React, Next.js, Node.js, Python, Flutter, React Native, AWS, MongoDB, PostgreSQL and many more modern technologies — always selected to best serve your specific needs.",
+              },
+              {
+                q: "Do you provide post-launch support?",
+                a: "Yes — we offer maintenance packages covering bug fixes, updates, performance monitoring and feature additions. Long-term partnerships are our preference.",
+              },
+              {
+                q: "How much does a project cost?",
+                a: "Pricing depends on scope, complexity and timeline. We provide transparent, itemised quotes after an initial free consultation. No hidden costs, ever.",
+              },
+              {
+                q: "Can you integrate with our existing systems?",
+                a: "Absolutely. We specialise in API integration, legacy system modernisation and working as an extension of your existing team without friction.",
+              },
             ].map((faq, i) => (
               <motion.div
                 key={i}
@@ -979,7 +946,7 @@ export default function ServicesPage() {
                 >
                   <span className="font-semibold text-foreground text-sm">{faq.q}</span>
                   <HiChevronDown
-                    className={`flex-shrink-0 text-primary transition-transform duration-300 ${openFaq === i ? 'rotate-180' : ''}`}
+                    className={`flex-shrink-0 text-primary transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`}
                     size={18}
                   />
                 </button>
@@ -987,14 +954,12 @@ export default function ServicesPage() {
                   {openFaq === i && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
+                      animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.25 }}
                       className="overflow-hidden"
                     >
-                      <div className="px-6 pb-5 text-sm text-text_secondary leading-relaxed border-t border-border pt-4">
-                        {faq.a}
-                      </div>
+                      <div className="px-6 pb-5 text-sm text-text_secondary leading-relaxed border-t border-border pt-4">{faq.a}</div>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -1014,41 +979,33 @@ export default function ServicesPage() {
         <div
           className="absolute inset-0 opacity-[0.1]"
           style={{
-            backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px)',
-            backgroundSize: '28px 28px',
+            backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
           }}
         />
         {/* Orbs */}
         <div
           className="absolute -top-24 -left-12 w-96 h-96 rounded-full animate-float opacity-20 pointer-events-none"
-          style={{ background: 'radial-gradient(circle, white 0%, transparent 65%)' }}
+          style={{ background: "radial-gradient(circle, white 0%, transparent 65%)" }}
         />
         <div
           className="absolute -bottom-20 right-8 w-72 h-72 rounded-full animate-pulse-slow opacity-15 pointer-events-none"
-          style={{ background: 'radial-gradient(circle, white 0%, transparent 65%)', animationDelay: '2s' }}
+          style={{ background: "radial-gradient(circle, white 0%, transparent 65%)", animationDelay: "2s" }}
         />
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
-          <motion.div
-            variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}
-          >
+          <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm text-xs font-semibold mb-8">
               <FaRocket size={11} /> Limited Project Slots Available
             </div>
 
-            <h2
-              className="font-display font-extrabold tracking-tight mb-5"
-              style={{ fontSize: 'clamp(2.2rem, 5.5vw, 4rem)', lineHeight: '1.08' }}
-            >
-              Ready to Build Something{' '}
-              <span className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
-                Extraordinary?
-              </span>
+            <h2 className="font-display font-extrabold tracking-tight mb-5" style={{ fontSize: "clamp(2.2rem, 5.5vw, 4rem)", lineHeight: "1.08" }}>
+              Ready to Build Something{" "}
+              <span className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">Extraordinary?</span>
             </h2>
 
             <p className="text-white/70 text-base md:text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-              Tell us about your vision and we'll craft a precise plan to bring it
-              to life. Free consultation. No obligations.
+              Tell us about your vision and we'll craft a precise plan to bring it to life. Free consultation. No obligations.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
