@@ -18,7 +18,7 @@ const themeUi = {
   light: {
     navScrolled: "bg-white/92 backdrop-blur-xl  shadow-[0_10px_30px_rgba(15,23,42,0.08)]",
     navTop: "bg-white/75 backdrop-blur-xl ",
-    linkActive: "bg-primary/12 text-primary",
+    linkActive: "text-primary bg-slate-100/80 ",
     linkIdle: "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80",
     toggleBtn: "bg-slate-100 border-none text-slate-700  hover:bg-slate-200",
     dropdown: "bg-white border-slate-200 shadow-[0_12px_28px_rgba(15,23,42,0.14)]",
