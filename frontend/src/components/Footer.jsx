@@ -19,13 +19,13 @@ export default function Footer() {
 
   return (
     <footer className="bg-background text-foreground border-t border-border/40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14">
+      <div className=" mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14">
         <div className="rounded-[2rem] border border-border/60 bg-card/80 backdrop-blur-xl px-6 sm:px-8 lg:px-10 py-10 shadow-[0_18px_45px_rgba(15,23,42,0.06)]">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12 items-start text-center lg:text-left">
             <div className="space-y-4 flex flex-col items-center lg:items-start">
-              <Link to="/" className="flex items-center gap-3">
+              <Link to="/" className="flex flex-col items-center lg:flex-row gap-3">
                 <img src={logo} alt="NexCode" className="w-10 h-10 rounded-xl object-cover bg-background ring-1 ring-border/50 shadow-sm" />
-                <div className="text-left">
+                <div className="text-center lg:text-left">
                   <span className={`font-display font-bold text-lg ${themeClasses.text.primary}`}>NexCode</span>
                   <div className="text-[11px] uppercase tracking-[0.2em] text-text_muted">Software Development</div>
                 </div>
@@ -64,10 +64,10 @@ export default function Footer() {
 
             <div className="space-y-4 flex flex-col items-center lg:items-start">
               <h3 className={`font-display font-semibold text-sm ${themeClasses.text.primary}`}>Quick Links</h3>
-              <div className="flex flex-wrap justify-center lg:justify-start gap-x-5 gap-y-3">
+              <div className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-start gap-2 sm:gap-x-5 sm:gap-y-3">
                 {quickLinks.map((l) => (
-                  <Link key={l.path} to={l.path} className={`text-sm ${themeClasses.text.secondary} hover:text-primary transition-colors`}>
-                    {l.label}
+                  <Link key={l.path} to={l.path} className={`text-sm block ${themeClasses.text.secondary} hover:text-primary transition-colors`}>
+                    <span className="mr-2">•</span> {l.label}
                   </Link>
                 ))}
               </div>

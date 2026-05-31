@@ -27,8 +27,9 @@ const themeUi = {
     mobilePanel: "bg-white/95 border-t border-slate-200/70",
     mobileLinkIdle: "text-slate-700 hover:bg-slate-100",
     ctaBtn:
-      "inline-flex items-center justify-center px-4 py-2 rounded-lg text-xs font-semibold bg-blue-500/80 duration-200 transition-all text-white/80 hover:bg-blue-500 shadow-sm",
+      "inline-flex  items-center justify-center px-4 py-2 rounded-lg text-xs font-semibold bg-btn-gradient hover:bg-btn-gradient-hover duration-200 transition-all text-white/90 hover:text-white hover:bg-blue-500 shadow-sm",
   },
+
   dark: {
     navScrolled: "bg-slate-950/90 backdrop-blur-xl  shadow-[0_14px_34px_rgba(2,6,23,0.55)]",
     navTop: "bg-slate-950/74 backdrop-blur-xl ",
@@ -85,7 +86,7 @@ export default function Navbar() {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navbarBg}`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex items-center justify-between h-16 py-3">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
@@ -95,8 +96,8 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1">
+          {/* Desktop Nav (centered) */}
+          <div className="hidden md:flex items-center gap-1 absolute left-1/2 transform -translate-x-1/2">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -157,12 +158,6 @@ export default function Navbar() {
 
             <Link to="/start-project" className={ui.ctaBtn}>
               Start Project
-            </Link>
-            <Link
-              to="/admin-panel"
-              className="px-3 py-2 rounded-lg text-xs font-medium border border-blue-200/70 text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors"
-            >
-              Admin Panel
             </Link>
           </div>
 

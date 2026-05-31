@@ -1,8 +1,8 @@
-import { FaLinkedin, FaTwitter, FaInstagram, FaGithub } from "react-icons/fa";
+import { FaLinkedin, FaFacebook, FaInstagram, FaGithub } from "react-icons/fa";
 
 export const footerSocialLinks = [
   { label: "LinkedIn", href: "#", icon: FaLinkedin },
-  { label: "Twitter", href: "#", icon: FaTwitter },
+  { label: "Facebook", href: "#", icon: FaFacebook },
   { label: "Instagram", href: "#", icon: FaInstagram },
   { label: "GitHub", href: "#", icon: FaGithub },
 ];
