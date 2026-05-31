@@ -54,10 +54,17 @@ export default function ContactPage() {
 
   return (
     <div className={`min-h-screen ${themeClasses.bg.primary} ${themeClasses.text.primary}`}>
-      <section className={`relative overflow-hidden pt-28 pb-20 ${themeClasses.bg.hero}`}>
-        <div className="absolute inset-0 grid-pattern opacity-20 pointer-events-none" />
-        <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 h-56 w-56 rounded-full bg-secondary/10 blur-3xl pointer-events-none" />
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-background dark-grid">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div
+            className="absolute -top-32 -left-32 w-[650px] h-[650px] rounded-full animate-pulse-slow"
+            style={{ background: "radial-gradient(circle, rgba(54,153,243,0.12) 0%, transparent 65%)" }}
+          />
+          <div
+            className="absolute top-1/4 right-[-10%] w-[580px] h-[580px] rounded-full animate-float"
+            style={{ background: "radial-gradient(circle, rgba(6,182,212,0.13) 0%, transparent 65%)", animationDelay: "1s" }}
+          />
+        </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-14 items-center text-center lg:text-left">
