@@ -387,9 +387,6 @@ export default function ShowcasePage() {
             </motion.div>
           </div>
         </div>
-
-        {/* Bottom divider section fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-background to-transparent pointer-events-none" />
       </section>
 
       {/* ──────────────────────────────────────────────────────────────
