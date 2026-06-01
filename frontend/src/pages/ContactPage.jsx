@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
-import { HiPhone, HiMail, HiLocationMarker } from "react-icons/hi";
+import { HiPhone, HiMail, HiLocationMarker, HiArrowRight, HiClock, HiSparkles } from "react-icons/hi";
 import { FaWhatsapp } from "react-icons/fa";
 import api from "../utils/api";
 import usePageTitle from "../utils/usePageTitle";
+import { useThemeClasses } from "../utils/useThemeClasses";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const themeClasses = useThemeClasses();
   usePageTitle("Contact");
 
   const validate = () => {
@@ -45,70 +47,152 @@ export default function ContactPage() {
     { icon: HiLocationMarker, label: "Location", value: "Sri Lanka", href: "#", color: "text-red-500" },
   ];
 
+  const quickFacts = [
+    { icon: HiClock, label: "Response Time", value: "Within 24 hours" },
+    { icon: HiSparkles, label: "Project Style", value: "Mobile, Web & Systems" },
+  ];
+
   return (
-    <div className="min-h-screen">
-      {/* Hero */}
-      <section className="pt-32 pb-16 bg-hero-gradient dark-grid">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs mb-6">
-              Get In Touch
-            </div>
-            <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-              Let's <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">Connect</span>
-            </h1>
-            <p className="text-gray-300">Have a question or project in mind? We'd love to hear from you.</p>
-          </motion.div>
+    <div className={`min-h-screen ${themeClasses.bg.primary} ${themeClasses.text.primary}`}>
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-background dark-grid">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div
+            className="absolute -top-32 -left-32 w-[650px] h-[650px] rounded-full animate-pulse-slow"
+            style={{ background: "radial-gradient(circle, rgba(54,153,243,0.12) 0%, transparent 65%)" }}
+          />
+          <div
+            className="absolute top-1/4 right-[-10%] w-[580px] h-[580px] rounded-full animate-float"
+            style={{ background: "radial-gradient(circle, rgba(6,182,212,0.13) 0%, transparent 65%)", animationDelay: "1s" }}
+          />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-14 items-center text-center lg:text-left">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-card/80 backdrop-blur border border-border text-text_secondary text-xs font-medium mb-5">
+                Get In Touch
+              </div>
+              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 leading-[1.05] text-foreground">
+                Let's <span className="gradient-text">Connect</span>
+              </h1>
+              <p className="text-base sm:text-lg text-text_secondary leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-8">
+                Share your idea, ask a question, or start a new build. We work across websites, apps, and custom systems, with each theme and layout
+                tuned for a clean responsive experience.
+              </p>
+
+              <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-8">
+                <a href="mailto:info@nexcode.lk" className="btn-primary text-sm px-5 py-3.5">
+                  Email Us
+                  <HiArrowRight size={15} />
+                </a>
+                <a href="https://wa.me/94769747244" target="_blank" rel="noreferrer" className="btn-secondary text-sm px-5 py-3.5">
+                  WhatsApp
+                </a>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto lg:mx-0">
+                {quickFacts.map((fact) => (
+                  <div
+                    key={fact.label}
+                    className="rounded-2xl border border-border bg-card/80 backdrop-blur p-4 flex items-center gap-3 justify-center lg:justify-start"
+                  >
+                    <div className="w-11 h-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                      <fact.icon size={18} />
+                    </div>
+                    <div className="text-left">
+                      <div className="text-[11px] uppercase tracking-[0.18em] text-text_muted font-semibold">{fact.label}</div>
+                      <div className="text-sm font-semibold text-foreground">{fact.value}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="rounded-[2rem] border border-border bg-card/90 backdrop-blur-xl shadow-[0_24px_60px_rgba(15,23,42,0.08)] p-6 sm:p-8"
+            >
+              <div className="flex items-center gap-3 justify-center lg:justify-start mb-5">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/20">
+                  <FaWhatsapp size={18} />
+                </div>
+                <div>
+                  <div className="font-display font-bold text-xl text-foreground">Quick Contact</div>
+                  <div className="text-sm text-text_secondary">We usually reply within one business day.</div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {contacts.map((c, i) => (
+                  <motion.a
+                    key={i}
+                    href={c.href}
+                    target={c.href.startsWith("http") ? "_blank" : undefined}
+                    rel="noreferrer"
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.08 }}
+                    className="rounded-2xl border border-border bg-background/70 p-4 flex items-center gap-3 text-left hover:border-primary/30 hover:-translate-y-0.5 transition-all"
+                  >
+                    <div className={`w-11 h-11 rounded-xl bg-muted flex items-center justify-center ${c.color} flex-shrink-0`}>
+                      <c.icon size={18} />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-[11px] uppercase tracking-[0.18em] text-text_muted font-semibold">{c.label}</div>
+                      <div className="font-semibold text-sm text-foreground truncate">{c.value}</div>
+                    </div>
+                  </motion.a>
+                ))}
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
-            {/* Contact Info */}
-            <div className="lg:col-span-2 space-y-4 text-center lg:text-left">
-              <h2 className="font-display font-bold text-2xl text-gray-900 mb-6">Contact Information</h2>
-              {contacts.map((c, i) => (
-                <motion.a
-                  key={i}
-                  href={c.href}
-                  target={c.href.startsWith("http") ? "_blank" : undefined}
-                  rel="noreferrer"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="flex flex-col sm:flex-row items-center sm:items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 hover:border-blue-200 hover:shadow-md transition-all group text-center sm:text-left"
-                >
-                  <div
-                    className={`w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center ${c.color} group-hover:scale-110 transition-transform`}
-                  >
-                    <c.icon size={20} />
+      <section className={`${themeClasses.bg.primary} py-16 sm:py-20`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-10 lg:gap-12 items-start">
+            <div className="space-y-5 text-center lg:text-left">
+              <div>
+                <p className="text-[11px] tracking-[0.22em] uppercase font-semibold mb-3 text-text_muted">Contact Information</p>
+                <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-foreground tracking-tight">Tell us what you need</h2>
+                <p className="mt-4 text-text_secondary leading-relaxed max-w-xl mx-auto lg:mx-0">
+                  Use the form, email, or WhatsApp to reach out. We’ll help you shape the scope, timeline, and the best implementation path for your
+                  project.
+                </p>
+              </div>
+
+              <div className="rounded-[1.75rem] border border-border bg-card p-6 sm:p-8 text-center lg:text-left">
+                <p className="text-[11px] tracking-[0.2em] uppercase font-semibold text-text_muted mb-4">Availability</p>
+                <p className="text-sm text-text_secondary leading-relaxed">
+                  Available for remote work, on-site consultations, and collaborative product development across websites, mobile apps, and internal
+                  systems.
+                </p>
+                <div className="mt-5 rounded-2xl border border-border bg-background p-5 flex items-center justify-center lg:justify-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                    <HiLocationMarker size={20} />
                   </div>
                   <div>
-                    <div className="text-xs text-gray-400 font-medium">{c.label}</div>
-                    <div className="font-semibold text-gray-900 text-sm">{c.value}</div>
+                    <div className="font-semibold text-foreground">Sri Lanka</div>
+                    <div className="text-sm text-text_secondary">Working with clients locally and globally</div>
                   </div>
-                </motion.a>
-              ))}
-
-              {/* Map placeholder */}
-              <div className="mt-6 rounded-2xl overflow-hidden bg-blue-50 border border-blue-100 h-48 flex items-center justify-center text-center">
-                <div className="text-center text-blue-400">
-                  <HiLocationMarker size={40} className="mx-auto mb-2" />
-                  <p className="text-sm font-medium text-blue-600">Sri Lanka</p>
-                  <p className="text-xs text-blue-400">Available for remote & on-site projects</p>
                 </div>
               </div>
             </div>
 
-            {/* Contact Form */}
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="lg:col-span-3 bg-white rounded-3xl p-8 shadow-sm border border-gray-100 text-center lg:text-left"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="rounded-[2rem] border border-border bg-card p-6 sm:p-8 shadow-[0_16px_40px_rgba(15,23,42,0.06)]"
             >
-              <h2 className="font-display font-bold text-2xl text-gray-900 mb-6">Send a Message</h2>
+              <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-foreground mb-3 text-center lg:text-left">Send a Message</h2>
+              <p className="text-sm text-text_secondary mb-8 text-center lg:text-left">
+                Share a little context and we’ll get back to you with the next step.
+              </p>
+
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
@@ -119,7 +203,7 @@ export default function ContactPage() {
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
                     />
-                    {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+                    {errors.name && <p className="text-red-500 text-xs mt-1 text-left">{errors.name}</p>}
                   </div>
                   <div>
                     <label className="label">Email Address *</label>
@@ -130,9 +214,10 @@ export default function ContactPage() {
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
                     />
-                    {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+                    {errors.email && <p className="text-red-500 text-xs mt-1 text-left">{errors.email}</p>}
                   </div>
                 </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="label">Phone Number</label>
@@ -151,23 +236,26 @@ export default function ContactPage() {
                       value={form.subject}
                       onChange={(e) => setForm({ ...form, subject: e.target.value })}
                     />
-                    {errors.subject && <p className="text-red-500 text-xs mt-1">{errors.subject}</p>}
+                    {errors.subject && <p className="text-red-500 text-xs mt-1 text-left">{errors.subject}</p>}
                   </div>
                 </div>
+
                 <div>
                   <label className="label">Message *</label>
                   <textarea
-                    className={`input-field resize-none h-32 ${errors.message ? "border-red-400" : ""}`}
-                    placeholder="Tell us about your project or question..."
+                    className={`input-field resize-none h-36 ${errors.message ? "border-red-400" : ""}`}
+                    placeholder="Tell us about your project, timeline, goals, or question..."
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
                   />
-                  {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
+                  {errors.message && <p className="text-red-500 text-xs mt-1 text-left">{errors.message}</p>}
                 </div>
+
                 <button type="submit" disabled={loading} className="btn-primary w-full justify-center py-3.5 disabled:opacity-60">
                   {loading ? (
                     <>
-                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Sending...
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Sending...
                     </>
                   ) : (
                     "Send Message"

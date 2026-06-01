@@ -93,75 +93,69 @@ export default function AboutPage() {
           />
         </div>
 
-        <div className="relative z-10 w-full max-w-5xl mx-auto px-4 text-center pt-32 pb-24">
-          <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
-            <SectionLabel icon={HiSparkles}>About NexCode</SectionLabel>
-          </motion.div>
+        <div className="flex flex-row justify-between items-center mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="relative z-10 w-auto  flex flex-col items-start  text-left pt-32 pb-24">
+            <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
+              <SectionLabel icon={HiSparkles}>About NexCode</SectionLabel>
+            </motion.div>
 
-          <motion.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={1}
-            className="font-display font-extrabold text-foreground tracking-tight mb-6 leading-[1.08]"
-            style={{ fontSize: "clamp(2.4rem, 6vw, 4.8rem)" }}
-          >
-            Built by Passionate <br />
-            <span className="gradient-text">Engineers & Builders.</span>
-          </motion.h1>
-
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={2}
-            className="text-base text-text_secondary leading-relaxed max-w-2xl mx-auto mb-12"
-          >
-            NexCode is a premier software development firm dedicated to bridging the gap between ambitious product ideas and highly optimized, clean
-            digital solutions. We engineer for scale, stability, and speed.
-          </motion.p>
-
-          <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="flex flex-wrap gap-4 justify-center">
-            <Link
-              to="/start-project"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-blue-500 to-cyan-500 shadow-glow-blue hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200"
+            <motion.h1
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={1}
+              className="font-display font-extrabold text-foreground tracking-tight mb-6 leading-[1.08]"
+              style={{ fontSize: "clamp(2.4rem, 6vw, 4.8rem)" }}
             >
-              <FaRocket size={13} /> Start Your Project
-            </Link>
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl border border-border bg-card text-foreground font-semibold text-sm hover:border-primary/40 transition-all duration-200"
+              Built by Passionate <br />
+              <span className="gradient-text">Engineers & Builders.</span>
+            </motion.h1>
+
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={2}
+              className="text-base text-text_secondary leading-relaxed max-w-2xl mb-12"
             >
-              Get in Touch <HiArrowRight size={15} />
-            </Link>
-          </motion.div>
-        </div>
+              NexCode is a premier software development firm dedicated to bridging the gap between ambitious product ideas and highly optimized, clean
+              digital solutions. We engineer for scale, stability, and speed.
+            </motion.p>
 
-        {/* Section bottom divider fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none" />
-      </section>
-
-      {/* ──────────────────────────────────────────────────────────────
-          § 2 STATS — Bento stats grid
-      ────────────────────────────────────────────────────────────── */}
-      <section className="py-20 bg-background border-t border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {stats.map((s, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-                whileHover={{ y: -4, transition: { duration: 0.18 } }}
-                className="text-center p-8 rounded-3xl bg-card border border-border hover:border-primary/30 transition-all duration-300 shadow-sm"
+            <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="flex flex-wrap gap-4 justify-center">
+              <Link
+                to="/start-project"
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-blue-500 to-cyan-500 shadow-glow-blue hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200"
               >
-                <div className="font-display text-4.5xl font-black gradient-text mb-2 leading-none">{s.value}</div>
-                <div className="font-bold text-sm text-foreground mb-1">{s.label}</div>
-                <div className="text-xs text-text_secondary">{s.description}</div>
-              </motion.div>
-            ))}
+                <FaRocket size={13} /> Start Your Project
+              </Link>
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl border border-border bg-card text-foreground font-semibold text-sm hover:border-primary/40 transition-all duration-200"
+              >
+                Get in Touch <HiArrowRight size={15} />
+              </Link>
+            </motion.div>
+          </div>
+
+          <div className=" mx-auto px-4 sm:px-6 lg:px-8 ">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+              {stats.map((s, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.08 }}
+                  whileHover={{ y: -4, transition: { duration: 0.18 } }}
+                  className="text-center p-5 rounded-3xl bg-card border border-border hover:border-primary/30 transition-all duration-300 shadow-sm"
+                >
+                  <div className="font-display text-4.5xl font-black gradient-text mb-2 leading-none">{s.value}</div>
+                  <div className="font-bold text-sm text-foreground mb-1">{s.label}</div>
+                  <div className="text-xs text-text_secondary">{s.description}</div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

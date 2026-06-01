@@ -103,7 +103,10 @@ for (const [themeName, palette] of Object.entries(themePalettes)) {
     backgroundImage: `linear-gradient(135deg, ${toRgb("54 153 243", 0.08)} 0%, ${toRgb("6 182 212", 0.04)} 100%)`,
   };
   themeUtilities[themeScopedSelector(themeName, ".bg-btn-gradient")] = {
-    backgroundImage: "linear-gradient(135deg, rgb(54 153 243 / 1) 0%, rgb(6 182 212 / 1) 100%)",
+    backgroundImage: "linear-gradient(135deg, rgb(54 153 243 / 1) 0%, rgb(54 153 243 / 1) 100%)",
+  };
+  themeUtilities[themeScopedSelector(themeName, ".bg-btn-gradient-hover")] = {
+    backgroundImage: "linear-gradient(135deg, rgb(54 153 223 / 1) 0%, rgb(54 153 223 / 1) 100%)",
   };
   themeUtilities[themeScopedSelector(themeName, ".grid-pattern")] = {
     backgroundImage: `radial-gradient(circle, ${toRgb(palette.grid, 0.12)} 1px, transparent 1px)`,
@@ -302,10 +305,12 @@ export default {
       backgroundImage: {
         "hero-gradient": "linear-gradient(180deg, rgb(84 178 230 / 1) 0%, rgb(94 188 255 / 0.9) 50%, rgb(84 178 230 / 1) 100%)",
         "card-gradient": "linear-gradient(135deg, rgb(54 153 243 / 0.08) 0%, rgb(6 182 212 / 0.04) 100%)",
-        "btn-gradient": "linear-gradient(135deg, rgb(54 153 243 / 1) 0%, rgb(6 182 212 / 1) 100%)",
+        "btn-gradient": "linear-gradient(135deg, rgb(54 153 243 / 1) 0%, rgb(54 153 243 / 1) 100%)",
+        "btn-gradient-hover": "linear-gradient(135deg, rgb(54 153 223 / 1) 0%, rgb(54 153 223 / 1) 100%)",
         "radial-primary": "radial-gradient(ellipse at 60% 0%, rgb(54 153 243 / 0.18) 0%, transparent 65%)",
         "radial-accent": "radial-gradient(ellipse at 40% 100%, rgb(6 182 212 / 0.15) 0%, transparent 65%)",
-        "noise": "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3CfilterID='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E\")",
+        noise:
+          "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3CfilterID='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E\")",
       },
       borderRadius: {
         "4xl": "2rem",
