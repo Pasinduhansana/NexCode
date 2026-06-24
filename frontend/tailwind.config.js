@@ -8,7 +8,7 @@ const themePalettes = {
     card: "250 250 252",
     border: "236 236 241",
     borderHard: "152 150 150",
-    muted: "220 220 222",
+    muted: "240 240 240",
     mutedForeground: "100 116 139",
     textPrimary: "52 66 97",
     textSecondary: "100 116 139",
@@ -27,7 +27,7 @@ const themePalettes = {
     card: "20 24 31",
     border: "20 31 49",
     borderHard: "80 91 109",
-    muted: "190 190 190",
+    muted: "15 23 40",
     mutedForeground: "148 163 184",
     textPrimary: "235 235 235",
     textSecondary: "148 163 184",
@@ -46,7 +46,7 @@ const themePalettes = {
     card: "250 250 252",
     border: "236 236 241",
     borderHard: "152 150 150",
-    muted: "247 247 250",
+    muted: "245 245 252",
     mutedForeground: "100 116 139",
     textPrimary: "52 66 97",
     textSecondary: "100 116 139",
@@ -203,7 +203,7 @@ for (const [themeName, palette] of Object.entries(themePalettes)) {
     fontWeight: "500",
   };
   themeComponents[`${scope}.section-subtitle`] = {
-    fontSize: "0.875rem",
+    fontSize: "1rem",
     maxWidth: "42rem",
     marginLeft: "auto",
     marginRight: "auto",
@@ -217,8 +217,8 @@ for (const [themeName, palette] of Object.entries(themePalettes)) {
   };
   themeComponents[`${scope}.section-title`] = {
     fontFamily: '"Plus Jakarta Sans", sans-serif',
-    fontSize: "1.25rem",
-    lineHeight: "1.75rem",
+    fontSize: "2rem",
+    lineHeight: "2.7rem",
     fontWeight: "700",
   };
 }
@@ -250,6 +250,7 @@ export default {
         background: "rgb(255 255 255 / <alpha-value>)",
         foreground: "rgb(17 24 39 / <alpha-value>)",
         primary: "#3699f3",
+        primary_hover: "#298cf0",
         secondary: "#06b6d4",
         card: "rgb(250 250 252 / <alpha-value>)",
         border: "rgb(236 236 241 / <alpha-value>)",
