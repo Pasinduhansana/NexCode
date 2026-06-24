@@ -175,7 +175,7 @@ function LaptopScreenContent({ theme }) {
         </h1>
 
         {/* sub */}
-        <p style={{ fontSize: "clamp(7px,1.1vw,11px)", lineHeight: 1.6, color: textSecondary, maxWidth: 320 }}>
+        <p  style={{ fontSize: "clamp(7px,1.1vw,11px)", lineHeight: 1.6, color: textSecondary, maxWidth: 320 }}>
           From sleek websites to enterprise systems — NexCode ships software that moves fast, scales further, and delights every user.
         </p>
 
@@ -596,8 +596,7 @@ export default function Hero({ stats = [] }) {
         </h1>
 
         <p
-          className="text-sm sm:text-base text-muted-foreground
-                      leading-relaxed max-w-xl"
+          className="section-subtitle"
         >
           From sleek websites to powerful enterprise systems — NexCode ships software that moves fast, scales further, and delights every user.
         </p>

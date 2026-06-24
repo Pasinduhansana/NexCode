@@ -5,6 +5,7 @@ import { HiMenu, HiX, HiChevronDown, HiSun, HiMoon } from "react-icons/hi";
 import { useTheme } from "../context/ThemeContext";
 import { useThemeClasses } from "../utils/useThemeClasses";
 import logo from "../../assets/Logo.png";
+import Button  from "./Button";
 
 const navLinks = [
   { label: "Home", path: "/" },
@@ -26,8 +27,6 @@ const themeUi = {
     dropdownItemIdle: "text-slate-700 hover:bg-slate-50",
     mobilePanel: "bg-white/95 border-t border-slate-200/70",
     mobileLinkIdle: "text-slate-700 hover:bg-slate-100",
-    ctaBtn:
-      "inline-flex  items-center justify-center px-4 py-2 rounded-lg text-xs font-semibold bg-btn-gradient hover:bg-btn-gradient-hover duration-200 transition-all text-white/90 hover:text-white hover:bg-blue-500 shadow-sm",
   },
 
   dark: {
@@ -41,8 +40,6 @@ const themeUi = {
     dropdownItemIdle: "text-slate-200 hover:bg-white/10",
     mobilePanel: "bg-slate-900/95 border-t border-slate-700/70",
     mobileLinkIdle: "text-slate-200 hover:bg-white/10",
-    ctaBtn:
-      "inline-flex items-center justify-center px-4 py-2 rounded-lg text-xs font-semibold bg-blue-500/80 duration-200 transition-all text-white/80 hover:bg-blue-500 shadow-sm",
   },
   primary: {
     navScrolled: "bg-white/92 backdrop-blur-xl shadow-[0_12px_30px_rgba(6,182,212,0.18)]",
@@ -55,8 +52,6 @@ const themeUi = {
     dropdownItemIdle: "text-foreground hover:bg-primary/10",
     mobilePanel: "bg-card/95 border-t border-primary/25",
     mobileLinkIdle: "text-foreground hover:bg-primary/12",
-    ctaBtn:
-      "inline-flex  items-center justify-center px-4 py-2 rounded-lg text-xs font-semibold bg-btn-gradient hover:bg-btn-gradient-hover duration-200 transition-all text-white/90 hover:text-white hover:bg-blue-500 shadow-sm",
   },
 };
 
@@ -155,17 +150,15 @@ export default function Navbar() {
                 )}
               </AnimatePresence>
             </div>
-
-            <Link to="/start-project" className={ui.ctaBtn}>
+                
+            <Button variant="navbar" to="/start-project">
               Start Project
-            </Link>
+            </Button>
           </div>
 
           {/* Mobile CTA + Hamburger */}
           <div className="md:hidden flex items-center gap-2">
-            <Link to="/start-project" className={`${ui.ctaBtn} hidden sm:inline-flex px-3 py-1.5 text-[11px]`}>
-              Start Project
-            </Link>
+
             <button
               className={`p-2 rounded-lg transition-colors ${ui.toggleBtn}`}
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -219,9 +212,9 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <Link to="/start-project" className={`${ui.ctaBtn} w-full mt-2 sm:hidden`}>
+              <Button variant="navbar" to="/start-project" className="w-full mt-2 sm:hidden">
                 Start Project
-              </Link>
+              </Button>
               <Link
                 to="/admin-panel"
                 className="block px-3 py-2 rounded-lg text-xs font-medium border border-blue-200/70 text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors text-center"

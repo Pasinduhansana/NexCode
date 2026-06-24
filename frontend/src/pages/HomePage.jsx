@@ -21,7 +21,7 @@ import { useThemeClasses } from "../utils/useThemeClasses";
 import Hero from "../components/Hero";
 import FAQ from "../components/FAQ";
 import { hero_services as services } from "../data/services";
-
+import Button  from "../components/Button";
 
 const stats = [
   { value: "150+", label: "Projects Delivered" },
@@ -30,28 +30,7 @@ const stats = [
   { value: "24/7", label: "Support" },
 ];
 
-const faqs = [
-  {
-    q: "How long does a typical project take?",
-    a: "Project timelines vary based on complexity. A simple website may take 2–4 weeks, while a custom enterprise application can take 3–6 months. We provide a detailed timeline during the discovery phase.",
-  },
-  {
-    q: "What technologies do you work with?",
-    a: "We work with React, Next.js, Node.js, Python, Flutter, React Native, AWS, MongoDB, PostgreSQL, and many more modern technologies.",
-  },
-  {
-    q: "Do you provide post-launch support?",
-    a: "Yes! We offer maintenance packages including bug fixes, updates, performance monitoring, and feature additions after launch.",
-  },
-  {
-    q: "How much does a project cost?",
-    a: "Pricing depends on scope, complexity, and timeline. We provide transparent, detailed quotes after an initial consultation. Contact us for a free estimate.",
-  },
-  {
-    q: "Can you work with my existing team?",
-    a: "Absolutely. We can work as an extension of your in-house team, providing additional expertise and resources when needed.",
-  },
-];
+
 
 export default function HomePage() {
   const [openFaq, setOpenFaq] = useState(null);
@@ -98,9 +77,13 @@ export default function HomePage() {
           </div>
 
           <div className="text-center mt-12">
-            <Link to="/services" className="btn-secondary">
-              Explore All Services <HiArrowRight />
-            </Link>
+            <Button
+              variant="outline"
+              to="/services"
+              rightIcon={<HiArrowRight />}
+            >
+              Explore All Services
+            </Button>
           </div>
         </div>
       </section>
@@ -123,7 +106,7 @@ export default function HomePage() {
                 <br />
                 <span className="gradient-text">Actually Work</span>
               </h2>
-              <p className="text-gray-500 mb-8 leading-relaxed">
+              <p className="text-gray-500 mb-8 leading-relaxed section-subtitle">
                 We're not just developers — we're digital partners who care about your success. Our team brings together expertise, creativity, and
                 technical excellence to deliver solutions that drive real business outcomes.
               </p>
@@ -141,9 +124,13 @@ export default function HomePage() {
                 </div>
               ))}
               <div className="mt-8">
-                <Link to="/about" className="btn-primary">
-                  Learn More About Us <HiArrowRight />
-                </Link>
+                  <Button
+                    variant="primary"
+                    to="/about"
+                    rightIcon={<HiArrowRight />}
+                  >
+                    Learn More About Us
+                  </Button>
               </div>
             </motion.div>
 
@@ -169,22 +156,24 @@ export default function HomePage() {
                       </div>
                     ))}
                   </div>
-                  <div className="flex gap-3">
-                    <a
-                      href="tel:+94753125140"
-                      className="flex-1 flex items-center justify-center gap-2 py-3 bg-white text-blue-600 rounded-xl font-semibold text-sm hover:bg-blue-50 transition-colors"
-                    >
-                      <FaPhone /> Call Us
-                    </a>
-                    <a
-                      href="https://wa.me/94769747244"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex-1 flex items-center justify-center gap-2 py-3 bg-green-500 text-white rounded-xl font-semibold text-sm hover:bg-green-600 transition-colors"
-                    >
-                      <FaWhatsapp /> WhatsApp
-                    </a>
-                  </div>
+                  <div className="flex gap-3 justify-end">
+                      <Button
+                        variant="phone"
+                        href="tel:+94753125140"
+                        leftIcon={<FaPhone />}
+                      >
+                        Call Us
+                      </Button>
+                  <Button
+                    variant="whatsapp"
+                    href="https://wa.me/94769747244"
+                    target="_blank"
+                    rel="noreferrer"
+                    leftIcon={<FaWhatsapp />}
+                  >
+                    WhatsApp
+                  </Button> 
+                 </div>
                 </div>
               </div>
             </motion.div>
@@ -199,21 +188,27 @@ export default function HomePage() {
       <section className="py-20 bg-hero-gradient dark-grid">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <div className="text-4xl mb-6">🚀</div>
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 className="font-display section-title text-3xl md:text-4xl font-bold  mb-4">
               Let's Build Your Next <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">Digital Project!</span>
             </h2>
-            <p className="text-gray-300 mb-8 text-lg">Have an idea? Let's turn it into reality. Get a free consultation today.</p>
+            <p className="text-gray-500 mb-8 text-lg">Have an idea? Let's turn it into reality. Get a free consultation today.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/start-project" className="btn-primary text-base px-8 py-4">
-                <FaRocket /> Start Your Project
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold border-2 border-white/20 text-white hover:bg-white/10 transition-all"
-              >
-                Contact Us <HiArrowRight />
-              </Link>
+            <Button
+              variant="primary"
+              size="md"
+              to="/start-project"
+              leftIcon={<FaRocket />}
+            >
+              Start Your Project
+            </Button>
+            <Button
+              variant="secondary"
+              size="md"
+              to="/contact"
+              rightIcon={<HiArrowRight />}
+            >
+              Contact Us
+            </Button>
             </div>
           </motion.div>
         </div>

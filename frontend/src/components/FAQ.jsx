@@ -46,7 +46,7 @@ export default function FAQ() {
               whileInView="show"
               viewport={{ once: true }}
               custom={1}
-              className="font-display text-3xl md:text-4xl font-extrabold text-foreground tracking-tight"
+              className="font-display text-3xl md:text-4xl font-extrabold text-foreground tracking-tight section-title"
             >
               Frequently Asked <span className="gradient-text">Questions</span>
             </motion.h2>
