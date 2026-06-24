@@ -19,9 +19,9 @@ export default function Footer() {
 
   return (
     <footer className="bg-background text-foreground border-t border-border/40">
-      <div className=" mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14">
-        <div className="rounded-[2rem] border border-border/60 bg-card/80 backdrop-blur-xl px-6 sm:px-8 lg:px-10 py-10 shadow-[0_18px_45px_rgba(15,23,42,0.06)]">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12 items-start text-center lg:text-left">
+      <div className=" mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="rounded-[2rem] border border-border/60 bg-card/80 backdrop-blur-xl px-6 sm:px-8 lg:px-10 py-6 shadow-[0_18px_45px_rgba(15,23,42,0.06)]">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12 items-start text-center mt-2 lg:text-left">
             <div className="space-y-4 flex flex-col items-center lg:items-start">
               <Link to="/" className="flex flex-col items-center lg:flex-row gap-3">
                 <img src={logo} alt="NexCode" className="w-10 h-10 rounded-xl object-cover bg-background ring-1 ring-border/50 shadow-sm" />
@@ -89,17 +89,17 @@ export default function Footer() {
                   </a>
                 ))}
               </div>
-              <p className={`text-xs ${themeClasses.text.secondary} max-w-xs`}>
+              <p className={`text-s ${themeClasses.text.secondary} max-w-xs`}>
                 Available for web, mobile, and custom system builds with theme-aware design support.
               </p>
             </div>
           </div>
 
           <div className="mt-8 pt-5 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-            <p className={`text-xs ${themeClasses.text.secondary}`}>
+            <p className={`text-sm ${themeClasses.text.secondary}`}>
               © {new Date().getFullYear()} NexCode Software Development. All rights reserved.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-4 text-xs">
+            <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
               <a href="#" className={`${themeClasses.text.secondary} hover:text-primary transition-colors`}>
                 Privacy Policy
               </a>

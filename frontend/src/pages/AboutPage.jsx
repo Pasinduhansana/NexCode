@@ -20,6 +20,13 @@ const stats = [
   { value: "100%", label: "Sri Lankan Team", description: "Local talent, global standards" },
 ];
 
+const STATS = [
+  { value: "150+", label: "Projects Delivered" },
+  { value: "98%", label: "Client Satisfaction" },
+  { value: "7", label: "Service Domains" },
+  { value: "24/7", label: "Support" },
+];
+
 const timeline = [
   { year: "2019", title: "Founded", description: "NexCode was born with a mission to deliver world-class software from Sri Lanka." },
   { year: "2020", title: "First 20 Clients", description: "Rapidly grew our portfolio across web development and mobile applications." },
@@ -80,7 +87,7 @@ export default function AboutPage() {
       {/* ──────────────────────────────────────────────────────────────
           § 1 HERO — Cinematic banner opener
       ────────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-background dark-grid">
+      <section className="relative min-h-[100vh] flex items-center overflow-hidden bg-background dark-grid">
         {/* Ambient background glows */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
@@ -136,6 +143,23 @@ export default function AboutPage() {
                 Get in Touch <HiArrowRight size={15} />
               </Link>
             </motion.div>
+
+
+                          {/* Stats */}
+                          <motion.div
+                            variants={fadeUp}
+                            initial="hidden"
+                            animate="show"
+                            custom={4}
+                            className="grid grid-cols-2 sm:grid-cols-4 w-full  gap-3 pt-8 border-t mt-10 lg:mt-20 border-border"
+                          >
+                            {STATS.map((s, i) => (
+                              <div key={i} className="text-center">
+                                <div className="font-display text-xl md:text-2xl font-extrabold gradient-text leading-none">{s.value}</div>
+                                <div className="text-[10px] text-text_muted mt-1 leading-tight">{s.label}</div>
+                              </div>
+                            ))}
+                          </motion.div>
           </div>
 
           <div className=" mx-auto px-4 sm:px-6 lg:px-8 ">
@@ -303,7 +327,7 @@ export default function AboutPage() {
           § 6 CTA — Dynamic full-bleed banner cta
       ────────────────────────────────────────────────────────────── */}
       <section className="relative py-32 overflow-hidden bg-background">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-700" />
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 via-indigo-900 to-violet-800" />
         <div
           className="absolute inset-0 opacity-[0.1]"
           style={{
@@ -316,7 +340,7 @@ export default function AboutPage() {
           <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
             <h2 className="font-display font-extrabold mb-5 tracking-tight leading-[1.1]" style={{ fontSize: "clamp(2.2rem, 5.5vw, 3.8rem)" }}>
               Ready to Partner <br />
-              <span className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">With NexCode?</span>
+              <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">With NexCode?</span>
             </h2>
             <p className="text-white/70 text-sm md:text-base max-w-lg mx-auto mb-10 leading-relaxed">
               Join 50+ businesses who leverage our digital engineering capabilities to achieve outstanding growth.
