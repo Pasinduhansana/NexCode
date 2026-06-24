@@ -12,7 +12,7 @@ export default function ServiceCard({
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
+      transition={{ duration: 0.5, delay: 0 }}
       whileHover={{ y: -6 }}
       className="group relative rounded-2xl p-[1px] overflow-hidden"
     >
