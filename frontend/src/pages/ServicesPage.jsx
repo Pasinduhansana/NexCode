@@ -27,103 +27,11 @@ import {
 import { FaRocket, FaWhatsapp } from "react-icons/fa";
 import usePageTitle from "../utils/usePageTitle";
 import FAQ from "../components/FAQ";
+import { services } from "../data/services";
 
 /* ═══════════════════════════════════════════════════════════════════════
    DATA
 ═══════════════════════════════════════════════════════════════════════ */
-const SERVICES = [
-  {
-    id: "web",
-    icon: HiGlobe,
-    title: "Web Development",
-    tagline: "Blazing-fast & SEO-ready",
-    description:
-      "High-performance web applications using React, Next.js & full-stack technologies. From polished marketing sites to complex enterprise portals built for speed and scale.",
-    features: ["React / Next.js / Vue.js", "REST & GraphQL APIs", "E-commerce Solutions", "CMS Integration", "Performance Optimisation"],
-    accent: "#3b82f6",
-    rgb: "59,130,246",
-    from: "from-blue-500",
-    to: "to-indigo-600",
-  },
-  {
-    id: "mobile",
-    icon: HiDeviceMobile,
-    title: "Mobile Development",
-    tagline: "iOS & Android excellence",
-    description:
-      "Native iOS and Android apps plus cross-platform solutions with React Native and Flutter — delivering experiences users love and businesses depend on.",
-    features: ["React Native / Flutter", "iOS & Android Native", "Push Notifications", "Offline-First Support", "App Store Deployment"],
-    accent: "#a855f7",
-    rgb: "168,85,247",
-    from: "from-purple-500",
-    to: "to-violet-600",
-  },
-  {
-    id: "software",
-    icon: HiCode,
-    title: "Custom Software",
-    tagline: "Tailored to your workflow",
-    description:
-      "End-to-end bespoke software built specifically for your business — from workflow automation and ERPs to full SaaS product development.",
-    features: ["Business Process Automation", "ERP & CRM Systems", "API Development", "Legacy Modernisation", "SaaS Development"],
-    accent: "#6366f1",
-    rgb: "99,102,241",
-    from: "from-indigo-500",
-    to: "to-purple-600",
-  },
-  {
-    id: "design",
-    icon: HiColorSwatch,
-    title: "UI/UX Design",
-    tagline: "Design that converts",
-    description:
-      "Research-driven design that delights and converts. Wireframes, prototypes, and pixel-perfect interfaces aligned to measurable business goals.",
-    features: ["User Research", "Wireframing & Prototyping", "Figma Design Systems", "Brand Identity", "Usability Testing"],
-    accent: "#ec4899",
-    rgb: "236,72,153",
-    from: "from-pink-500",
-    to: "to-rose-600",
-  },
-  {
-    id: "cloud",
-    icon: HiCloud,
-    title: "Cloud Solutions",
-    tagline: "Scale with confidence",
-    description:
-      "Resilient cloud infrastructure on AWS, Azure, and GCP. We handle migration, architecture design, CI/CD and ongoing DevOps management.",
-    features: ["AWS / Azure / GCP", "Cloud Migration", "Docker & Kubernetes", "CI/CD Pipelines", "Cost Optimisation"],
-    accent: "#0ea5e9",
-    rgb: "14,165,233",
-    from: "from-sky-500",
-    to: "to-cyan-600",
-  },
-  {
-    id: "ai",
-    icon: HiChip,
-    title: "AI & Automation",
-    tagline: "Intelligent by design",
-    description:
-      "Harness AI to automate tasks, gain deep insights from data, and embed intelligence into your products — making every process smarter.",
-    features: ["Machine Learning Models", "NLP & Chatbots", "Process Automation", "Data Analytics", "Computer Vision"],
-    accent: "#06b6d4",
-    rgb: "6,182,212",
-    from: "from-cyan-500",
-    to: "to-teal-600",
-  },
-  {
-    id: "database",
-    icon: HiDatabase,
-    title: "Database & Systems",
-    tagline: "Built for reliability",
-    description:
-      "Robust database design, migration, and optimisation ensuring your data infrastructure scales reliably alongside your growing business.",
-    features: ["MongoDB / PostgreSQL", "Database Architecture", "Data Migration", "Performance Tuning", "Backup & Recovery"],
-    accent: "#f97316",
-    rgb: "249,115,22",
-    from: "from-orange-500",
-    to: "to-amber-600",
-  },
-];
 
 const PROCESS = [
   {
@@ -481,7 +389,7 @@ export default function ServicesPage() {
               transition={{ duration: 0.75, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="hidden lg:grid grid-cols-3 gap-3"
             >
-              {SERVICES.map((svc, i) => (
+              {services.map((svc, i) => (
                 <motion.div
                   key={svc.id}
                   animate={{ y: [0, i % 2 === 0 ? -10 : 8, 0] }}
@@ -539,7 +447,7 @@ export default function ServicesPage() {
 
           {/* 4-col grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {SERVICES.map((svc, i) => (
+            {services.map((svc, i) => (
               <ServiceCard key={svc.id} service={svc} index={i} onSelect={setSelected} />
             ))}
           </div>
@@ -569,7 +477,7 @@ export default function ServicesPage() {
           </div>
 
           <div className="space-y-28">
-            {SERVICES.map((svc, i) => {
+            {services.map((svc, i) => {
               const isRight = i % 2 === 1;
               return (
                 <motion.div

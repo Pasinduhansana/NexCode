@@ -20,51 +20,8 @@ import usePageTitle from "../utils/usePageTitle";
 import { useThemeClasses } from "../utils/useThemeClasses";
 import Hero from "../components/Hero";
 import FAQ from "../components/FAQ";
+import { hero_services as services } from "../data/services";
 
-const services = [
-  {
-    icon: HiGlobe,
-    title: "Web Development",
-    description: "Modern, responsive websites and web applications built with cutting-edge frameworks for maximum performance.",
-    gradient: "bg-gradient-to-br from-blue-500 to-blue-700",
-  },
-  {
-    icon: HiDeviceMobile,
-    title: "Mobile App Development",
-    description: "Native and cross-platform mobile apps for iOS and Android that deliver seamless user experiences.",
-    gradient: "bg-gradient-to-br from-purple-500 to-purple-700",
-  },
-  {
-    icon: HiCode,
-    title: "Custom Software Development",
-    description: "Tailored enterprise software solutions built to match your exact business requirements and workflows.",
-    gradient: "bg-gradient-to-br from-indigo-500 to-indigo-700",
-  },
-  {
-    icon: HiColorSwatch,
-    title: "UI/UX Design",
-    description: "Beautiful, intuitive user interfaces crafted with attention to detail and user psychology for maximum engagement.",
-    gradient: "bg-gradient-to-br from-pink-500 to-pink-700",
-  },
-  {
-    icon: HiCloud,
-    title: "Cloud Solutions",
-    description: "Scalable cloud infrastructure, migration services, and cloud-native application development on AWS, Azure, and GCP.",
-    gradient: "bg-gradient-to-br from-sky-500 to-sky-700",
-  },
-  {
-    icon: HiChip,
-    title: "AI & Automation Solutions",
-    description: "Intelligent automation, machine learning integration, and AI-powered tools to supercharge your business operations.",
-    gradient: "bg-gradient-to-br from-cyan-500 to-teal-600",
-  },
-  {
-    icon: HiDatabase,
-    title: "Database & System Development",
-    description: "Robust database architecture, optimization, and enterprise system development for high-performance operations.",
-    gradient: "bg-gradient-to-br from-orange-500 to-orange-700",
-  },
-];
 
 const stats = [
   { value: "150+", label: "Projects Delivered" },
