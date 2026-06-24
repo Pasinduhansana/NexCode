@@ -17,8 +17,8 @@ const navLinks = [
 const themeUi = {
   light: {
     navScrolled: "bg-white/92 backdrop-blur-xl  shadow-[0_10px_30px_rgba(15,23,42,0.08)]",
-    navTop: "bg-white/75 backdrop-blur-xl ",
-    linkActive: "text-primary bg-slate-100/80 ",
+    navTop: "bg-trasparent backdrop-blur-xl ",
+    linkActive: "text-primary bg-slate-100/80 py-[8px] ",
     linkIdle: "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80",
     toggleBtn: "bg-slate-100 border-none text-slate-700  hover:bg-slate-200",
     dropdown: "bg-white border-slate-200 shadow-[0_12px_28px_rgba(15,23,42,0.14)]",
@@ -32,8 +32,8 @@ const themeUi = {
 
   dark: {
     navScrolled: "bg-slate-950/90 backdrop-blur-xl  shadow-[0_14px_34px_rgba(2,6,23,0.55)]",
-    navTop: "bg-slate-950/74 backdrop-blur-xl ",
-    linkActive: "bg-primary/25 text-blue-200",
+    navTop: "bg-trasparent backdrop-blur-xl ",
+    linkActive: "bg-primary/25 text-blue-200 py-[8px]",
     linkIdle: "text-slate-300 hover:text-white hover:bg-white/10",
     toggleBtn: "bg-slate-800 text-slate-200 border-none hover:bg-slate-700",
     dropdown: "bg-slate-900 border-slate-700 shadow-[0_14px_34px_rgba(2,6,23,0.6)]",
@@ -45,18 +45,18 @@ const themeUi = {
       "inline-flex items-center justify-center px-4 py-2 rounded-lg text-xs font-semibold bg-blue-500/80 duration-200 transition-all text-white/80 hover:bg-blue-500 shadow-sm",
   },
   primary: {
-    navScrolled: "bg-gradient-to-r from-primary/20 via-card/94 to-accent/20 backdrop-blur-xl shadow-[0_12px_30px_rgba(6,182,212,0.18)]",
-    navTop: "bg-gradient-to-r from-primary/14 via-card/88 to-accent/14 backdrop-blur-xl",
-    linkActive: "bg-primary/18 text-primary ring-1 ring-primary/35",
+    navScrolled: "bg-white/92 backdrop-blur-xl shadow-[0_12px_30px_rgba(6,182,212,0.18)]",
+    navTop: "bg-trasparent backdrop-blur-xl",
+    linkActive: "bg-primary text-white py-[8px] ",
     linkIdle: "text-slate-700 hover:text-slate-900 hover:bg-slate-100/20",
-    toggleBtn: "border-white/40 text-foreground border-1 hover:bg-primary/22 ",
-    dropdown: "bg-blue-400/10 border-blue-500/50 border-1 shadow-[0_12px_28px_rgba(15,23,42,0.14)]",
+    toggleBtn: "border-blue-500/50 text-foreground border-1 hover:bg-primary/22 ",
+    dropdown: "bg-blue-400/10 border-blue-500/10 border-1 shadow-[0_12px_28px_rgba(15,23,42,0.14)]",
     dropdownItemActive: "bg-primary/14 text-primary",
     dropdownItemIdle: "text-foreground hover:bg-primary/10",
     mobilePanel: "bg-card/95 border-t border-primary/25",
     mobileLinkIdle: "text-foreground hover:bg-primary/12",
     ctaBtn:
-      "inline-flex items-center justify-center px-4 py-2 rounded-lg text-xs font-semibold bg-legacyPrimary-500 duration-200 transition-all text-white/80 hover:bg-legacyPrimary-600 shadow-sm",
+      "inline-flex  items-center justify-center px-4 py-2 rounded-lg text-xs font-semibold bg-btn-gradient hover:bg-btn-gradient-hover duration-200 transition-all text-white/90 hover:text-white hover:bg-blue-500 shadow-sm",
   },
 };
 
