@@ -26,6 +26,7 @@ import {
 } from "react-icons/hi";
 import { FaRocket, FaWhatsapp } from "react-icons/fa";
 import usePageTitle from "../utils/usePageTitle";
+import FAQ from "../components/FAQ";
 
 /* ═══════════════════════════════════════════════════════════════════════
    DATA
@@ -887,85 +888,7 @@ export default function ServicesPage() {
       {/* ──────────────────────────────────────────────────────────────
           § 6  FAQ accordion
       ────────────────────────────────────────────────────────────── */}
-      <section className="py-24 bg-background">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center text-center mb-12">
-            <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
-              <SectionLabel>Common Questions</SectionLabel>
-            </motion.div>
-            <motion.h2
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              custom={1}
-              className="font-display text-3xl md:text-4xl font-extrabold text-foreground tracking-tight"
-            >
-              Frequently Asked <span className="gradient-text">Questions</span>
-            </motion.h2>
-          </div>
-
-          <div className="space-y-3">
-            {[
-              {
-                q: "How long does a typical project take?",
-                a: "Timelines vary by scope. A simple website takes 2–4 weeks; a full enterprise application typically 3–6 months. We provide a detailed timeline after the discovery session.",
-              },
-              {
-                q: "What technologies do you work with?",
-                a: "React, Next.js, Node.js, Python, Flutter, React Native, AWS, MongoDB, PostgreSQL and many more modern technologies — always selected to best serve your specific needs.",
-              },
-              {
-                q: "Do you provide post-launch support?",
-                a: "Yes — we offer maintenance packages covering bug fixes, updates, performance monitoring and feature additions. Long-term partnerships are our preference.",
-              },
-              {
-                q: "How much does a project cost?",
-                a: "Pricing depends on scope, complexity and timeline. We provide transparent, itemised quotes after an initial free consultation. No hidden costs, ever.",
-              },
-              {
-                q: "Can you integrate with our existing systems?",
-                a: "Absolutely. We specialise in API integration, legacy system modernisation and working as an extension of your existing team without friction.",
-              },
-            ].map((faq, i) => (
-              <motion.div
-                key={i}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-                custom={i}
-                className="rounded-2xl border border-border bg-card overflow-hidden"
-              >
-                <button
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full px-6 py-5 text-left flex items-center justify-between gap-4 hover:bg-muted/30 transition-colors"
-                >
-                  <span className="font-semibold text-foreground text-sm">{faq.q}</span>
-                  <HiChevronDown
-                    className={`flex-shrink-0 text-primary transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`}
-                    size={18}
-                  />
-                </button>
-                <AnimatePresence>
-                  {openFaq === i && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-6 pb-5 text-sm text-text_secondary leading-relaxed border-t border-border pt-4">{faq.a}</div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      <FAQ/>
       {/* ──────────────────────────────────────────────────────────────
           § 7  CTA BANNER — full-bleed gradient
       ────────────────────────────────────────────────────────────── */}

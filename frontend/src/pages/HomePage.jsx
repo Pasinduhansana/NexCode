@@ -19,6 +19,7 @@ import ServiceCard from "../components/ServiceCard";
 import usePageTitle from "../utils/usePageTitle";
 import { useThemeClasses } from "../utils/useThemeClasses";
 import Hero from "../components/Hero";
+import FAQ from "../components/FAQ";
 
 const services = [
   {
@@ -235,40 +236,7 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <h2 className="section-title mb-4">
-              Frequently Asked <span className="gradient-text">Questions</span>
-            </h2>
-            <p className="section-subtitle">Everything you need to know about working with NexCode.</p>
-          </div>
-          <div className="space-y-3">
-            {faqs.map((faq, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.07 }}
-                className="bg-white rounded-2xl border border-gray-100 overflow-hidden"
-              >
-                <button
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full px-6 py-5 text-left flex items-center justify-between gap-4"
-                >
-                  <span className="font-medium text-gray-900 text-sm">{faq.q}</span>
-                  <HiChevronDown
-                    className={`flex-shrink-0 text-blue-500 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`}
-                    size={20}
-                  />
-                </button>
-                {openFaq === i && <div className="px-6 pb-5 text-sm text-gray-500 leading-relaxed border-t border-gray-50 pt-4">{faq.a}</div>}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+       <FAQ />
 
       {/* CTA BANNER */}
       <section className="py-20 bg-hero-gradient dark-grid">
