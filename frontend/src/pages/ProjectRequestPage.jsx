@@ -244,18 +244,18 @@ export default function ProjectRequestPage() {
               </div>
             )}
 
-            <div className="flex gap-3 mt-8 self-end">
+            <div className="flex flex-col sm:flex-row gap-3 mt-8 self-stretch sm:self-end">
               {step > 1 && (
-                <Button variant="radio" leftIcon={<FaArrowLeft />} onClick={() => setStep((s) => s - 1)}>
+                  <Button variant="radio" leftIcon={<FaArrowLeft />} onClick={() => setStep((s) => s - 1)} className="w-full sm:w-auto">
                   Back
                 </Button>
               )}
               {step < 3 ? (
-                <Button variant="primary" rightIcon={<FaArrowRight />} onClick={() => setStep((s) => s + 1)}>
+                  <Button variant="primary" rightIcon={<FaArrowRight />} onClick={() => setStep((s) => s + 1)} className="w-full sm:w-auto">
                   Continue
                 </Button>
               ) : (
-                <Button variant="primary" rightIcon={<FaRocket />} onClick={handleSubmit} disabled={loading}>
+                  <Button variant="primary" rightIcon={<FaRocket />} onClick={handleSubmit} disabled={loading} className="w-full sm:w-auto">
                   {loading ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Submitting...

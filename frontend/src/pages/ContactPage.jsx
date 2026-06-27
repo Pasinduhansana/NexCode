@@ -58,11 +58,11 @@ export default function ContactPage() {
       <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-background dark-grid">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
-            className="absolute -top-32 -left-32 w-[650px] h-[650px] rounded-full animate-pulse-slow"
+            className="absolute hidden sm:block -top-32 -left-32 w-[650px] h-[650px] rounded-full animate-pulse-slow"
             style={{ background: "radial-gradient(circle, rgba(54,153,243,0.12) 0%, transparent 65%)" }}
           />
           <div
-            className="absolute top-1/4 right-[-10%] w-[580px] h-[580px] rounded-full animate-float"
+            className="absolute hidden sm:block top-1/4 right-[-10%] w-[580px] h-[580px] rounded-full animate-float"
             style={{ background: "radial-gradient(circle, rgba(6,182,212,0.13) 0%, transparent 65%)", animationDelay: "1s" }}
           />
         </div>
@@ -82,10 +82,10 @@ export default function ContactPage() {
               </p>
 
               <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-8">
-                <Button variant="primary" rightIcon={<HiMail size={20}/>} href="mailto:info@nexcode.lk" >
+                <Button variant="primary" rightIcon={<HiMail size={20}/>} href="mailto:info@nexcode.lk" className="w-full sm:w-auto">
                   Email Us
                 </Button>
-                <Button variant="whatsapp" leftIcon={<FaWhatsapp size={18}/>} href="https://wa.me/94769747244" target="_blank" rel="noreferrer" >
+                <Button variant="whatsapp" leftIcon={<FaWhatsapp size={18}/>} href="https://wa.me/94769747244" target="_blank" rel="noreferrer" className="w-full sm:w-auto">
                   WhatsApp
                 </Button>
               </div>
@@ -251,7 +251,7 @@ export default function ContactPage() {
                   {errors.message && <p className="text-red-500 text-xs mt-1 text-left">{errors.message}</p>}
                 </div>
 
-                <Button variant="primary" type="submit" disabled={loading} rightIcon={<HiOutlineChat/> } className="self-end">
+                <Button variant="primary" type="submit" disabled={loading} rightIcon={<HiOutlineChat/> } className="w-full sm:w-auto sm:self-end">
                   {loading ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />

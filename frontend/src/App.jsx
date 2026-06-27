@@ -38,7 +38,7 @@ const ProtectedRoute = ({ children }) => {
 const PublicLayout = ({ children }) => (
   <>
     <Navbar />
-    <main>{children}</main>
+    <main className="pt-16 sm:pt-20">{children}</main>
     <Footer />
   </>
 );

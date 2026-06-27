@@ -82,7 +82,7 @@ export default function Navbar() {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navbarBg}`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="flex items-center justify-between h-16 py-3">
+        <div className="flex items-center justify-between h-14 sm:h-16 py-2 sm:py-3">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
             <img src={logo} alt="NexCode" className="w-8 h-8 rounded-lg object-cover shadow-md group-hover:scale-110 transition-transform" />
@@ -177,7 +177,7 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className={`md:hidden ${ui.mobilePanel}`}
+            className={`md:hidden max-h-[calc(100dvh-3.5rem)] overflow-y-auto ${ui.mobilePanel}`}
           >
             <div className="px-4 py-3 space-y-2">
               {[
@@ -200,7 +200,7 @@ export default function Navbar() {
                 </button>
               ))}
             </div>
-            <div className={`px-4 py-3 space-y-2`}>
+            <div className="px-4 pb-4 pt-2 space-y-2">
               {navLinks.map((link) => (
                 <Link
                   key={link.path}
@@ -212,15 +212,9 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <Button size="sm" variant="navbar" to="/start-project" className="w-full mt-2 sm:hidden">
+              <Button size="sm" variant="navbar" to="/start-project" className="w-full mt-2">
                 Start Project
               </Button>
-              <Link
-                to="/admin-panel"
-                className="block px-3 py-2 rounded-lg text-xs font-medium border border-blue-200/70 text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors text-center"
-              >
-                Admin Panel
-              </Link>
             </div>
           </motion.div>
         )}

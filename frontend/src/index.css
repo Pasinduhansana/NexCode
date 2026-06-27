@@ -6,9 +6,29 @@
   html {
     scroll-behavior: smooth;
   }
+  body,
+  #root {
+    min-height: 100%;
+  }
   body {
     font-family: "DM Sans", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
     @apply bg-background text-foreground text-sm;
+  }
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+  button,
+  input,
+  textarea,
+  select {
+    font-size: 16px;
   }
   h1 {
     @apply text-2xl md:text-3xl lg:text-4xl;

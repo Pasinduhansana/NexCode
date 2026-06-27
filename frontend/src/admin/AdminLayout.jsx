@@ -39,7 +39,7 @@ export default function AdminLayout() {
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
       {/* Logo */}
-      <div className="p-6 border-b border-gray-800">
+      <div className="p-5 sm:p-6 border-b border-gray-800">
         <div className="flex items-center gap-3">
           <img src={logo} alt="NexCode" className="w-9 h-9 rounded-xl object-cover bg-white" />
           <div>
@@ -94,7 +94,7 @@ export default function AdminLayout() {
   );
 
   return (
-    <div className="flex h-screen bg-gray-950 overflow-hidden">
+    <div className="flex h-dvh bg-gray-950 overflow-hidden">
       {/* Desktop Sidebar */}
       <div className="hidden lg:flex w-64 flex-shrink-0 flex-col bg-gray-900 border-r border-gray-800">
         <SidebarContent />
@@ -116,7 +116,7 @@ export default function AdminLayout() {
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: 'spring', damping: 25 }}
-              className="lg:hidden fixed left-0 top-0 bottom-0 w-64 bg-gray-900 z-50 border-r border-gray-800"
+              className="lg:hidden fixed left-0 top-0 bottom-0 w-[85vw] max-w-xs bg-gray-900 z-50 border-r border-gray-800 overflow-y-auto"
             >
               <SidebarContent />
             </motion.div>
@@ -127,7 +127,7 @@ export default function AdminLayout() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Bar */}
-        <header className="h-16 bg-gray-900 border-b border-gray-800 flex items-center justify-between px-6 flex-shrink-0">
+        <header className="h-16 bg-gray-900 border-b border-gray-800 flex items-center justify-between px-4 sm:px-6 flex-shrink-0 gap-3">
           <button
             onClick={() => setSidebarOpen(true)}
             className="lg:hidden p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800"
@@ -145,7 +145,7 @@ export default function AdminLayout() {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto bg-gray-950 p-6">
+        <main className="flex-1 overflow-y-auto bg-gray-950 p-4 sm:p-6">
           <Outlet />
         </main>
       </div>

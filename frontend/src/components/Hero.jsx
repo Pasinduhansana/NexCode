@@ -639,7 +639,7 @@ export default function Hero({ stats = [] }) {
 
       {/* ══ LARGE WATERMARK TEXT ════════════════════════════════ */}
       <div
-        className="absolute inset-0 flex flex-col items-center justify-center
+        className="absolute inset-0 hidden sm:flex flex-col items-center justify-center
                       pointer-events-none select-none overflow-hidden"
         style={{ zIndex: 1 }}
       >
@@ -684,7 +684,7 @@ export default function Hero({ stats = [] }) {
           Perspective wrapper → motion div (lid unfold) →
           tilt wrapper (mouse parallax) → laptop + floating cards
       */}
-      <div className="relative z-10 w-full h-auto flex justify-center items-start " style={{ perspective: "1100px" }}>
+      <div className="relative z-10 hidden lg:flex w-full h-auto justify-center items-start px-3 sm:px-5" style={{ perspective: "1100px" }}>
         {/* lid unfold motion */}
         <motion.div
           animate={lidCtrl}
@@ -693,7 +693,7 @@ export default function Hero({ stats = [] }) {
             transformOrigin: "50% 80%" /* rotate around the base hinge */,
             willChange: "transform,opacity",
           }}
-          className="relative flex justify-center items-center "
+          className="relative flex justify-center items-center"
         >
           {/* parallax tilt wrapper */}
           <div

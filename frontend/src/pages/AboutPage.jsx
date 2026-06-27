@@ -92,17 +92,17 @@ export default function AboutPage() {
         {/* Ambient background glows */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
-            className="absolute -top-32 -left-32 w-[650px] h-[650px] rounded-full animate-pulse-slow"
+            className="absolute hidden sm:block -top-32 -left-32 w-[650px] h-[650px] rounded-full animate-pulse-slow"
             style={{ background: "radial-gradient(circle, rgba(54,153,243,0.12) 0%, transparent 65%)" }}
           />
           <div
-            className="absolute top-1/4 right-[-10%] w-[580px] h-[580px] rounded-full animate-float"
+            className="absolute hidden sm:block top-1/4 right-[-10%] w-[580px] h-[580px] rounded-full animate-float"
             style={{ background: "radial-gradient(circle, rgba(6,182,212,0.13) 0%, transparent 65%)", animationDelay: "1s" }}
           />
         </div>
 
-        <div className="flex flex-row justify-between items-center mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="relative z-10 w-auto  flex flex-col items-start  text-left pt-32 pb-24">
+        <div className="grid w-full grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-14 items-center mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 sm:py-28 lg:py-32">
+          <div className="relative z-10 w-full flex flex-col items-center lg:items-start text-center lg:text-left">
             <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
               <SectionLabel icon={HiSparkles}>About NexCode</SectionLabel>
             </motion.div>
@@ -130,7 +130,7 @@ export default function AboutPage() {
               digital solutions. We engineer for scale, stability, and speed.
             </motion.p>
 
-            <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="flex flex-wrap gap-4 justify-center">
+            <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="flex flex-wrap gap-4 justify-center lg:justify-start">
                 <Button variant="primary" rightIcon={<HiChevronDoubleRight size={20} />} to="/start-project">
                   Start Your Project
                 </Button>
@@ -147,7 +147,7 @@ export default function AboutPage() {
                             initial="hidden"
                             animate="show"
                             custom={4}
-                            className="grid grid-cols-2 sm:grid-cols-4 w-full  gap-3 pt-8 border-t mt-10 lg:mt-20 border-border"
+                            className="grid grid-cols-2 sm:grid-cols-4 w-full gap-3 pt-8 border-t mt-10 border-border"
                           >
                             {STATS.map((s, i) => (
                               <div key={i} className="text-center">
@@ -158,8 +158,8 @@ export default function AboutPage() {
                           </motion.div>
           </div>
 
-          <div className=" mx-auto px-4 sm:px-6 lg:px-8 ">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+          <div className="w-full mx-auto px-0 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
               {stats.map((s, i) => (
                 <motion.div
                   key={i}

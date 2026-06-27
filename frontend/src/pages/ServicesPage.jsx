@@ -307,21 +307,21 @@ export default function ServicesPage() {
         {/* Ambient orbs — use CSS vars so they respond to any background */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
-            className="absolute -top-40 -left-40 w-[680px] h-[680px] rounded-full animate-pulse-slow"
+            className="absolute hidden sm:block -top-40 -left-40 w-[680px] h-[680px] rounded-full animate-pulse-slow"
             style={{ background: "radial-gradient(circle, rgba(54,153,243,0.14) 0%, transparent 65%)" }}
           />
           <div
-            className="absolute top-1/3 right-[-12%] w-[520px] h-[520px] rounded-full animate-float"
+            className="absolute hidden sm:block top-1/3 right-[-12%] w-[520px] h-[520px] rounded-full animate-float"
             style={{ background: "radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 65%)" }}
           />
           <div
-            className="absolute bottom-[-8%] left-[28%] w-[400px] h-[400px] rounded-full animate-pulse-slow"
+            className="absolute hidden sm:block bottom-[-8%] left-[28%] w-[400px] h-[400px] rounded-full animate-pulse-slow"
             style={{ background: "radial-gradient(circle, rgba(168,85,247,0.10) 0%, transparent 65%)", animationDelay: "1.5s" }}
           />
         </div>
 
-        <motion.div style={{ y: heroY, opacity: heroOpacity }} className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.9fr] gap-16 items-center">
+        <motion.div style={{ y: heroY, opacity: heroOpacity }} className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-16 sm:pb-24">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.9fr] gap-12 lg:gap-16 items-center">
             {/* ── Left: headline ── */}
             <div>
               <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
