@@ -2,9 +2,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { HiCheckCircle } from "react-icons/hi";
-import { FaRocket } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaRocket } from "react-icons/fa";
 import api from "../utils/api";
 import usePageTitle from "../utils/usePageTitle";
+import Button from "../components/Button";
 
 const serviceTypes = [
   "Web Development",
@@ -79,16 +80,19 @@ export default function ProjectRequestPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <section className="pt-28 sm:pt-32 pb-16 bg-hero-gradient dark-grid">
+      <section className="pt-28 sm:pt-32 pb-10 bg-hero-gradient dark-grid">
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-            Start Your <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">Project</span>
+          <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">
+            Start Your <span className="text-primary">Project</span>
           </h1>
-          <p className="text-gray-300">Tell us about your idea and we'll build it into reality.</p>
+          <p className="section-subtitle mt-6">
+            Tell us about your idea in detail, and our team will carefully design, develop, and transform it into a fully functional real-world
+            solution tailored to your needs.
+          </p>{" "}
         </div>
       </section>
 
-      <section className="py-12 sm:py-16">
+      <section className="py-5 sm:py-5">
         <div className="max-w-2xl mx-auto px-4">
           {/* Progress */}
           <div className="flex items-center justify-center gap-2 mb-8 sm:mb-10 overflow-x-auto pb-1">
@@ -96,12 +100,12 @@ export default function ProjectRequestPage() {
               <div key={s} className="flex items-center gap-2">
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
-                    step >= s ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-400"
+                    step >= s ? "bg-primary border border-primary text-white" : "bg-gray-200 text-gray-400"
                   }`}
                 >
                   {s}
                 </div>
-                {s < 3 && <div className={`w-16 h-0.5 transition-all ${step > s ? "bg-blue-600" : "bg-gray-200"}`} />}
+                {s < 3 && <div className={`w-16 h-0.5 transition-all ${step > s ? "bg-primary" : "bg-gray-200"}`} />}
               </div>
             ))}
           </div>
@@ -110,7 +114,7 @@ export default function ProjectRequestPage() {
             key={step}
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-white rounded-3xl p-5 sm:p-8 shadow-sm border border-gray-100"
+            className="bg-white rounded-3xl p-5 sm:p-8 shadow-sm border border-gray-100 flex flex-col "
           >
             {step === 1 && (
               <div className="space-y-4">
@@ -162,14 +166,15 @@ export default function ProjectRequestPage() {
                   <label className="label">Service Type *</label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {serviceTypes.map((type) => (
-                      <button
+                      <Button
+                        variant="radio"
                         key={type}
                         type="button"
                         onClick={() => update("projectType", type)}
-                        className={`px-3 py-2.5 rounded-xl border text-sm font-medium transition-all ${form.projectType === type ? "border-blue-500 bg-blue-50 text-blue-700" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+                        className={`${form.projectType === type ? "border-primary bg-blue-50 text-primary" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
                       >
                         {type}
-                      </button>
+                      </Button>
                     ))}
                   </div>
                 </div>
@@ -201,14 +206,14 @@ export default function ProjectRequestPage() {
                   <label className="label">Expected Timeline</label>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     {timelines.map((t) => (
-                      <button
+                      <Button
                         key={t}
-                        type="button"
+                        variant="radio"
                         onClick={() => update("timeline", t)}
-                        className={`px-3 py-2 rounded-xl border text-xs font-medium transition-all ${form.timeline === t ? "border-blue-500 bg-blue-50 text-blue-700" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+                        className={`${form.timeline === t ? "border-primary bg-blue-50 text-primary" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
                       >
                         {t}
-                      </button>
+                      </Button>
                     ))}
                   </div>
                 </div>
@@ -216,14 +221,14 @@ export default function ProjectRequestPage() {
                   <label className="label">Budget Range</label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {budgets.map((b) => (
-                      <button
+                      <Button
                         key={b}
-                        type="button"
+                        variant="radio"
                         onClick={() => update("budget", b)}
-                        className={`px-3 py-2 rounded-xl border text-xs font-medium transition-all ${form.budget === b ? "border-blue-500 bg-blue-50 text-blue-700" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
+                        className={` ${form.budget === b ? "border-primary bg-blue-50 text-primary" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
                       >
                         {b}
-                      </button>
+                      </Button>
                     ))}
                   </div>
                 </div>
@@ -239,28 +244,26 @@ export default function ProjectRequestPage() {
               </div>
             )}
 
-            <div className="flex gap-3 mt-8">
+            <div className="flex gap-3 mt-8 self-end">
               {step > 1 && (
-                <button onClick={() => setStep((s) => s - 1)} className="btn-ghost flex-1 justify-center">
-                  ← Back
-                </button>
+                <Button variant="radio" leftIcon={<FaArrowLeft />} onClick={() => setStep((s) => s - 1)}>
+                  Back
+                </Button>
               )}
               {step < 3 ? (
-                <button onClick={() => setStep((s) => s + 1)} className="btn-primary flex-1 justify-center">
-                  Continue →
-                </button>
+                <Button variant="primary" rightIcon={<FaArrowRight />} onClick={() => setStep((s) => s + 1)}>
+                  Continue
+                </Button>
               ) : (
-                <button onClick={handleSubmit} disabled={loading} className="btn-primary flex-1 justify-center disabled:opacity-60">
+                <Button variant="primary" rightIcon={<FaRocket />} onClick={handleSubmit} disabled={loading}>
                   {loading ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Submitting...
                     </>
                   ) : (
-                    <>
-                      <FaRocket /> Submit Project Request
-                    </>
+                    <>Submit Project Request</>
                   )}
-                </button>
+                </Button>
               )}
             </div>
           </motion.div>

@@ -151,7 +151,7 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
                 
-            <Button variant="navbar" to="/start-project">
+            <Button size="sm" variant="navbar" to="/start-project">
               Start Project
             </Button>
           </div>
@@ -212,7 +212,7 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <Button variant="navbar" to="/start-project" className="w-full mt-2 sm:hidden">
+              <Button size="sm" variant="navbar" to="/start-project" className="w-full mt-2 sm:hidden">
                 Start Project
               </Button>
               <Link

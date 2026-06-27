@@ -4,7 +4,9 @@ import { motion, useAnimation, useReducedMotion } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
 import laptopMockup from "../../assets/laptop_mockup.png";
 import phoneMockup from "../../assets/phone_mockup.png";
-
+import palm_tree from "../../assets/palm-leave.png";
+import laptop_display from "../../assets/project_image.png";
+import Button from "../components/Button";
 /* ─────────────────────────────────────────────────────────────
    THEME TOKENS
 ───────────────────────────────────────────────────────────── */
@@ -60,7 +62,7 @@ function FloatCard({ style = {}, className = "", children, delay = 0 }) {
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
       className={`absolute rounded-2xl border border-border/40
-                  bg-card/70 backdrop-blur-xl shadow-2xl pointer-events-none ${className}`}
+                  bg-card/70 backdrop-blur-xl shadow-2xl pointer-events-none ${className} `}
       style={style}
     >
       {children}
@@ -152,82 +154,163 @@ function LaptopScreenContent({ theme }) {
       </div>
 
       {/* ── main content ── */}
-      <div className="flex flex-col items-center text-center gap-3 mt-4">
-        {/* badge */}
-        <div
-          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[8px] font-semibold"
-          style={{ background: "rgba(79,123,255,0.14)", border: "1px solid rgba(79,123,255,0.30)", color: accent }}
-        >
-          <span className="w-1 h-1 rounded-full animate-pulse" style={{ background: accent }} />
-          Available for new projects
-        </div>
-
-        {/* headline */}
-        <h1
-          className="font-extrabold leading-[1.08] tracking-tight"
-          style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(14px,2.8vw,28px)", color: textPrimary }}
-        >
-          Empower Your{" "}
-          <em className="not-italic" style={{ color: accent }}>
-            Digital
-          </em>{" "}
-          Growth
-        </h1>
-
-        {/* sub */}
-        <p  style={{ fontSize: "clamp(7px,1.1vw,11px)", lineHeight: 1.6, color: textSecondary, maxWidth: 320 }}>
-          From sleek websites to enterprise systems — NexCode ships software that moves fast, scales further, and delights every user.
-        </p>
-
-        {/* CTA row */}
-        <div className="flex gap-2 flex-wrap justify-center">
-          <button
-            className="inline-flex items-center gap-1.5 rounded-lg font-semibold"
-            style={{
-              background: accent,
-              color: "#fff",
-              fontSize: "clamp(7px,1vw,10px)",
-              padding: "5px 14px",
-              border: "none",
-              cursor: "default",
-            }}
+      <div className="flex flex-row items-start justify-start w-full  text-left gap-3 mt-4">
+        {/* Left Panel */}
+        <div className="flex flex-col items-start justify-start w-full  text-left gap-3">
+          {/* badge */}
+          <div
+            className="inline-flex items-center gap-1.5 px-2.5 py-0 rounded-full text-[8px] font-semibold"
+            style={{ background: "rgba(79,123,255,0.14)", border: "1px solid rgba(79,123,255,0.30)", color: accent }}
           >
-            <IcoRocket width="9" height="9" />
-            Build Your Project
-          </button>
-          <button
-            className="inline-flex items-center gap-1.5 rounded-lg font-medium"
-            style={{
-              background: "transparent",
-              color: textPrimary,
-              fontSize: "clamp(7px,1vw,10px)",
-              padding: "5px 12px",
-              border: `1px solid ${t.screenBorder}`,
-              cursor: "default",
-            }}
-          >
-            View our Work
-            <IcoArrow width="8" height="8" />
-          </button>
-        </div>
+            <span className="w-1 h-1 rounded-full animate-pulse" style={{ background: accent }} />
+            Available for new projects
+          </div>
 
-        {/* mini stat row */}
-        <div className="flex gap-4 mt-1">
-          {[
-            ["98%", "Satisfaction"],
-            ["150+", "Projects"],
-            ["6yr", "Experience"],
-          ].map(([v, l]) => (
-            <div key={l} className="flex flex-col items-center">
-              <span className="font-extrabold" style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(10px,1.6vw,15px)", color: textPrimary }}>
-                {v}
-              </span>
-              <span style={{ fontSize: "clamp(5px,0.75vw,8px)", color: textSecondary, marginTop: 1 }}>{l}</span>
+          {/* headline */}
+          <h1
+            className="font-extrabold leading-[1.08] tracking-tight"
+            style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(14px,2.8vw,28px)", color: textPrimary }}
+          >
+            <span className="pb-2">Scale Your</span>
+            <br />
+            <em className="not-italic mr-2" style={{ color: accent }}>
+              Online
+            </em>
+            Potential
+          </h1>
+
+          {/* sub */}
+          <p style={{ fontSize: "clamp(7px,1.1vw,11px)", lineHeight: 1.6, color: textSecondary, maxWidth: 320 }}>
+            From stunning front-end websites to heavy-duty enterprise architectures, we engineer platforms that scale effortlessly and captivate
+            users.{" "}
+          </p>
+
+          {/* CTA row */}
+          <div className="flex gap-2 flex-wrap justify-center">
+            <Button variant="primary" leftIcon={<IcoRocket width="10" height="10" />} size="xs">
+              Build Your Project
+            </Button>
+
+            <Button variant="secondary" rightIcon={<IcoArrow width="10" height="10" />} size="xs">
+              View our Work
+            </Button>
+          </div>
+
+          {/* mini stat row */}
+          <div className="flex gap-4 mt-5">
+            {[
+              ["98%", "Satisfaction"],
+              ["150+", "Projects"],
+              ["6yr", "Experience"],
+            ].map(([v, l]) => (
+              <div key={l} className="flex flex-col items-center">
+                <span className="font-extrabold" style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(10px,1.6vw,15px)", color: textPrimary }}>
+                  {v}
+                </span>
+                <span style={{ fontSize: "clamp(5px,0.75vw,8px)", color: textSecondary, marginTop: 1 }}>{l}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Right Panel with image */}
+        <div className="w-full relative h-full flex items-center justify-center ">
+          <img src={palm_tree} alt="Palm Tree" className="absolute w-[60%] object-cover -right-10 -bottom-4 z-50" />
+          <div className="w-full scale-125 flex relative  mr-20 mt-16 overflow-hidden">
+            <div className="absolute z-0 inset-0 overflow-hidden  text-center flex items-center justify-center p-3.5 pt-6">
+              <img src={laptop_display} alt="Palm Tree" className="object-cover w-[90%] " />
             </div>
-          ))}
+
+            <img src={laptopMockup} alt="Palm Tree" className="object-cover z-10" />
+          </div>
+
+          {/* Revenue sparkline — mid right */}
+          <FloatCard
+            delay={1.5}
+            style={{
+              top: "5%",
+              right: "0%",
+              width: 120,
+              padding: "12px 14px",
+              transform: "translateZ(42px) rotateX(4deg) rotateY(-8deg)",
+              animation: "hfloat 5s ease-in-out 1.5s infinite",
+            }}
+          >
+            <div className="flex items-center justify-between">
+              <span style={{ fontSize: 7, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.07em" }}>Revenue</span>
+              <span style={{ fontSize: 7, color: "#22c55e", fontWeight: 700 }}>+32%</span>
+            </div>
+            <svg viewBox="0 0 100 16" style={{ width: "100%", overflow: "visible", margin: "6px 0" }}>
+              <defs>
+                <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
+                  <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+              <path d="M0,30 L16,23 L36,27 L54,12 L72,19 L90,7 L100,10 L100,36 L0,36 Z" fill="url(#sparkFill)" />
+              <polyline
+                points="0,30 16,23 36,27 54,12 72,19 90,7 100,10"
+                fill="none"
+                stroke="hsl(var(--primary))"
+                strokeWidth="2.5"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+              <circle cx="100" cy="10" r="3.5" fill="hsl(var(--primary))" />
+            </svg>
+          </FloatCard>
+
+          {/* Deploy notif — bottom left */}
+          <FloatCard
+            delay={1.65}
+            style={{
+              top: "20%",
+              right: "85%",
+              padding: "5px 10px",
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 5,
+              transform: "translateZ(38px) rotateX(6deg) rotateY(8deg)",
+              animation: "hfloat 5s ease-in-out 2.1s infinite",
+            }}
+          >
+            <div
+              className="rounded-lg flex items-center justify-center flex-shrink-0 "
+              style={{ width: 20, height: 20, background: "rgba(79,123,255,0.12)", border: "1px solid rgba(79,123,255,0.22)" }}
+            >
+              <IcoCheck width={12} height={12} style={{ color: "hsl(var(--primary))" }} />
+            </div>
+            <div>
+              <div style={{ fontSize: 7, fontWeight: 600, color: "var(--foreground)", lineHeight: 1.3 }}>Deploy successful</div>
+            </div>
+          </FloatCard>
+
+          {/* Deploy notif — bottom left */}
+          <FloatCard
+            delay={1.65}
+            width={180}
+            style={{
+              bottom: "-10%",
+              right: "95%",
+              padding: "5px 10px",
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 5,
+              transform: "translateZ(38px) rotateX(6deg) rotateY(8deg)",
+              animation: "hfloat 5s ease-in-out 2.1s infinite",
+            }}
+          >
+            <div
+              className="rounded-lg flex items-center justify-center flex-shrink-0 "
+              style={{ width: 20, height: 20, background: "rgba(79,123,255,0.12)", border: "1px solid rgba(79,123,255,0.22)" }}
+            >
+              <IcoCheck width={12} height={12} style={{ color: "hsl(var(--primary))" }} />
+            </div>
+            <div>
+              <div style={{ fontSize: 7, fontWeight: 600, color: "var(--foreground)", lineHeight: 1.3 }}>Validation successful.</div>
+            </div>
+          </FloatCard>
         </div>
       </div>
-
       {/* decorative background watermark inside screen */}
       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none overflow-hidden -z-10" style={{ opacity: 0.06 }}>
         <span
@@ -264,7 +347,7 @@ function PhoneScreenContent({ theme }) {
   return (
     <div className="w-full h-full flex flex-col overflow-hidden select-none" style={{ background: t.phoneScreenBg, color: textPrimary }}>
       {/* status bar */}
-      <div className="flex justify-between px-2 pt-1.5 pb-1 flex-shrink-0" style={{ fontSize: 5, color: textSecondary }}>
+      <div className="flex justify-between px-2 pt-0  flex-shrink-0 " style={{ fontSize: 5, color: textSecondary }}>
         <span>9:41</span>
         <div className="flex gap-1 items-center">
           <span>●●●</span>
@@ -274,11 +357,11 @@ function PhoneScreenContent({ theme }) {
       </div>
 
       {/* nav */}
-      <div className="flex items-center justify-between px-2 py-1 flex-shrink-0" style={{ borderBottom: `1px solid ${t.screenBorder}` }}>
+      <div className="flex items-center justify-between px-2  flex-shrink-0" style={{ borderBottom: `1px solid ${t.screenBorder}` }}>
         <span className="font-extrabold" style={{ fontFamily: "'Syne',sans-serif", fontSize: 8, color: accent }}>
           NexCode
         </span>
-        <div className="w-4 h-4 flex flex-col gap-0.5 justify-center">
+        <div className="w-2 h-4 flex flex-col gap-0.5 justify-center">
           {[0, 1, 2].map((i) => (
             <div key={i} className="rounded-full" style={{ height: 1, background: textSecondary, width: i === 1 ? "60%" : "100%" }} />
           ))}
@@ -286,13 +369,7 @@ function PhoneScreenContent({ theme }) {
       </div>
 
       {/* hero block */}
-      <div className="flex flex-col items-center text-center px-2 pt-2.5 pb-2 gap-2 flex-shrink-0">
-        <div
-          className="rounded-full px-2 py-0.5 text-[5px] font-semibold"
-          style={{ background: "rgba(79,123,255,0.15)", color: accent, border: "0.5px solid rgba(79,123,255,0.3)" }}
-        >
-          ● Available
-        </div>
+      <div className="flex flex-col items-center text-center px-2.5 pt-2.5 pb-2 gap-2 flex-shrink-0">
         <h1 className="font-extrabold leading-tight" style={{ fontFamily: "'Syne',sans-serif", fontSize: 9, color: textPrimary }}>
           Empower Your{" "}
           <em className="not-italic" style={{ color: accent }}>
@@ -300,19 +377,21 @@ function PhoneScreenContent({ theme }) {
           </em>{" "}
           Growth
         </h1>
-        <p style={{ fontSize: 5.5, lineHeight: 1.5, color: textSecondary }}>Software that moves fast and scales further.</p>
-        <button
-          className="rounded-lg w-full font-semibold flex items-center justify-center gap-1"
-          style={{ background: accent, color: "#fff", fontSize: 6, padding: "4px 0", border: "none" }}
+        <p style={{ fontSize: 5.5, lineHeight: 1.5, color: textSecondary }}>Software that moves fast and scales further.We engineer platforms that scale effortlessly and captivate users</p>
+
+        <Button
+          variant="primary"
+          size="xxs"
+          className="rounded-md  font-semibold flex items-center justify-center gap-1 px-2 scale-75"
+          leftIcon={<IcoRocket width={6} height={6} />}
         >
-          <IcoRocket width={6} height={6} /> Build Your Project
-        </button>
+          Build  Project
+        </Button>
       </div>
 
       {/* stats strip */}
       <div
-        className="flex justify-around px-2 py-1.5 flex-shrink-0"
-        style={{ borderTop: `0.5px solid ${t.screenBorder}`, borderBottom: `0.5px solid ${t.screenBorder}` }}
+        className="flex justify-around px-2 flex-shrink-0"
       >
         {[
           ["98%", "Satisfaction"],
@@ -329,7 +408,7 @@ function PhoneScreenContent({ theme }) {
       </div>
 
       {/* mini cards preview */}
-      <div className="flex flex-col gap-1 px-2 pt-1.5">
+      <div className="flex flex-col gap-1 px-2 ">
         <div
           className="rounded-lg p-1.5 flex items-center gap-1.5"
           style={{ background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)", border: `0.5px solid ${t.screenBorder}` }}
@@ -595,9 +674,7 @@ export default function Hero({ stats = [] }) {
           Empower Your <em className="not-italic text-primary">Digital</em> Growth
         </h1>
 
-        <p
-          className="section-subtitle"
-        >
+        <p className="section-subtitle">
           From sleek websites to powerful enterprise systems — NexCode ships software that moves fast, scales further, and delights every user.
         </p>
       </motion.div>
@@ -607,10 +684,7 @@ export default function Hero({ stats = [] }) {
           Perspective wrapper → motion div (lid unfold) →
           tilt wrapper (mouse parallax) → laptop + floating cards
       */}
-      <div
-        className="relative z-10 w-full h-auto flex justify-center items-start "
-        style={{ perspective: "1100px" }}
-      >
+      <div className="relative z-10 w-full h-auto flex justify-center items-start " style={{ perspective: "1100px" }}>
         {/* lid unfold motion */}
         <motion.div
           animate={lidCtrl}
@@ -838,9 +912,9 @@ export default function Hero({ stats = [] }) {
 
             {/* ── tech pills — orbit outside tilt wrap ── */}
             {[
-              { Icon: IcoStack, label: "React + TypeScript", s: { top: "22%", left: "-14%" }, delay: 1.9 },
-              { Icon: IcoDb, label: "Node.js API", s: { top: "50%", right: "-16%" }, delay: 2.1 },
-              { Icon: IcoMonitor, label: "Cloud Deployed", s: { bottom: "22%", left: "36%" }, delay: 2.3 },
+              { Icon: IcoStack, label: "React + TypeScript", s: { top: "-10%", left: "-25%" }, delay: 1.9 },
+              { Icon: IcoDb, label: "Node.js API", s: { top: "40%", right: "-30%" }, delay: 2.1 },
+              { Icon: IcoMonitor, label: "Cloud Deployed", s: { bottom: "-15%", left: "10%" }, delay: 2.3 },
             ].map(({ Icon, label, s, delay: d }) => (
               <motion.div
                 key={label}
@@ -849,8 +923,8 @@ export default function Hero({ stats = [] }) {
                 transition={{ duration: 0.4, delay: d, ease: [0.22, 1, 0.36, 1] }}
                 className="absolute flex items-center gap-1.5 px-3 py-1.5 rounded-full
                            border border-border/40 bg-card/55 backdrop-blur-md
-                           text-muted-foreground whitespace-nowrap pointer-events-none"
-                style={{ fontSize: 10, animation: `hfloat 4s ease-in-out ${d - 1.9}s infinite` }}
+                           text-muted-foreground whitespace-nowrap pointer-events-none z-50"
+                style={{ fontSize: 10, animation: `hfloat 4s ease-in-out ${d - 1.9}s infinite`, ...s }}
               >
                 <Icon width={10} height={10} style={{ color: "hsl(var(--primary))", flexShrink: 0 }} />
                 {label}
@@ -862,7 +936,6 @@ export default function Hero({ stats = [] }) {
         {/* lid unfold */}
       </div>
       {/* perspective */}
-
 
       {/* ── scroll hint ───────────────────────────────────────── */}
       <div

@@ -63,3 +63,23 @@
     transform: rotate(360deg);
   }
 }
+
+/* Disabale text selection for labels that user not active with */
+/* Disable text selection everywhere */
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Allow text selection in form controls */
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}

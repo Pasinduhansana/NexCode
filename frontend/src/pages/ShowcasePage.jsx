@@ -6,11 +6,11 @@
 import { useEffect, useMemo, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
+import Button from "../components/Button";
 import {
-  HiArrowRight,
-  HiArrowLeft,
   HiX,
   HiFilter,
+  HiChevronRight,
   HiSearch,
   HiSparkles,
   HiCheckCircle,
@@ -21,8 +21,10 @@ import {
   HiExternalLink,
   HiMenu,
   HiChevronDown,
+  HiChevronLeft,
 } from "react-icons/hi";
 import { FaRocket, FaWhatsapp } from "react-icons/fa";
+import { FaFilterCircleXmark } from "react-icons/fa6";
 import usePageTitle from "../utils/usePageTitle";
 import { useThemeClasses } from "../utils/useThemeClasses";
 import { showcaseProjects } from "../data/showcaseProjects";
@@ -320,18 +322,12 @@ export default function ShowcasePage() {
                 custom={3}
                 className="flex flex-wrap gap-4 mb-12 justify-center lg:justify-start"
               >
-                <a
-                  href="#collection"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-blue-500 to-cyan-500 shadow-glow-blue hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200"
-                >
-                  <HiFilter size={15} /> Browse Showcase
-                </a>
-                <Link
-                  to="/start-project"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-border bg-card text-foreground font-semibold text-sm hover:border-primary/40 transition-all duration-200"
-                >
-                  Start Your Project <HiArrowRight size={15} />
-                </Link>
+                <Button variant="primary" rightIcon={<HiFilter size={16} />} href="#collection">
+                  Start Your Project
+                </Button>
+                <Button variant="radio" rightIcon={<HiChevronRight size={20} />} to="/start-project">
+                  Get in Touch
+                </Button>
               </motion.div>
 
               {/* Stat counters block */}
@@ -455,16 +451,17 @@ export default function ShowcasePage() {
                       )}
 
                       {/* CTA link to detailed case page */}
-                      <Link
-                        to={`/showcase/${proj.slug}`}
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+
+                      <Button
+                        varient="primary"
+                        rightIcon={<HiChevronRight size={20} />}
+                        onClick={() => navigate(`/showcase/${proj.slug}`)}
                         style={{
                           background: `linear-gradient(135deg, ${strokeColor}, rgba(${rgbOverlay}, 0.75))`,
-                          boxShadow: `0 6px 20px rgba(${rgbOverlay}, 0.25)`,
                         }}
                       >
-                        <FaRocket size={12} /> Explore Full Case Study <HiArrowRight size={14} />
-                      </Link>
+                        Explore Full Case Study
+                      </Button>
                     </div>
 
                     {/* Graphics / Image Mockup Frame */}
@@ -564,9 +561,7 @@ export default function ShowcasePage() {
                 <div className="flex items-center justify-between mb-5 pb-4 border-b border-border">
                   <h3 className="font-display font-extrabold text-sm text-foreground uppercase tracking-wider">Refine Search</h3>
                   {hasActiveFilters && (
-                    <button onClick={resetFilters} className="text-[11px] font-bold text-primary hover:underline">
-                      Clear All
-                    </button>
+                    <Button onClick={resetFilters} variant="link" size="sm" rightIcon={<FaFilterCircleXmark size={16} />}></Button>
                   )}
                 </div>
 
@@ -705,16 +700,18 @@ export default function ShowcasePage() {
                   className="text-center py-16 px-6 border-2 border-dashed border-border rounded-3xl bg-card"
                 >
                   <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center text-2xl mx-auto mb-4 text-text_muted">🔍</div>
-                  <h3 className="font-display font-bold text-foreground text-sm mb-1.5">No Matching Case Studies</h3>
-                  <p className="text-xs text-text_secondary mb-6 max-w-xs mx-auto">
+                  <h3 className="font-display font-bold text-foreground text-sm mb-4">No Matching Case Studies</h3>
+                  <p className="text-text_secondary mb-6 max-w-lg mx-auto">
                     Try adjusting your keyword query, selected categories, or active technologies stack to explore other case studies.
                   </p>
-                  <button
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    leftIcon={<HiChevronLeft size={20}/>}
                     onClick={resetFilters}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-primary text-white hover:bg-primary/95 transition-all shadow-md"
                   >
-                    <HiArrowLeft /> Reset All Filters
-                  </button>
+                     Reset All Filters
+                  </Button>
                 </motion.div>
               )}
             </main>
@@ -940,20 +937,19 @@ export default function ShowcasePage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/start-project"
-                className="inline-flex items-center justify-center gap-2 px-9 py-4 rounded-xl bg-white text-blue-700 font-bold text-xs hover:bg-blue-50 transition-colors shadow-lg hover:shadow-xl"
-              >
-                <FaRocket size={12} /> Start Your Project
-              </Link>
-              <a
+
+              <Button variant="radio" to="/start-project" leftIcon={<FaRocket size={15} />} className="bg-white text-blue-700">
+                Start Your Project
+              </Button>
+              <Button
+                variant="whatsapp"
                 href="https://wa.me/94769747244"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-9 py-4 rounded-xl border-2 border-white/25 text-white font-bold text-xs hover:bg-white/10 backdrop-blur-sm transition-colors"
+                leftIcon={<FaWhatsapp size={20} />}
               >
-                <FaWhatsapp /> Contact WhatsApp
-              </a>
+                Contact Whatsapp
+              </Button>
             </div>
           </motion.div>
         </div>

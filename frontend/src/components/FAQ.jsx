@@ -63,6 +63,7 @@ export default function FAQ() {
                 custom={i}
                 className="rounded-xl border border-border  overflow-hidden"
               >
+                {/* Not Called button component since this is seperate dropdown one */}
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full px-6 py-5 text-left flex items-center justify-between gap-4 hover:bg-muted/60 transition-colors"

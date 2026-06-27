@@ -9,6 +9,7 @@ import { useTheme } from "../context/ThemeContext";
 import { showcaseProjects } from "../data/showcaseProjects";
 import api from "../utils/api";
 import usePageTitle from "../utils/usePageTitle";
+import Button  from "../components/Button";
 
 const limitWords = (text, maxWords) => text.split(/\s+/).slice(0, maxWords).join(" ");
 
@@ -161,22 +162,20 @@ function App() {
                 <p className="mt-3 text-sm md:text-[15px] text-text_muted leading-relaxed mx-auto md:mx-0">
                   {isSummaryExpanded ? project.summary : summaryText}
                   {!isSummaryExpanded && summaryText.length < project.summary.length ? (
-                    <button
-                      type="button"
+                    <Button
+                      variant="link"
                       onClick={() => setIsSummaryExpanded(true)}
-                      className="ml-2 inline-flex items-center text-foreground font-semibold hover:underline"
                     >
                       Read more
-                    </button>
+                    </Button>
                   ) : null}
                   {isSummaryExpanded ? (
-                    <button
-                      type="button"
+                    <Button
+                      variant="link"
                       onClick={() => setIsSummaryExpanded(false)}
-                      className="ml-2 inline-flex items-center text-text_muted font-semibold hover:underline"
                     >
                       Show less
-                    </button>
+                    </Button>
                   ) : null}
                 </p>
               </div>
@@ -236,9 +235,9 @@ function App() {
                 </div>
               </div>
 
-              <a href="/contact" className="btn-primary">
+              <Button variant="primary" to={"/contact"}>
                 Request Similar Solution
-              </a>
+              </Button>
             </div>
           </div>
 
