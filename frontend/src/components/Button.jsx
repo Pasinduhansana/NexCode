@@ -4,7 +4,7 @@ import clsx from "clsx";
 export default function Button({
   children,
   variant = "primary",
-  size = "sm",
+  size = "md",
   leftIcon,
   rightIcon,
   to,
@@ -13,6 +13,7 @@ export default function Button({
   rel,
   customColor,
   className,
+  onClick,
   ...props
 }) {
   const sizes = {
@@ -76,6 +77,19 @@ export default function Button({
     custom: `
       text-white
     `,
+    link: `
+      text-gray-800
+      font-semibold
+      -ml-1
+      hover:underline
+      bg-transparent
+    `,
+    radio: `
+      rounded-lg 
+      border 
+      text-sm 
+      font-medium 
+      transition-all`,
   };
 
   const baseClasses = clsx(
@@ -83,9 +97,9 @@ export default function Button({
     "transition-all duration-200 ease-out",
     "hover:-translate-y-0 active:translate-y-0 active:scale-90",
     "focus:outline-none ring-0 outline-none focus:ring-0 focus:ring-blue-500/15",
-    sizes[size],    
+    sizes[size],
     variants[variant],
-    className
+    className,
   );
 
   const customStyle =
@@ -105,12 +119,7 @@ export default function Button({
 
   if (to) {
     return (
-      <Link
-        to={to}
-        className={baseClasses}
-        style={customStyle}
-        {...props}
-      >
+      <Link to={to} className={baseClasses} style={customStyle} {...props}>
         {content}
       </Link>
     );
@@ -118,25 +127,22 @@ export default function Button({
 
   if (href) {
     return (
-      <a
-        href={href}
-        target={target}
-        rel={rel}
-        className={baseClasses}
-        style={customStyle}
-        {...props}
-      >
+      <a href={href} target={target} rel={rel} className={baseClasses} style={customStyle} {...props}>
         {content}
       </a>
     );
   }
 
+  if (onClick) {
+    return (
+      <button onClick={onClick} className={baseClasses} style={customStyle} {...props}>
+        {content}
+      </button>
+    );
+  }
+
   return (
-    <button
-      className={baseClasses}
-      style={customStyle}
-      {...props}
-    >
+    <button className={baseClasses} style={customStyle} {...props}>
       {content}
     </button>
   );

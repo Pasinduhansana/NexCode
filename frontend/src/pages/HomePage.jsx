@@ -9,10 +9,10 @@ import {
   HiCloud,
   HiChip,
   HiDatabase,
-  HiArrowRight,
   HiCheckCircle,
   HiStar,
   HiChevronDown,
+  HiChevronRight,
 } from "react-icons/hi";
 import { FaWhatsapp, FaPhone, FaRocket } from "react-icons/fa";
 import ServiceCard from "../components/ServiceCard";
@@ -21,7 +21,7 @@ import { useThemeClasses } from "../utils/useThemeClasses";
 import Hero from "../components/Hero";
 import FAQ from "../components/FAQ";
 import { hero_services as services } from "../data/services";
-import Button  from "../components/Button";
+import Button from "../components/Button";
 
 const stats = [
   { value: "150+", label: "Projects Delivered" },
@@ -29,8 +29,6 @@ const stats = [
   { value: "5+", label: "Years Experience" },
   { value: "24/7", label: "Support" },
 ];
-
-
 
 export default function HomePage() {
   const [openFaq, setOpenFaq] = useState(null);
@@ -77,11 +75,7 @@ export default function HomePage() {
           </div>
 
           <div className="text-center mt-12">
-            <Button
-              variant="outline"
-              to="/services"
-              rightIcon={<HiArrowRight />}
-            >
+            <Button variant="outline" to="/services" rightIcon={<HiChevronRight size={20} />}>
               Explore All Services
             </Button>
           </div>
@@ -124,13 +118,9 @@ export default function HomePage() {
                 </div>
               ))}
               <div className="mt-8">
-                  <Button
-                    variant="primary"
-                    to="/about"
-                    rightIcon={<HiArrowRight />}
-                  >
-                    Learn More About Us
-                  </Button>
+                <Button variant="primary" to="/about" rightIcon={<HiChevronRight size={20} />}>
+                  Learn More About Us
+                </Button>
               </div>
             </motion.div>
 
@@ -157,23 +147,13 @@ export default function HomePage() {
                     ))}
                   </div>
                   <div className="flex gap-3 justify-end">
-                      <Button
-                        variant="phone"
-                        href="tel:+94753125140"
-                        leftIcon={<FaPhone />}
-                      >
-                        Call Us
-                      </Button>
-                  <Button
-                    variant="whatsapp"
-                    href="https://wa.me/94769747244"
-                    target="_blank"
-                    rel="noreferrer"
-                    leftIcon={<FaWhatsapp />}
-                  >
-                    WhatsApp
-                  </Button> 
-                 </div>
+                    <Button variant="phone" href="tel:+94753125140" leftIcon={<FaPhone />}>
+                      Call Us
+                    </Button>
+                    <Button variant="whatsapp" href="https://wa.me/94769747244" target="_blank" rel="noreferrer" leftIcon={<FaWhatsapp />}>
+                      WhatsApp
+                    </Button>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -182,7 +162,7 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-       <FAQ />
+      <FAQ />
 
       {/* CTA BANNER */}
       <section className="py-20 bg-hero-gradient dark-grid">
@@ -193,22 +173,12 @@ export default function HomePage() {
             </h2>
             <p className="text-gray-500 mb-8 text-lg">Have an idea? Let's turn it into reality. Get a free consultation today.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              variant="primary"
-              size="md"
-              to="/start-project"
-              leftIcon={<FaRocket />}
-            >
-              Start Your Project
-            </Button>
-            <Button
-              variant="secondary"
-              size="md"
-              to="/contact"
-              rightIcon={<HiArrowRight />}
-            >
-              Contact Us
-            </Button>
+              <Button variant="primary" size="md" to="/start-project" leftIcon={<FaRocket />}>
+                Start Your Project
+              </Button>
+              <Button variant="secondary" size="md" to="/contact" rightIcon={<HiChevronRight size={20} />}>
+                Contact Us
+              </Button>
             </div>
           </motion.div>
         </div>

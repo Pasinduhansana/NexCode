@@ -6,6 +6,7 @@
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import Button from "../components/Button";
 import {
   HiGlobe,
   HiDeviceMobile,
@@ -14,7 +15,6 @@ import {
   HiCloud,
   HiChip,
   HiDatabase,
-  HiArrowRight,
   HiCheckCircle,
   HiLightningBolt,
   HiShieldCheck,
@@ -23,6 +23,8 @@ import {
   HiX,
   HiChevronDown,
   HiSparkles,
+  HiChevronDoubleRight,
+  HiChevronRight,
 } from "react-icons/hi";
 import { FaRocket, FaWhatsapp } from "react-icons/fa";
 import usePageTitle from "../utils/usePageTitle";
@@ -147,14 +149,12 @@ function ServiceModal({ service, onClose }) {
             exit={{ opacity: 0, scale: 0.9, y: 28 }}
             transition={{ duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-lg bg-card border border-border rounded-3xl overflow-hidden shadow-2xl"
+            className="relative w-full max-w-lg bg-card border border-border rounded-xl overflow-hidden shadow-2xl"
           >
-            {/* Accent stripe */}
-            <div className={`h-1 w-full bg-gradient-to-r ${service.from} ${service.to}`} />
 
             <div className="p-7">
               {/* Header */}
-              <div className="flex items-start justify-between mb-6">
+              <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-4">
                   <IconBox service={service} size="md" />
                   <div>
@@ -173,6 +173,9 @@ function ServiceModal({ service, onClose }) {
                 </button>
               </div>
 
+            {/* Accent stripe */}
+            <div className={`h-[1px] mb-4 w-full opacity-40 bg-gradient-to-r ${service.from} ${service.to}`} />
+
               <p className="text-sm text-text_secondary leading-relaxed mb-6">{service.description}</p>
 
               {/* Features */}
@@ -187,19 +190,19 @@ function ServiceModal({ service, onClose }) {
               </div>
 
               {/* CTA */}
-              <Link
+              <Button
+                variant="primary"
                 to="/start-project"
                 onClick={onClose}
-                className="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl text-white font-semibold text-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
+                size="lg"
+                rightIcon={<HiChevronRight size={20}/>}
+                className="w-full"
                 style={{
                   background: `linear-gradient(135deg, ${service.accent}, rgba(${service.rgb},0.7))`,
-                  boxShadow: `0 6px 24px rgba(${service.rgb},0.3)`,
                 }}
               >
-                <FaRocket size={13} />
                 Start with {service.title}
-                <HiArrowRight />
-              </Link>
+              </Button>
             </div>
           </motion.div>
         </motion.div>
@@ -239,7 +242,7 @@ function ServiceCard({ service, index, onSelect }) {
           <div className="group-hover:scale-110 transition-transform duration-300">
             <IconBox service={service} size="md" />
           </div>
-          <HiArrowRight
+          <HiChevronRight
             className="text-text_muted group-hover:text-primary group-hover:translate-x-0.5 transition-all duration-200 mt-1 opacity-0 group-hover:opacity-100"
             size={16}
           />
@@ -351,18 +354,12 @@ export default function ServicesPage() {
 
               {/* CTAs */}
               <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="flex flex-wrap gap-3 mb-12">
-                <Link
-                  to="/start-project"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-blue-500 to-cyan-500 shadow-glow-blue hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200"
-                >
-                  <FaRocket size={13} /> Start Your Project
-                </Link>
-                <a
-                  href="#services-grid"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-border bg-card text-foreground font-semibold text-sm hover:border-primary/40 transition-all duration-200"
-                >
-                  Explore Services <HiArrowRight size={15} />
-                </a>
+                <Button variant="primary" rightIcon={<HiChevronDoubleRight size={20} />} to="/start-project">
+                  Start Your Project
+                </Button>
+                <Button variant="radio" rightIcon={<HiChevronRight size={20} />} href="#services-grid">
+                  Explore Services
+                </Button>
               </motion.div>
 
               {/* Stats */}
@@ -518,16 +515,16 @@ export default function ServicesPage() {
                       ))}
                     </div>
 
-                    <button
+                    <Button
+                      varient="primary"
+                      rightIcon={<HiChevronRight size={20} />}
                       onClick={() => setSelected(svc)}
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
                       style={{
                         background: `linear-gradient(135deg, ${svc.accent}, rgba(${svc.rgb},0.72))`,
-                        boxShadow: `0 4px 20px rgba(${svc.rgb},0.28)`,
                       }}
                     >
-                      <FaRocket size={12} /> Learn More <HiArrowRight size={14} />
-                    </button>
+                      Learn More
+                    </Button>
                   </div>
 
                   {/* Visual panel */}
@@ -715,9 +712,9 @@ export default function ServicesPage() {
                 ))}
               </div>
 
-              <Link to="/about" className="btn-primary">
-                Learn More About Us <HiArrowRight />
-              </Link>
+              <Button variant="primary" rightIcon={<HiChevronRight />} to="/about">
+                Learn More About Us
+              </Button>
             </motion.div>
 
             {/* Right — premium contact card */}
@@ -766,27 +763,21 @@ export default function ServicesPage() {
 
                 {/* CTA */}
                 <div className="relative flex gap-3 mb-4">
-                  <a
-                    href="tel:+94753125140"
-                    className="flex-1 flex items-center justify-center gap-2 py-3 bg-white text-blue-700 rounded-xl font-semibold text-sm hover:bg-blue-50 transition-colors"
-                  >
-                    📞 Call Us
-                  </a>
-                  <a
-                    href="https://wa.me/94769747244"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 py-3 bg-green-500 text-white rounded-xl font-semibold text-sm hover:bg-green-600 transition-colors"
-                  >
-                    <FaWhatsapp /> WhatsApp
-                  </a>
+                  <Button href="tel:+94753125140" variant="secondary" leftIcon={"📞"} className="w-full font-semibold text-blue-800">
+                    Call Us
+                  </Button>
+                  <Button href="https://wa.me/94769747244" variant="whatsapp" leftIcon={<FaWhatsapp />} rel="noreferrer" className="w-full">
+                    WhatsApp
+                  </Button>
                 </div>
-                <Link
+                <Button
                   to="/start-project"
-                  className="relative flex items-center justify-center gap-2 py-3 bg-white/15 hover:bg-white/25 border border-white/20 text-white rounded-xl font-semibold text-sm transition-colors"
+                  variant="radio"
+                  leftIcon={<FaRocket size={15} />}
+                  className="w-full border-white/50"
                 >
-                  <FaRocket size={13} /> Start a Project
-                </Link>
+                  Start a Project
+                </Button>
               </div>
             </motion.div>
           </div>
@@ -796,7 +787,7 @@ export default function ServicesPage() {
       {/* ──────────────────────────────────────────────────────────────
           § 6  FAQ accordion
       ────────────────────────────────────────────────────────────── */}
-      <FAQ/>
+      <FAQ />
       {/* ──────────────────────────────────────────────────────────────
           § 7  CTA BANNER — full-bleed gradient
       ────────────────────────────────────────────────────────────── */}
@@ -837,18 +828,12 @@ export default function ServicesPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/start-project"
-                className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-2xl bg-white text-blue-700 font-bold text-sm shadow-xl hover:shadow-2xl hover:-translate-y-1 hover:bg-blue-50 transition-all duration-200"
-              >
-                <FaRocket size={13} /> Start Your Project
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-2xl border-2 border-white/25 text-white font-semibold text-sm hover:bg-white/10 backdrop-blur-sm transition-all duration-200"
-              >
-                Contact Us <HiArrowRight />
-              </Link>
+              <Button variant="radio" to="/start-project" leftIcon={<FaRocket size={15} />} className="bg-white text-blue-700">
+                Start Your Project
+              </Button>
+              <Button variant="custom" to="/contact" rightIcon={<HiChevronRight size={20}/>} className=" text-white border border-white/30 ">
+                Contact Us
+              </Button>
             </div>
           </motion.div>
         </div>

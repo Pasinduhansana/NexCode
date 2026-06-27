@@ -5,10 +5,11 @@
  */
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { HiCheckCircle, HiArrowRight, HiLightBulb, HiEye, HiHeart, HiTrendingUp, HiShieldCheck, HiStar, HiSparkles } from "react-icons/hi";
+import { HiCheckCircle, HiLightBulb,HiChevronDoubleRight , HiChevronRight, HiEye, HiHeart, HiTrendingUp, HiShieldCheck, HiStar, HiSparkles } from "react-icons/hi";
 import { FaRocket } from "react-icons/fa";
 import usePageTitle from "../utils/usePageTitle";
 import { useThemeClasses } from "../utils/useThemeClasses";
+import Button from "../components/Button";
 
 /* ═══════════════════════════════════════════════════════════════════════
    DATA
@@ -130,18 +131,13 @@ export default function AboutPage() {
             </motion.p>
 
             <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="flex flex-wrap gap-4 justify-center">
-              <Link
-                to="/start-project"
-                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-blue-500 to-cyan-500 shadow-glow-blue hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200"
-              >
-                <FaRocket size={13} /> Start Your Project
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl border border-border bg-card text-foreground font-semibold text-sm hover:border-primary/40 transition-all duration-200"
-              >
-                Get in Touch <HiArrowRight size={15} />
-              </Link>
+                <Button variant="primary" rightIcon={<HiChevronDoubleRight size={20} />} to="/start-project">
+                  Start Your Project
+                </Button>
+                <Button variant="radio" rightIcon={<HiChevronRight size={20} />} to="/contact" >
+                  Get in Touch
+                </Button>
+
             </motion.div>
 
 
@@ -346,18 +342,12 @@ export default function AboutPage() {
               Join 50+ businesses who leverage our digital engineering capabilities to achieve outstanding growth.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/start-project"
-                className="inline-flex items-center justify-center gap-2 px-9 py-4 rounded-xl bg-white text-blue-700 font-bold text-xs hover:bg-blue-50 transition-colors shadow-lg hover:shadow-xl"
-              >
-                <FaRocket size={12} /> Start Your Project
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center justify-center gap-2 px-9 py-4 rounded-xl border-2 border-white/25 text-white font-bold text-xs hover:bg-white/10 backdrop-blur-sm transition-colors"
-              >
-                Contact Us <HiArrowRight />
-              </Link>
+              <Button variant="radio" to="/start-project" leftIcon={<FaRocket size={15} />} className="bg-white text-blue-700">
+                Start Your Project
+              </Button>
+              <Button variant="custom" to="/contact" rightIcon={<HiChevronRight size={20} />} className=" text-white border border-white/30 ">
+                Contact Us
+              </Button>
             </div>
           </motion.div>
         </div>

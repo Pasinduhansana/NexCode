@@ -6,7 +6,7 @@ import {
   HiCloud,
   HiChip,
   HiDatabase,
-  HiArrowRight,
+  HiChevronRight,
   HiCheckCircle,
   HiLightningBolt,
   HiCollection,

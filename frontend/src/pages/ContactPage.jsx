@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
-import { HiPhone, HiMail, HiLocationMarker, HiArrowRight, HiClock, HiSparkles } from "react-icons/hi";
+import { HiPhone, HiMail, HiLocationMarker, HiClock, HiSparkles, HiOutlineChat, HiChevronRight  } from "react-icons/hi";
 import { FaWhatsapp } from "react-icons/fa";
 import api from "../utils/api";
 import usePageTitle from "../utils/usePageTitle";
 import { useThemeClasses } from "../utils/useThemeClasses";
+import Button from "../components/Button";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
@@ -81,16 +82,15 @@ export default function ContactPage() {
               </p>
 
               <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-8">
-                <a href="mailto:info@nexcode.lk" className="btn-primary text-sm px-5 py-3.5">
+                <Button variant="primary" rightIcon={<HiMail size={20}/>} href="mailto:info@nexcode.lk" >
                   Email Us
-                  <HiArrowRight size={15} />
-                </a>
-                <a href="https://wa.me/94769747244" target="_blank" rel="noreferrer" className="btn-secondary text-sm px-5 py-3.5">
+                </Button>
+                <Button variant="whatsapp" leftIcon={<FaWhatsapp size={18}/>} href="https://wa.me/94769747244" target="_blank" rel="noreferrer" >
                   WhatsApp
-                </a>
+                </Button>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto lg:mx-0">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto lg:mx-0 mt-10">
                 {quickFacts.map((fact) => (
                   <div
                     key={fact.label}
@@ -124,7 +124,7 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-3">
                 {contacts.map((c, i) => (
                   <motion.a
                     key={i}
@@ -193,7 +193,7 @@ export default function ContactPage() {
                 Share a little context and we’ll get back to you with the next step.
               </p>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4 flex flex-col">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="label">Full Name *</label>
@@ -251,7 +251,7 @@ export default function ContactPage() {
                   {errors.message && <p className="text-red-500 text-xs mt-1 text-left">{errors.message}</p>}
                 </div>
 
-                <button type="submit" disabled={loading} className="btn-primary w-full justify-center py-3.5 disabled:opacity-60">
+                <Button variant="primary" type="submit" disabled={loading} rightIcon={<HiOutlineChat/> } className="self-end">
                   {loading ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -260,7 +260,7 @@ export default function ContactPage() {
                   ) : (
                     "Send Message"
                   )}
-                </button>
+                </Button>
               </form>
             </motion.div>
           </div>
