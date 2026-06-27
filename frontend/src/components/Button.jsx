@@ -16,9 +16,11 @@ export default function Button({
   ...props
 }) {
   const sizes = {
-    sm: "px-4 py-2 text-sm",
-    md: "px-5 py-2.5 text-sm",
-    lg: "px-6 py-3 text-sm",
+    xxs: "px-2 -py-2 text-[6px] rounded-md font-light",
+    xs: "px-3 py-[2px] text-[10px] rounded-md font-regular",
+    sm: "px-4 py-2 text-sm rounded-lg font-medium",
+    md: "px-5 py-2.5 text-sm rounded-lg font-medium",
+    lg: "px-6 py-3 text-sm rounded-lg font-medium",
   };
 
   const variants = {
@@ -78,7 +80,6 @@ export default function Button({
 
   const baseClasses = clsx(
     "inline-flex items-center justify-center gap-2",
-    "font-medium rounded-lg",
     "transition-all duration-200 ease-out",
     "hover:-translate-y-0 active:translate-y-0 active:scale-90",
     "focus:outline-none ring-0 outline-none focus:ring-0 focus:ring-blue-500/15",
