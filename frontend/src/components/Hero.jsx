@@ -234,6 +234,7 @@ function LaptopScreenContent({ theme }) {
               transform: "translateZ(42px) rotateX(4deg) rotateY(-8deg)",
               animation: "hfloat 5s ease-in-out 1.5s infinite",
             }}
+            className="md:block hidden"
           >
             <div className="flex items-center justify-between">
               <span style={{ fontSize: 7, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.07em" }}>Revenue</span>
@@ -272,6 +273,7 @@ function LaptopScreenContent({ theme }) {
               transform: "translateZ(38px) rotateX(6deg) rotateY(8deg)",
               animation: "hfloat 5s ease-in-out 2.1s infinite",
             }}
+            className="md:block hidden"
           >
             <div
               className="rounded-lg flex items-center justify-center flex-shrink-0 "
@@ -298,6 +300,7 @@ function LaptopScreenContent({ theme }) {
               transform: "translateZ(38px) rotateX(6deg) rotateY(8deg)",
               animation: "hfloat 5s ease-in-out 2.1s infinite",
             }}
+            className="md:block hidden"
           >
             <div
               className="rounded-lg flex items-center justify-center flex-shrink-0 "
@@ -377,7 +380,9 @@ function PhoneScreenContent({ theme }) {
           </em>{" "}
           Growth
         </h1>
-        <p style={{ fontSize: 5.5, lineHeight: 1.5, color: textSecondary }}>Software that moves fast and scales further.We engineer platforms that scale effortlessly and captivate users</p>
+        <p style={{ fontSize: 5.5, lineHeight: 1.5, color: textSecondary }}>
+          Software that moves fast and scales further.We engineer platforms that scale effortlessly and captivate users
+        </p>
 
         <Button
           variant="primary"
@@ -385,14 +390,12 @@ function PhoneScreenContent({ theme }) {
           className="rounded-md  font-semibold flex items-center justify-center gap-1 px-2 scale-75"
           leftIcon={<IcoRocket width={6} height={6} />}
         >
-          Build  Project
+          Build Project
         </Button>
       </div>
 
       {/* stats strip */}
-      <div
-        className="flex justify-around px-2 flex-shrink-0"
-      >
+      <div className="flex justify-around px-2 flex-shrink-0">
         {[
           ["98%", "Satisfaction"],
           ["150+", "Projects"],
@@ -661,7 +664,7 @@ export default function Hero({ stats = [] }) {
         initial={{ opacity: 0, y: 28 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="relative text-center px-5 pt-28 sm:pt-[15vh] pb-10
+        className="relative text-center px-5 pt-0 md:pt-28 pb-10
                    flex flex-col items-center gap-4"
         style={{ zIndex: 10 }}
       >
@@ -774,6 +777,7 @@ export default function Hero({ stats = [] }) {
                 transform: "translateZ(55px) rotateX(-6deg) rotateY(-8deg)",
                 animation: "hfloat 5s ease-in-out 0s infinite",
               }}
+              className="md:block hidden"
             >
               <div style={{ fontSize: 9, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Performance</div>
               <div className="flex items-end gap-1 mt-1">
@@ -794,6 +798,7 @@ export default function Hero({ stats = [] }) {
             {/* Active users — top left */}
             <FloatCard
               delay={1.35}
+              className="hidden"
               style={{
                 top: "6%",
                 left: "-13%",
@@ -803,6 +808,7 @@ export default function Hero({ stats = [] }) {
                 gap: 10,
                 transform: "translateZ(48px) rotateX(-5deg) rotateY(8deg)",
                 animation: "hfloat 5s ease-in-out 0.9s infinite",
+                
               }}
             >
               <div
@@ -830,6 +836,7 @@ export default function Hero({ stats = [] }) {
                 transform: "translateZ(42px) rotateX(4deg) rotateY(-8deg)",
                 animation: "hfloat 5s ease-in-out 1.5s infinite",
               }}
+              className="md:block hidden"
             >
               <div className="flex items-center justify-between">
                 <span style={{ fontSize: 9, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.07em" }}>Revenue</span>
@@ -869,6 +876,7 @@ export default function Hero({ stats = [] }) {
                 transform: "translateZ(38px) rotateX(6deg) rotateY(8deg)",
                 animation: "hfloat 5s ease-in-out 2.1s infinite",
               }}
+              className="md:block hidden"
             >
               <div
                 className="rounded-lg flex items-center justify-center flex-shrink-0 "
@@ -895,6 +903,7 @@ export default function Hero({ stats = [] }) {
                 transform: "translateZ(40px) rotateX(5deg) rotateY(-6deg)",
                 animation: "hfloat 5s ease-in-out 1.1s infinite",
               }}
+              className="md:block hidden"
             >
               <div style={{ display: "flex" }}>
                 {["#4f7bff", "#7c3aed", "#14b8a6", "#f97316"].map((c, i) => (

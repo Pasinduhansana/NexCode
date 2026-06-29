@@ -5,7 +5,18 @@
  */
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { HiCheckCircle, HiLightBulb,HiChevronDoubleRight , HiChevronRight, HiEye, HiHeart, HiTrendingUp, HiShieldCheck, HiStar, HiSparkles } from "react-icons/hi";
+import {
+  HiCheckCircle,
+  HiLightBulb,
+  HiChevronDoubleRight,
+  HiChevronRight,
+  HiEye,
+  HiHeart,
+  HiTrendingUp,
+  HiShieldCheck,
+  HiStar,
+  HiSparkles,
+} from "react-icons/hi";
 import { FaRocket } from "react-icons/fa";
 import usePageTitle from "../utils/usePageTitle";
 import { useThemeClasses } from "../utils/useThemeClasses";
@@ -101,8 +112,8 @@ export default function AboutPage() {
           />
         </div>
 
-        <div className="flex flex-row justify-between items-center mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="relative z-10 w-auto  flex flex-col items-start  text-left pt-32 pb-24">
+        <div className="flex flex-col md:flex-row justify-between items-center mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="relative z-10 w-auto  flex flex-col items-start  text-left pt-32 pb-12 md:pb-24">
             <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
               <SectionLabel icon={HiSparkles}>About NexCode</SectionLabel>
             </motion.div>
@@ -131,35 +142,33 @@ export default function AboutPage() {
             </motion.p>
 
             <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="flex flex-wrap gap-4 justify-center">
-                <Button variant="primary" rightIcon={<HiChevronDoubleRight size={20} />} to="/start-project">
-                  Start Your Project
-                </Button>
-                <Button variant="radio" rightIcon={<HiChevronRight size={20} />} to="/contact" >
-                  Get in Touch
-                </Button>
-
+              <Button variant="primary" rightIcon={<HiChevronDoubleRight size={20} />} to="/start-project">
+                Start Your Project
+              </Button>
+              <Button variant="radio" rightIcon={<HiChevronRight size={20} />} to="/contact">
+                Get in Touch
+              </Button>
             </motion.div>
 
-
-                          {/* Stats */}
-                          <motion.div
-                            variants={fadeUp}
-                            initial="hidden"
-                            animate="show"
-                            custom={4}
-                            className="grid grid-cols-2 sm:grid-cols-4 w-full  gap-3 pt-8 border-t mt-10 lg:mt-20 border-border"
-                          >
-                            {STATS.map((s, i) => (
-                              <div key={i} className="text-center">
-                                <div className="font-display text-xl md:text-2xl font-extrabold gradient-text leading-none">{s.value}</div>
-                                <div className="text-[10px] text-text_muted mt-1 leading-tight">{s.label}</div>
-                              </div>
-                            ))}
-                          </motion.div>
+            {/* Stats */}
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={4}
+              className="grid grid-cols-2 sm:grid-cols-4 w-full  gap-3 pt-8 border-t mt-10 lg:mt-20 border-border"
+            >
+              {STATS.map((s, i) => (
+                <div key={i} className="text-center">
+                  <div className="font-display text-xl md:text-2xl font-extrabold gradient-text leading-none">{s.value}</div>
+                  <div className="text-[10px] text-text_muted mt-1 leading-tight">{s.label}</div>
+                </div>
+              ))}
+            </motion.div>
           </div>
 
-          <div className=" mx-auto px-4 sm:px-6 lg:px-8 ">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+          <div className=" mx-auto px-4 sm:px-6 lg:px-8 mb-12 md:mb-0 ">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-4 md:gap-8">
               {stats.map((s, i) => (
                 <motion.div
                   key={i}
@@ -168,7 +177,7 @@ export default function AboutPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.08 }}
                   whileHover={{ y: -4, transition: { duration: 0.18 } }}
-                  className="text-center p-5 rounded-3xl bg-card border border-border hover:border-primary/30 transition-all duration-300 shadow-sm"
+                  className="text-center p-5 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-300 shadow-sm"
                 >
                   <div className="font-display text-4.5xl font-black gradient-text mb-2 leading-none">{s.value}</div>
                   <div className="font-bold text-sm text-foreground mb-1">{s.label}</div>
@@ -275,9 +284,9 @@ export default function AboutPage() {
       {/* ──────────────────────────────────────────────────────────────
           § 5 TIMELINE JOURNEY — Alternating split timeline
       ────────────────────────────────────────────────────────────── */}
-      <section className="py-24 bg-page-alt border-t border-border">
+      <section className="py-8 md:py-24 bg-page-alt border-t border-border">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-5 md:mb-16">
             <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
               <SectionLabel icon={HiTrendingUp}>Our Evolution</SectionLabel>
             </motion.div>
@@ -288,7 +297,7 @@ export default function AboutPage() {
 
           <div className="relative">
             {/* Center connector line */}
-            <div className="absolute left-1/2 -translate-x-px top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-cyan-400 to-indigo-500 opacity-20" />
+            <div className="absolute left-1 md:left-1/2 -translate-x-px top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-cyan-400 to-indigo-500 opacity-20" />
 
             <div className="space-y-12">
               {timeline.map((item, i) => (
@@ -301,11 +310,11 @@ export default function AboutPage() {
                   className={`relative flex justify-center ${i % 2 === 0 ? "lg:justify-start" : "lg:justify-end"}`}
                 >
                   {/* Center Year Badge */}
-                  <div className="absolute left-1/2 -translate-x-1/2 top-4 w-6 h-6 rounded-full bg-card border-4 border-border shadow-md z-10 flex items-center justify-center">
+                  <div className="absolute left-1 md:left-1/2 -translate-x-1/2 top-4 w-6 h-6 rounded-full bg-card border-4 border-border shadow-md z-10 flex items-center justify-center">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                   </div>
 
-                  <div className={`w-5/12 ${i % 2 === 0 ? "pr-8" : "pl-8"}`}>
+                  <div className={`w-full md:w-5/12 pr-2 pl-6  ${i % 2 === 0 ? "md:pr-8" : "md:pl-8"}`}>
                     <div className="bg-card rounded-2xl p-6 border border-border shadow-sm hover:border-primary/25 transition-all duration-300">
                       <div className="text-primary font-mono font-black text-sm mb-1">{item.year}</div>
                       <h4 className="font-display font-bold text-foreground text-sm mb-2">{item.title}</h4>
@@ -322,7 +331,7 @@ export default function AboutPage() {
       {/* ──────────────────────────────────────────────────────────────
           § 6 CTA — Dynamic full-bleed banner cta
       ────────────────────────────────────────────────────────────── */}
-      <section className="relative py-32 overflow-hidden bg-background">
+      <section className="relative py-10 md:py-32 overflow-hidden bg-background">
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 via-indigo-900 to-violet-800" />
         <div
           className="absolute inset-0 opacity-[0.1]"
