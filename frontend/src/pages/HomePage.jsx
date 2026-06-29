@@ -97,13 +97,13 @@ export default function HomePage() {
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="order-1 text-left lg:text-left"
+              className="order-1 text-left lg:text-left flex flex-col"
             >
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600">
+              <div className="mb-6 inline-flex mx-auto items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600">
                 Why NexCode?
               </div>
 
-              <h2 className="section-title mb-6">
+              <h2 className="section-title mb-6 text-center lg:text-left">
                 We Build Products That{" "}
                 <span className="hidden sm:block">
                   <br />
@@ -111,12 +111,12 @@ export default function HomePage() {
                 <span className="gradient-text">Actually Work</span>
               </h2>
 
-              <p className="section-subtitle mb-8 leading-relaxed text-gray-500">
+              <p className="section-subtitle mb-8 leading-relaxed text-gray-500 text-center lg:text-left">
                 We're not just developers — we're digital partners who care about your success. Our team brings together expertise, creativity, and
                 technical excellence to deliver solutions that drive real business outcomes.
               </p>
 
-              <div className="space-y-3">
+              <div className="space-y-3 pl-6">
                 {[
                   "Agile development with weekly updates",
                   "End-to-end project ownership",
