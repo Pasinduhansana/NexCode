@@ -28,7 +28,7 @@ export default function Footer() {
             <div className="space-y-4 flex flex-col items-center lg:items-start">
 
               {/* LOGO + BRAND (MOBILE FIXED ROW) */}
-              <Link to="/" className="flex w-full flex-col items-center justify-center lg:justify-start gap-2 lg:gap-3">
+              <Link to="/" className="flex w-full flex-col md:flex-row items-center justify-center lg:justify-start gap-2 lg:gap-3">
                 
                 {/* Left: Logo */}
                 <img
@@ -87,13 +87,13 @@ export default function Footer() {
             </div>
 
             {/* QUICK LINKS */}
-            <div className="space-y-4 hidden md:flex flex-col items-center lg:items-start">
+            <div className="space-y-4 hidden md:flex flex-col items-center lg:items-start gap-2">
               <h3 className={`font-display font-semibold text-sm ${themeClasses.text.primary}`}>
                 Quick Links
               </h3>
 
               {/* MOBILE: 2 COLUMNS | DESKTOP: ORIGINAL FLOW */}
-              <div className="grid grid-cols-2 gap-2 gap-x-10 sm:flex sm:flex-row sm:flex-wrap sm:justify-center text-center lg:justify-start sm:gap-x-5 sm:gap-y-3">
+              <div className="grid grid-cols-3 gap-2 gap-x-16 sm:justify-center">
 
                 {quickLinks.map((l) => (
                   <Link
@@ -101,7 +101,7 @@ export default function Footer() {
                     to={l.path}
                     className={`text-sm ${themeClasses.text.secondary} hover:text-primary transition-colors `}
                   >
-                    <span className="mr-2 lg:block hidden">•</span> {l.label}
+                    <span className="mr-2 ">•</span> {l.label}
                   </Link>
                 ))}
 
@@ -109,7 +109,7 @@ export default function Footer() {
             </div>
 
             {/* SOCIAL */}
-            <div className="space-y-4 flex flex-col items-center lg:items-start">
+            <div className="space-y-4 flex flex-col items-center lg:items-start md:gap-2">
               <h3 className={`font-display font-semibold text-sm ${themeClasses.text.primary}`}>
                 Connect
               </h3>
