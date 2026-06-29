@@ -34,7 +34,7 @@ export default function FAQ() {
   const [openFaq, setOpenFaq] = useState(null);
   return (
 
-      <section className="py-24 bg-background">
+      <section className="py-8 lg:py-24 bg-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center text-center mb-12">
             <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
