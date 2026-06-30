@@ -67,7 +67,7 @@ export default function ContactPage() {
           />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 md:mt-o">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 py-8 lg:py-0 sm:px-6 lg:px-8 mt-20 md:mt-o">
           <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-14 items-center text-center lg:text-left">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-card/80 backdrop-blur border border-border text-text_secondary text-xs font-medium mb-2 md:mb-5">
@@ -94,7 +94,7 @@ export default function ContactPage() {
                 {quickFacts.map((fact) => (
                   <div
                     key={fact.label}
-                    className="rounded-2xl border border-border bg-card/80 backdrop-blur p-4 flex items-center gap-3 justify-center lg:justify-start"
+                    className="rounded-xl md:rounded-2xl border border-border bg-card/80 backdrop-blur p-4 flex items-center gap-3 justify-center lg:justify-start"
                   >
                     <div className="w-11 h-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
                       <fact.icon size={18} />
@@ -112,7 +112,7 @@ export default function ContactPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="rounded-[2rem] border border-border bg-card/90 backdrop-blur-xl shadow-[0_24px_60px_rgba(15,23,42,0.08)] p-6 sm:p-8"
+              className="rounded-2xl md:rounded-3xl border border-border bg-card/90 backdrop-blur-xl shadow-[0_24px_60px_rgba(15,23,42,0.08)] p-6 sm:p-8"
             >
               <div className="flex items-center gap-3 justify-center lg:justify-start mb-5">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/20">
@@ -134,7 +134,7 @@ export default function ContactPage() {
                     initial={{ opacity: 0, y: 14 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.08 }}
-                    className="rounded-2xl border border-border bg-background/70 p-4 flex items-center gap-3 text-left hover:border-primary/30 hover:-translate-y-0.5 transition-all"
+                    className="rounded-lg md:rounded-2xl border border-border bg-background/70 p-4 flex items-center gap-3 text-left hover:border-primary/30 hover:-translate-y-0.5 transition-all"
                   >
                     <div className={`w-11 h-11 rounded-xl bg-muted flex items-center justify-center ${c.color} flex-shrink-0`}>
                       <c.icon size={18} />
@@ -164,17 +164,17 @@ export default function ContactPage() {
                 </p>
               </div>
 
-              <div className="rounded-[1.75rem] border border-border bg-card p-6 sm:p-8 text-center lg:text-left">
+              <div className="rounded-2xl md:rounded-3xl border border-border bg-card p-6 sm:p-8 text-center lg:text-left">
                 <p className="text-[11px] tracking-[0.2em] uppercase font-semibold text-text_muted mb-4">Availability</p>
                 <p className="text-sm text-text_secondary leading-relaxed">
                   Available for remote work, on-site consultations, and collaborative product development across websites, mobile apps, and internal
                   systems.
                 </p>
-                <div className="mt-5 rounded-2xl border border-border bg-background p-5 flex items-center justify-center lg:justify-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                <div className="mt-5 rounded-xl md:rounded-2xl border border-border bg-background p-5 flex items-center justify-center lg:justify-start gap-4">
+                  <div className="w-12 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
                     <HiLocationMarker size={20} />
                   </div>
-                  <div>
+                  <div className="text-left">
                     <div className="font-semibold text-foreground">Sri Lanka</div>
                     <div className="text-sm text-text_secondary">Working with clients locally and globally</div>
                   </div>
@@ -186,19 +186,19 @@ export default function ContactPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="rounded-[2rem] border border-border bg-card p-6 sm:p-8 shadow-[0_16px_40px_rgba(15,23,42,0.06)]"
+              className="rounded-2xl md:rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-[0_16px_40px_rgba(15,23,42,0.06)]"
             >
               <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-foreground mb-3 text-center lg:text-left">Send a Message</h2>
               <p className="text-sm text-text_secondary mb-8 text-center lg:text-left">
                 Share a little context and we’ll get back to you with the next step.
               </p>
 
-              <form onSubmit={handleSubmit} className="space-y-4 flex flex-col">
+              <form onSubmit={handleSubmit} className="space-y-4 flex flex-col md:text-left text-center">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="label">Full Name *</label>
                     <input
-                      className={`input-field ${errors.name ? "border-red-400" : ""}`}
+                      className={`input-field text-center md:text-left ${errors.name ? "border-red-400" : ""}`}
                       placeholder="John Doe"
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -208,7 +208,7 @@ export default function ContactPage() {
                   <div>
                     <label className="label">Email Address *</label>
                     <input
-                      className={`input-field ${errors.email ? "border-red-400" : ""}`}
+                      className={`input-field text-center md:text-left ${errors.email ? "border-red-400" : ""}`}
                       placeholder="john@example.com"
                       type="email"
                       value={form.email}
@@ -222,7 +222,7 @@ export default function ContactPage() {
                   <div>
                     <label className="label">Phone Number</label>
                     <input
-                      className="input-field"
+                      className="input-field text-center md:text-left"
                       placeholder="+94 7X XXX XXXX"
                       value={form.phone}
                       onChange={(e) => setForm({ ...form, phone: e.target.value })}
@@ -231,7 +231,7 @@ export default function ContactPage() {
                   <div>
                     <label className="label">Subject *</label>
                     <input
-                      className={`input-field ${errors.subject ? "border-red-400" : ""}`}
+                      className={`input-field text-center md:text-left ${errors.subject ? "border-red-400" : ""}`}
                       placeholder="Project inquiry"
                       value={form.subject}
                       onChange={(e) => setForm({ ...form, subject: e.target.value })}
@@ -243,7 +243,7 @@ export default function ContactPage() {
                 <div>
                   <label className="label">Message *</label>
                   <textarea
-                    className={`input-field resize-none h-36 ${errors.message ? "border-red-400" : ""}`}
+                    className={`input-field text-center md:text-left resize-none h-36 ${errors.message ? "border-red-400" : ""}`}
                     placeholder="Tell us about your project, timeline, goals, or question..."
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -251,7 +251,7 @@ export default function ContactPage() {
                   {errors.message && <p className="text-red-500 text-xs mt-1 text-left">{errors.message}</p>}
                 </div>
 
-                <Button variant="primary" type="submit" disabled={loading} rightIcon={<HiOutlineChat/> } className="self-end">
+                <Button variant="primary" type="submit" disabled={loading} rightIcon={<HiOutlineChat/> } className="self-center md:self-end">
                   {loading ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />

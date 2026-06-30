@@ -192,7 +192,7 @@ export default function AboutPage() {
       {/* ──────────────────────────────────────────────────────────────
           § 3 MISSION & VISION — Bento layout cards
       ────────────────────────────────────────────────────────────── */}
-      <section className="py-24 bg-page-alt border-y border-border">
+      <section className="py-10 md:py-24 bg-page-alt border-y border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             {/* Mission Card */}
@@ -245,7 +245,7 @@ export default function AboutPage() {
       {/* ──────────────────────────────────────────────────────────────
           § 4 CORE VALUES — Grouped card list
       ────────────────────────────────────────────────────────────── */}
-      <section className="py-24 bg-background">
+      <section className=" py-10 md:py-24 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>

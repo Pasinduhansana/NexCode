@@ -14,7 +14,7 @@ export default function ServiceCard({
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
       whileHover={{ y: -6 }}
-      className="group relative overflow-hidden rounded-2xl p-[1px]"
+      className="group relative overflow-hidden rounded-2xl p-[1px] bg-background"
     >
       {/* Animated Border */}
       <div className="absolute inset-0 overflow-hidden rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -23,7 +23,7 @@ export default function ServiceCard({
       </div>
 
       {/* Card */}
-      <div className="relative h-full rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition-all duration-300 group-hover:shadow-xl sm:p-6">
+      <div className="relative h-full rounded-2xl border border-border bg-card p-5 shadow-sm transition-all duration-300 group-hover:shadow-xl sm:p-6">
 
         {/* Gradient Overlay */}
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-50/50 to-cyan-50/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
@@ -39,11 +39,11 @@ export default function ServiceCard({
             <Icon />
           </div>
 
-          <h3 className="mb-3 font-display text-lg font-semibold text-gray-900 transition-colors duration-300 group-hover:text-blue-700">
+          <h3 className="mb-3 font-display text-lg font-semibold text-foreground transition-colors duration-300 group-hover:text-blue-700">
             {title}
           </h3>
 
-          <p className="text-sm leading-7 text-gray-500">
+          <p className="text-sm leading-7 text-text_secondary">
             {description}
           </p>
         </div>

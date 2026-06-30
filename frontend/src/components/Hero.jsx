@@ -6,6 +6,10 @@ import laptopMockup from "../../assets/laptop_mockup.png";
 import phoneMockup from "../../assets/phone_mockup.png";
 import palm_tree from "../../assets/palm-leave.png";
 import laptop_display from "../../assets/project_image.png";
+import dark_L_display from "../../assets/dark_desktop.png";
+import light_L_display from "../../assets/light_desktop.png";
+import dark_m_display from "../../assets/dark_mobile.png";
+import light_m_display from "../../assets/light_mobile.png";
 import Button from "../components/Button";
 /* ─────────────────────────────────────────────────────────────
    THEME TOKENS
@@ -132,208 +136,218 @@ function LaptopScreenContent({ theme }) {
   const accent = "#4f7bff";
 
   return (
-    <div
-      className="w-full h-full flex flex-col items-center justify-center px-6 py-5 select-none overflow-hidden"
-      style={{ background: t.screenBg, color: textPrimary }}
-    >
-      {/* top bar chrome */}
+    <>
       <div
-        className="absolute top-0 left-0 right-0 flex items-center px-3 py-1.5 gap-1.5"
-        style={{ background: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)", borderBottom: `1px solid ${t.screenBorder}` }}
+        className="w-full h-full hidden md:flex flex-col items-center justify-center px-6 py-5 select-none overflow-hidden"
+        style={{ background: t.screenBg, color: textPrimary }}
       >
-        <span className="w-2 h-2 rounded-full" style={{ background: "#ff5f57" }} />
-        <span className="w-2 h-2 rounded-full" style={{ background: "#ffbd2e" }} />
-        <span className="w-2 h-2 rounded-full" style={{ background: "#28c840" }} />
-        <span
-          className="flex-1 mx-3 rounded text-center text-[8px] py-0.5 px-2"
-          style={{ background: isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)", color: textSecondary }}
+        {/* top bar chrome */}
+        <div
+          className="absolute top-0 left-0 right-0 flex items-center px-3 py-1.5 gap-1.5"
+          style={{ background: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)", borderBottom: `1px solid ${t.screenBorder}` }}
         >
-          nexcode.io
-        </span>
-        <IcoMonitor width="9" height="9" style={{ color: textSecondary }} />
-      </div>
-
-      {/* ── main content ── */}
-      <div className="flex flex-row items-start justify-start w-full  text-left gap-3 mt-4">
-        {/* Left Panel */}
-        <div className="flex flex-col items-start justify-start w-full  text-left gap-3">
-          {/* badge */}
-          <div
-            className="inline-flex items-center gap-1.5 px-2.5 py-0 rounded-full text-[8px] font-semibold"
-            style={{ background: "rgba(79,123,255,0.14)", border: "1px solid rgba(79,123,255,0.30)", color: accent }}
+          <span className="w-2 h-2 rounded-full" style={{ background: "#ff5f57" }} />
+          <span className="w-2 h-2 rounded-full" style={{ background: "#ffbd2e" }} />
+          <span className="w-2 h-2 rounded-full" style={{ background: "#28c840" }} />
+          <span
+            className="flex-1 mx-3 rounded text-center text-[8px] py-0.5 px-2"
+            style={{ background: isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)", color: textSecondary }}
           >
-            <span className="w-1 h-1 rounded-full animate-pulse" style={{ background: accent }} />
-            Available for new projects
+            nexcode.io
+          </span>
+          <IcoMonitor width="9" height="9" style={{ color: textSecondary }} />
+        </div>
+
+        {/* ── main content ── */}
+        <div className="flex flex-row items-start justify-start w-full  text-left gap-3 mt-4">
+          {/* Left Panel */}
+          <div className="flex flex-col items-start justify-start w-full  text-left gap-3">
+            {/* badge */}
+            <div
+              className="inline-flex items-center gap-1.5 px-2.5 py-0 rounded-full text-[8px] font-semibold"
+              style={{ background: "rgba(79,123,255,0.14)", border: "1px solid rgba(79,123,255,0.30)", color: accent }}
+            >
+              <span className="w-1 h-1 rounded-full animate-pulse" style={{ background: accent }} />
+              Available for new projects
+            </div>
+
+            {/* headline */}
+            <h1
+              className="font-extrabold leading-[1.08] tracking-tight hidden md:block"
+              style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(14px,2.8vw,28px)", color: textPrimary }}
+            >
+              <span className="pb-2">Scale Your</span>
+              <br />
+              <em className="not-italic mr-2" style={{ color: accent }}>
+                Online
+              </em>
+              Potential
+            </h1>
+
+            {/* sub */}
+            <p style={{ fontSize: "clamp(7px,1.1vw,11px)", lineHeight: 1.6, color: textSecondary, maxWidth: 320 }}>
+              From stunning front-end websites to heavy-duty enterprise architectures, we engineer platforms that scale effortlessly and captivate
+              users.{" "}
+            </p>
+
+            {/* CTA row */}
+            <div className="flex gap-2 flex-wrap justify-center">
+              <Button variant="primary" leftIcon={<IcoRocket width="10" height="10" />} size="xs">
+                Build Your Project
+              </Button>
+
+              <Button variant="secondary" rightIcon={<IcoArrow width="10" height="10" />} size="xs">
+                View our Work
+              </Button>
+            </div>
+
+            {/* mini stat row */}
+            <div className="flex gap-4 mt-5">
+              {[
+                ["98%", "Satisfaction"],
+                ["150+", "Projects"],
+                ["6yr", "Experience"],
+              ].map(([v, l]) => (
+                <div key={l} className="flex flex-col items-center">
+                  <span
+                    className="font-extrabold"
+                    style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(10px,1.6vw,15px)", color: textPrimary }}
+                  >
+                    {v}
+                  </span>
+                  <span style={{ fontSize: "clamp(5px,0.75vw,8px)", color: textSecondary, marginTop: 1 }}>{l}</span>
+                </div>
+              ))}
+            </div>
           </div>
-
-          {/* headline */}
-          <h1
-            className="font-extrabold leading-[1.08] tracking-tight"
-            style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(14px,2.8vw,28px)", color: textPrimary }}
-          >
-            <span className="pb-2">Scale Your</span>
-            <br />
-            <em className="not-italic mr-2" style={{ color: accent }}>
-              Online
-            </em>
-            Potential
-          </h1>
-
-          {/* sub */}
-          <p style={{ fontSize: "clamp(7px,1.1vw,11px)", lineHeight: 1.6, color: textSecondary, maxWidth: 320 }}>
-            From stunning front-end websites to heavy-duty enterprise architectures, we engineer platforms that scale effortlessly and captivate
-            users.{" "}
-          </p>
-
-          {/* CTA row */}
-          <div className="flex gap-2 flex-wrap justify-center">
-            <Button variant="primary" leftIcon={<IcoRocket width="10" height="10" />} size="xs">
-              Build Your Project
-            </Button>
-
-            <Button variant="secondary" rightIcon={<IcoArrow width="10" height="10" />} size="xs">
-              View our Work
-            </Button>
-          </div>
-
-          {/* mini stat row */}
-          <div className="flex gap-4 mt-5">
-            {[
-              ["98%", "Satisfaction"],
-              ["150+", "Projects"],
-              ["6yr", "Experience"],
-            ].map(([v, l]) => (
-              <div key={l} className="flex flex-col items-center">
-                <span className="font-extrabold" style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(10px,1.6vw,15px)", color: textPrimary }}>
-                  {v}
-                </span>
-                <span style={{ fontSize: "clamp(5px,0.75vw,8px)", color: textSecondary, marginTop: 1 }}>{l}</span>
+          {/* Right Panel with image */}
+          <div className="w-full relative h-full flex items-center justify-center ">
+            <img src={palm_tree} alt="Palm Tree" className="absolute w-[60%] object-cover -right-10 -bottom-4 z-50" />
+            <div className="w-full scale-125 flex relative  mr-20 mt-16 overflow-hidden">
+              <div className="absolute z-0 inset-0 overflow-hidden  text-center flex items-center justify-center p-3.5 pt-6">
+                <img src={laptop_display} alt="Palm Tree" className="object-cover w-[90%] " />
               </div>
-            ))}
+
+              <img src={laptopMockup} alt="Palm Tree" className="object-cover z-10" />
+            </div>
+
+            {/* Revenue sparkline — mid right */}
+            <FloatCard
+              delay={1.5}
+              className="hidden md:block"
+              style={{
+                top: "5%",
+                right: "0%",
+                width: 120,
+                padding: "12px 14px",
+                transform: "translateZ(42px) rotateX(4deg) rotateY(-8deg)",
+                animation: "hfloat 5s ease-in-out 1.5s infinite",
+              }}
+            >
+              <div className="flex items-center justify-between">
+                <span style={{ fontSize: 7, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.07em" }}>Revenue</span>
+                <span style={{ fontSize: 7, color: "#22c55e", fontWeight: 700 }}>+32%</span>
+              </div>
+              <svg viewBox="0 0 100 16" style={{ width: "100%", overflow: "visible", margin: "6px 0" }}>
+                <defs>
+                  <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
+                    <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0" />
+                  </linearGradient>
+                </defs>
+                <path d="M0,30 L16,23 L36,27 L54,12 L72,19 L90,7 L100,10 L100,36 L0,36 Z" fill="url(#sparkFill)" />
+                <polyline
+                  points="0,30 16,23 36,27 54,12 72,19 90,7 100,10"
+                  fill="none"
+                  stroke="hsl(var(--primary))"
+                  strokeWidth="2.5"
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                />
+                <circle cx="100" cy="10" r="3.5" fill="hsl(var(--primary))" />
+              </svg>
+            </FloatCard>
+
+            {/* Deploy notif — bottom left */}
+            <FloatCard
+              delay={1.65}
+              className="hidden md:flex"
+              style={{
+                top: "20%",
+                right: "85%",
+                padding: "5px 10px",
+                alignItems: "flex-start",
+                gap: 5,
+                transform: "translateZ(38px) rotateX(6deg) rotateY(8deg)",
+                animation: "hfloat 5s ease-in-out 2.1s infinite",
+              }}
+            >
+              <div
+                className="rounded-lg flex items-center justify-center flex-shrink-0 "
+                style={{ width: 20, height: 20, background: "rgba(79,123,255,0.12)", border: "1px solid rgba(79,123,255,0.22)" }}
+              >
+                <IcoCheck width={12} height={12} style={{ color: "hsl(var(--primary))" }} />
+              </div>
+              <div>
+                <div style={{ fontSize: 7, fontWeight: 600, color: "var(--foreground)", lineHeight: 1.3 }}>Deploy successful</div>
+              </div>
+            </FloatCard>
+
+            {/* Deploy notif — bottom left */}
+            <FloatCard
+              delay={1.65}
+              className="hidden md:flex"
+              width={180}
+              style={{
+                bottom: "-10%",
+                right: "95%",
+                padding: "5px 10px",
+                alignItems: "flex-start",
+                gap: 5,
+                transform: "translateZ(38px) rotateX(6deg) rotateY(8deg)",
+                animation: "hfloat 5s ease-in-out 2.1s infinite",
+              }}
+            >
+              <div
+                className="rounded-lg flex items-center justify-center flex-shrink-0 "
+                style={{ width: 20, height: 20, background: "rgba(79,123,255,0.12)", border: "1px solid rgba(79,123,255,0.22)" }}
+              >
+                <IcoCheck width={12} height={12} style={{ color: "hsl(var(--primary))" }} />
+              </div>
+              <div>
+                <div style={{ fontSize: 7, fontWeight: 600, color: "var(--foreground)", lineHeight: 1.3 }}>Validation successful.</div>
+              </div>
+            </FloatCard>
           </div>
         </div>
-        {/* Right Panel with image */}
-        <div className="w-full relative h-full flex items-center justify-center ">
-          <img src={palm_tree} alt="Palm Tree" className="absolute w-[60%] object-cover -right-10 -bottom-4 z-50" />
-          <div className="w-full scale-125 flex relative  mr-20 mt-16 overflow-hidden">
-            <div className="absolute z-0 inset-0 overflow-hidden  text-center flex items-center justify-center p-3.5 pt-6">
-              <img src={laptop_display} alt="Palm Tree" className="object-cover w-[90%] " />
-            </div>
 
-            <img src={laptopMockup} alt="Palm Tree" className="object-cover z-10" />
-          </div>
-
-          {/* Revenue sparkline — mid right */}
-          <FloatCard
-            delay={1.5}
-            style={{
-              top: "5%",
-              right: "0%",
-              width: 120,
-              padding: "12px 14px",
-              transform: "translateZ(42px) rotateX(4deg) rotateY(-8deg)",
-              animation: "hfloat 5s ease-in-out 1.5s infinite",
-            }}
-            className="md:block hidden"
-          >
-            <div className="flex items-center justify-between">
-              <span style={{ fontSize: 7, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.07em" }}>Revenue</span>
-              <span style={{ fontSize: 7, color: "#22c55e", fontWeight: 700 }}>+32%</span>
-            </div>
-            <svg viewBox="0 0 100 16" style={{ width: "100%", overflow: "visible", margin: "6px 0" }}>
-              <defs>
-                <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
-                  <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-              <path d="M0,30 L16,23 L36,27 L54,12 L72,19 L90,7 L100,10 L100,36 L0,36 Z" fill="url(#sparkFill)" />
-              <polyline
-                points="0,30 16,23 36,27 54,12 72,19 90,7 100,10"
-                fill="none"
-                stroke="hsl(var(--primary))"
-                strokeWidth="2.5"
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-              <circle cx="100" cy="10" r="3.5" fill="hsl(var(--primary))" />
-            </svg>
-          </FloatCard>
-
-          {/* Deploy notif — bottom left */}
-          <FloatCard
-            delay={1.65}
-            style={{
-              top: "20%",
-              right: "85%",
-              padding: "5px 10px",
-              display: "flex",
-              alignItems: "flex-start",
-              gap: 5,
-              transform: "translateZ(38px) rotateX(6deg) rotateY(8deg)",
-              animation: "hfloat 5s ease-in-out 2.1s infinite",
-            }}
-            className="md:block hidden"
-          >
-            <div
-              className="rounded-lg flex items-center justify-center flex-shrink-0 "
-              style={{ width: 20, height: 20, background: "rgba(79,123,255,0.12)", border: "1px solid rgba(79,123,255,0.22)" }}
-            >
-              <IcoCheck width={12} height={12} style={{ color: "hsl(var(--primary))" }} />
-            </div>
-            <div>
-              <div style={{ fontSize: 7, fontWeight: 600, color: "var(--foreground)", lineHeight: 1.3 }}>Deploy successful</div>
-            </div>
-          </FloatCard>
-
-          {/* Deploy notif — bottom left */}
-          <FloatCard
-            delay={1.65}
-            width={180}
-            style={{
-              bottom: "-10%",
-              right: "95%",
-              padding: "5px 10px",
-              display: "flex",
-              alignItems: "flex-start",
-              gap: 5,
-              transform: "translateZ(38px) rotateX(6deg) rotateY(8deg)",
-              animation: "hfloat 5s ease-in-out 2.1s infinite",
-            }}
-            className="md:block hidden"
-          >
-            <div
-              className="rounded-lg flex items-center justify-center flex-shrink-0 "
-              style={{ width: 20, height: 20, background: "rgba(79,123,255,0.12)", border: "1px solid rgba(79,123,255,0.22)" }}
-            >
-              <IcoCheck width={12} height={12} style={{ color: "hsl(var(--primary))" }} />
-            </div>
-            <div>
-              <div style={{ fontSize: 7, fontWeight: 600, color: "var(--foreground)", lineHeight: 1.3 }}>Validation successful.</div>
-            </div>
-          </FloatCard>
-        </div>
-      </div>
-      {/* decorative background watermark inside screen */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none overflow-hidden -z-10" style={{ opacity: 0.06 }}>
-        <span
-          className="font-extrabold uppercase tracking-widest whitespace-nowrap"
-          style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(24px,5vw,52px)", color: textPrimary }}
+        {/* decorative background watermark inside screen */}
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none overflow-hidden -z-10"
+          style={{ opacity: 0.06 }}
         >
-          NEXCODE
-        </span>
-      </div>
+          <span
+            className="font-extrabold uppercase tracking-widest whitespace-nowrap"
+            style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(24px,5vw,52px)", color: textPrimary }}
+          >
+            NEXCODE
+          </span>
+        </div>
 
-      {/* subtle dot grid inside screen */}
-      <div
-        className="absolute inset-0 -z-10 pointer-events-none"
-        style={{
-          backgroundImage: `radial-gradient(${isDark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.06)"} 1px, transparent 1px)`,
-          backgroundSize: "18px 18px",
-          maskImage: "radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%)",
-        }}
-      />
-    </div>
+        {/* subtle dot grid inside screen */}
+        <div
+          className="absolute inset-0 -z-10 pointer-events-none"
+          style={{
+            backgroundImage: `radial-gradient(${isDark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.06)"} 1px, transparent 1px)`,
+            backgroundSize: "18px 18px",
+            maskImage: "radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%)",
+          }}
+        />
+      </div>
+      <div className="w-full h-full flex flex-col items-center justify-center  select-none overflow-hidden md:hidden">
+        <img src={theme === "dark" ? dark_L_display : light_L_display} alt="Mobile Display" className="object-cover w-[100%] h-[100%]" />
+      </div>
+    </>
   );
 }
 
@@ -347,8 +361,8 @@ function PhoneScreenContent({ theme }) {
   const textSecondary = isDark ? "rgba(200,210,255,0.55)" : "rgba(10,15,50,0.50)";
   const accent = "#4f7bff";
 
-  return (
-    <div className="w-full h-full flex flex-col overflow-hidden select-none" style={{ background: t.phoneScreenBg, color: textPrimary }}>
+  return (<>
+    <div className="w-full h-full hidden md:flex flex-col overflow-hidden select-none" style={{ background: t.phoneScreenBg, color: textPrimary }}>
       {/* status bar */}
       <div className="flex justify-between px-2 pt-0  flex-shrink-0 " style={{ fontSize: 5, color: textSecondary }}>
         <span>9:41</span>
@@ -438,6 +452,10 @@ function PhoneScreenContent({ theme }) {
         </div>
       </div>
     </div>
+      <div className="w-full h-full  flex flex-col items-center justify-center  select-none overflow-hidden md:hidden">
+        <img src={theme === "dark" ? dark_m_display : light_m_display} alt="Mobile Display" className="object-cover w-[90%] h-[95%]" />
+
+      </div></>
   );
 }
 
@@ -551,7 +569,7 @@ export default function Hero({ stats = [] }) {
     <section
       ref={sceneRef}
       className="relative min-h-screen w-full overflow-hidden bg-background
-                 flex flex-col items-center justify-center"
+                 flex flex-col items-center md:justify-center md:pt-0"
     >
       {/* ══ BACKGROUND ══════════════════════════════════════════ */}
 
@@ -664,14 +682,14 @@ export default function Hero({ stats = [] }) {
         initial={{ opacity: 0, y: 28 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="relative text-center px-5 pt-0 md:pt-28 pb-10
+        className="relative text-center  px-5 pt-24 md:pt-28 pb-10
                    flex flex-col items-center gap-4"
         style={{ zIndex: 10 }}
       >
         {/* headline */}
         <h1
           className="text-[clamp(2rem,5.2vw,3rem)] font-bold
-                     leading-[1.05] tracking-tight text-foreground "
+                     leading-[1.05] tracking-tight text-foreground mt-0"
           style={{ fontFamily: "'Syne', sans-serif" }}
         >
           Empower Your <em className="not-italic text-primary">Digital</em> Growth
@@ -798,17 +816,15 @@ export default function Hero({ stats = [] }) {
             {/* Active users — top left */}
             <FloatCard
               delay={1.35}
-              className="hidden"
+              className="hidden md:flex"
               style={{
                 top: "6%",
                 left: "-13%",
                 padding: "12px 14px",
-                display: "flex",
                 alignItems: "center",
                 gap: 10,
                 transform: "translateZ(48px) rotateX(-5deg) rotateY(8deg)",
                 animation: "hfloat 5s ease-in-out 0.9s infinite",
-                
               }}
             >
               <div
@@ -870,13 +886,12 @@ export default function Hero({ stats = [] }) {
                 bottom: "16%",
                 left: "-25%",
                 padding: "10px 12px",
-                display: "flex",
                 alignItems: "flex-start",
                 gap: 10,
                 transform: "translateZ(38px) rotateX(6deg) rotateY(8deg)",
                 animation: "hfloat 5s ease-in-out 2.1s infinite",
               }}
-              className="md:block hidden"
+              className="hidden md:flex"
             >
               <div
                 className="rounded-lg flex items-center justify-center flex-shrink-0 "
@@ -894,8 +909,6 @@ export default function Hero({ stats = [] }) {
             <FloatCard
               delay={1.8}
               style={{
-                bottom: "1%",
-                right: "-25%",
                 padding: "10px 14px",
                 display: "flex",
                 flexDirection: "column",
@@ -903,14 +916,14 @@ export default function Hero({ stats = [] }) {
                 transform: "translateZ(40px) rotateX(5deg) rotateY(-6deg)",
                 animation: "hfloat 5s ease-in-out 1.1s infinite",
               }}
-              className="md:block hidden"
+              className="md:block hidden right-[5%] bottom-[-50%] md:right-[-25%] md:bottom-[1%]"
             >
               <div style={{ display: "flex" }}>
                 {["#4f7bff", "#7c3aed", "#14b8a6", "#f97316"].map((c, i) => (
                   <div
                     key={i}
-                    className="rounded-full border-2 flex-shrink-0"
-                    style={{ width: 24, height: 24, background: c, borderColor: "var(--card)", marginLeft: i ? -8 : 0, zIndex: 4 - i }}
+                    className="rounded-full mx-auto md:mx-0 md:border-1 border-none flex-shrink-0 w-[20px] h-[20px]  md:w-[24px] md:h-[24px]"
+                    style={{ background: c, borderColor: "var(--card)", marginLeft: i ? -8 : 0, zIndex: 4 - i }}
                   />
                 ))}
               </div>
@@ -930,7 +943,7 @@ export default function Hero({ stats = [] }) {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: d, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute flex items-center gap-1.5 px-3 py-1.5 rounded-full
+                className="absolute md:flex items-center gap-1.5 px-3 py-1.5 hidden  rounded-full
                            border border-border/40 bg-card/55 backdrop-blur-md
                            text-muted-foreground whitespace-nowrap pointer-events-none z-50"
                 style={{ fontSize: 10, animation: `hfloat 4s ease-in-out ${d - 1.9}s infinite`, ...s }}
@@ -939,6 +952,63 @@ export default function Hero({ stats = [] }) {
                 {label}
               </motion.div>
             ))}
+
+            {/* Mobile View Tech Pills */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 1.9, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute flex items-center gap-1.5 px-3 py-0.5 md:hidden  rounded-full
+                           border border-border/40 bg-card/55 backdrop-blur-md
+                           text-muted-foreground whitespace-nowrap pointer-events-none z-50 -bottom-16"
+              style={{ fontSize: 10, animation: `hfloat 4s ease-in-out  infinite` }}
+            >
+              <IcoStack width={10} height={10} style={{ color: "hsl(var(--primary))", flexShrink: 0 }} />
+              React + TypeScript
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 2.3, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute flex items-center gap-1.5 px-3 py-0.5 md:hidden  rounded-full
+                           border border-border/40 bg-card/60 backdrop-blur-2xl
+                           text-muted-foreground whitespace-nowrap pointer-events-none z-50 -top-6 -left-4"
+              style={{ fontSize: 10, animation: `hfloat 4s ease-in-out  infinite` }}
+            >
+              <IcoDb width={10} height={10} style={{ color: "hsl(var(--primary))", flexShrink: 0 }} />
+              Node.js API
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 2.3, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute flex items-center gap-1.5 px-3 py-0.5 md:hidden  rounded-full
+                           border border-border/40 bg-card/55 backdrop-blur-md
+                           text-muted-foreground whitespace-nowrap pointer-events-none z-50 -top-10 right-0"
+              style={{ fontSize: 10, animation: `hfloat 4s ease-in-out  infinite` }}
+            >
+              <IcoMonitor width={10} height={10} style={{ color: "hsl(var(--primary))", flexShrink: 0 }} />
+              Cloud Deployed
+            </motion.div>
+
+            {/* Revenue sparkline — mid right */}
+            <FloatCard
+              delay={1.5}
+              style={{
+                width: 120,
+                padding: "8px 12px",
+                transform: "translateZ(42px) rotateX(4deg) rotateY(-8deg)",
+                animation: "hfloat 5s ease-in-out 1.5s infinite",
+              }}
+              className="md:hidden block -bottom-[135px] left-10"
+            >
+              <div className="flex items-center justify-between">
+                <span style={{ fontSize: 9, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.07em" }}>Revenue</span>
+                <span style={{ fontSize: 9, color: "#22c55e", fontWeight: 700 }}>+32%</span>
+              </div>
+            </FloatCard>
           </div>
           {/* tilt */}
         </motion.div>

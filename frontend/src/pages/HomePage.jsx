@@ -41,7 +41,7 @@ export default function HomePage() {
       <Hero stats={stats} className="bg-green-800" />
 
       {/* SERVICES PREVIEW */}
-      <section className="bg-gray-50 py-16 lg:py-24">
+      <section className="bg-background py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-10 text-center md:mb-14">
             <motion.div
@@ -89,7 +89,7 @@ export default function HomePage() {
       </section>
 
       {/* WHY NEXCODE */}
-      <section className="bg-white py-8 lg:py-24">
+      <section className="bg-background py-8 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-10 items-center lg:grid-cols-2 lg:gap-16">
             {/* LEFT CONTENT (TEXT FIRST ON MOBILE, NORMAL ON DESKTOP) */}
@@ -127,7 +127,7 @@ export default function HomePage() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3 text-left">
                     <HiCheckCircle className="flex-shrink-0 text-blue-500" size={20} />
-                    <span className="text-sm leading-relaxed text-gray-700 text-left">{item}</span>
+                    <span className="text-sm leading-relaxed text-text_secondary text-left">{item}</span>
                   </div>
                 ))}
               </div>

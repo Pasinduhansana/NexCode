@@ -282,7 +282,7 @@ export default function ShowcasePage() {
           />
         </div>
 
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-24">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-32 pb-10 md:pb-24">
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-16 items-center">
             {/* Left Column Content */}
             <div className="text-center lg:text-left">
@@ -320,12 +320,12 @@ export default function ShowcasePage() {
                 initial="hidden"
                 animate="show"
                 custom={3}
-                className="flex flex-wrap gap-4 mb-12 justify-center lg:justify-start"
+                className="flex flex-wrap gap-3 lg:gap-4 mb-12 justify-center lg:justify-start px-20 lg:px-0"
               >
-                <Button variant="primary" rightIcon={<HiFilter size={16} />} href="#collection">
+                <Button variant="primary" rightIcon={<HiFilter size={16} />} href="#collection" className="w-full lg:w-auto">
                   Start Your Project
                 </Button>
-                <Button variant="radio" rightIcon={<HiChevronRight size={20} />} to="/start-project">
+                <Button variant="radio" rightIcon={<HiChevronRight size={20} />} to="/start-project" className="w-full lg:w-auto">
                   Get in Touch
                 </Button>
               </motion.div>
@@ -389,7 +389,7 @@ export default function ShowcasePage() {
           § 2 CASE STUDY SPOTLIGHTS — Alternating Featured Projects
       ────────────────────────────────────────────────────────────── */}
       {spotlightProjects.length > 0 && (
-        <section className="py-24 bg-page-alt border-y border-border">
+        <section className="py-8 lg:py-24 bg-page-alt border-y border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Header */}
             <div className="flex flex-col items-center text-center mb-20">
@@ -405,7 +405,7 @@ export default function ShowcasePage() {
             </div>
 
             {/* Alternating spotlight rows */}
-            <div className="space-y-28">
+            <div className="space-y-12 md:space-y-28">
               {spotlightProjects.map((proj, idx) => {
                 const isRight = idx % 2 === 1;
                 const strokeColor = proj.color?.includes("cyan") ? "#06b6d4" : "#3699f3";
@@ -422,7 +422,8 @@ export default function ShowcasePage() {
                   >
                     {/* Text Block */}
                     <div className={isRight ? "lg:order-2" : ""}>
-                      <div className="flex items-center gap-3 mb-6">
+                      <div className="flex items-center justify-center lg:justify-start gap-3 mb-6 text-center md:text-left">
+                        <div className="md:hidden h-px w-10 opacity-25" style={{ background: strokeColor }} />
                         <span className="font-mono text-xs font-black tracking-widest uppercase opacity-45" style={{ color: strokeColor }}>
                           Featured Case {String(idx + 1).padStart(2, "0")}
                         </span>
@@ -430,20 +431,20 @@ export default function ShowcasePage() {
                       </div>
 
                       <div className="flex flex-col mb-6">
-                        <span className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: strokeColor }}>
+                        <span className="text-xs font-semibold uppercase tracking-wider mb-1.5 text-center md:text-left" style={{ color: strokeColor }}>
                           {proj.type}
                         </span>
-                        <h3 className="font-display text-2xl md:text-3.5xl font-extrabold text-foreground tracking-tight">{proj.name}</h3>
+                        <h3 className="font-display text-2xl md:text-3.5xl font-extrabold text-foreground tracking-tight text-center md:text-left">{proj.name}</h3>
                       </div>
 
-                      <p className="text-sm text-text_secondary leading-relaxed mb-8">{proj.summary}</p>
+                      <p className="text-sm text-text_secondary leading-relaxed mb-8 text-center md:text-left">{proj.summary}</p>
 
                       {/* Display Results details */}
                       {proj.results && proj.results.length > 0 && (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+                        <div className="grid grid-cols-1  sm:grid-cols-2 gap-3 mb-8 ">
                           {proj.results.map((res, ri) => (
-                            <div key={ri} className="flex items-center gap-2.5 px-4 py-3 rounded-xl border border-border bg-card shadow-sm">
-                              <HiCheckCircle className="text-base flex-shrink-0" style={{ color: strokeColor }} />
+                            <div key={ri} className="flex items-center justify-center md:justify-start gap-2.5 px-4 py-1 md:py-3 rounded-xl md:border border-border md:bg-card md:shadow-sm md:mx-0  px-auto">
+                              <HiCheckCircle className="text-base flex-shrink-0 text" style={{ color: strokeColor }} />
                               <span className="text-xs font-bold text-foreground">{res}</span>
                             </div>
                           ))}
@@ -451,7 +452,7 @@ export default function ShowcasePage() {
                       )}
 
                       {/* CTA link to detailed case page */}
-
+                      <div className="px-16 md:px-0">
                       <Button
                         varient="primary"
                         rightIcon={<HiChevronRight size={20} />}
@@ -459,9 +460,10 @@ export default function ShowcasePage() {
                         style={{
                           background: `linear-gradient(135deg, ${strokeColor}, rgba(${rgbOverlay}, 0.75))`,
                         }}
+                        className="w-full"
                       >
-                        Explore Full Case Study
-                      </Button>
+                        Explore Case Study
+                      </Button></div>
                     </div>
 
                     {/* Graphics / Image Mockup Frame */}
@@ -538,7 +540,7 @@ export default function ShowcasePage() {
       {/* ──────────────────────────────────────────────────────────────
           § 3 MAIN COLLECTION GRID — Filter sidebar + bento cards list
       ────────────────────────────────────────────────────────────── */}
-      <section id="collection" className="py-24 bg-background">
+      <section id="collection" className="py-10 md:py-24 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="flex flex-col items-center text-center mb-16">
@@ -704,13 +706,8 @@ export default function ShowcasePage() {
                   <p className="text-text_secondary mb-6 max-w-lg mx-auto">
                     Try adjusting your keyword query, selected categories, or active technologies stack to explore other case studies.
                   </p>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    leftIcon={<HiChevronLeft size={20}/>}
-                    onClick={resetFilters}
-                  >
-                     Reset All Filters
+                  <Button variant="secondary" size="sm" leftIcon={<HiChevronLeft size={20} />} onClick={resetFilters}>
+                    Reset All Filters
                   </Button>
                 </motion.div>
               )}
@@ -823,7 +820,7 @@ export default function ShowcasePage() {
       {/* ──────────────────────────────────────────────────────────────
           § 5 STANDARDS — Engineering principles
       ────────────────────────────────────────────────────────────── */}
-      <section className="py-24 bg-page-alt border-t border-border">
+      <section className="py-10 md:py-24 bg-page-alt border-t border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Left Column info */}
@@ -904,7 +901,7 @@ export default function ShowcasePage() {
       {/* ──────────────────────────────────────────────────────────────
           § 6 CTA BANNER — Full-bleed gradients CTA
       ────────────────────────────────────────────────────────────── */}
-      <section className="relative py-32 overflow-hidden bg-background">
+      <section className="relative py-10 md:py-32 overflow-hidden bg-background">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-700" />
         <div
           className="absolute inset-0 opacity-[0.1]"
@@ -937,17 +934,10 @@ export default function ShowcasePage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-
               <Button variant="radio" to="/start-project" leftIcon={<FaRocket size={15} />} className="bg-white text-blue-700">
                 Start Your Project
               </Button>
-              <Button
-                variant="whatsapp"
-                href="https://wa.me/94769747244"
-                target="_blank"
-                rel="noreferrer"
-                leftIcon={<FaWhatsapp size={20} />}
-              >
+              <Button variant="whatsapp" href="https://wa.me/94769747244" target="_blank" rel="noreferrer" leftIcon={<FaWhatsapp size={20} />}>
                 Contact Whatsapp
               </Button>
             </div>
