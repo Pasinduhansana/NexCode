@@ -41,116 +41,149 @@ export default function HomePage() {
       <Hero stats={stats} className="bg-green-800" />
 
       {/* SERVICES PREVIEW */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
+      <section className="bg-background py-16 lg:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-10 text-center md:mb-14">
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-medium mb-4"
+              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600 mb-4"
             >
               Our Services
             </motion.div>
+
             <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="section-title mb-4">
-              Everything You Need to
-              <br />
+              Everything You Need to{" "}
+              <span className="hidden sm:block">
+                <br />
+              </span>
               <span className="gradient-text">Build Digitally</span>
             </motion.h2>
+
             <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="section-subtitle"
+              className="section-subtitle mx-auto max-w-2xl"
             >
               From concept to launch, we offer a full spectrum of software services designed to accelerate your business.
             </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
             {services.map((s, i) => (
               <ServiceCard key={i} {...s} index={i} />
             ))}
           </div>
 
-          <div className="text-center mt-12">
-            <Button variant="outline" to="/services" rightIcon={<HiChevronRight size={20} />}>
-              Explore All Services
-            </Button>
+          <div className="mt-10 text-center md:mt-12">
+            <div className="mx-auto w-full sm:w-auto">
+              <Button variant="outline" to="/services" rightIcon={<HiChevronRight size={20} />} className="w-full sm:w-auto">
+                Explore All Services
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
       {/* WHY NEXCODE */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <section className="bg-background py-8 lg:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-10 items-center lg:grid-cols-2 lg:gap-16">
+            {/* LEFT CONTENT (TEXT FIRST ON MOBILE, NORMAL ON DESKTOP) */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="text-center lg:text-left"
+              className="order-1 text-left lg:text-left flex flex-col"
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-medium mb-6">
+              <div className="mb-6 inline-flex mx-auto items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600">
                 Why NexCode?
               </div>
-              <h2 className="section-title mb-6">
-                We Build Products That
-                <br />
+
+              <h2 className="section-title mb-6 text-center lg:text-left">
+                We Build Products That{" "}
+                <span className="hidden sm:block">
+                  <br />
+                </span>
                 <span className="gradient-text">Actually Work</span>
               </h2>
-              <p className="text-gray-500 mb-8 leading-relaxed section-subtitle">
+
+              <p className="section-subtitle mb-8 leading-relaxed text-gray-500 text-center lg:text-left">
                 We're not just developers — we're digital partners who care about your success. Our team brings together expertise, creativity, and
                 technical excellence to deliver solutions that drive real business outcomes.
               </p>
-              {[
-                "Agile development with weekly updates",
-                "End-to-end project ownership",
-                "Post-launch support & maintenance",
-                "Transparent pricing, no hidden costs",
-                "Modern tech stack & best practices",
-                "Client-first communication approach",
-              ].map((item, i) => (
-                <div key={i} className="flex items-center justify-center lg:justify-start gap-3 mb-3">
-                  <HiCheckCircle className="text-blue-500 flex-shrink-0" size={20} />
-                  <span className="text-gray-700 text-sm">{item}</span>
-                </div>
-              ))}
+
+              <div className="space-y-3 pl-6">
+                {[
+                  "Agile development with weekly updates",
+                  "End-to-end project ownership",
+                  "Post-launch support & maintenance",
+                  "Transparent pricing, no hidden costs",
+                  "Modern tech stack & best practices",
+                  "Client-first communication approach",
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3 text-left">
+                    <HiCheckCircle className="flex-shrink-0 text-blue-500" size={20} />
+                    <span className="text-sm leading-relaxed text-text_secondary text-left">{item}</span>
+                  </div>
+                ))}
+              </div>
+
               <div className="mt-8">
-                <Button variant="primary" to="/about" rightIcon={<HiChevronRight size={20} />}>
+                <Button className="w-full sm:w-auto" variant="primary" to="/about" rightIcon={<HiChevronRight size={20} />}>
                   Learn More About Us
                 </Button>
               </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="relative">
-              <div className="bg-gradient-to-br from-blue-600 to-cyan-500 rounded-3xl p-8 text-white relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-                <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
+            {/* RIGHT CARD (BOTTOM ON MOBILE) */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="relative order-2 lg:order-2"
+            >
+              <div className="relative overflow-hidden rounded-xl lg:rounded-3xl bg-gradient-to-br from-blue-600 to-cyan-500 p-6 text-white sm:p-8">
+                {/* Background effects */}
+                <div className="absolute top-0 right-0 h-40 w-40 -translate-y-1/2 translate-x-1/2 rounded-full bg-white/10" />
+                <div className="absolute bottom-0 left-0 h-32 w-32 translate-y-1/2 -translate-x-1/2 rounded-full bg-white/5" />
+
                 <div className="relative">
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center">
+                  <div className="mb-8 flex items-center gap-3">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/20">
                       <FaRocket size={20} />
                     </div>
                     <div>
-                      <div className="font-display font-bold text-xl">Let's Build Together</div>
-                      <div className="text-white/70 text-sm">Your next digital project</div>
+                      <div className="font-display text-xl font-bold">Let's Build Together</div>
+                      <div className="text-sm text-white/70">Your next digital project</div>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4 mb-8">
+
+                  <div className="mb-8 grid grid-cols-2 gap-4">
                     {stats.map((s, i) => (
-                      <div key={i} className="bg-white/10 rounded-2xl p-4 text-center">
+                      <div key={i} className="rounded-2xl bg-white/10 p-4 text-center">
                         <div className="font-display text-2xl font-bold">{s.value}</div>
-                        <div className="text-white/70 text-xs mt-1">{s.label}</div>
+                        <div className="mt-1 text-xs text-white/70">{s.label}</div>
                       </div>
                     ))}
                   </div>
-                  <div className="flex gap-3 justify-end">
-                    <Button variant="phone" href="tel:+94753125140" leftIcon={<FaPhone />}>
+
+                  <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
+                    <Button className="w-full sm:w-auto" variant="phone" href="tel:+94753125140" leftIcon={<FaPhone />}>
                       Call Us
                     </Button>
-                    <Button variant="whatsapp" href="https://wa.me/94769747244" target="_blank" rel="noreferrer" leftIcon={<FaWhatsapp />}>
+
+                    <Button
+                      className="w-full sm:w-auto"
+                      variant="whatsapp"
+                      href="https://wa.me/94769747244"
+                      target="_blank"
+                      rel="noreferrer"
+                      leftIcon={<FaWhatsapp />}
+                    >
                       WhatsApp
                     </Button>
                   </div>
@@ -165,7 +198,7 @@ export default function HomePage() {
       <FAQ />
 
       {/* CTA BANNER */}
-      <section className="py-20 bg-hero-gradient dark-grid">
+      <section className="py-8 lg:py-20 bg-hero-gradient dark-grid">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h2 className="font-display section-title text-3xl md:text-4xl font-bold  mb-4">
