@@ -14,7 +14,6 @@ const inquirySchema = new mongoose.Schema({
   budget: { type: String, enum: ['Under $1K', '$1K-$5K', '$5K-$15K', '$15K-$50K', '$50K+', 'Not Sure'], default: 'Not Sure' },
   status: { type: String, enum: ['new', 'in-review', 'contacted', 'converted', 'closed'], default: 'new' },
   priority: { type: String, enum: ['low', 'medium', 'high'], default: 'medium' },
-  adminNotes: { type: String },
   ipAddress: { type: String },
   source: { type: String, default: 'website' }
 }, { timestamps: true });

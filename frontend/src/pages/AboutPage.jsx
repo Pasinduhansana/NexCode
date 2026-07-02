@@ -26,26 +26,17 @@ import Button from "../components/Button";
    DATA
    ═══════════════════════════════════════════════════════════════════════ */
 const stats = [
-  { value: "150+", label: "Projects Delivered", description: "Across various industries" },
-  { value: "50+", label: "Happy Clients", description: "Who trust our expertise" },
-  { value: "5+", label: "Years Experience", description: "In software development" },
-  { value: "100%", label: "Sri Lankan Team", description: "Local talent, global standards" },
+  { value: "Custom", label: "Projects", description: "Built around each client need" },
+  { value: "Dedicated", label: "Clientele", description: "Focused on close collaboration" },
+  { value: "2025", label: "Founded", description: "Started in 2025" },
+  { value: "Local", label: "Team", description: "Sri Lankan talent, global standards" },
 ];
 
 const STATS = [
-  { value: "150+", label: "Projects Delivered" },
-  { value: "98%", label: "Client Satisfaction" },
-  { value: "7", label: "Service Domains" },
-  { value: "24/7", label: "Support" },
-];
-
-const timeline = [
-  { year: "2019", title: "Founded", description: "NexCode was born with a mission to deliver world-class software from Sri Lanka." },
-  { year: "2020", title: "First 20 Clients", description: "Rapidly grew our portfolio across web development and mobile applications." },
-  { year: "2021", title: "AI Division", description: "Launched our AI & Automation services to help businesses embrace intelligent tech." },
-  { year: "2022", title: "Cloud Expansion", description: "Added full cloud solutions including AWS, Azure, and GCP managed services." },
-  { year: "2023", title: "Regional Recognition", description: "Recognized as one of Sri Lanka's fastest-growing software companies." },
-  { year: "2024", title: "Going Global", description: "Expanding to serve international clients across UK, Australia, and Middle East." },
+  { value: "Custom", label: "Projects" },
+  { value: "Focused", label: "Client Work" },
+  { value: "Flexible", label: "Service Scope" },
+  { value: "Responsive", label: "Support" },
 ];
 
 const values = [
@@ -103,11 +94,11 @@ export default function AboutPage() {
         {/* Ambient background glows */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
-            className="absolute -top-32 -left-32 w-[650px] h-[650px] rounded-full animate-pulse-slow"
+            className="absolute hidden sm:block -top-32 -left-32 w-[650px] h-[650px] rounded-full animate-pulse-slow"
             style={{ background: "radial-gradient(circle, rgba(54,153,243,0.12) 0%, transparent 65%)" }}
           />
           <div
-            className="absolute top-1/4 right-[-10%] w-[580px] h-[580px] rounded-full animate-float"
+            className="absolute hidden sm:block top-1/4 right-[-10%] w-[580px] h-[580px] rounded-full animate-float"
             style={{ background: "radial-gradient(circle, rgba(6,182,212,0.13) 0%, transparent 65%)", animationDelay: "1s" }}
           />
         </div>
@@ -348,7 +339,7 @@ export default function AboutPage() {
               <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">With NexCode?</span>
             </h2>
             <p className="text-white/70 text-sm md:text-base max-w-lg mx-auto mb-10 leading-relaxed">
-              Join 50+ businesses who leverage our digital engineering capabilities to achieve outstanding growth.
+              Work with a focused team that adapts to each project and keeps the process simple, clear, and collaborative.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="radio" to="/start-project" leftIcon={<FaRocket size={15} />} className="bg-white text-blue-700">

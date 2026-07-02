@@ -19,27 +19,10 @@ app.use(express.urlencoded({ extended: true }));
 mongoose.connect(process.env.MONGODB_URI)
   .then(async () => {
     console.log('✅ MongoDB Connected');
-    await seedAdmin();
     await seedShowcase();
   })
   .catch(err => console.error('❌ MongoDB Error:', err));
 
-// Seed Admin User
-const seedAdmin = async () => {
-  const Admin = require('./models/Admin');
-  const bcrypt = require('bcryptjs');
-  const existing = await Admin.findOne({ email: process.env.ADMIN_SEED_EMAIL });
-  if (!existing) {
-    const hashed = await bcrypt.hash(process.env.ADMIN_SEED_PASSWORD, 12);
-    await Admin.create({
-      name: 'NexCode Admin',
-      email: process.env.ADMIN_SEED_EMAIL,
-      password: hashed,
-      role: 'superadmin'
-    });
-    console.log('✅ Admin seeded:', process.env.ADMIN_SEED_EMAIL);
-  }
-};
 
 const seedShowcase = async () => {
   const ShowcaseProject = require('./models/ShowcaseProject');
@@ -52,13 +35,11 @@ const seedShowcase = async () => {
 };
 
 // Routes
-app.use('/api/auth', require('./routes/auth'));
 app.use('/api/inquiries', require('./routes/inquiries'));
 app.use('/api/projects', require('./routes/projects'));
 app.use('/api/contacts', require('./routes/contacts'));
-app.use('/api/admin', require('./routes/admin'));
 app.use('/api/showcase', require('./routes/showcase'));
-app.use('/api/admin/showcase', require('./routes/adminShowcase'));
+
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'NexCode API Running', time: new Date() }));

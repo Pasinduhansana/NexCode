@@ -24,10 +24,10 @@ import { hero_services as services } from "../data/services";
 import Button from "../components/Button";
 
 const stats = [
-  { value: "150+", label: "Projects Delivered" },
-  { value: "98%", label: "Client Satisfaction" },
-  { value: "5+", label: "Years Experience" },
-  { value: "24/7", label: "Support" },
+  { value: "Custom", label: "Projects" },
+  { value: "Dedicated", label: "Clientele" },
+  { value: "2025", label: "Founded" },
+  { value: "Responsive", label: "Support" },
 ];
 
 export default function HomePage() {

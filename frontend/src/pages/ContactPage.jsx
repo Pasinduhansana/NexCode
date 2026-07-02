@@ -1,19 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { HiPhone, HiMail, HiLocationMarker, HiClock, HiSparkles, HiOutlineChat, HiChevronRight  } from "react-icons/hi";
 import { FaWhatsapp } from "react-icons/fa";
-import api from "../utils/api";
+import { useForm } from "@formspree/react";
 import usePageTitle from "../utils/usePageTitle";
 import { useThemeClasses } from "../utils/useThemeClasses";
 import Button from "../components/Button";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
-  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [state, formspreeHandleSubmit] = useForm("mwvdwkvz");
   const themeClasses = useThemeClasses();
   usePageTitle("Contact");
+
+  useEffect(() => {
+    if (state.succeeded) {
+      toast.success("Message sent! We'll get back to you soon.");
+      setForm({ name: "", email: "", phone: "", subject: "", message: "" });
+      setErrors({});
+    }
+  }, [state.succeeded]);
 
   const validate = () => {
     const e = {};
@@ -28,17 +36,7 @@ export default function ContactPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-    setLoading(true);
-    try {
-      await api.post("/contacts", form);
-      toast.success("Message sent! We'll get back to you soon.");
-      setForm({ name: "", email: "", phone: "", subject: "", message: "" });
-      setErrors({});
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to send message. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    formspreeHandleSubmit(e);
   };
 
   const contacts = [
@@ -49,8 +47,7 @@ export default function ContactPage() {
   ];
 
   const quickFacts = [
-    { icon: HiClock, label: "Response Time", value: "Within 24 hours" },
-    { icon: HiSparkles, label: "Project Style", value: "Mobile, Web & Systems" },
+    { icon: HiClock, label: "Response Time", value: "Within 24 hours" }
   ];
 
   return (
@@ -58,11 +55,11 @@ export default function ContactPage() {
       <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-background dark-grid">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
-            className="absolute -top-32 -left-32 w-[650px] h-[650px] rounded-full animate-pulse-slow"
+            className="absolute hidden sm:block -top-32 -left-32 w-[650px] h-[650px] rounded-full animate-pulse-slow"
             style={{ background: "radial-gradient(circle, rgba(54,153,243,0.12) 0%, transparent 65%)" }}
           />
           <div
-            className="absolute top-1/4 right-[-10%] w-[580px] h-[580px] rounded-full animate-float"
+            className="absolute hidden sm:block top-1/4 right-[-10%] w-[580px] h-[580px] rounded-full animate-float"
             style={{ background: "radial-gradient(circle, rgba(6,182,212,0.13) 0%, transparent 65%)", animationDelay: "1s" }}
           />
         </div>
@@ -82,10 +79,10 @@ export default function ContactPage() {
               </p>
 
               <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-8">
-                <Button variant="primary" rightIcon={<HiMail size={20}/>} href="mailto:info@nexcode.lk" >
+                <Button variant="primary" rightIcon={<HiMail size={20}/>} href="mailto:info@nexcode.lk" className="w-full sm:w-auto">
                   Email Us
                 </Button>
-                <Button variant="whatsapp" leftIcon={<FaWhatsapp size={18}/>} href="https://wa.me/94769747244" target="_blank" rel="noreferrer" >
+                <Button variant="whatsapp" leftIcon={<FaWhatsapp size={18}/>} href="https://wa.me/94769747244" target="_blank" rel="noreferrer" className="w-full sm:w-auto">
                   WhatsApp
                 </Button>
               </div>
