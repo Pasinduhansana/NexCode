@@ -199,9 +199,9 @@ function LaptopScreenContent({ theme }) {
           {/* mini stat row */}
           <div className="flex gap-4 mt-5">
             {[
-              ["98%", "Satisfaction"],
-              ["150+", "Projects"],
-              ["6yr", "Experience"],
+              ["Custom", "Solutions"],
+              ["Small", "Teams"],
+              ["2025", "Founded"],
             ].map(([v, l]) => (
               <div key={l} className="flex flex-col items-center">
                 <span className="font-extrabold" style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(10px,1.6vw,15px)", color: textPrimary }}>
@@ -236,8 +236,8 @@ function LaptopScreenContent({ theme }) {
             }}
           >
             <div className="flex items-center justify-between">
-              <span style={{ fontSize: 7, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.07em" }}>Revenue</span>
-              <span style={{ fontSize: 7, color: "#22c55e", fontWeight: 700 }}>+32%</span>
+              <span style={{ fontSize: 7, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.07em" }}>Delivery</span>
+              <span style={{ fontSize: 7, color: "#22c55e", fontWeight: 700 }}>Stable</span>
             </div>
             <svg viewBox="0 0 100 16" style={{ width: "100%", overflow: "visible", margin: "6px 0" }}>
               <defs>
@@ -394,9 +394,9 @@ function PhoneScreenContent({ theme }) {
         className="flex justify-around px-2 flex-shrink-0"
       >
         {[
-          ["98%", "Satisfaction"],
-          ["150+", "Projects"],
-          ["6yr", "Experience"],
+          ["Custom", "Solutions"],
+          ["Small", "Teams"],
+          ["2025", "Founded"],
         ].map(([v, l]) => (
           <div key={l} className="flex flex-col items-center">
             <span className="font-extrabold" style={{ fontFamily: "'Syne',sans-serif", fontSize: 7, color: textPrimary }}>
@@ -426,11 +426,11 @@ function PhoneScreenContent({ theme }) {
           style={{ background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)", border: `0.5px solid ${t.screenBorder}` }}
         >
           <div>
-            <div style={{ fontSize: 5.5, fontWeight: 600, color: textPrimary }}>Performance</div>
-            <div style={{ fontSize: 4.5, color: accent }}>87/100 · ↑ +12</div>
+            <div style={{ fontSize: 5.5, fontWeight: 600, color: textPrimary }}>Status</div>
+            <div style={{ fontSize: 4.5, color: accent }}>On track</div>
           </div>
           <div className="h-1 w-10 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
-            <div className="h-full rounded-full" style={{ width: "87%", background: accent }} />
+            <div className="h-full rounded-full" style={{ width: "70%", background: accent }} />
           </div>
         </div>
       </div>
@@ -539,9 +539,9 @@ export default function Hero({ stats = [] }) {
     stats.length >= 3
       ? stats.slice(0, 3)
       : [
-          { value: "98%", label: "Client satisfaction" },
-          { value: "150+", label: "Projects shipped" },
-          { value: "6yr", label: "In the industry" },
+          { value: "Custom", label: "Solutions" },
+          { value: "Small", label: "Teams" },
+          { value: "2025", label: "Founded" },
         ];
 
   return (
@@ -763,7 +763,7 @@ export default function Hero({ stats = [] }) {
 
             {/* ══ FLOATING 3D CARDS ═══════════════════════════════ */}
 
-            {/* Performance — top right */}
+            {/* Project health — top right */}
             <FloatCard
               delay={1.2}
               style={{
@@ -775,23 +775,22 @@ export default function Hero({ stats = [] }) {
                 animation: "hfloat 5s ease-in-out 0s infinite",
               }}
             >
-              <div style={{ fontSize: 9, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Performance</div>
+              <div style={{ fontSize: 9, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Project health</div>
               <div className="flex items-end gap-1 mt-1">
                 <span className="font-extrabold leading-none" style={{ fontFamily: "'Syne',sans-serif", fontSize: 26, color: "var(--foreground)" }}>
-                  87
+                  Ready
                 </span>
-                <span style={{ fontSize: 12, color: "var(--muted-foreground)", paddingBottom: 2 }}>/100</span>
               </div>
               <div className="rounded-full overflow-hidden mt-2" style={{ height: 4, background: "rgba(128,128,128,0.2)" }}>
                 <div
                   className="h-full rounded-full"
-                  style={{ width: "87%", background: "hsl(var(--primary))", animation: "grow 2s ease-out 1.4s both" }}
+                  style={{ width: "72%", background: "hsl(var(--primary))", animation: "grow 2s ease-out 1.4s both" }}
                 />
               </div>
-              <div style={{ fontSize: 9, color: "#22c55e", fontWeight: 600, marginTop: 6 }}>↑ +12 this sprint</div>
+              <div style={{ fontSize: 9, color: "#22c55e", fontWeight: 600, marginTop: 6 }}>On track this sprint</div>
             </FloatCard>
 
-            {/* Active users — top left */}
+            {/* Active workspace — top left */}
             <FloatCard
               delay={1.35}
               style={{
@@ -813,13 +812,13 @@ export default function Hero({ stats = [] }) {
               </div>
               <div>
                 <div className="font-extrabold leading-none" style={{ fontFamily: "'Syne',sans-serif", fontSize: 20, color: "var(--foreground)" }}>
-                  24.8k
+                  Live
                 </div>
-                <div style={{ fontSize: 9, color: "var(--muted-foreground)", marginTop: 2 }}>Active users</div>
+                <div style={{ fontSize: 9, color: "var(--muted-foreground)", marginTop: 2 }}>Active workspace</div>
               </div>
             </FloatCard>
 
-            {/* Revenue sparkline — mid right */}
+            {/* Delivery trend — mid right */}
             <FloatCard
               delay={1.5}
               style={{
@@ -832,8 +831,8 @@ export default function Hero({ stats = [] }) {
               }}
             >
               <div className="flex items-center justify-between">
-                <span style={{ fontSize: 9, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.07em" }}>Revenue</span>
-                <span style={{ fontSize: 9, color: "#22c55e", fontWeight: 700 }}>+32%</span>
+                <span style={{ fontSize: 9, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.07em" }}>Delivery trend</span>
+                <span style={{ fontSize: 9, color: "#22c55e", fontWeight: 700 }}>Stable</span>
               </div>
               <svg viewBox="0 0 100 36" style={{ width: "100%", overflow: "visible", margin: "6px 0" }}>
                 <defs>
@@ -853,7 +852,7 @@ export default function Hero({ stats = [] }) {
                 />
                 <circle cx="100" cy="10" r="3.5" fill="hsl(var(--primary))" />
               </svg>
-              <div style={{ fontSize: 9, color: "var(--muted-foreground)" }}>Last 7 months</div>
+              <div style={{ fontSize: 9, color: "var(--muted-foreground)" }}>Recent work cycle</div>
             </FloatCard>
 
             {/* Deploy notif — bottom left */}
@@ -882,7 +881,7 @@ export default function Hero({ stats = [] }) {
               </div>
             </FloatCard>
 
-            {/* Happy clients — bottom right */}
+            {/* Collaboration note — bottom right */}
             <FloatCard
               delay={1.8}
               style={{
@@ -906,7 +905,7 @@ export default function Hero({ stats = [] }) {
                 ))}
               </div>
               <div style={{ fontSize: 9, color: "var(--muted-foreground)" }}>
-                <span style={{ fontWeight: 700, color: "var(--foreground)" }}>150+</span> happy clients
+                Built for new collaborations
               </div>
             </FloatCard>
 
@@ -963,7 +962,7 @@ export default function Hero({ stats = [] }) {
         }
         @keyframes grow {
           from { width: 0;   }
-          to   { width: 87%; }
+          to   { width: 72%; }
         }
         @keyframes scrollW {
           0%,100% { transform: translateY(0);   opacity: 1; }

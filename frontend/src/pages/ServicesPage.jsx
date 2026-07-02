@@ -63,10 +63,10 @@ const PROCESS = [
 ];
 
 const STATS = [
-  { value: "150+", label: "Projects Delivered" },
-  { value: "98%", label: "Client Satisfaction" },
-  { value: "7", label: "Service Domains" },
-  { value: "24/7", label: "Support" },
+  { value: "Custom", label: "Projects" },
+  { value: "Focused", label: "Client Work" },
+  { value: "Flexible", label: "Service Scope" },
+  { value: "Responsive", label: "Support" },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -690,7 +690,7 @@ export default function ServicesPage() {
                     title: "Lightning Delivery",
                     desc: "Our agile process gets you to market significantly faster than traditional agencies.",
                   },
-                  { icon: HiStar, title: "98% Satisfaction Rate", desc: "Proven track record across 150+ delivered projects globally." },
+                  { icon: HiStar, title: "Client-Focused Delivery", desc: "Every engagement is tailored to the specific goals and budget of the project." },
                 ].map((d, i) => (
                   <motion.div
                     key={i}
@@ -747,7 +747,7 @@ export default function ServicesPage() {
                   </div>
                   <div>
                     <div className="font-display font-bold text-xl">Ready to Launch?</div>
-                    <div className="text-white/60 text-sm">Join 150+ satisfied clients</div>
+                    <div className="text-white/60 text-sm">Built for new and growing businesses</div>
                   </div>
                 </div>
 

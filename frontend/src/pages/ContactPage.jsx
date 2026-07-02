@@ -1,19 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { HiPhone, HiMail, HiLocationMarker, HiClock, HiSparkles, HiOutlineChat, HiChevronRight  } from "react-icons/hi";
 import { FaWhatsapp } from "react-icons/fa";
-import api from "../utils/api";
+import { useForm } from "@formspree/react";
 import usePageTitle from "../utils/usePageTitle";
 import { useThemeClasses } from "../utils/useThemeClasses";
 import Button from "../components/Button";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
-  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [state, formspreeHandleSubmit] = useForm("mwvdwkvz");
   const themeClasses = useThemeClasses();
   usePageTitle("Contact");
+
+  useEffect(() => {
+    if (state.succeeded) {
+      toast.success("Message sent! We'll get back to you soon.");
+      setForm({ name: "", email: "", phone: "", subject: "", message: "" });
+      setErrors({});
+    }
+  }, [state.succeeded]);
 
   const validate = () => {
     const e = {};
@@ -28,17 +36,7 @@ export default function ContactPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-    setLoading(true);
-    try {
-      await api.post("/contacts", form);
-      toast.success("Message sent! We'll get back to you soon.");
-      setForm({ name: "", email: "", phone: "", subject: "", message: "" });
-      setErrors({});
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to send message. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    formspreeHandleSubmit(e);
   };
 
   const contacts = [
@@ -49,8 +47,7 @@ export default function ContactPage() {
   ];
 
   const quickFacts = [
-    { icon: HiClock, label: "Response Time", value: "Within 24 hours" },
-    { icon: HiSparkles, label: "Project Style", value: "Mobile, Web & Systems" },
+    { icon: HiClock, label: "Response Time", value: "Within 24 hours" }
   ];
 
   return (
@@ -194,6 +191,12 @@ export default function ContactPage() {
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-4 flex flex-col">
+                <input type="hidden" name="name" value={form.name} />
+                <input type="hidden" name="email" value={form.email} />
+                <input type="hidden" name="phone" value={form.phone} />
+                <input type="hidden" name="subject" value={form.subject} />
+                <textarea className="hidden" readOnly name="message" value={form.message} />
+                <input type="hidden" name="_subject" value={`New website message: ${form.subject || "NexCode"}`} />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="label">Full Name *</label>
@@ -251,8 +254,8 @@ export default function ContactPage() {
                   {errors.message && <p className="text-red-500 text-xs mt-1 text-left">{errors.message}</p>}
                 </div>
 
-                <Button variant="primary" type="submit" disabled={loading} rightIcon={<HiOutlineChat/> } className="w-full sm:w-auto sm:self-end">
-                  {loading ? (
+                <Button variant="primary" type="submit" disabled={state.submitting} rightIcon={<HiOutlineChat/> } className="w-full sm:w-auto sm:self-end">
+                  {state.submitting ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                       Sending...

@@ -18,7 +18,6 @@ const projectSchema = new mongoose.Schema({
   status: { type: String, enum: ['pending', 'under-review', 'quoted', 'approved', 'in-progress', 'completed', 'rejected'], default: 'pending' },
   priority: { type: String, enum: ['low', 'medium', 'high', 'urgent'], default: 'medium' },
   quotedAmount: { type: Number },
-  adminNotes: { type: String },
   attachments: [{ type: String }]
 }, { timestamps: true });
 
