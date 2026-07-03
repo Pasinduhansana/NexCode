@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
-import { HiCheckCircle } from "react-icons/hi";
+import { HiCheckCircle, HiExclamationCircle } from "react-icons/hi";
 import { FaArrowLeft, FaArrowRight, FaRocket } from "react-icons/fa";
 import { ValidationError, useForm } from "@formspree/react";
 import usePageTitle from "../utils/usePageTitle";
@@ -20,6 +20,8 @@ const serviceTypes = [
 const timelines = ["1-2 weeks", "1 month", "2-3 months", "3-6 months", "6+ months", "Flexible"];
 const budgets = ["Under $1,000", "$1,000 - $5,000", "$5,000 - $15,000", "$15,000 - $50,000", "$50,000+", "Let's Discuss"];
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default function ProjectRequestPage() {
   const [step, setStep] = useState(1);
   const [state, formspreeHandleSubmit] = useForm("xbdvpjjv");
@@ -35,6 +37,7 @@ export default function ProjectRequestPage() {
     budget: "",
     techPreferences: "",
   });
+  const [errors, setErrors] = useState({});
   usePageTitle("Start a Project");
 
   useEffect(() => {
@@ -43,29 +46,75 @@ export default function ProjectRequestPage() {
     }
   }, [state.succeeded]);
 
-  const update = (k, v) => setForm((prev) => ({ ...prev, [k]: v }));
+  // Surface Formspree-side failures (quota, spam block, etc.) so it's never silent
+  useEffect(() => {
+    if (state.errors && state.errors.length > 0 && !state.succeeded && !state.submitting) {
+      toast.error("Something went wrong sending your request. Please try again or contact us on WhatsApp.");
+      console.error("Formspree submission errors:", state.errors);
+    }
+  }, [state.errors, state.succeeded, state.submitting]);
 
-  const validate = () => {
-    if (!form.clientName.trim()) return { ok: false, step: 1, message: "Please enter your name." };
-    if (!form.clientEmail.trim()) return { ok: false, step: 1, message: "Please enter your email." };
-    if (!form.projectTitle.trim()) return { ok: false, step: 2, message: "Please enter a project title." };
-    if (!form.projectType.trim()) return { ok: false, step: 2, message: "Please select a service type." };
-    if (!form.description.trim()) return { ok: false, step: 2, message: "Please add a project description." };
-    if (!form.timeline.trim()) return { ok: false, step: 2, message: "Please select a timeline." };
-    if (!form.budget.trim()) return { ok: false, step: 2, message: "Please select a budget range." };
-    return { ok: true };
+  const update = (k, v) => {
+    setForm((prev) => ({ ...prev, [k]: v }));
+    if (errors[k]) setErrors((prev) => ({ ...prev, [k]: undefined }));
+  };
+
+  const validateStep = (targetStep) => {
+    const e = {};
+    if (!targetStep || targetStep === 1) {
+      if (!form.clientName.trim()) e.clientName = "Please enter your name.";
+      if (!form.clientEmail.trim()) e.clientEmail = "Please enter your email.";
+      else if (!EMAIL_RE.test(form.clientEmail.trim())) e.clientEmail = "Please enter a valid email address.";
+    }
+    if (!targetStep || targetStep === 2) {
+      if (!form.projectTitle.trim()) e.projectTitle = "Please enter a project title.";
+      if (!form.projectType.trim()) e.projectType = "Please select a service type.";
+      if (!form.description.trim()) e.description = "Please add a project description.";
+    }
+    if (!targetStep || targetStep === 3) {
+      if (!form.timeline.trim()) e.timeline = "Please select a timeline.";
+      if (!form.budget.trim()) e.budget = "Please select a budget range.";
+    }
+    return e;
+  };
+
+  const goToStep = (nextStep) => {
+    const stepErrors = validateStep(step);
+    if (Object.keys(stepErrors).length > 0) {
+      setErrors(stepErrors);
+      toast.error("Please fix the highlighted fields.");
+      return;
+    }
+    setErrors({});
+    setStep(nextStep);
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const result = validate();
-    if (!result.ok) {
-      setStep(result.step);
-      toast.error(result.message);
+    const allErrors = validateStep();
+    if (Object.keys(allErrors).length > 0) {
+      setErrors(allErrors);
+      if (allErrors.clientName || allErrors.clientEmail) setStep(1);
+      else if (allErrors.projectTitle || allErrors.projectType || allErrors.description) setStep(2);
+      else setStep(3);
+      toast.error("Please fix the highlighted fields before submitting.");
       return;
     }
-    await formspreeHandleSubmit(e);
+    setErrors({});
+    try {
+      await formspreeHandleSubmit(e);
+    } catch (err) {
+      console.error("Submit failed:", err);
+      toast.error("Couldn't send your request. Please check your connection and try again.");
+    }
   };
+
+  const fieldError = (key) =>
+    errors[key] ? (
+      <p className="mt-1 flex items-center gap-1 text-sm text-red-600">
+        <HiExclamationCircle className="shrink-0" /> {errors[key]}
+      </p>
+    ) : null;
 
   if (state.succeeded) {
     return (
@@ -107,7 +156,7 @@ export default function ProjectRequestPage() {
         <div className="max-w-2xl mx-auto px-4">
           {/* Progress */}
           <div className="flex items-center justify-center gap-2 mb-8 sm:mb-10 overflow-x-auto pb-1">
-            {[1, 2].map((s) => (
+            {[1, 2, 3].map((s) => (
               <div key={s} className="flex items-center gap-2">
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
@@ -116,7 +165,7 @@ export default function ProjectRequestPage() {
                 >
                   {s}
                 </div>
-                {s < 2 && <div className={`w-16 h-0.5 transition-all ${step > s ? "bg-primary" : "bg-gray-200"}`} />}
+                {s < 3 && <div className={`w-16 h-0.5 transition-all ${step > s ? "bg-primary" : "bg-gray-200"}`} />}
               </div>
             ))}
           </div>
@@ -127,6 +176,7 @@ export default function ProjectRequestPage() {
             animate={{ opacity: 1, x: 0 }}
             className="bg-white rounded-3xl p-5 sm:p-8 shadow-sm border border-gray-100 flex flex-col"
             onSubmit={onSubmit}
+            noValidate
           >
             <input type="hidden" name="project_type" value={form.projectType} />
             <input type="hidden" name="timeline" value={form.timeline} />
@@ -152,23 +202,25 @@ export default function ProjectRequestPage() {
               <div>
                 <label className="label">Full Name *</label>
                 <input
-                  className="input-field"
+                  className={`input-field ${errors.clientName ? "border-red-500 focus:border-red-500" : ""}`}
                   name="name"
                   placeholder="John Doe"
                   value={form.clientName}
                   onChange={(e) => update("clientName", e.target.value)}
                 />
+                {fieldError("clientName")}
               </div>
               <div>
                 <label className="label">Email Address *</label>
                 <input
-                  className="input-field"
+                  className={`input-field ${errors.clientEmail ? "border-red-500 focus:border-red-500" : ""}`}
                   name="email"
                   type="email"
                   placeholder="john@example.com"
                   value={form.clientEmail}
                   onChange={(e) => update("clientEmail", e.target.value)}
                 />
+                {fieldError("clientEmail")}
                 <ValidationError field="email" prefix="Email" errors={state.errors} />
               </div>
               <div>
@@ -188,12 +240,13 @@ export default function ProjectRequestPage() {
               <div>
                 <label className="label">Project Title *</label>
                 <input
-                  className="input-field"
+                  className={`input-field ${errors.projectTitle ? "border-red-500 focus:border-red-500" : ""}`}
                   name="project_title"
                   placeholder="e.g. E-commerce Platform"
                   value={form.projectTitle}
                   onChange={(e) => update("projectTitle", e.target.value)}
                 />
+                {fieldError("projectTitle")}
               </div>
               <div>
                 <label className="label">Service Type *</label>
@@ -210,16 +263,18 @@ export default function ProjectRequestPage() {
                     </Button>
                   ))}
                 </div>
+                {fieldError("projectType")}
               </div>
               <div>
                 <label className="label">Project Description *</label>
                 <textarea
-                  className="input-field resize-none h-28"
+                  className={`input-field resize-none h-28 ${errors.description ? "border-red-500 focus:border-red-500" : ""}`}
                   name="message"
                   placeholder="Describe what you want to build..."
                   value={form.description}
                   onChange={(e) => update("description", e.target.value)}
                 />
+                {fieldError("description")}
                 <ValidationError field="message" prefix="Description" errors={state.errors} />
               </div>
               <div>
@@ -232,6 +287,10 @@ export default function ProjectRequestPage() {
                   onChange={(e) => update("features", e.target.value)}
                 />
               </div>
+            </div>
+
+            <div className={`space-y-4 ${step === 3 ? "" : "hidden"}`}>
+              <h2 className="font-display font-bold text-xl text-gray-900 mb-6">Your Information</h2>
               <div>
                 <label className="label">Expected Timeline</label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -247,6 +306,7 @@ export default function ProjectRequestPage() {
                     </Button>
                   ))}
                 </div>
+                {fieldError("timeline")}
               </div>
               <div>
                 <label className="label">Budget Range</label>
@@ -263,6 +323,7 @@ export default function ProjectRequestPage() {
                     </Button>
                   ))}
                 </div>
+                {fieldError("budget")}
               </div>
               <div>
                 <label className="label">Tech Preferences (optional)</label>
@@ -282,8 +343,8 @@ export default function ProjectRequestPage() {
                   Back
                 </Button>
               )}
-              {step < 2 ? (
-                <Button variant="primary" type="button" rightIcon={<FaArrowRight />} onClick={() => setStep((s) => s + 1)} className="w-full sm:w-auto">
+              {step < 3 ? (
+                <Button variant="primary" type="button" rightIcon={<FaArrowRight />} onClick={() => goToStep(step + 1)} className="w-full sm:w-auto">
                   Continue
                 </Button>
               ) : (

@@ -46,6 +46,29 @@ const values = [
   { icon: HiEye, title: "Transparent", desc: "Clear communication, honest timelines, and no hidden costs — always." },
 ];
 
+const timeline = [
+  {
+    year: "2025",
+    title: "NexCode Founded",
+    description: "Started with a small team and a clear goal: build high-quality software for ambitious clients.",
+  },
+  {
+    year: "2025",
+    title: "First Client Projects",
+    description: "Delivered our first custom builds, establishing our process and design standards.",
+  },
+  {
+    year: "2026",
+    title: "Growing the Team",
+    description: "Expanded our capabilities to take on more complex, larger-scale engagements.",
+  },
+  {
+    year: "2026",
+    title: "Looking Ahead",
+    description: "Continuing to grow our client base while staying true to our founding principles.",
+  },
+];
+
 /* ═══════════════════════════════════════════════════════════════════════
    ANIMATION VARIANTS
    ═══════════════════════════════════════════════════════════════════════ */
@@ -273,54 +296,7 @@ export default function AboutPage() {
       </section>
 
       {/* ──────────────────────────────────────────────────────────────
-          § 5 TIMELINE JOURNEY — Alternating split timeline
-      ────────────────────────────────────────────────────────────── */}
-      <section className="py-8 md:py-24 bg-page-alt border-t border-border">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-5 md:mb-16">
-            <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
-              <SectionLabel icon={HiTrendingUp}>Our Evolution</SectionLabel>
-            </motion.div>
-            <h2 className="font-display text-3xl md:text-4.5xl font-extrabold text-foreground tracking-tight">
-              Our <span className="gradient-text">Journey.</span>
-            </h2>
-          </div>
-
-          <div className="relative">
-            {/* Center connector line */}
-            <div className="absolute left-1 md:left-1/2 -translate-x-px top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-cyan-400 to-indigo-500 opacity-20" />
-
-            <div className="space-y-12">
-              {timeline.map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: i % 2 === 0 ? -28 : 28 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.5 }}
-                  className={`relative flex justify-center ${i % 2 === 0 ? "lg:justify-start" : "lg:justify-end"}`}
-                >
-                  {/* Center Year Badge */}
-                  <div className="absolute left-1 md:left-1/2 -translate-x-1/2 top-4 w-6 h-6 rounded-full bg-card border-4 border-border shadow-md z-10 flex items-center justify-center">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                  </div>
-
-                  <div className={`w-full md:w-5/12 pr-2 pl-6  ${i % 2 === 0 ? "md:pr-8" : "md:pl-8"}`}>
-                    <div className="bg-card rounded-2xl p-6 border border-border shadow-sm hover:border-primary/25 transition-all duration-300">
-                      <div className="text-primary font-mono font-black text-sm mb-1">{item.year}</div>
-                      <h4 className="font-display font-bold text-foreground text-sm mb-2">{item.title}</h4>
-                      <p className="text-xs text-text_secondary leading-relaxed">{item.description}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ──────────────────────────────────────────────────────────────
-          § 6 CTA — Dynamic full-bleed banner cta
+          § 5 CTA — Dynamic full-bleed banner cta
       ────────────────────────────────────────────────────────────── */}
       <section className="relative py-10 md:py-32 overflow-hidden bg-background">
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 via-indigo-900 to-violet-800" />

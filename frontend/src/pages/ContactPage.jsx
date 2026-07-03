@@ -195,6 +195,7 @@ export default function ContactPage() {
                   <div>
                     <label className="label">Full Name *</label>
                     <input
+                      name="name"
                       className={`input-field text-center md:text-left ${errors.name ? "border-red-400" : ""}`}
                       placeholder="John Doe"
                       value={form.name}
@@ -205,6 +206,7 @@ export default function ContactPage() {
                   <div>
                     <label className="label">Email Address *</label>
                     <input
+                      name="email"
                       className={`input-field text-center md:text-left ${errors.email ? "border-red-400" : ""}`}
                       placeholder="john@example.com"
                       type="email"
@@ -219,6 +221,7 @@ export default function ContactPage() {
                   <div>
                     <label className="label">Phone Number</label>
                     <input
+                      name="phone"
                       className="input-field text-center md:text-left"
                       placeholder="+94 7X XXX XXXX"
                       value={form.phone}
@@ -228,6 +231,7 @@ export default function ContactPage() {
                   <div>
                     <label className="label">Subject *</label>
                     <input
+                      name="subject"
                       className={`input-field text-center md:text-left ${errors.subject ? "border-red-400" : ""}`}
                       placeholder="Project inquiry"
                       value={form.subject}
@@ -240,6 +244,7 @@ export default function ContactPage() {
                 <div>
                   <label className="label">Message *</label>
                   <textarea
+                    name="message"
                     className={`input-field text-center md:text-left resize-none h-36 ${errors.message ? "border-red-400" : ""}`}
                     placeholder="Tell us about your project, timeline, goals, or question..."
                     value={form.message}
@@ -248,8 +253,8 @@ export default function ContactPage() {
                   {errors.message && <p className="text-red-500 text-xs mt-1 text-left">{errors.message}</p>}
                 </div>
 
-                <Button variant="primary" type="submit" disabled={loading} rightIcon={<HiOutlineChat/> } className="self-center md:self-end">
-                  {loading ? (
+                <Button variant="primary" type="submit" disabled={state.submitting} rightIcon={<HiOutlineChat/> } className="self-center md:self-end">
+                  {state.submitting ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                       Sending...
