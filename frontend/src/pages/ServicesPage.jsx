@@ -342,7 +342,7 @@ export default function ServicesPage() {
               </motion.p>
 
               {/* CTAs */}
-              <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="flex flex-col md:flex-row md:flex-wrap gap-3 mb-12 px-16">
+              <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="flex flex-col md:flex-row md:flex-wrap gap-3 mb-12 px-16 md:px-0">
                 <Button variant="primary" rightIcon={<HiChevronDoubleRight size={20} />} to="/start-project">
                   Start Your Project
                 </Button>
@@ -373,12 +373,12 @@ export default function ServicesPage() {
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.75, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="hidden lg:grid grid-cols-3 gap-3"
+              className="hidden lg:grid grid-cols-4 gap-6 gap-y-8 -mt-20"
             >
               {services.map((svc, i) => (
                 <motion.div
                   key={svc.id}
-                  animate={{ y: [0, i % 2 === 0 ? -10 : 8, 0] }}
+                  animate={{ y: [0, i % 2 === 0 ? -20 : 8, 0] }}
                   transition={{ repeat: Infinity, duration: 3.5 + i * 0.35, ease: "easeInOut", delay: i * 0.1 }}
                   whileHover={{
                     scale: 1.05,
