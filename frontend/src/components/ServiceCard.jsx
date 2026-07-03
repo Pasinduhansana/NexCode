@@ -1,12 +1,6 @@
 import { motion } from "framer-motion";
 
-export default function ServiceCard({
-  icon: Icon,
-  title,
-  description,
-  index = 0,
-  gradient,
-}) {
+export default function ServiceCard({ icon: Icon, title, description, index = 0, gradient }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -24,13 +18,8 @@ export default function ServiceCard({
 
       {/* Card */}
       <div className="relative h-full rounded-2xl border border-border bg-card p-5 shadow-sm transition-all duration-300 group-hover:shadow-xl sm:p-6">
-
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-50/50 to-cyan-50/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
         {/* ================= MOBILE ================= */}
         <div className="relative flex flex-col items-center text-center sm:hidden">
-
           <div
             className={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl text-2xl text-white shadow-lg transition-transform duration-300 group-hover:scale-110 ${
               gradient || "bg-gradient-to-br from-blue-500 to-cyan-400"
@@ -39,34 +28,27 @@ export default function ServiceCard({
             <Icon />
           </div>
 
-          <h3 className="mb-3 font-display text-lg font-semibold text-foreground transition-colors duration-300 group-hover:text-blue-700">
-            {title}
-          </h3>
+          <h3 className="mb-3 font-display text-lg font-semibold text-foreground transition-colors duration-300 group-hover:text-primary">{title}</h3>
 
-          <p className="text-sm leading-7 text-text_secondary">
-            {description}
-          </p>
+          <p className="text-sm leading-7 text-text_secondary">{description}</p>
         </div>
 
         {/* ============== TABLET & DESKTOP ============== */}
-        <div className="relative hidden sm:block">
+        <div className="relative hidden sm:block py-2">
+          <div className="flex flex-row items-center gap-5 mb-1">
+            <div
+              className={`mb-5 flex min-h-14 min-w-14 items-center justify-center rounded-xl text-2xl text-white shadow-lg transition-transform duration-300 group-hover:scale-110 ${
+                gradient || "bg-gradient-to-br from-blue-500 to-cyan-400"
+              }`}
+            >
+              <Icon />
+            </div>
 
-          <div
-            className={`mb-5 flex h-14 w-14 items-center justify-center rounded-2xl text-2xl text-white shadow-lg transition-transform duration-300 group-hover:scale-110 ${
-              gradient || "bg-gradient-to-br from-blue-500 to-cyan-400"
-            }`}
-          >
-            <Icon />
+            <h3 className="mb-4 font-display text-[16px] font-semibold text-foreground transition-colors duration-300 group-hover:text-primary">
+              {title}
+            </h3>
           </div>
-
-          <h3 className="mb-2 font-display text-lg font-semibold text-gray-900 transition-colors duration-300 group-hover:text-blue-700">
-            {title}
-          </h3>
-
-          <p className="text-sm leading-relaxed text-gray-500">
-            {description}
-          </p>
-
+          <p className="text-sm leading-relaxed text-text_secondary">{description}</p>
         </div>
       </div>
     </motion.div>

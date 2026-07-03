@@ -3,6 +3,8 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { HiChevronDown } from "react-icons/hi";
 import { useState } from "react";
 import { FAQItem } from "../data/faqItems";
+import  SectionLabel  from "./SectionLabel";
+
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -17,19 +19,6 @@ const fadeUp = {
   }),
 };
 
-function SectionLabel({ icon: Icon, children }) {
-  return (
-    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border bg-card text-xs font-semibold text-text_secondary mb-5 select-none">
-      {Icon ? (
-        <Icon className="text-primary text-sm flex-shrink-0" />
-      ) : (
-        <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 flex-shrink-0" />
-      )}
-      {children}
-    </div>
-  );
-}
-
 export default function FAQ() {
   const [openFaq, setOpenFaq] = useState(null);
   return (
@@ -38,7 +27,7 @@ export default function FAQ() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center text-center mb-12">
             <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
-              <SectionLabel>Common Questions</SectionLabel>
+              <SectionLabel content="Common Questions" />
             </motion.div>
             <motion.h2
               variants={fadeUp}

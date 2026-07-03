@@ -10,6 +10,7 @@ import { showcaseProjects } from "../data/showcaseProjects";
 import api from "../utils/api";
 import usePageTitle from "../utils/usePageTitle";
 import Button  from "../components/Button";
+import SectionLabel from "../components/SectionLabel";
 
 const limitWords = (text, maxWords) => text.split(/\s+/).slice(0, maxWords).join(" ");
 

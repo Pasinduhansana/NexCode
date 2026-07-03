@@ -141,8 +141,8 @@ export default function ProjectRequestPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <section className="pt-28 sm:pt-32 pb-10 bg-hero-gradient dark-grid">
+    <div className="min-h-screen bg-background -mt-20">
+      <section className="pt-24 sm:pt-28 pb-10 bg-hero-gradient dark-grid">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">
             Start Your <span className="text-primary">Project</span>
@@ -161,8 +161,8 @@ export default function ProjectRequestPage() {
             {[1, 2, 3].map((s) => (
               <div key={s} className="flex items-center gap-2">
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
-                    step >= s ? "bg-primary border border-primary text-white" : "bg-gray-200 text-gray-400"
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all  ${
+                    step >= s ? "bg-primary border border-primary text-foreground" : "bg-muted text-foreground/70 border-background/40 border"
                   }`}
                 >
                   {s}
@@ -176,7 +176,7 @@ export default function ProjectRequestPage() {
             key={step}
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-white rounded-3xl p-5 sm:p-8 shadow-sm border border-gray-100 flex flex-col"
+            className="bg-card rounded-3xl p-5 sm:p-8 shadow-sm border border-border flex flex-col"
             onSubmit={onSubmit}
             noValidate
           >
@@ -200,7 +200,7 @@ export default function ProjectRequestPage() {
             <input type="hidden" name="_subject" value={`New project request: ${form.projectTitle || form.projectType || "NexCode"}`} />
 
             <div className={`space-y-4 ${step === 1 ? "" : "hidden"}`}>
-              <h2 className="font-display font-bold text-xl text-gray-900 mb-6">Your Information</h2>
+              <h2 className="font-display font-bold text-xl text-foreground mb-6">Your Information</h2>
               <div>
                 <label className="label">Full Name *</label>
                 <input
