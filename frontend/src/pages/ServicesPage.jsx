@@ -30,6 +30,7 @@ import { FaRocket, FaWhatsapp } from "react-icons/fa";
 import usePageTitle from "../utils/usePageTitle";
 import FAQ from "../components/FAQ";
 import { services } from "../data/services";
+import SectionLabel from "../components/SectionLabel";
 
 /* ═══════════════════════════════════════════════════════════════════════
    DATA
@@ -63,10 +64,10 @@ const PROCESS = [
 ];
 
 const STATS = [
-  { value: "Custom", label: "Projects" },
-  { value: "Focused", label: "Client Work" },
+  { value: "20+", label: "Projects" },
+  { value: "18+", label: "Client Work" },
   { value: "Flexible", label: "Service Scope" },
-  { value: "Responsive", label: "Support" },
+  { value: "24h", label: "Support" },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -97,20 +98,6 @@ const scaleIn = {
 /* ═══════════════════════════════════════════════════════════════════════
    SHARED SMALL COMPONENTS
 ═══════════════════════════════════════════════════════════════════════ */
-
-/** Pill label above section headings */
-function SectionLabel({ icon: Icon, children }) {
-  return (
-    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border bg-card text-xs font-semibold text-text_secondary mb-5 select-none">
-      {Icon ? (
-        <Icon className="text-primary text-sm flex-shrink-0" />
-      ) : (
-        <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 flex-shrink-0" />
-      )}
-      {children}
-    </div>
-  );
-}
 
 /** Gradient icon box */
 function IconBox({ service, size = "md", className = "" }) {
@@ -151,7 +138,6 @@ function ServiceModal({ service, onClose }) {
             onClick={(e) => e.stopPropagation()}
             className="relative w-full max-w-lg bg-card border border-border rounded-xl overflow-hidden shadow-2xl"
           >
-
             <div className="p-7">
               {/* Header */}
               <div className="flex items-start justify-between mb-4">
@@ -173,8 +159,8 @@ function ServiceModal({ service, onClose }) {
                 </button>
               </div>
 
-            {/* Accent stripe */}
-            <div className={`h-[1px] mb-4 w-full opacity-40 bg-gradient-to-r ${service.from} ${service.to}`} />
+              {/* Accent stripe */}
+              <div className={`h-[1px] mb-4 w-full opacity-40 bg-gradient-to-r ${service.from} ${service.to}`} />
 
               <p className="text-sm text-text_secondary leading-relaxed mb-6">{service.description}</p>
 
@@ -195,7 +181,7 @@ function ServiceModal({ service, onClose }) {
                 to="/start-project"
                 onClick={onClose}
                 size="lg"
-                rightIcon={<HiChevronRight size={20}/>}
+                rightIcon={<HiChevronRight size={20} />}
                 className="w-full"
                 style={{
                   background: `linear-gradient(135deg, ${service.accent}, rgba(${service.rgb},0.7))`,
@@ -299,7 +285,7 @@ export default function ServicesPage() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background -mt-20">
       {/* ──────────────────────────────────────────────────────────────
           § 1  HERO — cinematic full-screen opener
       ────────────────────────────────────────────────────────────── */}
@@ -320,12 +306,15 @@ export default function ServicesPage() {
           />
         </div>
 
-        <motion.div style={{ y: heroY, opacity: heroOpacity }} className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-16 sm:pb-24">
+        <motion.div
+          style={{ y: heroY, opacity: heroOpacity }}
+          className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-24 pb-16 sm:pb-24 text-center md:text-left"
+        >
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.9fr] gap-12 lg:gap-16 items-center">
             {/* ── Left: headline ── */}
             <div>
               <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
-                <SectionLabel icon={HiSparkles}>Full-Spectrum Digital Services</SectionLabel>
+                <SectionLabel icon={HiSparkles} content="Full-Spectrum Digital Services" />
               </motion.div>
 
               <motion.h1
@@ -353,7 +342,7 @@ export default function ServicesPage() {
               </motion.p>
 
               {/* CTAs */}
-              <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="flex flex-wrap gap-3 mb-12">
+              <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="flex flex-col md:flex-row md:flex-wrap gap-3 mb-12 px-16">
                 <Button variant="primary" rightIcon={<HiChevronDoubleRight size={20} />} to="/start-project">
                   Start Your Project
                 </Button>
@@ -418,7 +407,7 @@ export default function ServicesPage() {
           {/* Header */}
           <div className="flex flex-col items-center text-center mb-14">
             <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
-              <SectionLabel>Our Capabilities</SectionLabel>
+              <SectionLabel content="Our Capabilities" />
             </motion.div>
             <motion.h2
               variants={fadeUp}
@@ -454,12 +443,12 @@ export default function ServicesPage() {
       {/* ──────────────────────────────────────────────────────────────
           § 3  DETAILED SERVICE SPOTLIGHTS (alternating layout)
       ────────────────────────────────────────────────────────────── */}
-      <section className="py-24 bg-page-alt">
+      <section className="py-16 bg-page-alt">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="flex flex-col items-center text-center mb-20">
             <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
-              <SectionLabel icon={HiLightningBolt}>Deep Dive</SectionLabel>
+              <SectionLabel icon={HiLightningBolt} content="Deep Dive" />
             </motion.div>
             <motion.h2
               variants={fadeUp}
@@ -595,11 +584,11 @@ export default function ServicesPage() {
       {/* ──────────────────────────────────────────────────────────────
           § 4  PROCESS — numbered horizontal steps
       ────────────────────────────────────────────────────────────── */}
-      <section className="py-24 bg-background">
+      <section className="py-16 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center text-center mb-16">
             <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
-              <SectionLabel icon={HiTrendingUp}>How We Work</SectionLabel>
+              <SectionLabel icon={HiTrendingUp} content="How We Work" />
             </motion.div>
             <motion.h2
               variants={fadeUp}
@@ -668,7 +657,8 @@ export default function ServicesPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Left */}
             <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
-              <SectionLabel icon={HiStar}>Why NexCode?</SectionLabel>
+              <SectionLabel icon={HiChip} content="Why NexCode" />
+
               <h2 className="font-display text-3xl md:text-4xl font-extrabold text-foreground tracking-tight mb-5">
                 We Build Software That <span className="gradient-text">Actually Works.</span>
               </h2>
@@ -690,7 +680,11 @@ export default function ServicesPage() {
                     title: "Lightning Delivery",
                     desc: "Our agile process gets you to market significantly faster than traditional agencies.",
                   },
-                  { icon: HiStar, title: "Client-Focused Delivery", desc: "Every engagement is tailored to the specific goals and budget of the project." },
+                  {
+                    icon: HiStar,
+                    title: "Client-Focused Delivery",
+                    desc: "Every engagement is tailored to the specific goals and budget of the project.",
+                  },
                 ].map((d, i) => (
                   <motion.div
                     key={i}
@@ -770,12 +764,7 @@ export default function ServicesPage() {
                     WhatsApp
                   </Button>
                 </div>
-                <Button
-                  to="/start-project"
-                  variant="radio"
-                  leftIcon={<FaRocket size={15} />}
-                  className="w-full border-white/50"
-                >
+                <Button to="/start-project" variant="radio" leftIcon={<FaRocket size={15} />} className="w-full border-white/50">
                   Start a Project
                 </Button>
               </div>
@@ -814,9 +803,7 @@ export default function ServicesPage() {
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
           <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm text-xs font-semibold mb-8">
-              <FaRocket size={11} /> Limited Project Slots Available
-            </div>
+            <SectionLabel icon={HiSparkles} content="Let's Build Together" />
 
             <h2 className="font-display font-extrabold tracking-tight mb-5" style={{ fontSize: "clamp(2.2rem, 5.5vw, 4rem)", lineHeight: "1.08" }}>
               Ready to Build Something{" "}
@@ -831,7 +818,7 @@ export default function ServicesPage() {
               <Button variant="radio" to="/start-project" leftIcon={<FaRocket size={15} />} className="bg-white text-blue-700">
                 Start Your Project
               </Button>
-              <Button variant="custom" to="/contact" rightIcon={<HiChevronRight size={20}/>} className=" text-white border border-white/30 ">
+              <Button variant="custom" to="/contact" rightIcon={<HiChevronRight size={20} />} className=" text-white border border-white/30 ">
                 Contact Us
               </Button>
             </div>
