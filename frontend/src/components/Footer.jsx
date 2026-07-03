@@ -34,7 +34,7 @@ export default function Footer() {
                 <img
                   src={logo}
                   alt="NexCode"
-                  className="w-10 h-10 rounded-xl object-cover bg-background ring-1 ring-border/50 shadow-sm"
+                  className="w-10 h-10 rounded-md object-cover bg-slate-100 shadow-sm"
                 />
 
                 {/* Right: Text */}

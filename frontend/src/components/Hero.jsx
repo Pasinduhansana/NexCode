@@ -569,7 +569,7 @@ export default function Hero({ stats = [] }) {
     <section
       ref={sceneRef}
       className="relative min-h-screen w-full overflow-hidden bg-background
-                 flex flex-col items-center md:justify-center md:pt-0 -mt-16 md:-mt-20"
+                 flex flex-col items-center md:justify-center -pt-10 md:pt-0 -mt-16 md:-mt-20"
     >
       {/* ══ BACKGROUND ══════════════════════════════════════════ */}
 
