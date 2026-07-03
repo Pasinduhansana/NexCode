@@ -70,6 +70,8 @@ export default function ProjectRequestPage() {
       if (!form.projectTitle.trim()) e.projectTitle = "Please enter a project title.";
       if (!form.projectType.trim()) e.projectType = "Please select a service type.";
       if (!form.description.trim()) e.description = "Please add a project description.";
+      else if (form.description.trim().length < 20)
+        e.description = "Please provide at least 20 characters (currently " + form.description.trim().length + ").";
     }
     if (!targetStep || targetStep === 3) {
       if (!form.timeline.trim()) e.timeline = "Please select a timeline.";
