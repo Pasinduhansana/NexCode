@@ -18,7 +18,7 @@ const navLinks = [
 const themeUi = {
   light: {
     navScrolled: "bg-white/92 backdrop-blur-xl  shadow-[0_10px_30px_rgba(15,23,42,0.08)]",
-    navTop: "bg-trasparent backdrop-blur-xl ",
+    navTop: "bg-transparent backdrop-blur-xl ",
     linkActive: "text-primary bg-slate-100/80 py-[8px] ",
     linkIdle: "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80",
     toggleBtn: "bg-slate-100 border-none text-slate-700  hover:bg-slate-200",
@@ -31,7 +31,7 @@ const themeUi = {
 
   dark: {
     navScrolled: "bg-slate-950/90 backdrop-blur-xl  shadow-[0_14px_34px_rgba(2,6,23,0.55)]",
-    navTop: "bg-trasparent backdrop-blur-xl ",
+    navTop: "bg-transparent backdrop-blur-xl ",
     linkActive: "bg-primary/25 text-blue-200 py-[8px]",
     linkIdle: "text-slate-300 hover:text-white hover:bg-white/10",
     toggleBtn: "bg-slate-800 text-slate-200 border-none hover:bg-slate-700",
@@ -43,7 +43,7 @@ const themeUi = {
   },
   primary: {
     navScrolled: "bg-white/92 backdrop-blur-xl shadow-[0_12px_30px_rgba(6,182,212,0.18)]",
-    navTop: "bg-trasparent backdrop-blur-xl",
+    navTop: "bg-transparent backdrop-blur-xl",
     linkActive: "bg-primary text-white py-[8px] ",
     linkIdle: "text-slate-700 hover:text-slate-900 hover:bg-slate-100/20",
     toggleBtn: "border-blue-500/50 text-foreground border-1 hover:bg-primary/22 ",

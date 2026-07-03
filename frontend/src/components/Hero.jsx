@@ -204,9 +204,9 @@ function LaptopScreenContent({ theme }) {
             {/* mini stat row */}
             <div className="flex gap-4 mt-5">
               {[
-                ["98%", "Satisfaction"],
-                ["150+", "Projects"],
-                ["6yr", "Experience"],
+                ["100%", "Satisfaction"],
+                ["20+", "Projects"],
+                ["10+", "Services"],
               ].map(([v, l]) => (
                 <div key={l} className="flex flex-col items-center">
                   <span
@@ -245,8 +245,8 @@ function LaptopScreenContent({ theme }) {
               }}
             >
               <div className="flex items-center justify-between">
-                <span style={{ fontSize: 7, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.07em" }}>Revenue</span>
-                <span style={{ fontSize: 7, color: "#22c55e", fontWeight: 700 }}>+32%</span>
+                <span style={{ fontSize: 7, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.07em" }}>Performance</span>
+                <span style={{ fontSize: 7, color: "#22c55e", fontWeight: 700 }}>100%</span>
               </div>
               <svg viewBox="0 0 100 16" style={{ width: "100%", overflow: "visible", margin: "6px 0" }}>
                 <defs>
@@ -411,9 +411,9 @@ function PhoneScreenContent({ theme }) {
       {/* stats strip */}
       <div className="flex justify-around px-2 flex-shrink-0">
         {[
-          ["Custom", "Solutions"],
-          ["Small", "Teams"],
-          ["2025", "Founded"],
+          ["100%", "Satisfaction"],
+          ["20+", "Projects"],
+          ["10+", "Services"],
         ].map(([v, l]) => (
           <div key={l} className="flex flex-col items-center">
             <span className="font-extrabold" style={{ fontFamily: "'Syne',sans-serif", fontSize: 7, color: textPrimary }}>
@@ -443,11 +443,11 @@ function PhoneScreenContent({ theme }) {
           style={{ background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)", border: `0.5px solid ${t.screenBorder}` }}
         >
           <div>
-            <div style={{ fontSize: 5.5, fontWeight: 600, color: textPrimary }}>Status</div>
-            <div style={{ fontSize: 4.5, color: accent }}>On track</div>
+            <div style={{ fontSize: 5.5, fontWeight: 600, color: textPrimary }}>Performance</div>
+            <div style={{ fontSize: 4.5, color: accent }}>93/100 · ↑ +12</div>
           </div>
           <div className="h-1 w-10 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
-            <div className="h-full rounded-full" style={{ width: "70%", background: accent }} />
+            <div className="h-full rounded-full" style={{ width: "87%", background: accent }} />
           </div>
         </div>
       </div>
@@ -560,16 +560,16 @@ export default function Hero({ stats = [] }) {
     stats.length >= 3
       ? stats.slice(0, 3)
       : [
-          { value: "Custom", label: "Solutions" },
-          { value: "Small", label: "Teams" },
-          { value: "2025", label: "Founded" },
+          { value: "98%", label: "Client satisfaction" },
+          { value: "150+", label: "Projects shipped" },
+          { value: "6yr", label: "In the industry" },
         ];
 
   return (
     <section
       ref={sceneRef}
       className="relative min-h-screen w-full overflow-hidden bg-background
-                 flex flex-col items-center md:justify-center md:pt-0"
+                 flex flex-col items-center md:justify-center md:pt-0 -mt-16 md:-mt-20"
     >
       {/* ══ BACKGROUND ══════════════════════════════════════════ */}
 
@@ -660,7 +660,7 @@ export default function Hero({ stats = [] }) {
 
       {/* ══ LARGE WATERMARK TEXT ════════════════════════════════ */}
       <div
-        className="absolute inset-0 hidden sm:flex flex-col items-center justify-center
+        className="absolute inset-0 flex flex-col items-center justify-center
                       pointer-events-none select-none overflow-hidden"
         style={{ zIndex: 1 }}
       >
@@ -705,7 +705,7 @@ export default function Hero({ stats = [] }) {
           Perspective wrapper → motion div (lid unfold) →
           tilt wrapper (mouse parallax) → laptop + floating cards
       */}
-      <div className="relative z-10 hidden lg:flex w-full h-auto justify-center items-start px-3 sm:px-5" style={{ perspective: "1100px" }}>
+      <div className="relative z-10 w-full h-auto flex justify-center items-start " style={{ perspective: "1100px" }}>
         {/* lid unfold motion */}
         <motion.div
           animate={lidCtrl}
@@ -714,7 +714,7 @@ export default function Hero({ stats = [] }) {
             transformOrigin: "50% 80%" /* rotate around the base hinge */,
             willChange: "transform,opacity",
           }}
-          className="relative flex justify-center items-center"
+          className="relative flex justify-center items-center "
         >
           {/* parallax tilt wrapper */}
           <div
@@ -784,7 +784,7 @@ export default function Hero({ stats = [] }) {
 
             {/* ══ FLOATING 3D CARDS ═══════════════════════════════ */}
 
-            {/* Project health — top right */}
+            {/* Performance — top right */}
             <FloatCard
               delay={1.2}
               style={{
@@ -797,22 +797,23 @@ export default function Hero({ stats = [] }) {
               }}
               className="md:block hidden"
             >
-              <div style={{ fontSize: 9, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Project health</div>
+              <div style={{ fontSize: 9, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Performance</div>
               <div className="flex items-end gap-1 mt-1">
                 <span className="font-extrabold leading-none" style={{ fontFamily: "'Syne',sans-serif", fontSize: 26, color: "var(--foreground)" }}>
-                  Ready
+                  93
                 </span>
+                <span style={{ fontSize: 12, color: "var(--muted-foreground)", paddingBottom: 2 }}>/100</span>
               </div>
               <div className="rounded-full overflow-hidden mt-2" style={{ height: 4, background: "rgba(128,128,128,0.2)" }}>
                 <div
                   className="h-full rounded-full"
-                  style={{ width: "72%", background: "hsl(var(--primary))", animation: "grow 2s ease-out 1.4s both" }}
+                  style={{ width: "87%", background: "hsl(var(--primary))", animation: "grow 2s ease-out 1.4s both" }}
                 />
               </div>
-              <div style={{ fontSize: 9, color: "#22c55e", fontWeight: 600, marginTop: 6 }}>On track this sprint</div>
+              <div style={{ fontSize: 9, color: "#22c55e", fontWeight: 600, marginTop: 6 }}>↑ +12 this sprint</div>
             </FloatCard>
 
-            {/* Active workspace — top left */}
+            {/* Active users — top left */}
             <FloatCard
               delay={1.35}
               className="hidden md:flex"
@@ -834,13 +835,13 @@ export default function Hero({ stats = [] }) {
               </div>
               <div>
                 <div className="font-extrabold leading-none" style={{ fontFamily: "'Syne',sans-serif", fontSize: 20, color: "var(--foreground)" }}>
-                  Live
+                  15+
                 </div>
-                <div style={{ fontSize: 9, color: "var(--muted-foreground)", marginTop: 2 }}>Active workspace</div>
+                <div style={{ fontSize: 9, color: "var(--muted-foreground)", marginTop: 2 }}>Workspace</div>
               </div>
             </FloatCard>
 
-            {/* Delivery trend — mid right */}
+            {/* Revenue sparkline — mid right */}
             <FloatCard
               delay={1.5}
               style={{
@@ -854,8 +855,8 @@ export default function Hero({ stats = [] }) {
               className="md:block hidden"
             >
               <div className="flex items-center justify-between">
-                <span style={{ fontSize: 9, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.07em" }}>Delivery trend</span>
-                <span style={{ fontSize: 9, color: "#22c55e", fontWeight: 700 }}>Stable</span>
+                <span style={{ fontSize: 9, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.07em" }}>Delivery Trend</span>
+                <span style={{ fontSize: 9, color: "#22c55e", fontWeight: 700 }}>+72%</span>
               </div>
               <svg viewBox="0 0 100 36" style={{ width: "100%", overflow: "visible", margin: "6px 0" }}>
                 <defs>
@@ -904,7 +905,7 @@ export default function Hero({ stats = [] }) {
               </div>
             </FloatCard>
 
-            {/* Collaboration note — bottom right */}
+            {/* Happy clients — bottom right */}
             <FloatCard
               delay={1.8}
               style={{
@@ -1041,7 +1042,7 @@ export default function Hero({ stats = [] }) {
         }
         @keyframes grow {
           from { width: 0;   }
-          to   { width: 72%; }
+          to   { width: 87%; }
         }
         @keyframes scrollW {
           0%,100% { transform: translateY(0);   opacity: 1; }
