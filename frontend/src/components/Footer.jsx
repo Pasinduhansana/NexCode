@@ -144,12 +144,12 @@ export default function Footer() {
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
-              <a href="#" className={`${themeClasses.text.secondary} hover:text-primary transition-colors`}>
+              <Link to="/privacy-policy" className={`${themeClasses.text.secondary} hover:text-primary transition-colors`}>
                 Privacy Policy
-              </a>
-              <a href="#" className={`${themeClasses.text.secondary} hover:text-primary transition-colors`}>
+              </Link>
+              <Link to="/terms-of-service" className={`${themeClasses.text.secondary} hover:text-primary transition-colors`}>
                 Terms of Service
-              </a>
+              </Link>
             </div>
 
           </div>
