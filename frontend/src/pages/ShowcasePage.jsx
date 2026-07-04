@@ -90,13 +90,11 @@ function ProjectCard({ project, onNavigate, themeClasses }) {
       {/* Media frame */}
       <div className="relative h-56 overflow-hidden bg-background">
         <img
-          src={project.image}
+          src={project.cover}
           alt={project.name}
           className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           loading="lazy"
         />
-        {/* Soft color overlay */}
-        <div className={`absolute inset-0 bg-gradient-to-t ${gradientClass} opacity-20 group-hover:opacity-30 transition-opacity duration-300`} />
 
         {/* Category tag */}
         <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider uppercase bg-card/90 text-foreground backdrop-blur border border-border/40 shadow-sm">
