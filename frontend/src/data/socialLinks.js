@@ -1,8 +1,7 @@
-import { FaLinkedin, FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
 
 export const footerSocialLinks = [
-  { label: "LinkedIn", href: "#", icon: FaLinkedin },
-  { label: "Facebook", href: "#", icon: FaFacebook },
-  { label: "Instagram", href: "#", icon: FaInstagram },
-  { label: "Tiktok", href: "#", icon: FaTiktok },
+  { label: "Facebook",  href: "https://www.facebook.com/nexcode.lk",  icon: FaFacebook  },
+  { label: "Instagram", href: "https://www.instagram.com/nexcode.lk", icon: FaInstagram },
+  { label: "TikTok",   href: "https://www.tiktok.com/@nexcode.lk",   icon: FaTiktok    },
 ];

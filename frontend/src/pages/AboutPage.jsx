@@ -210,8 +210,7 @@ export default function AboutPage() {
                 </div>
                 <h3 className="font-display text-2xl font-extrabold text-foreground mb-4">Our Mission</h3>
                 <p className="text-sm text-text_secondary leading-relaxed">
-                  To empower businesses of all sizes with custom software solutions that are reliable, scalable, and built to grow. We bridge the gap
-                  between ambitious ideas and functional, beautiful digital products — delivering real results for real businesses.
+                  To build high-quality software, web, mobile, and AI solutions that help individuals, startups, and businesses solve real problems and grow in the digital world.
                 </p>
               </div>
             </motion.div>
@@ -232,8 +231,7 @@ export default function AboutPage() {
                 </div>
                 <h3 className="font-display text-2xl font-extrabold text-foreground mb-4">Our Vision</h3>
                 <p className="text-sm text-text_secondary leading-relaxed">
-                  To become the leading software development company from Sri Lanka recognized globally for innovation, quality, and impact. We
-                  envision a future where every business — from startups to enterprises — has access to world-class digital capabilities.
+                  To become a global technology brand that creates simple, powerful, and innovative digital solutions for everyone.
                 </p>
               </div>
             </motion.div>

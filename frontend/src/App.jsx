@@ -11,10 +11,13 @@ import ContactPage from './pages/ContactPage';
 import ProjectRequestPage from './pages/ProjectRequestPage';
 import ShowcasePage from './pages/ShowcasePage';
 import ProjectDetailPage from './pages/ProjectDetailPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsOfServicePage from './pages/TermsOfServicePage';
 
 // Layout
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 
 
 const PublicLayout = ({ children }) => (
@@ -48,7 +51,7 @@ function App() {
     <ThemeProvider>
       
         <BrowserRouter>
-          <ScrollToTopOnRouteChange />
+          <ScrollToTop />
           <Toaster
             position="top-right"
             toastOptions={{
@@ -65,6 +68,8 @@ function App() {
             <Route path="/about" element={<PublicLayout><AboutPage /></PublicLayout>} />
             <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
             <Route path="/start-project" element={<PublicLayout><ProjectRequestPage /></PublicLayout>} />
+            <Route path="/privacy-policy" element={<PublicLayout><PrivacyPolicyPage /></PublicLayout>} />
+            <Route path="/terms-of-service" element={<PublicLayout><TermsOfServicePage /></PublicLayout>} />
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
