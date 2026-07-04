@@ -14,7 +14,7 @@ import project3DarkImg from "../../assets/portfolio_project/Project_Section 3 da
 import project4DarkImg from "../../assets/portfolio_project/Project_Section 4 dark.webp";
 import testimonialImg from "../../assets/portfolio_project/Testtimonial Section.webp";
 import testimonialDarkImg from "../../assets/portfolio_project/Testtimonial Section dark.webp";
-import portfoliovideo from "../../assets/portfolio_project/Portfolio intro.mp4";
+import portfoliovideo from "../../assets/portfolio_project/portfolio-intro.mp4";
 import Portfolio_mobile from "../../assets/portfolio_project/Home_mobile light.webp";
 import Portfolio_mobile_dark from "../../assets/portfolio_project/Home_mobile.webp";
 
