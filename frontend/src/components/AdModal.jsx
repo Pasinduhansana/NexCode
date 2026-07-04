@@ -83,7 +83,7 @@ export default function AdModal({ open, onClose }) {
       {/* Modal */}
       <div
         className="
-          relative w-full max-w-2xl
+          relative  max-w-3xl 
           rounded-2xl overflow-hidden
           shadow-2xl
           border border-border
