@@ -131,7 +131,7 @@ function HeroDeviceStack({ laptop_mockup, phone_mockup, project_image, project_i
             <img
               src={project_image}
               alt="Project Screenshot"
-              className="object-coverz-10 transform transition-transform duration-300 hover:scale-105 w-full h-full"
+              className="z-10 transform transition-transform duration-300 hover:scale-105 w-full h-full"
             />
             {/* subtle glass glare on hover */}
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 transition-opacity duration-500 hover:opacity-100" />
@@ -159,7 +159,7 @@ function HeroDeviceStack({ laptop_mockup, phone_mockup, project_image, project_i
             <img
               src={project_image2_mobile}
               alt="Project Screenshot"
-              className="object-coverz-10 pt-6 transform transition-transform duration-300 hover:scale-105 w-full h-full"
+              className="z-10 pt-6 transform transition-transform duration-300 hover:scale-105 w-full h-full"
             />
           </div>
         </div>
@@ -503,8 +503,8 @@ function App() {
             <HeroDeviceStack
               laptop_mockup={laptop_mockup}
               phone_mockup={phone_mockup}
-              project_image={project_image}
-              project_image2_mobile={project_image2_mobile}
+              project_image={theme === "dark" ? project.laptop_mockup?.[1] : project.laptop_mockup?.[0]}
+              project_image2_mobile={theme === "dark" ? project.phone_mockup?.[1] : project.phone_mockup?.[0]}
             />
 
             {/* Dynamic Presentation Typography */}
