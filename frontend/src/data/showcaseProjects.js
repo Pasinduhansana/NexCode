@@ -1,22 +1,23 @@
-import aboutImg from "../../assets/portfolio_project/About Section.webp";
-import aboutDarkImg from "../../assets/portfolio_project/About Section dark.webp";
-import aboutImg2 from "../../assets/portfolio_project/About Section 2.webp";
-import aboutDarkImg2 from "../../assets/portfolio_project/About Section 2 dark.webp";
-import certificateImg from "../../assets/portfolio_project/Certificate Section.webp";
-import certificateDarkImg from "../../assets/portfolio_project/Certificate Section dark.webp";
-import experienceImg from "../../assets/portfolio_project/Experience Section.webp";
-import experienceDarkImg from "../../assets/portfolio_project/Experience Section dark.webp";
-import heroImg from "../../assets/portfolio_project/Hero Section.webp";
-import heroDarkImg from "../../assets/portfolio_project/Hero Section dark.webp";
-import projectSectionDarkImg from "../../assets/portfolio_project/Project_Section dark.webp";
-import project2DarkImg from "../../assets/portfolio_project/Project_Section 2 dark.webp";
-import project3DarkImg from "../../assets/portfolio_project/Project_Section 3 dark.webp";
-import project4DarkImg from "../../assets/portfolio_project/Project_Section 4 dark.webp";
-import testimonialImg from "../../assets/portfolio_project/Testtimonial Section.webp";
-import testimonialDarkImg from "../../assets/portfolio_project/Testtimonial Section dark.webp";
+import aboutImg from "../../assets/portfolio_project/About_Section.webp";
+import aboutDarkImg from "../../assets/portfolio_project/About_Section_dark.webp";
+import aboutImg2 from "../../assets/portfolio_project/About_Section_2.webp";
+import aboutDarkImg2 from "../../assets/portfolio_project/About_Section_2_dark.webp";
+import certificateImg from "../../assets/portfolio_project/Certificate_Section.webp";
+import certificateDarkImg from "../../assets/portfolio_project/Certificate_Section_dark.webp";
+import experienceImg from "../../assets/portfolio_project/Experience_Section.webp";
+import experienceDarkImg from "../../assets/portfolio_project/Experience_Section_dark.webp";
+import heroImg from "../../assets/portfolio_project/Hero_Section.webp";
+import heroDarkImg from "../../assets/portfolio_project/Hero_Section_dark.webp";
+import projectSectionDarkImg from "../../assets/portfolio_project/Project_Section_dark.webp";
+import project2DarkImg from "../../assets/portfolio_project/Project_Section_2_dark.webp";
+import project3DarkImg from "../../assets/portfolio_project/Project_Section_3_dark.webp";
+import project4DarkImg from "../../assets/portfolio_project/Project_Section_4_dark.webp";
+import testimonialImg from "../../assets/portfolio_project/Testtimonial_Section.webp";
+import testimonialDarkImg from "../../assets/portfolio_project/Testtimonial_Section_dark.webp";
 import portfoliovideo from "../../assets/portfolio_project/portfolio-intro.mp4";
-import Portfolio_mobile from "../../assets/portfolio_project/Home_mobile light.webp";
+import Portfolio_mobile from "../../assets/portfolio_project/Home_mobile_light.webp";
 import Portfolio_mobile_dark from "../../assets/portfolio_project/Home_mobile.webp";
+
 
 
 export const showcaseProjects = [
