@@ -9,7 +9,7 @@ import { useTheme } from "../context/ThemeContext";
 import { showcaseProjects } from "../data/showcaseProjects";
 import api from "../utils/api";
 import usePageTitle from "../utils/usePageTitle";
-import Button  from "../components/Button";
+import Button from "../components/Button";
 import SectionLabel from "../components/SectionLabel";
 
 const limitWords = (text, maxWords) => text.split(/\s+/).slice(0, maxWords).join(" ");
@@ -25,16 +25,9 @@ function App() {
     let mounted = true;
 
     const loadProject = async () => {
-      try {
-        const res = await api.get("/showcase");
-        const match = res.data.data?.find((item) => item.slug === slug);
-        if (mounted) setProject(match || null);
-      } catch {
-        if (mounted) {
-          setProject(showcaseProjects.find((item) => item.slug === slug));
-        }
-      } finally {
-        if (mounted) setLoading(false);
+      if (mounted) {
+        setProject(showcaseProjects.find((item) => item.slug === slug));
+        setLoading(false);
       }
     };
 
@@ -71,13 +64,13 @@ function App() {
   const watermarkColor = theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "rgba(17, 24, 39, 0.2)";
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full -mt-20">
       {/* Hero Section */}
       <div
         className={`relative w-full min-h-screen bg-hero-gradient text-white overflow-x-hidden overflow-y-visible flex flex-col items-center justify-between py-10 pt-20 px-5 z-10 select-none`}
       >
         {/* Background Watermark Text Layer */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[48%] scale-[0.62] sm:scale-75 lg:scale-100 w-full lg:max-w-[1200px] [@media(min-width:1600px)]:scale-125 flex flex-col items-center justify-center -z-10 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 md:-translate-y-[48%] -translate-y-[53%] scale-[0.70] md:scale-[0.62] sm:scale-75 lg:scale-100 w-full lg:max-w-[1200px] [@media(min-width:1600px)]:scale-125 flex flex-col items-center justify-center -z-10 pointer-events-none">
           <span
             className={`text-[6rem] md:text-[12rem] font-extrabold tracking-wider leading-[0.95] text-center uppercase`}
             style={{ color: watermarkColor }}
@@ -100,10 +93,10 @@ function App() {
 
         {/* Central Interactive Content Frame */}
         <main className="flex flex-col items-center w-full">
-          <div className="relative mx-auto w-full max-w-[280px] sm:max-w-[420px] md:max-w-[500px] lg:max-w-[700px] [@media(min-width:1600px)]:max-w-[1000px] my-5 perspective-[1000px] px-2 sm:px-0">
+          <div className="relative mx-auto w-full max-w-[340px] sm:max-w-[420px] md:max-w-[500px] lg:max-w-[700px] [@media(min-width:1600px)]:max-w-[1000px] mb-10 md:my-5 perspective-[1000px] px-2 sm:px-0 ">
             {/* Laptop Screen Bezel */}
-            <div className="relative">
-              <img src={laptop_mockup} alt="Laptop Mockup" className="w-full h-full relative z-20" />
+            <div className="relative ">
+              <img src={laptop_mockup} alt="Laptop Mockup" className="w-full h-full relative z-20 " />
               <div className="absolute overflow-hidden w-[77%]  h-[84%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-[52%] ">
                 <img
                   src={project_image}
@@ -114,7 +107,7 @@ function App() {
             </div>
 
             {/* Phone Screen */}
-            <div className="absolute bottom-0 left-0 w-[92px] sm:w-[120px] h-auto mt-10 z-50">
+            <div className="absolute bottom-0 left-0 w-[60px] sm:w-[120px] h-auto mt-10 z-50">
               <img src={phone_mockup} alt="Phone Mockup" className="w-full  h-full relative z-20" />
               <div className="absolute overflow-hidden bg-background w-[99%] h-[99%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-[50.5%] rounded-3xl ">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-8 bg-muted rounded-full">
@@ -163,18 +156,12 @@ function App() {
                 <p className="mt-3 text-sm md:text-[15px] text-text_muted leading-relaxed mx-auto md:mx-0">
                   {isSummaryExpanded ? project.summary : summaryText}
                   {!isSummaryExpanded && summaryText.length < project.summary.length ? (
-                    <Button
-                      variant="link"
-                      onClick={() => setIsSummaryExpanded(true)}
-                    >
+                    <Button variant="link" onClick={() => setIsSummaryExpanded(true)}>
                       Read more
                     </Button>
                   ) : null}
                   {isSummaryExpanded ? (
-                    <Button
-                      variant="link"
-                      onClick={() => setIsSummaryExpanded(false)}
-                    >
+                    <Button variant="link" onClick={() => setIsSummaryExpanded(false)}>
                       Show less
                     </Button>
                   ) : null}
