@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
-import { HiPhone, HiMail, HiLocationMarker, HiClock, HiSparkles, HiOutlineChat, HiChevronRight  } from "react-icons/hi";
+import { HiPhone, HiMail, HiLocationMarker, HiClock, HiSparkles, HiOutlineChat, HiChevronRight } from "react-icons/hi";
 import { FaWhatsapp } from "react-icons/fa";
 import { useForm } from "@formspree/react";
 import usePageTitle from "../utils/usePageTitle";
 import { useThemeClasses } from "../utils/useThemeClasses";
 import Button from "../components/Button";
+import SectionLabel from "../components/SectionLabel";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
@@ -46,12 +47,10 @@ export default function ContactPage() {
     { icon: HiLocationMarker, label: "Location", value: "Sri Lanka", href: "#", color: "text-red-500" },
   ];
 
-  const quickFacts = [
-    { icon: HiClock, label: "Response Time", value: "Within 24 hours" }
-  ];
+  const quickFacts = [{ icon: HiClock, label: "Response Time", value: "Within 24 hours" }];
 
   return (
-    <div className={`min-h-screen ${themeClasses.bg.primary} ${themeClasses.text.primary}`}>
+    <div className={`min-h-screen -mt-20 ${themeClasses.bg.primary} ${themeClasses.text.primary}`}>
       <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-background dark-grid">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
@@ -64,12 +63,10 @@ export default function ContactPage() {
           />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 py-8 lg:py-0 sm:px-6 lg:px-8 mt-20 md:mt-o">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 py-8 pt-24 md:pt-28 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-14 items-center text-center lg:text-left">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-card/80 backdrop-blur border border-border text-text_secondary text-xs font-medium mb-2 md:mb-5">
-                Get In Touch
-              </div>
+              <SectionLabel content="Get In Touch" />
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 leading-[1.05] text-foreground">
                 Let's <span className="gradient-text">Connect</span>
               </h1>
@@ -79,10 +76,17 @@ export default function ContactPage() {
               </p>
 
               <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-8">
-                <Button variant="primary" rightIcon={<HiMail size={20}/>} href="mailto:info@nexcode.lk" className="w-full sm:w-auto">
+                <Button variant="primary" rightIcon={<HiMail size={20} />} href="mailto:info@nexcode.lk" className="w-full sm:w-auto">
                   Email Us
                 </Button>
-                <Button variant="whatsapp" leftIcon={<FaWhatsapp size={18}/>} href="https://wa.me/94769747244" target="_blank" rel="noreferrer" className="w-full sm:w-auto">
+                <Button
+                  variant="whatsapp"
+                  leftIcon={<FaWhatsapp size={18} />}
+                  href="https://wa.me/94769747244"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-full sm:w-auto"
+                >
                   WhatsApp
                 </Button>
               </div>
@@ -253,7 +257,7 @@ export default function ContactPage() {
                   {errors.message && <p className="text-red-500 text-xs mt-1 text-left">{errors.message}</p>}
                 </div>
 
-                <Button variant="primary" type="submit" disabled={state.submitting} rightIcon={<HiOutlineChat/> } className="self-center md:self-end">
+                <Button variant="primary" type="submit" disabled={state.submitting} rightIcon={<HiOutlineChat />} className="self-center md:self-end">
                   {state.submitting ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />

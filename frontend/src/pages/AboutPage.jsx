@@ -21,22 +21,23 @@ import { FaRocket } from "react-icons/fa";
 import usePageTitle from "../utils/usePageTitle";
 import { useThemeClasses } from "../utils/useThemeClasses";
 import Button from "../components/Button";
+import SectionLabel from "../components/SectionLabel";
 
 /* ═══════════════════════════════════════════════════════════════════════
    DATA
    ═══════════════════════════════════════════════════════════════════════ */
 const stats = [
-  { value: "Custom", label: "Projects", description: "Built around each client need" },
-  { value: "Dedicated", label: "Clientele", description: "Focused on close collaboration" },
+  { value: "20+", label: "Projects", description: "Built around each client need" },
+  { value: "17+", label: "Clientele", description: "Focused on close collaboration" },
   { value: "2025", label: "Founded", description: "Started in 2025" },
-  { value: "Local", label: "Team", description: "Sri Lankan talent, global standards" },
+  { value: "10+", label: "Team", description: "Sri Lankan talent, global standards" },
 ];
 
 const STATS = [
-  { value: "Custom", label: "Projects" },
-  { value: "Focused", label: "Client Work" },
-  { value: "Flexible", label: "Service Scope" },
-  { value: "Responsive", label: "Support" },
+  { value: "20+", label: "Projects" },
+  { value: "17+", label: "Clientele" },
+  { value: "10+", label: "Team" },
+  { value: "2025", label: "Founded" },
 ];
 
 const values = [
@@ -86,22 +87,6 @@ const fadeUp = {
 };
 
 /* ═══════════════════════════════════════════════════════════════════════
-   SHARED SUB-COMPONENTS
-   ═══════════════════════════════════════════════════════════════════════ */
-function SectionLabel({ icon: Icon, children }) {
-  return (
-    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border bg-card text-xs font-semibold text-text_secondary mb-5 select-none shadow-sm">
-      {Icon ? (
-        <Icon className="text-primary text-sm flex-shrink-0 animate-pulse" />
-      ) : (
-        <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 flex-shrink-0" />
-      )}
-      {children}
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════════════
    MAIN PAGE
    ═══════════════════════════════════════════════════════════════════════ */
 export default function AboutPage() {
@@ -109,7 +94,7 @@ export default function AboutPage() {
   const themeClasses = useThemeClasses();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background -mt-20">
       {/* ──────────────────────────────────────────────────────────────
           § 1 HERO — Cinematic banner opener
       ────────────────────────────────────────────────────────────── */}
@@ -126,10 +111,10 @@ export default function AboutPage() {
           />
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="relative z-10 w-auto  flex flex-col items-start  text-left pt-32 pb-12 md:pb-24">
-            <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
-              <SectionLabel icon={HiSparkles}>About NexCode</SectionLabel>
+        <div className="flex flex-col md:flex-row justify-between items-center mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center md:text-left">
+          <div className="relative z-10 w-auto  flex flex-col items-start md:justify-start justify-center text-center md:text-left pt-24 pb-12 md:pb-24">
+            <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0} className="mx-auto md:ml-0">
+              <SectionLabel icon={HiSparkles} content={"About NexCode"}/>
             </motion.div>
 
             <motion.h1
@@ -137,7 +122,7 @@ export default function AboutPage() {
               initial="hidden"
               animate="show"
               custom={1}
-              className="font-display font-extrabold text-foreground tracking-tight mb-6 leading-[1.08]"
+              className="font-display text-center md:text-left font-extrabold text-foreground tracking-tight mb-6 leading-[1.08]"
               style={{ fontSize: "clamp(2.4rem, 6vw, 4.8rem)" }}
             >
               Built by Passionate <br />
@@ -155,7 +140,7 @@ export default function AboutPage() {
               digital solutions. We engineer for scale, stability, and speed.
             </motion.p>
 
-            <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="flex flex-wrap gap-4 justify-center">
+            <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="flex flex-col md:flex-row md:flex-wrap gap-4 md:justify-start justify-center mx-auto md:mx-0">
               <Button variant="primary" rightIcon={<HiChevronDoubleRight size={20} />} to="/start-project">
                 Start Your Project
               </Button>
@@ -170,18 +155,18 @@ export default function AboutPage() {
               initial="hidden"
               animate="show"
               custom={4}
-              className="grid grid-cols-2 sm:grid-cols-4 w-full  gap-3 pt-8 border-t mt-10 lg:mt-20 border-border"
+              className="grid grid-cols-2 sm:grid-cols-4 w-full gap-y-10 md:gap-y-3 gap-3 pt-8 border-t mt-10 lg:mt-20 border-border"
             >
               {STATS.map((s, i) => (
                 <div key={i} className="text-center">
                   <div className="font-display text-xl md:text-2xl font-extrabold gradient-text leading-none">{s.value}</div>
-                  <div className="text-[10px] text-text_muted mt-1 leading-tight">{s.label}</div>
+                  <div className="text-[16px] text-text_muted mt-1 leading-tight">{s.label}</div>
                 </div>
               ))}
             </motion.div>
           </div>
 
-          <div className=" mx-auto px-4 sm:px-6 lg:px-8 mb-12 md:mb-0 ">
+          <div className=" mx-auto px-4 sm:px-6 lg:px-8 mb-12 md:-mt-28 md:mb-0 ">
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-4 md:gap-8">
               {stats.map((s, i) => (
                 <motion.div
@@ -193,9 +178,9 @@ export default function AboutPage() {
                   whileHover={{ y: -4, transition: { duration: 0.18 } }}
                   className="text-center p-5 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-300 shadow-sm"
                 >
-                  <div className="font-display text-4.5xl font-black gradient-text mb-2 leading-none">{s.value}</div>
-                  <div className="font-bold text-sm text-foreground mb-1">{s.label}</div>
-                  <div className="text-xs text-text_secondary">{s.description}</div>
+                  <div className="font-display text-[20px] font-black gradient-text mb-2 leading-none">{s.value}</div>
+                  <div className="font-bold text-[16px] text-foreground mb-1">{s.label}</div>
+                  <div className="text-[14px] text-text_secondary">{s.description}</div>
                 </motion.div>
               ))}
             </div>
@@ -261,7 +246,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
-              <SectionLabel icon={HiStar}>Core Guidelines</SectionLabel>
+              <SectionLabel icon={HiStar} content="Core Guidelines"/>
             </motion.div>
             <h2 className="font-display text-3xl md:text-4.5xl font-extrabold text-foreground tracking-tight">
               Values That <span className="gradient-text">Steer Us.</span>

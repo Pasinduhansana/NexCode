@@ -22,6 +22,8 @@ import Hero from "../components/Hero";
 import FAQ from "../components/FAQ";
 import { hero_services as services } from "../data/services";
 import Button from "../components/Button";
+import SelectionLable from "../components/SectionLabel";
+import SectionLabel from "../components/SectionLabel";
 
 const stats = [
   { value: "Custom", label: "Projects" },
@@ -48,16 +50,13 @@ export default function HomePage() {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600 mb-4"
             >
-              Our Services
+              <SectionLabel content="Our Services" />
             </motion.div>
 
             <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="section-title mb-4">
-              Everything You Need to{" "}
-              <span className="hidden sm:block">
-                <br />
-              </span>
+              Everything You Need to {" "}
+                <br className="hidden sm:block"/>
               <span className="gradient-text">Build Digitally</span>
             </motion.h2>
 
@@ -99,15 +98,11 @@ export default function HomePage() {
               viewport={{ once: true }}
               className="order-1 text-left lg:text-left flex flex-col"
             >
-              <div className="mb-6 inline-flex mx-auto items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600">
-                Why NexCode?
-              </div>
+              <SectionLabel content="Why Choose Us?" />
 
               <h2 className="section-title mb-6 text-center lg:text-left">
                 We Build Products That{" "}
-                <span className="hidden sm:block">
-                  <br />
-                </span>
+                  <br className="hidden sm:block"/>
                 <span className="gradient-text">Actually Work</span>
               </h2>
 

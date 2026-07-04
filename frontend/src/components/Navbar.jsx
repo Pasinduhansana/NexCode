@@ -18,7 +18,7 @@ const navLinks = [
 const themeUi = {
   light: {
     navScrolled: "bg-white/92 backdrop-blur-xl  shadow-[0_10px_30px_rgba(15,23,42,0.08)]",
-    navTop: "bg-trasparent backdrop-blur-xl ",
+    navTop: "bg-transparent backdrop-blur-xl ",
     linkActive: "text-primary bg-slate-100/80 py-[8px] ",
     linkIdle: "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80",
     toggleBtn: "bg-slate-100 border-none text-slate-700  hover:bg-slate-200",
@@ -27,11 +27,12 @@ const themeUi = {
     dropdownItemIdle: "text-slate-700 hover:bg-slate-50",
     mobilePanel: "bg-white/95 border-t border-slate-200/70",
     mobileLinkIdle: "text-slate-700 hover:bg-slate-100",
+    logoBg: "bg-slate-100",
   },
 
   dark: {
     navScrolled: "bg-slate-950/90 backdrop-blur-xl  shadow-[0_14px_34px_rgba(2,6,23,0.55)]",
-    navTop: "bg-trasparent backdrop-blur-xl ",
+    navTop: "bg-transparent backdrop-blur-xl ",
     linkActive: "bg-primary/25 text-blue-200 py-[8px]",
     linkIdle: "text-slate-300 hover:text-white hover:bg-white/10",
     toggleBtn: "bg-slate-800 text-slate-200 border-none hover:bg-slate-700",
@@ -40,10 +41,11 @@ const themeUi = {
     dropdownItemIdle: "text-slate-200 hover:bg-white/10",
     mobilePanel: "bg-slate-900/95 border-t border-slate-700/70",
     mobileLinkIdle: "text-slate-200 hover:bg-white/10",
+    logoBg: "bg-slate-200",
   },
   primary: {
     navScrolled: "bg-white/92 backdrop-blur-xl shadow-[0_12px_30px_rgba(6,182,212,0.18)]",
-    navTop: "bg-trasparent backdrop-blur-xl",
+    navTop: "bg-transparent backdrop-blur-xl",
     linkActive: "bg-primary text-white py-[8px] ",
     linkIdle: "text-slate-700 hover:text-slate-900 hover:bg-slate-100/20",
     toggleBtn: "border-blue-500/50 text-foreground border-1 hover:bg-primary/22 ",
@@ -52,6 +54,7 @@ const themeUi = {
     dropdownItemIdle: "text-foreground hover:bg-primary/10",
     mobilePanel: "bg-card/95 border-t border-primary/25",
     mobileLinkIdle: "text-foreground hover:bg-primary/12",
+    logoBg: "bg-slate-100",
   },
 };
 
@@ -85,7 +88,8 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-14 sm:h-16 py-2 sm:py-3">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <img src={logo} alt="NexCode" className="w-8 h-8 rounded-lg object-cover shadow-md group-hover:scale-110 transition-transform" />
+          <div className={`w-8 h-8 rounded-md overflow-hidden shadow-md ${ui.logoBg} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+            <img src={logo} alt="NexCode" className="object-cover" /></div>
             <span className={`font-display font-bold text-lg ${themeClasses.text.primary}`}>
               Nex<span className="text-foreground">Code</span>
             </span>

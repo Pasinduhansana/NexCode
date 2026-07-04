@@ -29,6 +29,7 @@ import usePageTitle from "../utils/usePageTitle";
 import { useThemeClasses } from "../utils/useThemeClasses";
 import { showcaseProjects } from "../data/showcaseProjects";
 import api from "../utils/api";
+import SectionLabel from "../components/SectionLabel";
 
 /* ═══════════════════════════════════════════════════════════════════════
    ANIMATION CONFIGS
@@ -63,19 +64,7 @@ const scaleIn = {
    SHARED SUB-COMPONENTS
    ═══════════════════════════════════════════════════════════════════════ */
 
-/** Pill label above sections */
-function SectionLabel({ icon: Icon, children }) {
-  return (
-    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border bg-card text-xs font-semibold text-text_secondary mb-5 select-none shadow-sm">
-      {Icon ? (
-        <Icon className="text-primary text-sm flex-shrink-0 animate-pulse" />
-      ) : (
-        <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 flex-shrink-0" />
-      )}
-      {children}
-    </div>
-  );
-}
+
 
 /** Premium Project Card with hover-active effects */
 function ProjectCard({ project, onNavigate, themeClasses }) {
@@ -261,7 +250,7 @@ export default function ShowcasePage() {
   }, [projects]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background -mt-20">
       {/* ──────────────────────────────────────────────────────────────
           § 1 HERO — Cinematic opening banner with background grids
       ────────────────────────────────────────────────────────────── */}
@@ -282,12 +271,12 @@ export default function ShowcasePage() {
           />
         </div>
 
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-32 pb-10 md:pb-24">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-24 pb-10 md:pb-24">
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-16 items-center">
             {/* Left Column Content */}
             <div className="text-center lg:text-left">
               <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
-                <SectionLabel icon={HiSparkles}>Engineered Case Studies</SectionLabel>
+                <SectionLabel icon={HiSparkles} content="Engineered Case Studies"/>
               </motion.div>
 
               <motion.h1
@@ -320,7 +309,7 @@ export default function ShowcasePage() {
                 initial="hidden"
                 animate="show"
                 custom={3}
-                className="flex flex-wrap gap-3 lg:gap-4 mb-12 justify-center lg:justify-start px-20 lg:px-0"
+                className="flex flex-col md:flex-row md:flex-wrap gap-3 lg:gap-4 mb-12 justify-center lg:justify-start px-20 lg:px-0"
               >
                 <Button variant="primary" rightIcon={<HiFilter size={16} />} href="#collection" className="w-full lg:w-auto">
                   Start Your Project
@@ -339,13 +328,13 @@ export default function ShowcasePage() {
                 className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8 border-t border-border max-w-xl mx-auto lg:mx-0"
               >
                 {[
-                  { value: "Custom", label: "Delivered Work" },
-                  { value: "Careful", label: "Client Experience" },
-                  { value: "Modern", label: "Tech Stack" },
+                  { value: "20+", label: "Delivered Work" },
+                  { value: "18+", label: "Client Experience" },
+                  { value: "10+", label: "Tech Stack" },
                 ].map((stat, i) => (
                   <div key={i} className="text-center lg:text-left">
                     <div className="font-display text-2xl md:text-3xl font-extrabold gradient-text leading-none mb-1">{stat.value}</div>
-                    <div className="text-[10px] font-bold text-text_muted uppercase tracking-wider">{stat.label}</div>
+                    <div className="text-[12px] font-semibold text-text_muted uppercase tracking-wider">{stat.label}</div>
                   </div>
                 ))}
               </motion.div>
@@ -356,7 +345,7 @@ export default function ShowcasePage() {
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.75, delay: 0.35 }}
-              className="hidden lg:grid grid-cols-3 gap-4 relative"
+              className="hidden lg:grid grid-cols-3 gap-4 relative -mt-20"
             >
               {/* Outer decorative ring */}
               <div className="absolute -inset-10 border border-border/40 rounded-full pointer-events-none -z-10 animate-spin-slow opacity-20" />
@@ -369,9 +358,9 @@ export default function ShowcasePage() {
                   transition={{ repeat: Infinity, duration: 4 + idx * 0.4, ease: "easeInOut", delay: idx * 0.15 }}
                   whileHover={{ scale: 1.05, border: "1px solid rgba(54,153,243,0.45)" }}
                   onClick={() => navigate(`/showcase/${proj.slug}`)}
-                  className="group relative flex flex-col items-center justify-center bg-card border border-border rounded-2xl p-4 text-center cursor-pointer shadow-sm transition-all duration-300"
+                  className="group relative flex flex-col items-center justify-center bg-card border border-border  rounded-xl mx-2 my-1 p-4  text-center cursor-pointer shadow-sm transition-all duration-300"
                 >
-                  <div className="w-10 h-10 rounded-full overflow-hidden mb-2.5 border border-border bg-background">
+                  <div className="w-10 h-10 rounded-full overflow-hidden mb-2.5 border border-border bg-background ">
                     <img src={proj.image} alt={proj.name} className="w-full h-full object-cover" />
                   </div>
                   <span className="text-[10px] font-bold text-foreground line-clamp-1 uppercase tracking-wide group-hover:text-primary">
@@ -389,12 +378,12 @@ export default function ShowcasePage() {
           § 2 CASE STUDY SPOTLIGHTS — Alternating Featured Projects
       ────────────────────────────────────────────────────────────── */}
       {spotlightProjects.length > 0 && (
-        <section className="py-8 lg:py-24 bg-page-alt border-y border-border">
+        <section className="py-8 lg:py-20 bg-page-alt border-y border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Header */}
             <div className="flex flex-col items-center text-center mb-20">
               <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
-                <SectionLabel icon={HiStar}>Featured Spotlights</SectionLabel>
+                <SectionLabel icon={HiStar}content="Featured Spotlights"/>
               </motion.div>
               <h2 className="font-display text-3xl md:text-4.5xl font-extrabold text-foreground tracking-tight">
                 Case Studies in <span className="gradient-text">Excellence</span>
@@ -545,7 +534,7 @@ export default function ShowcasePage() {
           {/* Header */}
           <div className="flex flex-col items-center text-center mb-16">
             <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
-              <SectionLabel icon={HiDatabase}>Explore Portfolio</SectionLabel>
+              <SectionLabel icon={HiDatabase} content="Explore Portfolio"/>
             </motion.div>
             <h2 className="font-display text-3xl md:text-4.5xl font-extrabold text-foreground tracking-tight">
               Featured Case <span className="gradient-text">Showcase</span>
@@ -825,7 +814,8 @@ export default function ShowcasePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Left Column info */}
             <div>
-              <SectionLabel icon={HiCode}>NexCode Standards</SectionLabel>
+              <SectionLabel icon={HiCode} content="NexCode Standards"/>
+              
               <h2 className="font-display text-3xl md:text-4.5xl font-extrabold text-foreground tracking-tight mb-5">
                 Engineering for <span className="gradient-text">Uptime & Scale.</span>
               </h2>
@@ -920,9 +910,7 @@ export default function ShowcasePage() {
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
           <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
-            <div className="inline-flex items-center gap-1.5 px-4.5 py-1.5 rounded-full bg-white/15 border border-white/20 backdrop-blur text-[10px] font-black uppercase tracking-widest mb-6">
-              <HiLightningBolt size={10} className="text-yellow-300 animate-bounce" /> Build with NexCode
-            </div>
+            <SectionLabel icon={HiLightningBolt} content="Build with NexCode" />
 
             <h2 className="font-display font-extrabold mb-5 tracking-tight leading-[1.1]" style={{ fontSize: "clamp(2.2rem, 5.5vw, 3.8rem)" }}>
               Let's Collaborate to <br />
