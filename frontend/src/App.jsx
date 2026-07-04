@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 
@@ -24,11 +25,30 @@ const PublicLayout = ({ children }) => (
   </>
 );
 
+const ScrollToTopOnRouteChange = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+    const doScroll = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
+    };
+
+    // Try immediately, then again shortly after in case the next page renders async content.
+    requestAnimationFrame(doScroll);
+    setTimeout(doScroll, 50);
+  }, [location.pathname]);
+
+  return null;
+};
+
 function App() {
   return (
     <ThemeProvider>
       
         <BrowserRouter>
+          <ScrollToTopOnRouteChange />
           <Toaster
             position="top-right"
             toastOptions={{
