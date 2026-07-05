@@ -643,12 +643,57 @@ function App() {
                         <p className="text-[11px] tracking-[0.2em] uppercase font-semibold mb-1 text-text_muted">Video gallery</p>
                         <h3 className="text-lg font-semibold text-foreground">Watch it in action</h3>
                       </div>
-                      <div className="text-sm text-text_muted hidden sm:block">{videoMedia.length} items &middot; tap to expand</div>
+                      <div className="text-sm text-text_muted hidden sm:block">{videoMedia.length} items &middot; tap to play</div>
                     </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-                      {videoMedia.map((item, i) => (
-                        <GalleryCard key={`video-${i}`} item={item} index={i} onOpen={() => openLightbox(media.indexOf(item))} />
-                      ))}
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[140px] sm:auto-rows-[170px] gap-3 sm:gap-4 grid-flow-row-dense">
+                      {videoMedia.map((item, i) => {
+                        const pattern = i % 6;
+                        const spanClass = pattern === 0 ? "col-span-2 row-span-2" : pattern === 3 ? "row-span-2" : "";
+
+                        return (
+                          <button
+                            key={`video-${i}`}
+                            type="button"
+                            onClick={() => openLightbox(media.indexOf(item))}
+                            className={`group relative overflow-hidden rounded-2xl border border-border bg-card ${spanClass}`}
+                          >
+                            <img
+                              src={item.thumbnail}
+                              alt={item.caption || "Project video"}
+                              loading="lazy"
+                              className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                            />
+
+                            {/* darken base so play button always reads clearly */}
+                            <div className="absolute inset-0 bg-black/25 transition-colors duration-300 group-hover:bg-black/40" />
+
+                            {/* bottom gradient scrim for caption */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+
+                            {/* play button */}
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/20 backdrop-blur-md border border-white/40 transition-transform duration-300 group-hover:scale-110">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg">
+                                  <svg viewBox="0 0 24 24" className="ml-0.5 h-4 w-4 text-slate-900" fill="currentColor">
+                                    <path d="M8 5v14l11-7z" />
+                                  </svg>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* video tag */}
+                            <div className="absolute top-2.5 left-2.5 flex items-center gap-1 rounded-full bg-black/50 backdrop-blur-sm px-2.5 py-1 text-[10px] font-medium uppercase tracking-wide text-white">
+                              <svg viewBox="0 0 24 24" className="h-3 w-3" fill="currentColor">
+                                <path d="M8 5v14l11-7z" />
+                              </svg>
+                              Video
+                            </div>
+
+                            {item.caption && <p className="absolute inset-x-0 bottom-0 p-3 text-xs text-white truncate">{item.caption}</p>}
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
@@ -662,10 +707,49 @@ function App() {
                       </div>
                       <div className="text-sm text-text_muted hidden sm:block">{imageMedia.length} items &middot; tap to expand</div>
                     </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-                      {imageMedia.map((item, i) => (
-                        <GalleryCard key={`image-${i}`} item={item} index={i} onOpen={() => openLightbox(media.indexOf(item))} />
-                      ))}
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[140px] sm:auto-rows-[170px] gap-3 sm:gap-4 grid-flow-row-dense">
+                      {imageMedia.map((item, i) => {
+                        const pattern = i % 6;
+                        const spanClass = pattern === 0 ? "col-span-2 row-span-2" : pattern === 3 ? "row-span-2" : "";
+
+                        return (
+                          <button
+                            key={`image-${i}`}
+                            type="button"
+                            onClick={() => openLightbox(media.indexOf(item))}
+                            className={`group relative overflow-hidden rounded-2xl border border-border bg-card ${spanClass}`}
+                          >
+                            <img
+                              src={item.url}
+                              alt={item.caption || "Project media"}
+                              loading="lazy"
+                              className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                            />
+
+                            {/* gradient overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+                            {/* caption */}
+                            {item.caption && (
+                              <p className="absolute inset-x-0 bottom-0 p-3 text-xs text-white truncate opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                                {item.caption}
+                              </p>
+                            )}
+
+                            {/* expand icon */}
+                            <div className="absolute top-2.5 right-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 opacity-0 scale-75 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100">
+                              <svg viewBox="0 0 24 24" className="h-4 w-4 text-slate-900" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path
+                                  d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </div>
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
