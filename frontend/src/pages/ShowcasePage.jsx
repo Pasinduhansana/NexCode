@@ -5,7 +5,8 @@
  */
 import { useEffect, useMemo, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 import Button from "../components/Button";
 import {
   HiX,
@@ -28,8 +29,9 @@ import { FaFilterCircleXmark } from "react-icons/fa6";
 import usePageTitle from "../utils/usePageTitle";
 import { useThemeClasses } from "../utils/useThemeClasses";
 import { showcaseProjects } from "../data/showcaseProjects";
-import api from "../utils/api";
 import SectionLabel from "../components/SectionLabel";
+
+
 
 /* ═══════════════════════════════════════════════════════════════════════
    ANIMATION CONFIGS
@@ -86,11 +88,10 @@ function ProjectCard({ project, onNavigate, themeClasses }) {
           background: `radial-gradient(ellipse at 50% 0%, rgba(${rgbValues}, 0.09) 0%, transparent 70%)`,
         }}
       />
-
       {/* Media frame */}
       <div className="relative h-56 overflow-hidden bg-background">
         <img
-          src={project.resources.images[0]}
+          src={project.cover}
           alt={project.name}
           className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           loading="lazy"
@@ -170,31 +171,12 @@ export default function ShowcasePage() {
 
   usePageTitle("Showcase — NexCode");
 
-  // Load Showcase Projects from database API or static data fallback
+  // Static data only (no backend required)
   useEffect(() => {
-    let mounted = true;
-    const fetchProjects = async () => {
-      try {
-        const res = await api.get("/showcase");
-        if (mounted) {
-          setProjects(Array.isArray(res.data.data) ? res.data.data : []);
-        }
-      } catch (err) {
-        console.warn("API fetch error, falling back to static data:", err);
-        if (mounted) {
-          setProjects(showcaseProjects);
-        }
-      } finally {
-        if (mounted) {
-          setLoading(false);
-        }
-      }
-    };
-    fetchProjects();
-    return () => {
-      mounted = false;
-    };
+    setProjects(showcaseProjects);
+    setLoading(false);
   }, []);
+
 
   // Filter Categories & Tech stacks lists dynamically based on active data
   const allCategories = useMemo(() => {
@@ -359,7 +341,7 @@ export default function ShowcasePage() {
                   className="group relative flex flex-col items-center justify-center bg-card border border-border  rounded-xl mx-2 my-1 p-4  text-center cursor-pointer shadow-sm transition-all duration-300"
                 >
                   <div className="w-10 h-10 rounded-full overflow-hidden mb-2.5 border border-border bg-background ">
-                    <img src={proj.resources.images[0]} alt={proj.name} className="w-full h-full object-cover" />
+                    <img src={proj.cover} alt={proj.name} className="w-full h-full object-cover" />
                   </div>
                   <span className="text-[10px] font-bold text-foreground line-clamp-1 uppercase tracking-wide group-hover:text-primary">
                     {proj.name.split(" ")[0]}
@@ -484,7 +466,7 @@ export default function ShowcasePage() {
                           transition={{ repeat: Infinity, duration: 4.2 + idx * 0.3, ease: "easeInOut" }}
                           className="relative z-10 w-full max-w-[360px] rounded-2xl overflow-hidden shadow-2xl border border-border/80 bg-background"
                         >
-                          <img src={proj.resources.images[0]} alt={proj.name} className="w-full h-48 object-cover" />
+                          <img src={proj.cover} alt={proj.name} className="w-full h-48 object-cover" />
                           <div className="p-4 border-t border-border">
                             <span className="text-[10px] font-bold uppercase tracking-wider text-text_muted">{proj.type}</span>
                             <h4 className="text-sm font-extrabold text-foreground mt-0.5">{proj.name}</h4>
