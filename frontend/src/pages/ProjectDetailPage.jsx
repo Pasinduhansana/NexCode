@@ -424,14 +424,17 @@ function App() {
   const galleryImages = project.resources?.images ?? [];
   const galleryVideos = project.resources?.videos ?? [];
   const media = [
-    ...galleryImages.map((img) => ({ type: "image", url: img.url, caption: img.caption })),
     ...galleryVideos.map((vid) => ({
       type: "video",
       url: vid.url,
       thumbnail: vid.thumbnail,
       caption: vid.caption,
     })),
+    ...galleryImages.map((img) => ({ type: "image", url: img.url, caption: img.caption })),
   ];
+
+  const videoMedia = media.filter((m) => m.type === "video");
+  const imageMedia = media.filter((m) => m.type === "image");
 
   const openLightbox = (index) => setLightboxIndex(index);
   const closeLightbox = () => setLightboxIndex(null);
@@ -632,19 +635,40 @@ function App() {
 
             {/* Floating Media Gallery */}
             {media.length > 0 && (
-              <div className="pt-2">
-                <div className="flex items-end justify-between gap-4 mb-6">
+              <div className="pt-2 space-y-10">
+                {videoMedia.length > 0 && (
                   <div>
-                    <p className="text-[11px] tracking-[0.2em] uppercase font-semibold mb-1 text-text_muted">Media gallery</p>
-                    <h3 className="text-lg font-semibold text-foreground">See it in action</h3>
+                    <div className="flex items-end justify-between gap-4 mb-6">
+                      <div>
+                        <p className="text-[11px] tracking-[0.2em] uppercase font-semibold mb-1 text-text_muted">Video gallery</p>
+                        <h3 className="text-lg font-semibold text-foreground">Watch it in action</h3>
+                      </div>
+                      <div className="text-sm text-text_muted hidden sm:block">{videoMedia.length} items &middot; tap to expand</div>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+                      {videoMedia.map((item, i) => (
+                        <GalleryCard key={`video-${i}`} item={item} index={i} onOpen={() => openLightbox(media.indexOf(item))} />
+                      ))}
+                    </div>
                   </div>
-                  <div className="text-sm text-text_muted hidden sm:block">{media.length} items &middot; tap to expand</div>
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-                  {media.map((item, i) => (
-                    <GalleryCard key={`${item.type}-${i}`} item={item} index={i} onOpen={() => openLightbox(i)} />
-                  ))}
-                </div>
+                )}
+
+                {imageMedia.length > 0 && (
+                  <div>
+                    <div className="flex items-end justify-between gap-4 mb-6">
+                      <div>
+                        <p className="text-[11px] tracking-[0.2em] uppercase font-semibold mb-1 text-text_muted">Image gallery</p>
+                        <h3 className="text-lg font-semibold text-foreground">See it in action</h3>
+                      </div>
+                      <div className="text-sm text-text_muted hidden sm:block">{imageMedia.length} items &middot; tap to expand</div>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+                      {imageMedia.map((item, i) => (
+                        <GalleryCard key={`image-${i}`} item={item} index={i} onOpen={() => openLightbox(media.indexOf(item))} />
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
