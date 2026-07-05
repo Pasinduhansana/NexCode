@@ -7,7 +7,7 @@ import laptop_mockup from "../../assets/laptop_mockup.png";
 import phone_mockup from "../../assets/phone_mockup.png";
 import { useTheme } from "../context/ThemeContext";
 import { showcaseProjects } from "../data/showcaseProjects";
-import api from "../utils/api";
+
 import usePageTitle from "../utils/usePageTitle";
 import Button from "../components/Button";
 import SectionLabel from "../components/SectionLabel";
@@ -110,9 +110,7 @@ function HeroDeviceStack({ laptop_mockup, phone_mockup, project_image, project_i
           transformStyle: "preserve-3d",
           transformOrigin: "bottom center",
           opacity: mounted ? 1 : 0,
-          transition: mounted
-            ? "transform 0.5s cubic-bezier(0.16,1,0.3,1)"
-            : "transform 1s cubic-bezier(0.16,1,0.3,1), opacity 0.9s ease-out",
+          transition: mounted ? "transform 0.5s cubic-bezier(0.16,1,0.3,1)" : "transform 1s cubic-bezier(0.16,1,0.3,1), opacity 0.9s ease-out",
         }}
         className="relative isolate mx-auto w-full max-w-[340px] sm:max-w-[420px] md:max-w-[500px] lg:max-w-[700px] [@media(min-width:1600px)]:max-w-[1000px] mb-10 md:my-5 perspective-[1000px] px-2 sm:px-0"
       >
@@ -184,10 +182,7 @@ function GalleryCard({ item, index, onOpen }) {
   const parallaxRef = useParallaxRef(direction * depth);
 
   return (
-    <div
-      ref={parallaxRef}
-      className={`will-change-transform ${index % 2 === 1 ? "sm:translate-y-6" : ""}`}
-    >
+    <div ref={parallaxRef} className={`will-change-transform ${index % 2 === 1 ? "sm:translate-y-6" : ""}`}>
       <button
         type="button"
         onClick={onOpen}
@@ -214,7 +209,11 @@ function GalleryCard({ item, index, onOpen }) {
           <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90">
               <svg viewBox="0 0 24 24" className="h-4 w-4 text-slate-900" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3" strokeLinecap="round" strokeLinejoin="round" />
+                <path
+                  d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </div>
           </div>
@@ -488,11 +487,7 @@ function App() {
           {/* Brand Header */}
           <header
             className="text-center mt-10"
-            style={
-              reducedMotion
-                ? undefined
-                : { animation: "heroFadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both", animationDelay: "0.05s" }
-            }
+            style={reducedMotion ? undefined : { animation: "heroFadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both", animationDelay: "0.05s" }}
           >
             <h1 className="text-4xl font-bold tracking-tight text-text_primary opacity-100">{project.name}</h1>
             <p className="text-[10px] tracking-[4px] mt-1 text-text_muted font-medium opacity-100">WEB ELEMENTS RESOURCE</p>
@@ -510,11 +505,7 @@ function App() {
             {/* Dynamic Presentation Typography */}
             <div
               className="text-center "
-              style={
-                reducedMotion
-                  ? undefined
-                  : { animation: "heroFadeUp 0.8s cubic-bezier(0.16,1,0.3,1) both", animationDelay: "0.85s" }
-              }
+              style={reducedMotion ? undefined : { animation: "heroFadeUp 0.8s cubic-bezier(0.16,1,0.3,1) both", animationDelay: "0.85s" }}
             >
               <p className="text-[11px] tracking-[5px] text-text_muted mb-3.5 uppercase font-semibold">SELECTED PROJECT DETAILS</p>
               <p className="text-l md:text-[18px] max-w-[800px] font-normal leading-relaxed text-text_primary opacity-95 balance line-clamp-2">
@@ -673,8 +664,8 @@ function App() {
                   >
                     <div className="aspect-[16/10] overflow-hidden bg-muted">
                       <img
-                        src={relatedProject.image}
-                        alt={relatedProject.name}
+                        src={relatedProject.resources?.images?.[0]?.url ?? relatedProject.cover}
+                        alt={"relatedProject.name"}
                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     </div>
@@ -691,9 +682,7 @@ function App() {
         </div>
       </div>
 
-      {lightboxIndex !== null && (
-        <MediaLightbox media={media} index={lightboxIndex} onClose={closeLightbox} onPrev={goPrev} onNext={goNext} />
-      )}
+      {lightboxIndex !== null && <MediaLightbox media={media} index={lightboxIndex} onClose={closeLightbox} onPrev={goPrev} onNext={goNext} />}
     </>
   );
 }
