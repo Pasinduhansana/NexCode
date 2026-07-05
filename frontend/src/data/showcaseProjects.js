@@ -31,6 +31,7 @@ import velmoraOffersImg from "../../assets/velmora_travels/offers.webp";
 import velmoraToursImg from "../../assets/velmora_travels/tours.webp";
 import velmoraContactImg from "../../assets/velmora_travels/Contact_form.webp";
 import velmoraMobileImg from "../../assets/velmora_travels/mobile.webp";
+import velmoraVideo from "../../assets/velmora_travels/Velmora Travels Intro.mp4";
 
 export const showcaseProjects = [
   {
@@ -109,7 +110,7 @@ export const showcaseProjects = [
 
       videos: [
         {
-          url: "",
+          url: velmoraVideo,
           thumbnail: velmoraHomeImg,
           caption: "Velmora Travels website walkthrough",
         },
