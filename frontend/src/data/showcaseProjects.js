@@ -18,9 +18,104 @@ import portfoliovideo from "../../assets/portfolio_project/portfolio-intro.mp4";
 import Portfolio_mobile from "../../assets/portfolio_project/Home_mobile_light.webp";
 import Portfolio_mobile_dark from "../../assets/portfolio_project/Home_mobile.webp";
 
-
+//Importing Velmora Travels assets
+import velmoraHomeImg from "../../assets/velmora_travels/homepage.webp";
+import velmoraAboutImg from "../../assets/velmora_travels/AboutUsPage.webp";
+import velmoraFaqImg from "../../assets/velmora_travels/Faq.webp";
+import velmoraTestimonialImg from "../../assets/velmora_travels/testimonial.webp";
+import velmoraPackageDetailsImg from "../../assets/velmora_travels/packageDetails.webp";
+import velmoraPackagesImg from "../../assets/velmora_travels/packages.webp";
+import velmoraPricesImg from "../../assets/velmora_travels/prices.webp";
+import velmoraGalleryImg from "../../assets/velmora_travels/gallery.webp";
+import velmoraOffersImg from "../../assets/velmora_travels/offers.webp";
+import velmoraToursImg from "../../assets/velmora_travels/tours.webp";
+import velmoraContactImg from "../../assets/velmora_travels/Contact_form.webp";
+import velmoraMobileImg from "../../assets/velmora_travels/mobile.webp";
 
 export const showcaseProjects = [
+  {
+    slug: "velmora-travels",
+    name: "Velmora Travels",
+    type: "Travel Agency Website",
+    summary: `Velmora Travels is a premium travel agency website developed by NexCode to deliver a modern digital experience for travelers seeking unforgettable journeys. The platform showcases curated tour packages, popular destinations, travel experiences, and personalized travel services through a visually immersive interface. Designed with cinematic animations, responsive layouts, and high-performance architecture, the website focuses on inspiring visitors while simplifying the journey from destination discovery to booking inquiries. By combining elegant UI/UX with modern web technologies, Velmora Travels strengthens the agency's online presence, increases customer engagement, and provides a seamless experience across desktop and mobile devices.`,
+
+    whatIs:
+      "A premium travel agency website designed to showcase destinations, tour packages, and travel services while generating customer inquiries.",
+
+    whyDeveloped:
+      "To establish a strong digital presence for the travel agency, improve customer engagement, and provide an inspiring platform where visitors can easily explore and inquire about travel experiences.",
+
+    businessValue:
+      "Increases travel inquiries, strengthens brand credibility, showcases travel services professionally, and improves customer conversion through a modern digital experience.",
+
+    challengeBefore:
+      "The travel agency lacked a modern online platform capable of effectively showcasing destinations, tour packages, and travel experiences, making it difficult to engage visitors and convert them into customers.",
+
+    features: [
+      "SEO optimized pages",
+      "Performance optimized with Next.js",
+      "Mobile-first responsive experience",
+      "Modern luxury-inspired responsive design",
+      "Interactive destination showcase",
+      "Curated tour package listings",
+      "Immersive hero experience",
+      "Travel experience highlights",
+      "Customer inquiry & booking forms",
+      "Service showcase",
+      "Image-rich destination galleries",
+      "Smooth page transitions & animations",
+    ],
+
+    outcomes: [
+      "Improved online brand presence",
+      "Higher visitor engagement",
+      "Simplified customer inquiry process",
+      "Professional presentation of travel services",
+    ],
+
+    relatedSlugs: ["student-portfolio-showcase"],
+
+    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"],
+
+    results: [
+      "Luxury digital brand experience",
+      "Fast-loading responsive website",
+      "Improved customer engagement",
+      "Higher inquiry conversion potential",
+    ],
+
+    color: "from-sky-500 to-cyan-600",
+
+    cover: velmoraHomeImg,
+
+    laptop_mockup: [velmoraHomeImg],
+
+    phone_mockup: [velmoraMobileImg],
+
+    resources: {
+      images: [
+        { url: velmoraHomeImg, caption: "Tourism website Landing page" },
+        { url: velmoraAboutImg, caption: "AboutUs Section" },
+        { url: velmoraTestimonialImg, caption: "Testimonials" },
+        { url: velmoraFaqImg, caption: "FAQ Section" },
+        { url: velmoraPackageDetailsImg, caption: "Tour Packages" },
+        { url: velmoraPackagesImg, caption: "Tour Packages" },
+        { url: velmoraPricesImg, caption: "Pricing Section" },
+        { url: velmoraGalleryImg, caption: "Image Gallery" },
+        { url: velmoraOffersImg, caption: "Special Offers" },
+        { url: velmoraToursImg, caption: "Tours Section" },
+        { url: velmoraContactImg, caption: "Contact Section" },
+      ],
+
+      videos: [
+        {
+          url: "",
+          thumbnail: velmoraHomeImg,
+          caption: "Velmora Travels website walkthrough",
+        },
+      ],
+    },
+  },
   {
     slug: "student-portfolio-showcase",
     name: "Student Portfolio Showcase",
@@ -51,12 +146,12 @@ export const showcaseProjects = [
       "Improved online visibility",
       "Better presentation of technical projects",
     ],
-    relatedSlugs: ["travelcore-booking-hub", "disaster-management-platform", "bill-pay-platform"],
-    stack: ["React", "TypeScript", "Tailwind CSS", "Framer Motion", "GSAP"],
+    relatedSlugs: ["velmora-travels"],
+    stack: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
     results: ["Professional digital identity", "Mobile-first experience", "Fast loading performance"],
     color: "from-violet-500 to-fuchsia-600",
     cover: heroImg,
-    laptop_mockup: [heroImg,heroDarkImg],
+    laptop_mockup: [heroImg, heroDarkImg],
     phone_mockup: [Portfolio_mobile, Portfolio_mobile_dark],
     resources: {
       images: [
