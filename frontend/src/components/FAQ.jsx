@@ -37,7 +37,7 @@ export default function FAQ() {
               custom={1}
               className="font-display text-3xl md:text-4xl font-extrabold text-foreground tracking-tight section-title"
             >
-              Frequently Asked <span className="gradient-text">Questions</span>
+              Frequently Asked <br className="hidden sm:block" /><span className="gradient-text">Questions</span>
             </motion.h2>
           </div>
 

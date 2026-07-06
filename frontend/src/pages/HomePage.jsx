@@ -187,6 +187,31 @@ export default function HomePage() {
       {/* FAQ */}
       <FAQ />
 
+      {/* Advertiestment BANNER */}
+      <section className="py-5 bg-hero-gradient dark-grid">
+        <div className="mb-5 text-center md:mb-5">
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+            <SectionLabel content="Latest Updates" />
+          </motion.div>
+
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="section-title mb-4">
+            Stay Updated with <br className="hidden sm:block" />
+            <span className="gradient-text">Latest News & Offers</span>
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="section-subtitle mx-auto max-w-2xl"
+          >
+            Explore the latest announcements, exclusive offers, featured projects, and updates from NexCode—all in one place.
+          </motion.p>
+        </div>
+        <OffersBanner />
+      </section>
+
       {/* CTA BANNER */}
       <section className="py-8 lg:py-20 bg-hero-gradient dark-grid">
         <div className="max-w-4xl mx-auto px-4 text-center">
@@ -205,11 +230,6 @@ export default function HomePage() {
             </div>
           </motion.div>
         </div>
-      </section>
-
-      {/* OFFERS BANNER */}
-      <section className="py-5 bg-hero-gradient dark-grid">
-        <OffersBanner />
       </section>
     </div>
   );
