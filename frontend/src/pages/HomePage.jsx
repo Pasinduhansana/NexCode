@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react"; 
 import {
   HiGlobe,
   HiDeviceMobile,
@@ -36,7 +37,18 @@ const stats = [
 export default function HomePage() {
   const [openFaq, setOpenFaq] = useState(null);
   const themeClasses = useThemeClasses();
+  const location = useLocation();
   usePageTitle("Home");
+
+  useEffect(() => {
+    if (location.state?.scrollTo) {
+      const el = document.getElementById(location.state.scrollTo);
+      if (el) {
+        // small delay lets the page finish rendering first
+        setTimeout(() => el.scrollIntoView({ behavior: "smooth" }), 150);
+      }
+    }
+  }, [location]);
 
   return (
     <div className="min-h-screen h-full">
@@ -188,7 +200,7 @@ export default function HomePage() {
       <FAQ />
 
       {/* Advertiestment BANNER */}
-      <section className="py-5 bg-hero-gradient dark-grid">
+      <section id="advertise" className="py-5 scroll-mt-24 bg-hero-gradient dark-grid">
         <div className="mb-5 text-center md:mb-5">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
             <SectionLabel content="Latest Updates" />

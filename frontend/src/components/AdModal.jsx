@@ -11,7 +11,6 @@ export default function AdModal({ open, onClose }) {
   const [index, setIndex] = useState(0);
 
   const [animating, setAnimating] = useState(false);
-  const [fillActive, setFillActive] = useState(false);
   const [isMobile, setIsMobile] = useState(typeof window !== "undefined" ? window.innerWidth < 768 : false);
   const [paused, setPaused] = useState(false);
 
@@ -20,40 +19,56 @@ export default function AdModal({ open, onClose }) {
   const startX = useRef(0);
   const deltaX = useRef(0);
 
+  // Time-remaining tracking so pause/resume doesn't reset the 5s countdown
+  const remainingRef = useRef(SLIDE_DURATION);
+  const startTimeRef = useRef(null);
+  const timeoutRef = useRef(null);
+
   useEffect(() => {
     const onResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  // Reset to first slide + unpause each time the modal opens
+  // Reset to first slide + unpause + reset the countdown each time the modal opens.
+  // Without resetting remainingRef here, closing the modal while paused mid-slide
+  // leaves a small leftover time in place, so reopening fires goNext almost
+  // instantly (looks like the ad "auto closes before it loads").
   useEffect(() => {
     if (open) {
       setIndex(0);
       setPaused(false);
+      remainingRef.current = SLIDE_DURATION;
     }
   }, [open]);
 
+  // Whenever the active slide changes, its countdown starts fresh
   useEffect(() => {
-    if (!open || paused) return;
+    remainingRef.current = SLIDE_DURATION;
+  }, [index]);
 
-    const timer = setInterval(() => {
+  // Auto-advance timer — pauses/resumes from wherever it left off, like a story viewer
+  // (pause only ever gets set to true on desktop — see the hover handlers below)
+  useEffect(() => {
+    if (!open) return;
+
+    if (paused) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        remainingRef.current -= Date.now() - startTimeRef.current;
+        if (remainingRef.current < 0) remainingRef.current = 0;
+      }
+      return;
+    }
+
+    startTimeRef.current = Date.now();
+    timeoutRef.current = setTimeout(() => {
       goNext();
-    }, SLIDE_DURATION);
+    }, remainingRef.current);
 
-    return () => clearInterval(timer);
+    return () => clearTimeout(timeoutRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, index, paused]);
-
-  // Drive the story-style progress fill for the active slide
-  useEffect(() => {
-    setFillActive(false);
-    if (paused) return;
-    const raf = requestAnimationFrame(() => {
-      requestAnimationFrame(() => setFillActive(true));
-    });
-    return () => cancelAnimationFrame(raf);
-  }, [index, open, paused]);
 
   useEffect(() => {
     if (open) document.body.style.overflow = "hidden";
@@ -108,15 +123,28 @@ export default function AdModal({ open, onClose }) {
   const handleCTA = () => {
     onClose();
 
-    navigate("/contact", {
-      state: {
-        ad: slide,
-      },
-    });
+    // Navigate to the home page and scroll to the "Advertise" section.
+    // Home's <section id="advertise"> is the target; HomePage also listens
+    // for location.state.scrollTo in a useEffect for cross-route navigation.
+    navigate("/", { state: { scrollTo: "advertise" } });
+
+    // If we're already on "/", react-router won't remount Home, so nudge
+    // the scroll directly too.
+    setTimeout(() => {
+      document.getElementById("advertise")?.scrollIntoView({ behavior: "smooth" });
+    }, 150);
   };
 
   return createPortal(
     <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/55 backdrop-blur-md px-4 py-5 sm:px-6">
+      {/* keyframe for the story-style progress fill (pausable/resumable on desktop) */}
+      <style>{`
+        @keyframes adModalFill {
+          from { width: 0%; }
+          to { width: 100%; }
+        }
+      `}</style>
+
       {/* Close button */}
       <button
         onClick={onClose}
@@ -166,26 +194,36 @@ export default function AdModal({ open, onClose }) {
         onTouchMove={onPointerMove}
         onTouchEnd={onPointerUp}
       >
-        {/* IMAGE — pauses autoplay while cursor is over it */}
+        {/* IMAGE — pauses autoplay while cursor is over it (desktop only; mobile always keeps playing) */}
         <div
           className="
             relative w-full aspect-square
             bg-muted overflow-hidden shrink-0
           "
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
+          onMouseEnter={() => !isMobile && setPaused(true)}
+          onMouseLeave={() => !isMobile && setPaused(false)}
         >
           {/* story-style progress bars */}
           <div className="absolute top-3 left-3 right-3 z-20 flex gap-1.5">
             {adSlides.map((_, i) => (
               <div key={i} className="h-[3px] flex-1 rounded-full bg-white/30 overflow-hidden">
-                <div
-                  className="h-full bg-white rounded-full"
-                  style={{
-                    width: i < index ? "100%" : i > index ? "0%" : fillActive ? "100%" : "0%",
-                    transition: i === index && !paused ? `width ${SLIDE_DURATION}ms linear` : "none",
-                  }}
-                />
+                {i < index ? (
+                  <div className="h-full bg-white rounded-full" style={{ width: "100%" }} />
+                ) : i > index ? (
+                  <div className="h-full bg-white rounded-full" style={{ width: "0%" }} />
+                ) : (
+                  // key includes index so the animation restarts fresh on each new slide,
+                  // but animationPlayState freezes/resumes it in place while paused (desktop only)
+                  <div
+                    key={`fill-${index}`}
+                    className="h-full bg-white rounded-full"
+                    style={{
+                      width: "100%",
+                      animation: `adModalFill ${SLIDE_DURATION}ms linear forwards`,
+                      animationPlayState: paused ? "paused" : "running",
+                    }}
+                  />
+                )}
               </div>
             ))}
           </div>
