@@ -134,7 +134,7 @@ export default function AdModal({ open, onClose }) {
         w-full
         max-w-[80vw]
         md:max-w-lg
-        rounded-[28px]
+        rounded-[20px]
         overflow-hidden
         bg-background
         border border-border
