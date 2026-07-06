@@ -48,6 +48,7 @@ export default function AdModal({ open, onClose }) {
   }, [index]);
 
   // Auto-advance timer — pauses/resumes from wherever it left off, like a story viewer
+  // (pause only ever gets set to true on desktop — see the hover handlers below)
   useEffect(() => {
     if (!open) return;
 
@@ -136,7 +137,7 @@ export default function AdModal({ open, onClose }) {
 
   return createPortal(
     <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/55 backdrop-blur-md px-4 py-5 sm:px-6">
-      {/* keyframe for the story-style progress fill (pausable/resumable) */}
+      {/* keyframe for the story-style progress fill (pausable/resumable on desktop) */}
       <style>{`
         @keyframes adModalFill {
           from { width: 0%; }
@@ -193,14 +194,14 @@ export default function AdModal({ open, onClose }) {
         onTouchMove={onPointerMove}
         onTouchEnd={onPointerUp}
       >
-        {/* IMAGE — pauses autoplay while cursor is over it */}
+        {/* IMAGE — pauses autoplay while cursor is over it (desktop only; mobile always keeps playing) */}
         <div
           className="
             relative w-full aspect-square
             bg-muted overflow-hidden shrink-0
           "
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
+          onMouseEnter={() => !isMobile && setPaused(true)}
+          onMouseLeave={() => !isMobile && setPaused(false)}
         >
           {/* story-style progress bars */}
           <div className="absolute top-3 left-3 right-3 z-20 flex gap-1.5">
@@ -212,7 +213,7 @@ export default function AdModal({ open, onClose }) {
                   <div className="h-full bg-white rounded-full" style={{ width: "0%" }} />
                 ) : (
                   // key includes index so the animation restarts fresh on each new slide,
-                  // but animationPlayState freezes/resumes it in place while paused
+                  // but animationPlayState freezes/resumes it in place while paused (desktop only)
                   <div
                     key={`fill-${index}`}
                     className="h-full bg-white rounded-full"
@@ -306,7 +307,7 @@ export default function AdModal({ open, onClose }) {
             onClick={handleCTA}
             rightIcon={<FaArrowRight />}
           >
-            Latest Updates
+            Explore Now
           </Button>
         </div>
       </div>
