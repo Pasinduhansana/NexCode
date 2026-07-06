@@ -286,16 +286,16 @@ function TableOfContents() {
 /* ═══════════════════════════════════════════════════════════════════════
    MAIN PAGE
    ═══════════════════════════════════════════════════════════════════════ */
-export default function TermsOfServicePage() {
-  usePageTitle("Terms of Service — NexCode");
-  const themeClasses = useThemeClasses();
+      export default function TermsOfServicePage() {
+        usePageTitle("Terms of Service — NexCode");
+        const themeClasses = useThemeClasses();
 
-  return (
-    <div className="min-h-screen bg-background -mt-20">
-      {/* ──────────────────────────────────────────────────────────────
-          § 1 HERO
-      ────────────────────────────────────────────────────────────── */}
-      <section className="relative flex items-center overflow-hidden bg-background dark-grid pt-24">
+        return (
+          <div className="min-h-screen bg-background -mt-20">
+            {/* ──────────────────────────────────────────────────────────────
+                § 1 HERO
+            ────────────────────────────────────────────────────────────── */}
+            <section className="relative flex items-center overflow-hidden bg-background dark-grid pt-24">
         {/* Ambient glows */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
@@ -308,7 +308,7 @@ export default function TermsOfServicePage() {
           />
         </div>
 
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full flex flex-col items-center md:items-start text-center md:text-left">
           <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
             <SectionLabel icon={HiDocumentText}>Legal</SectionLabel>
           </motion.div>
@@ -343,7 +343,7 @@ export default function TermsOfServicePage() {
             initial="hidden"
             animate="show"
             custom={3}
-            className="flex flex-wrap gap-3"
+            className="flex flex-wrap gap-3 justify-center md:justify-start"
           >
             {[
               { label: "Effective Date", value: effectiveDate },
