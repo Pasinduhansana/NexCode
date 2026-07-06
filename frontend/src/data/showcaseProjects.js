@@ -33,6 +33,13 @@ import velmoraContactImg from "../../assets/velmora_travels/Contact_form.webp";
 import velmoraMobileImg from "../../assets/velmora_travels/mobile.webp";
 import velmoraVideo from "../../assets/velmora_travels/Velmora Travels Intro.mp4";
 
+//Importing Employee Transport Management System assets
+import transportHeroImg from "../../assets/transport_powerBi/Seat_allocation.webp";
+import transportDataImg from "../../assets/transport_powerBi/dataset.webp";
+import transportwindowImg from "../../assets/transport_powerBi/allocation_window.webp";
+import transportMobileImg from "../../assets/transport_powerBi/mobile_view.webp";
+import transportVideo from "../../assets/transport_powerBi/Transport Intro.mp4";
+
 export const showcaseProjects = [
   {
     slug: "velmora-travels",
@@ -182,4 +189,94 @@ export const showcaseProjects = [
       ],
     },
   },
+  {
+  slug: "transport-management-powerbi",
+  name: "Employee Transport Management System",
+  type: "Power BI Business Intelligence Solution",
+  summary: `Employee Transport Management System is an enterprise Power BI solution developed by NexCode to streamline employee transportation operations within an organization. The platform centralizes employee records, transport routes, vehicles, drivers, and seat allocations into a unified reporting environment. Interactive dashboards provide real-time visibility into transport utilization, route efficiency, employee assignments, and operational performance. Designed for internal organizational use, the solution enables transport administrators and management teams to make informed decisions through data-driven insights while simplifying day-to-day transport administration.`,
+
+  whatIs:
+    "A Power BI solution that manages employee transportation, vehicle assignments, routes, seat allocations, and operational reporting through interactive dashboards.",
+
+  whyDeveloped:
+    "To replace manual transport management processes with a centralized, data-driven platform that improves operational efficiency, reporting accuracy, and decision-making.",
+
+  businessValue:
+    "Improves transport resource utilization, reduces administrative workload, provides real-time operational insights, and supports informed management decisions.",
+
+  challengeBefore:
+    "Employee transport information was managed across multiple spreadsheets and manual processes, making it difficult to track seat allocations, route utilization, employee assignments, and generate reliable management reports.",
+
+  features: [
+    "Interactive Power BI dashboards",
+    "Employee transport management",
+    "Vehicle and driver management",
+    "Transport route monitoring",
+    "Static employee-to-transport assignment model",
+    "Seat allocation tracking",
+    "Capacity utilization reporting",
+    "Department-wise transport analysis",
+    "Operational KPI dashboards",
+    "Exportable management reports",
+  ],
+
+  outcomes: [
+    "Centralized transport data management",
+    "Improved reporting accuracy",
+    "Faster operational decision-making",
+    "Better transport resource utilization",
+  ],
+
+  relatedSlugs: [],
+
+  stack: [
+    "Power BI",
+    "Power Query",
+    "DAX",
+    "SQL",
+    "Microsoft Excel",
+    "HTML/CSS for embedded dashboards",
+  ],
+
+  results: [
+    "Automated transport reporting",
+    "Centralized employee assignments",
+    "Interactive management dashboards",
+  ],
+
+  color: "from-blue-600 to-cyan-500",
+
+  cover: transportHeroImg,
+
+  laptop_mockup: [transportHeroImg],
+
+  phone_mockup: [transportMobileImg],
+
+  resources: {
+    images: [
+      {
+        url: transportHeroImg,
+        caption: "Transport Management Dashboard",
+      },
+
+      {
+        url: transportDataImg,
+        caption: "Transport Data Visualization",
+      },
+
+      {
+        url: transportwindowImg,
+        caption: "Power BI Workspace for Seat Allocation",
+      },
+    ],
+
+    videos: [
+      {
+        url: transportVideo,
+        thumbnail: transportHeroImg,
+        caption: "Employee Transport Management System walkthrough",
+      },
+    ],
+  },
+},
 ];

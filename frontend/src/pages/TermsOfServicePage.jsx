@@ -291,11 +291,11 @@ export default function TermsOfServicePage() {
   const themeClasses = useThemeClasses();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background -mt-20">
       {/* ──────────────────────────────────────────────────────────────
           § 1 HERO
       ────────────────────────────────────────────────────────────── */}
-      <section className="relative flex items-center overflow-hidden bg-background dark-grid pt-32 pb-16 sm:pb-24">
+      <section className="relative flex items-center overflow-hidden bg-background dark-grid pt-24">
         {/* Ambient glows */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
@@ -386,7 +386,7 @@ export default function TermsOfServicePage() {
       {/* ──────────────────────────────────────────────────────────────
           § 3 CTA STRIP
       ────────────────────────────────────────────────────────────── */}
-      <section className="py-16 sm:py-20">
+      <section className="pb-5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={fadeUp}
