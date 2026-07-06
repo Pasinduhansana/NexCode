@@ -359,18 +359,7 @@ export default function PrivacyPolicyPage() {
       ────────────────────────────────────────────────────────────── */}
       <section className="relative flex items-center overflow-hidden bg-background dark-grid pt-24 ">
         {/* Ambient glows */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div
-            className="absolute hidden sm:block -top-32 -left-32 w-[550px] h-[550px] rounded-full animate-pulse-slow"
-            style={{ background: "radial-gradient(circle, rgba(54,153,243,0.12) 0%, transparent 65%)" }}
-          />
-          <div
-            className="absolute hidden sm:block top-1/4 right-[-10%] w-[500px] h-[500px] rounded-full animate-float"
-            style={{ background: "radial-gradient(circle, rgba(6,182,212,0.10) 0%, transparent 65%)", animationDelay: "1s" }}
-          />
-        </div>
-
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full flex flex-col items-center md:items-start text-center md:text-left">
           <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
             <SectionLabel icon={HiShieldCheck}>Legal</SectionLabel>
           </motion.div>
@@ -404,7 +393,7 @@ export default function PrivacyPolicyPage() {
             initial="hidden"
             animate="show"
             custom={3}
-            className="flex flex-wrap gap-3"
+            className="flex flex-wrap gap-3 justify-center md:justify-start"
           >
             {[
               { label: "Effective Date", value: effectiveDate },
