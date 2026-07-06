@@ -162,7 +162,7 @@ export default function ProjectRequestPage() {
               <div key={s} className="flex items-center gap-2">
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all  ${
-                    step >= s ? "bg-primary border border-primary text-foreground" : "bg-muted text-foreground/70 border-background/40 border"
+                    step >= s ? "bg-primary border border-primary text-background" : "bg-muted text-foreground/70 border-background/40 border"
                   }`}
                 >
                   {s}
