@@ -34,13 +34,15 @@ const PublicLayout = ({ children }) => (
 );
 
 function App() {
-  const { open, setOpen } = useAdModal();
+  const { open, setOpen, startIndex } = useAdModal();
+
   return (
     <ThemeProvider>
         <BrowserRouter>
           <ScrollToTop />
 
-          <AdModal open={open} onClose={() => setOpen(false)} />
+          <AdModal open={open} onClose={() => setOpen(false)} startIndex={startIndex} />
+
           <Toaster
             position="top-right"
             toastOptions={{

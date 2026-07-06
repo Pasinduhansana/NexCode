@@ -7,8 +7,9 @@ import Button from "./Button";
 
 const SLIDE_DURATION = 5000;
 
-export default function AdModal({ open, onClose }) {
-  const [index, setIndex] = useState(0);
+export default function AdModal({ open, onClose, startIndex = 0 }) {
+  const [index, setIndex] = useState(startIndex);
+
   const [animating, setAnimating] = useState(false);
   const [fillActive, setFillActive] = useState(false);
   const [isMobile, setIsMobile] = useState(typeof window !== "undefined" ? window.innerWidth < 768 : false);
@@ -84,7 +85,12 @@ export default function AdModal({ open, onClose }) {
     deltaX.current = 0;
   };
 
+  useEffect(() => {
+    if (open) setIndex(startIndex);
+  }, [open, startIndex]);
+
   const slide = adSlides[index];
+
 
   const handleCTA = () => {
     onClose();
