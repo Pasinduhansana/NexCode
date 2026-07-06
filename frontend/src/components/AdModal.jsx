@@ -8,11 +8,12 @@ import Button from "./Button";
 const SLIDE_DURATION = 5000;
 
 export default function AdModal({ open, onClose }) {
-    const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(0);
 
   const [animating, setAnimating] = useState(false);
   const [fillActive, setFillActive] = useState(false);
   const [isMobile, setIsMobile] = useState(typeof window !== "undefined" ? window.innerWidth < 768 : false);
+  const [paused, setPaused] = useState(false);
 
   const navigate = useNavigate();
 
@@ -25,8 +26,16 @@ export default function AdModal({ open, onClose }) {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  // Reset to first slide + unpause each time the modal opens
   useEffect(() => {
-    if (!open) return;
+    if (open) {
+      setIndex(0);
+      setPaused(false);
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (!open || paused) return;
 
     const timer = setInterval(() => {
       goNext();
@@ -34,16 +43,17 @@ export default function AdModal({ open, onClose }) {
 
     return () => clearInterval(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, index]);
+  }, [open, index, paused]);
 
   // Drive the story-style progress fill for the active slide
   useEffect(() => {
     setFillActive(false);
+    if (paused) return;
     const raf = requestAnimationFrame(() => {
       requestAnimationFrame(() => setFillActive(true));
     });
     return () => cancelAnimationFrame(raf);
-  }, [index, open]);
+  }, [index, open, paused]);
 
   useEffect(() => {
     if (open) document.body.style.overflow = "hidden";
@@ -54,7 +64,15 @@ export default function AdModal({ open, onClose }) {
 
   const goNext = () => {
     setAnimating(true);
-    setIndex((p) => (p + 1) % adSlides.length);
+    setIndex((p) => {
+      const isLast = p === adSlides.length - 1;
+      if (isLast) {
+        // Played through all ads — close instead of looping
+        onClose();
+        return p;
+      }
+      return p + 1;
+    });
     setTimeout(() => setAnimating(false), 250);
   };
 
@@ -85,15 +103,12 @@ export default function AdModal({ open, onClose }) {
     deltaX.current = 0;
   };
 
-
-
   const slide = adSlides[index];
-
 
   const handleCTA = () => {
     onClose();
 
-    navigate("/start-project", {
+    navigate("/contact", {
       state: {
         ad: slide,
       },
@@ -102,7 +117,7 @@ export default function AdModal({ open, onClose }) {
 
   return createPortal(
     <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/55 backdrop-blur-md px-4 py-5 sm:px-6">
-      {/* Close button — floats above the card, never clipped */}
+      {/* Close button */}
       <button
         onClick={onClose}
         aria-label="Close"
@@ -131,7 +146,7 @@ export default function AdModal({ open, onClose }) {
         </svg>
       </button>
 
-      {/* Modal — fixed layout, no internal scroll, on any viewport */}
+      {/* Modal */}
       <div
         className="
         relative
@@ -142,7 +157,8 @@ export default function AdModal({ open, onClose }) {
         overflow-hidden
         bg-background
         border border-border
-        shadow-2xl        "
+        shadow-2xl
+        "
         onMouseDown={onPointerDown}
         onMouseMove={onPointerMove}
         onMouseUp={onPointerUp}
@@ -150,13 +166,14 @@ export default function AdModal({ open, onClose }) {
         onTouchMove={onPointerMove}
         onTouchEnd={onPointerUp}
       >
-        {/* IMAGE — 1:1 source, letterboxed via object-contain, never cropped */}
+        {/* IMAGE — pauses autoplay while cursor is over it */}
         <div
           className="
-            relative md:w-full w-[80vw] h-[80vw] sm:h-[38vh]
-            md:h-auto  md:aspect-square
+            relative w-full aspect-square
             bg-muted overflow-hidden shrink-0
           "
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
         >
           {/* story-style progress bars */}
           <div className="absolute top-3 left-3 right-3 z-20 flex gap-1.5">
@@ -166,7 +183,7 @@ export default function AdModal({ open, onClose }) {
                   className="h-full bg-white rounded-full"
                   style={{
                     width: i < index ? "100%" : i > index ? "0%" : fillActive ? "100%" : "0%",
-                    transition: i === index ? `width ${SLIDE_DURATION}ms linear` : "none",
+                    transition: i === index && !paused ? `width ${SLIDE_DURATION}ms linear` : "none",
                   }}
                 />
               </div>
@@ -239,47 +256,20 @@ export default function AdModal({ open, onClose }) {
           )}
         </div>
 
-        {/* CONTENT */}
-        <div
-          className="
-            flex-1 min-w-0
-            flex flex-col md:flex-row justify-between items-center md:items-center
-            text-center md:text-left
-            gap-2 sm:gap-2
-            px-4 py-4 sm:px-4 sm:py-4 md:py-4 md:px-4 lg:px-4 lg:py-5
-          "
-        >
-          <div>
-            <span
-              className="
-              inline-flex items-center
-              text-[10px] sm:text-[11px] font-semibold tracking-wide uppercase
-              text-primary bg-primary/10
-              px-2.5 py-1 rounded-full
-            "
-            >
-              Exclusive offer
-            </span>
-
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight leading-snug line-clamp-2">{slide.title}</h2>
-
-            <p className="text-xs sm:text-sm text-text_secondary leading-relaxed line-clamp-2 md:max-w-[220px] lg:max-w-[240px]">
-              Tailored for you — a limited-time offer designed around what you're building right now.
-            </p>
-          </div>
-
+        {/* Explore button — sits under the poster */}
+        <div className="flex items-center justify-center px-4 py-4">
           <Button
             variant="primary"
             className="
               group w-full md:w-auto md:min-w-[150px]
-              h-11 sm:h-12 mt-1
+              h-11 sm:h-12
               rounded-full font-semibold tracking-tight
               flex items-center justify-center gap-2
             "
             onClick={handleCTA}
             rightIcon={<FaArrowRight />}
           >
-            {slide.buttonText}
+            Explore Now
           </Button>
         </div>
       </div>
