@@ -60,13 +60,14 @@ function tv(theme) {
    FLOATING GLASS CARD
 ───────────────────────────────────────────────────────────── */
 function FloatCard({ style = {}, className = "", children, delay = 0 }) {
+  const { theme } = useTheme();
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.82, y: 12 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={`absolute rounded-2xl border border-border/40
-                  bg-card/70 backdrop-blur-xl shadow-2xl pointer-events-none ${className} `}
+      className={`absolute rounded-2xl border border-border/80
+                  bg-card backdrop-blur-xl shadow-2xl pointer-events-none ${className} `}
       style={style}
     >
       {children}
@@ -131,6 +132,7 @@ const IcoArrow = (p = {}) => (
 function LaptopScreenContent({ theme }) {
   const t = tv(theme);
   const isDark = theme !== "light";
+  const isPrimary = theme === "primary";
   const textPrimary = isDark ? "#f0f4ff" : "#0a0f2e";
   const textSecondary = isDark ? "rgba(200,210,255,0.60)" : "rgba(10,15,50,0.55)";
   const accent = "#4f7bff";
@@ -232,9 +234,12 @@ function LaptopScreenContent({ theme }) {
             </div>
 
             {/* Revenue sparkline — mid right */}
-            <FloatCard
-              delay={1.5}
-              className="hidden md:block"
+            <motion.div
+              initial={{ opacity: 0, scale: 0.82, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 1.5, ease: [0.22, 1, 0.36, 1] }}
+              className={`absolute rounded-2xl border 
+                  ${isPrimary ? "bg-white/5 border-border/10" : "bg-card border-border/80"} backdrop-blur-xl shadow-2xl pointer-events-none hidden md:block`}
               style={{
                 top: "5%",
                 right: "0%",
@@ -245,7 +250,9 @@ function LaptopScreenContent({ theme }) {
               }}
             >
               <div className="flex items-center justify-between">
-                <span style={{ fontSize: 7, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.07em" }}>Performance</span>
+                <span style={{ fontSize: 7, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.07em" }}>
+                  Performance
+                </span>
                 <span style={{ fontSize: 7, color: "#22c55e", fontWeight: 700 }}>100%</span>
               </div>
               <svg viewBox="0 0 100 16" style={{ width: "100%", overflow: "visible", margin: "6px 0" }}>
@@ -266,16 +273,19 @@ function LaptopScreenContent({ theme }) {
                 />
                 <circle cx="100" cy="10" r="3.5" fill="hsl(var(--primary))" />
               </svg>
-            </FloatCard>
+            </motion.div>
 
             {/* Deploy notif — bottom left */}
-            <FloatCard
-              delay={1.65}
-              className="hidden md:flex"
+            <motion.div
+              initial={{ opacity: 0, scale: 0.82, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 1.65, ease: [0.22, 1, 0.36, 1] }}
+              className={`absolute rounded-lg border 
+                  ${isPrimary ? "bg-white/5 border-border/10" : "bg-card border-border/80"} backdrop-blur-xl shadow-2xl pointer-events-none hidden md:flex`}
               style={{
                 top: "20%",
                 right: "85%",
-                padding: "5px 10px",
+                padding: "5px 5px",
                 alignItems: "flex-start",
                 gap: 5,
                 transform: "translateZ(38px) rotateX(6deg) rotateY(8deg)",
@@ -291,13 +301,15 @@ function LaptopScreenContent({ theme }) {
               <div>
                 <div style={{ fontSize: 7, fontWeight: 600, color: "var(--foreground)", lineHeight: 1.3 }}>Deploy successful</div>
               </div>
-            </FloatCard>
+            </motion.div>
 
             {/* Deploy notif — bottom left */}
-            <FloatCard
-              delay={1.65}
-              className="hidden md:flex"
-              width={180}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.82, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 1.65, ease: [0.22, 1, 0.36, 1] }}
+              className={`absolute rounded-lg border 
+                  ${isPrimary ? "bg-white/5 border-border/10" : "bg-card border-border/80"} backdrop-blur-xl shadow-2xl pointer-events-none hidden md:flex`}
               style={{
                 bottom: "-10%",
                 right: "95%",
@@ -317,7 +329,7 @@ function LaptopScreenContent({ theme }) {
               <div>
                 <div style={{ fontSize: 7, fontWeight: 600, color: "var(--foreground)", lineHeight: 1.3 }}>Validation successful.</div>
               </div>
-            </FloatCard>
+            </motion.div>
           </div>
         </div>
 
@@ -361,101 +373,102 @@ function PhoneScreenContent({ theme }) {
   const textSecondary = isDark ? "rgba(200,210,255,0.55)" : "rgba(10,15,50,0.50)";
   const accent = "#4f7bff";
 
-  return (<>
-    <div className="w-full h-full hidden md:flex flex-col overflow-hidden select-none" style={{ background: t.phoneScreenBg, color: textPrimary }}>
-      {/* status bar */}
-      <div className="flex justify-between px-2 pt-0  flex-shrink-0 " style={{ fontSize: 5, color: textSecondary }}>
-        <span>9:41</span>
-        <div className="flex gap-1 items-center">
-          <span>●●●</span>
-          <span>WiFi</span>
-          <span>100%</span>
+  return (
+    <>
+      <div className="w-full h-full hidden md:flex flex-col overflow-hidden select-none" style={{ background: t.phoneScreenBg, color: textPrimary }}>
+        {/* status bar */}
+        <div className="flex justify-between px-2 pt-0  flex-shrink-0 " style={{ fontSize: 5, color: textSecondary }}>
+          <span>9:41</span>
+          <div className="flex gap-1 items-center">
+            <span>●●●</span>
+            <span>WiFi</span>
+            <span>100%</span>
+          </div>
         </div>
-      </div>
 
-      {/* nav */}
-      <div className="flex items-center justify-between px-2  flex-shrink-0" style={{ borderBottom: `1px solid ${t.screenBorder}` }}>
-        <span className="font-extrabold" style={{ fontFamily: "'Syne',sans-serif", fontSize: 8, color: accent }}>
-          NexCode
-        </span>
-        <div className="w-2 h-4 flex flex-col gap-0.5 justify-center">
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="rounded-full" style={{ height: 1, background: textSecondary, width: i === 1 ? "60%" : "100%" }} />
+        {/* nav */}
+        <div className="flex items-center justify-between px-2  flex-shrink-0" style={{ borderBottom: `1px solid ${t.screenBorder}` }}>
+          <span className="font-extrabold" style={{ fontFamily: "'Syne',sans-serif", fontSize: 8, color: accent }}>
+            NexCode
+          </span>
+          <div className="w-2 h-4 flex flex-col gap-0.5 justify-center">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="rounded-full" style={{ height: 1, background: textSecondary, width: i === 1 ? "60%" : "100%" }} />
+            ))}
+          </div>
+        </div>
+
+        {/* hero block */}
+        <div className="flex flex-col items-center text-center px-2.5 pt-2.5 pb-2 gap-2 flex-shrink-0">
+          <h1 className="font-extrabold leading-tight" style={{ fontFamily: "'Syne',sans-serif", fontSize: 9, color: textPrimary }}>
+            Empower Your{" "}
+            <em className="not-italic" style={{ color: accent }}>
+              Digital
+            </em>{" "}
+            Growth
+          </h1>
+          <p style={{ fontSize: 5.5, lineHeight: 1.5, color: textSecondary }}>
+            Software that moves fast and scales further.We engineer platforms that scale effortlessly and captivate users
+          </p>
+
+          <Button
+            variant="primary"
+            size="xxs"
+            className="rounded-md  font-semibold flex items-center justify-center gap-1 px-2 scale-75"
+            leftIcon={<IcoRocket width={6} height={6} />}
+          >
+            Build Project
+          </Button>
+        </div>
+
+        {/* stats strip */}
+        <div className="flex justify-around px-2 flex-shrink-0">
+          {[
+            ["100%", "Satisfaction"],
+            ["20+", "Projects"],
+            ["10+", "Services"],
+          ].map(([v, l]) => (
+            <div key={l} className="flex flex-col items-center">
+              <span className="font-extrabold" style={{ fontFamily: "'Syne',sans-serif", fontSize: 7, color: textPrimary }}>
+                {v}
+              </span>
+              <span style={{ fontSize: 4.5, color: textSecondary }}>{l}</span>
+            </div>
           ))}
         </div>
-      </div>
 
-      {/* hero block */}
-      <div className="flex flex-col items-center text-center px-2.5 pt-2.5 pb-2 gap-2 flex-shrink-0">
-        <h1 className="font-extrabold leading-tight" style={{ fontFamily: "'Syne',sans-serif", fontSize: 9, color: textPrimary }}>
-          Empower Your{" "}
-          <em className="not-italic" style={{ color: accent }}>
-            Digital
-          </em>{" "}
-          Growth
-        </h1>
-        <p style={{ fontSize: 5.5, lineHeight: 1.5, color: textSecondary }}>
-          Software that moves fast and scales further.We engineer platforms that scale effortlessly and captivate users
-        </p>
-
-        <Button
-          variant="primary"
-          size="xxs"
-          className="rounded-md  font-semibold flex items-center justify-center gap-1 px-2 scale-75"
-          leftIcon={<IcoRocket width={6} height={6} />}
-        >
-          Build Project
-        </Button>
-      </div>
-
-      {/* stats strip */}
-      <div className="flex justify-around px-2 flex-shrink-0">
-        {[
-          ["100%", "Satisfaction"],
-          ["20+", "Projects"],
-          ["10+", "Services"],
-        ].map(([v, l]) => (
-          <div key={l} className="flex flex-col items-center">
-            <span className="font-extrabold" style={{ fontFamily: "'Syne',sans-serif", fontSize: 7, color: textPrimary }}>
-              {v}
-            </span>
-            <span style={{ fontSize: 4.5, color: textSecondary }}>{l}</span>
+        {/* mini cards preview */}
+        <div className="flex flex-col gap-1 px-2 ">
+          <div
+            className="rounded-lg p-1.5 flex items-center gap-1.5"
+            style={{ background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)", border: `0.5px solid ${t.screenBorder}` }}
+          >
+            <div className="w-4 h-4 rounded flex items-center justify-center flex-shrink-0" style={{ background: "rgba(79,123,255,0.15)" }}>
+              <IcoCheck width={6} height={6} style={{ color: accent }} />
+            </div>
+            <div>
+              <div style={{ fontSize: 5.5, fontWeight: 600, color: textPrimary }}>Deploy Successful</div>
+              <div style={{ fontSize: 4.5, color: textSecondary }}>v2.4.1 is live · just now</div>
+            </div>
           </div>
-        ))}
-      </div>
-
-      {/* mini cards preview */}
-      <div className="flex flex-col gap-1 px-2 ">
-        <div
-          className="rounded-lg p-1.5 flex items-center gap-1.5"
-          style={{ background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)", border: `0.5px solid ${t.screenBorder}` }}
-        >
-          <div className="w-4 h-4 rounded flex items-center justify-center flex-shrink-0" style={{ background: "rgba(79,123,255,0.15)" }}>
-            <IcoCheck width={6} height={6} style={{ color: accent }} />
-          </div>
-          <div>
-            <div style={{ fontSize: 5.5, fontWeight: 600, color: textPrimary }}>Deploy Successful</div>
-            <div style={{ fontSize: 4.5, color: textSecondary }}>v2.4.1 is live · just now</div>
-          </div>
-        </div>
-        <div
-          className="rounded-lg p-1.5 flex items-center justify-between"
-          style={{ background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)", border: `0.5px solid ${t.screenBorder}` }}
-        >
-          <div>
-            <div style={{ fontSize: 5.5, fontWeight: 600, color: textPrimary }}>Performance</div>
-            <div style={{ fontSize: 4.5, color: accent }}>93/100 · ↑ +12</div>
-          </div>
-          <div className="h-1 w-10 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
-            <div className="h-full rounded-full" style={{ width: "87%", background: accent }} />
+          <div
+            className="rounded-lg p-1.5 flex items-center justify-between"
+            style={{ background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)", border: `0.5px solid ${t.screenBorder}` }}
+          >
+            <div>
+              <div style={{ fontSize: 5.5, fontWeight: 600, color: textPrimary }}>Performance</div>
+              <div style={{ fontSize: 4.5, color: accent }}>93/100 · ↑ +12</div>
+            </div>
+            <div className="h-1 w-10 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
+              <div className="h-full rounded-full" style={{ width: "87%", background: accent }} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
       <div className="w-full h-full  flex flex-col items-center justify-center  select-none overflow-hidden md:hidden">
         <img src={theme === "dark" ? dark_m_display : light_m_display} alt="Mobile Display" className="object-cover w-[90%] h-[95%]" />
-
-      </div></>
+      </div>
+    </>
   );
 }
 
@@ -855,7 +868,9 @@ export default function Hero({ stats = [] }) {
               className="md:block hidden"
             >
               <div className="flex items-center justify-between">
-                <span style={{ fontSize: 9, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.07em" }}>Delivery Trend</span>
+                <span style={{ fontSize: 9, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.07em" }}>
+                  Delivery Trend
+                </span>
                 <span style={{ fontSize: 9, color: "#22c55e", fontWeight: 700 }}>+72%</span>
               </div>
               <svg viewBox="0 0 100 36" style={{ width: "100%", overflow: "visible", margin: "6px 0" }}>
@@ -927,9 +942,7 @@ export default function Hero({ stats = [] }) {
                   />
                 ))}
               </div>
-              <div style={{ fontSize: 9, color: "var(--muted-foreground)" }}>
-                Built for new collaborations
-              </div>
+              <div style={{ fontSize: 9, color: "var(--muted-foreground)" }}>Built for new collaborations</div>
             </FloatCard>
 
             {/* ── tech pills — orbit outside tilt wrap ── */}

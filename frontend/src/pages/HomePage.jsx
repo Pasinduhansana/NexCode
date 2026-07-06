@@ -24,6 +24,7 @@ import { hero_services as services } from "../data/services";
 import Button from "../components/Button";
 import SelectionLable from "../components/SectionLabel";
 import SectionLabel from "../components/SectionLabel";
+import OffersBanner from "../components/Offersbanner";
 
 const stats = [
   { value: "Custom", label: "Projects" },
@@ -46,17 +47,12 @@ export default function HomePage() {
       <section className="bg-background py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-10 text-center md:mb-14">
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-            >
+            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
               <SectionLabel content="Our Services" />
             </motion.div>
 
             <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="section-title mb-4">
-              Everything You Need to {" "}
-                <br className="hidden sm:block"/>
+              Everything You Need to <br className="hidden sm:block" />
               <span className="gradient-text">Build Digitally</span>
             </motion.h2>
 
@@ -101,8 +97,7 @@ export default function HomePage() {
               <SectionLabel content="Why Choose Us?" />
 
               <h2 className="section-title mb-6 text-center lg:text-left">
-                We Build Products That{" "}
-                  <br className="hidden sm:block"/>
+                We Build Products That <br className="hidden sm:block" />
                 <span className="gradient-text">Actually Work</span>
               </h2>
 
@@ -210,6 +205,11 @@ export default function HomePage() {
             </div>
           </motion.div>
         </div>
+      </section>
+
+      {/* OFFERS BANNER */}
+      <section className="py-5 bg-hero-gradient dark-grid">
+        <OffersBanner />
       </section>
     </div>
   );

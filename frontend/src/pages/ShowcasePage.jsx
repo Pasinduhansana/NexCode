@@ -4,8 +4,8 @@
  *   light | dark | primary themes via Tailwind semantic tokens.
  */
 import { useEffect, useMemo, useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence, useMotionValue, useTransform ,useSpring } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import {
   HiX,
@@ -28,8 +28,84 @@ import { FaFilterCircleXmark } from "react-icons/fa6";
 import usePageTitle from "../utils/usePageTitle";
 import { useThemeClasses } from "../utils/useThemeClasses";
 import { showcaseProjects } from "../data/showcaseProjects";
-import api from "../utils/api";
 import SectionLabel from "../components/SectionLabel";
+
+// Add once, outside the component that maps over your projects
+function TiltMockup({ proj, idx }) {
+  const ref = useRef(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const springConfig = { stiffness: 150, damping: 20, mass: 0.5 };
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
+
+  const rotateX = useTransform(smoothY, [-0.5, 0.5], [5, -5]);
+  const rotateY = useTransform(smoothX, [-0.5, 0.5], [-5, 5]);
+
+  // Contact shadow reacts to tilt — grows/softens as the card "lifts"
+  const shadowScale = useTransform([smoothX, smoothY], ([x, y]) => 1 - (Math.abs(x) + Math.abs(y)) * 0.15);
+  const shadowOpacity = useTransform([smoothX, smoothY], ([x, y]) => 0.35 - (Math.abs(x) + Math.abs(y)) * 0.15);
+
+  // Sheen glare that tracks the cursor across the glass surface
+  const sheenX = useTransform(smoothX, [-0.5, 0.5], ["20%", "80%"]);
+  const sheenY = useTransform(smoothY, [-0.5, 0.5], ["20%", "80%"]);
+
+  const handleMouseMove = (e) => {
+    const rect = ref.current.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative z-10 w-full max-w-[450px]"
+      style={{ transformStyle: "preserve-3d" }}
+    >
+      {/* Contact shadow — sits at the floor of the scene, breathes with tilt */}
+      <motion.div
+        style={{
+          scaleX: shadowScale,
+          opacity: shadowOpacity,
+          z: -20,
+        }}
+        className="absolute left-1/2 -translate-x-1/2 -bottom-6 w-[80%] h-6 rounded-full  blur-xl "
+      />
+
+      <motion.div
+        style={{ rotateX, rotateY, z: 60, transformStyle: "preserve-3d" }}
+        animate={{ y: [0, -8, 0] }}
+        transition={{ repeat: Infinity, duration: 4.5 + idx * 0.3, ease: "easeInOut" }}
+        className="relative rounded-[10px] overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.20)] border border-border bg-background "
+      >
+        <div className="relative">
+          <img src={proj.cover} alt={proj.name} className="w-full h-54 object-cover" />
+          {/* Glassy top highlight, like light hitting a curved surface */}
+          <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-white/25 to-transparent pointer-events-none" />
+          {/* Cursor-tracking sheen */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none opacity-40"
+            style={{
+              background: useTransform([sheenX, sheenY], ([x, y]) => `radial-gradient(circle at ${x} ${y}, rgba(255,255,255,0.35), transparent 55%)`),
+            }}
+          />
+        </div>
+        <div className="p-4 border-t border-border/60 backdrop-blur-xl bg-background/80">
+          <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-text_muted">{proj.type}</span>
+          <h4 className="text-sm font-semibold tracking-tight text-foreground mt-0.5">{proj.name}</h4>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
 
 /* ═══════════════════════════════════════════════════════════════════════
    ANIMATION CONFIGS
@@ -64,8 +140,6 @@ const scaleIn = {
    SHARED SUB-COMPONENTS
    ═══════════════════════════════════════════════════════════════════════ */
 
-
-
 /** Premium Project Card with hover-active effects */
 function ProjectCard({ project, onNavigate, themeClasses }) {
   // Extract accent styles from project colors
@@ -86,17 +160,14 @@ function ProjectCard({ project, onNavigate, themeClasses }) {
           background: `radial-gradient(ellipse at 50% 0%, rgba(${rgbValues}, 0.09) 0%, transparent 70%)`,
         }}
       />
-
       {/* Media frame */}
-      <div className="relative h-56 overflow-hidden bg-background">
+      <div className="relative h-48 lg:h-60 overflow-hidden bg-background">
         <img
-          src={project.image}
+          src={project.cover}
           alt={project.name}
           className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           loading="lazy"
         />
-        {/* Soft color overlay */}
-        <div className={`absolute inset-0 bg-gradient-to-t ${gradientClass} opacity-20 group-hover:opacity-30 transition-opacity duration-300`} />
 
         {/* Category tag */}
         <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider uppercase bg-card/90 text-foreground backdrop-blur border border-border/40 shadow-sm">
@@ -172,30 +243,10 @@ export default function ShowcasePage() {
 
   usePageTitle("Showcase — NexCode");
 
-  // Load Showcase Projects from database API or static data fallback
+  // Static data only (no backend required)
   useEffect(() => {
-    let mounted = true;
-    const fetchProjects = async () => {
-      try {
-        const res = await api.get("/showcase");
-        if (mounted) {
-          setProjects(Array.isArray(res.data.data) ? res.data.data : []);
-        }
-      } catch (err) {
-        console.warn("API fetch error, falling back to static data:", err);
-        if (mounted) {
-          setProjects(showcaseProjects);
-        }
-      } finally {
-        if (mounted) {
-          setLoading(false);
-        }
-      }
-    };
-    fetchProjects();
-    return () => {
-      mounted = false;
-    };
+    setProjects(showcaseProjects);
+    setLoading(false);
   }, []);
 
   // Filter Categories & Tech stacks lists dynamically based on active data
@@ -276,7 +327,7 @@ export default function ShowcasePage() {
             {/* Left Column Content */}
             <div className="text-center lg:text-left">
               <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
-                <SectionLabel icon={HiSparkles} content="Engineered Case Studies"/>
+                <SectionLabel icon={HiSparkles} content="Engineered Case Studies" />
               </motion.div>
 
               <motion.h1
@@ -361,7 +412,7 @@ export default function ShowcasePage() {
                   className="group relative flex flex-col items-center justify-center bg-card border border-border  rounded-xl mx-2 my-1 p-4  text-center cursor-pointer shadow-sm transition-all duration-300"
                 >
                   <div className="w-10 h-10 rounded-full overflow-hidden mb-2.5 border border-border bg-background ">
-                    <img src={proj.image} alt={proj.name} className="w-full h-full object-cover" />
+                    <img src={proj.cover} alt={proj.name} className="w-full h-full object-cover" />
                   </div>
                   <span className="text-[10px] font-bold text-foreground line-clamp-1 uppercase tracking-wide group-hover:text-primary">
                     {proj.name.split(" ")[0]}
@@ -381,9 +432,9 @@ export default function ShowcasePage() {
         <section className="py-8 lg:py-20 bg-page-alt border-y border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Header */}
-            <div className="flex flex-col items-center text-center mb-20">
+            <div className="flex flex-col items-center text-center mb-0 lg:mb-20">
               <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
-                <SectionLabel icon={HiStar}content="Featured Spotlights"/>
+                <SectionLabel icon={HiStar} content="Featured Spotlights" />
               </motion.div>
               <h2 className="font-display text-3xl md:text-4.5xl font-extrabold text-foreground tracking-tight">
                 Case Studies in <span className="gradient-text">Excellence</span>
@@ -407,7 +458,7 @@ export default function ShowcasePage() {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ once: true, margin: "-50px" }}
-                    className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
+                    className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-0 lg:gap-20 items-center"
                   >
                     {/* Text Block */}
                     <div className={isRight ? "lg:order-2" : ""}>
@@ -420,19 +471,29 @@ export default function ShowcasePage() {
                       </div>
 
                       <div className="flex flex-col mb-6">
-                        <span className="text-xs font-semibold uppercase tracking-wider mb-1.5 text-center md:text-left" style={{ color: strokeColor }}>
+                        <span
+                          className="text-xs font-semibold uppercase tracking-wider mb-1.5 text-center md:text-left"
+                          style={{ color: strokeColor }}
+                        >
                           {proj.type}
                         </span>
-                        <h3 className="font-display text-2xl md:text-3.5xl font-extrabold text-foreground tracking-tight text-center md:text-left">{proj.name}</h3>
+                        <h3 className="font-display text-2xl md:text-3.5xl font-extrabold text-foreground tracking-tight text-center md:text-left">
+                          {proj.name}
+                        </h3>
                       </div>
 
-                      <p className="text-sm text-text_secondary leading-relaxed mb-8 text-center md:text-left">{proj.summary}</p>
+                      <p className="text-sm text-text_secondary leading-relaxed mb-8 text-center md:text-left line-clamp-4 lg:line-clamp-5">
+                        {proj.summary}
+                      </p>
 
                       {/* Display Results details */}
                       {proj.results && proj.results.length > 0 && (
                         <div className="grid grid-cols-1  sm:grid-cols-2 gap-3 mb-8 ">
                           {proj.results.map((res, ri) => (
-                            <div key={ri} className="flex items-center justify-center md:justify-start gap-2.5 px-4 py-1 md:py-3 rounded-xl md:border border-border md:bg-card md:shadow-sm md:mx-0  px-auto">
+                            <div
+                              key={ri}
+                              className="flex items-center justify-center md:justify-start gap-2.5 px-4 py-1 md:py-3 rounded-xl md:border border-border md:bg-card md:shadow-sm md:mx-0  px-auto"
+                            >
                               <HiCheckCircle className="text-base flex-shrink-0 text" style={{ color: strokeColor }} />
                               <span className="text-xs font-bold text-foreground">{res}</span>
                             </div>
@@ -442,74 +503,94 @@ export default function ShowcasePage() {
 
                       {/* CTA link to detailed case page */}
                       <div className="px-16 md:px-0">
-                      <Button
-                        varient="primary"
-                        rightIcon={<HiChevronRight size={20} />}
-                        onClick={() => navigate(`/showcase/${proj.slug}`)}
-                        style={{
-                          background: `linear-gradient(135deg, ${strokeColor}, rgba(${rgbOverlay}, 0.75))`,
-                        }}
-                        className="w-full"
-                      >
-                        Explore Case Study
-                      </Button></div>
+                        <Button
+                          varient="primary"
+                          rightIcon={<HiChevronRight size={20} />}
+                          onClick={() => navigate(`/showcase/${proj.slug}`)}
+                          style={{
+                            background: `linear-gradient(135deg, ${strokeColor}, rgba(${rgbOverlay}, 0.75))`,
+                          }}
+                          className="w-full"
+                        >
+                          Explore Case Study
+                        </Button>
+                      </div>
                     </div>
 
                     {/* Graphics / Image Mockup Frame */}
-                    <div className={isRight ? "lg:order-1" : ""}>
-                      <div className="relative rounded-3xl p-8 flex items-center justify-center min-h-[330px] overflow-hidden border border-border bg-card shadow-md">
-                        {/* Dot background texture grid */}
+                    <div className={`h-full ${isRight ? "lg:order-1" : ""}`}>
+                      <div
+                        className="relative rounded-[32px] p-8 flex items-center justify-center h-full min-h-[340px] overflow-hidden "
+                        style={{ perspective: 1600, transformStyle: "preserve-3d" }}
+                      >
+                        {/* Far background — soft mesh gradient blobs, pushed deep and blurred (atmospheric depth) */}
                         <div
-                          className="absolute inset-0 opacity-[0.07]"
+                          className="absolute -top-16 -left-10 w-72 h-72 rounded-full blur-3xl opacity-[0.18] pointer-events-none hidden"
                           style={{
-                            backgroundImage: `radial-gradient(circle, ${strokeColor} 1px, transparent 1px)`,
-                            backgroundSize: "24px 24px",
+                            transform: "translateZ(-220px) scale(1.3)",
+                            background: `radial-gradient(circle, rgba(${rgbOverlay}, 0.9), transparent 70%)`,
+                          }}
+                        />
+                        <div
+                          className="absolute -bottom-20 -right-10 w-80 h-80 rounded-full blur-3xl opacity-[0.14] pointer-events-none hidden"
+                          style={{
+                            transform: "translateZ(-220px) scale(1.3)",
+                            background: `radial-gradient(circle, rgba(${rgbOverlay}, 0.9), transparent 70%)`,
                           }}
                         />
 
-                        {/* Concentric rings decoration */}
+                        {/* Faint dot grid, set slightly back and softly out of focus */}
+                        <div
+                          className="absolute inset-0 opacity-[0.05] blur-[0.5px] pointer-events-none z-50"
+                          style={{
+                            backgroundImage: `radial-gradient(circle, ${strokeColor} 1px, transparent 1px)`,
+                            backgroundSize: "28px 28px",
+                            transform: "translateZ(-120px) scale(1.1)",
+                          }}
+                        />
+
+                        {/* Concentric rings — mid-depth, slow rotation, slight blur for depth-of-field */}
                         {[130, 220, 310].map((sz, ri) => (
-                          <div
+                          <motion.div
                             key={ri}
-                            className="absolute rounded-full border pointer-events-none"
+                            animate={{ rotate: 360 }}
+                            transition={{ repeat: Infinity, duration: 50 + ri * 15, ease: "linear" }}
+                            className="absolute rounded-full border pointer-events-none z-50"
                             style={{
                               width: sz,
                               height: sz,
-                              borderColor: `rgba(${rgbOverlay}, ${0.12 - ri * 0.03})`,
+                              borderColor: `rgba(${rgbOverlay}, ${0.1 - ri * 0.02})`,
+                              transform: `translateZ(${-40 - ri * 20}px)`,
+                              filter: `blur(${ri * 0.4}px)`,
                             }}
                           />
                         ))}
 
-                        {/* Centered Image Mockup Card */}
-                        <motion.div
-                          animate={{ y: [0, -12, 0] }}
-                          transition={{ repeat: Infinity, duration: 4.2 + idx * 0.3, ease: "easeInOut" }}
-                          className="relative z-10 w-full max-w-[360px] rounded-2xl overflow-hidden shadow-2xl border border-border/80 bg-background"
-                        >
-                          <img src={proj.image} alt={proj.name} className="w-full h-48 object-cover" />
-                          <div className="p-4 border-t border-border">
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-text_muted">{proj.type}</span>
-                            <h4 className="text-sm font-extrabold text-foreground mt-0.5">{proj.name}</h4>
-                          </div>
-                        </motion.div>
+                        {/* Centered Image Mockup — foreground layer, tilts toward cursor */}
+                        <TiltMockup proj={proj} idx={idx} className="z-10" />
 
-                        {/* Floating Tooltips */}
+                        {/* Floating Tooltips — closest layer, glass pills with independent drift */}
                         {proj.stack &&
                           proj.stack.slice(0, 3).map((tech, ti) => {
                             const tooltipsPos = [
-                              { top: "12%", right: "8%" },
-                              { bottom: "12%", left: "8%" },
-                              { top: "48%", left: "6%" },
+                              { top: "10%", right: "6%" },
+                              { bottom: "10%", left: "54%" },
+                              { top: "40%", left: "0%" },
                             ];
                             return (
                               <motion.div
                                 key={tech}
-                                initial={{ opacity: 0, scale: 0.8 }}
+                                initial={{ opacity: 0, scale: 0.85 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 viewport={{ once: true }}
-                                transition={{ delay: 0.2 + ti * 0.1 }}
-                                className="absolute flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold border border-border bg-card shadow-sm"
-                                style={{ ...tooltipsPos[ti] }}
+                                animate={{ y: [0, -6, 0] }}
+                                transition={{
+                                  opacity: { delay: 0.2 + ti * 0.1 },
+                                  scale: { delay: 0.2 + ti * 0.1 },
+                                  y: { repeat: Infinity, duration: 3.2 + ti * 0.4, ease: "easeInOut" },
+                                }}
+                                className="flex absolute items-center gap-1.5 px-3 z-50 py-1 rounded-full text-[11px] font-medium tracking-tight border border-white/30 bg-white/50 dark:bg-white/10 backdrop-blur-xl shadow-[0_8px_20px_-8px_rgba(0,0,0,0.25)]"
+                                style={{ ...tooltipsPos[ti], transform: "translateZ(100px)" }}
                               >
                                 <span className="w-1.5 h-1.5 rounded-full" style={{ background: strokeColor }} />
                                 {tech}
@@ -534,7 +615,7 @@ export default function ShowcasePage() {
           {/* Header */}
           <div className="flex flex-col items-center text-center mb-16">
             <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
-              <SectionLabel icon={HiDatabase} content="Explore Portfolio"/>
+              <SectionLabel icon={HiDatabase} content="Explore Portfolio" />
             </motion.div>
             <h2 className="font-display text-3xl md:text-4.5xl font-extrabold text-foreground tracking-tight">
               Featured Case <span className="gradient-text">Showcase</span>
@@ -814,8 +895,8 @@ export default function ShowcasePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Left Column info */}
             <div>
-              <SectionLabel icon={HiCode} content="NexCode Standards"/>
-              
+              <SectionLabel icon={HiCode} content="NexCode Standards" />
+
               <h2 className="font-display text-3xl md:text-4.5xl font-extrabold text-foreground tracking-tight mb-5">
                 Engineering for <span className="gradient-text">Uptime & Scale.</span>
               </h2>

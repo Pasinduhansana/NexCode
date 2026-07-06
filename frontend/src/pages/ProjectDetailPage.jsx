@@ -7,7 +7,7 @@ import laptop_mockup from "../../assets/laptop_mockup.png";
 import phone_mockup from "../../assets/phone_mockup.png";
 import { useTheme } from "../context/ThemeContext";
 import { showcaseProjects } from "../data/showcaseProjects";
-import api from "../utils/api";
+
 import usePageTitle from "../utils/usePageTitle";
 import Button from "../components/Button";
 import SectionLabel from "../components/SectionLabel";
@@ -110,9 +110,7 @@ function HeroDeviceStack({ laptop_mockup, phone_mockup, project_image, project_i
           transformStyle: "preserve-3d",
           transformOrigin: "bottom center",
           opacity: mounted ? 1 : 0,
-          transition: mounted
-            ? "transform 0.5s cubic-bezier(0.16,1,0.3,1)"
-            : "transform 1s cubic-bezier(0.16,1,0.3,1), opacity 0.9s ease-out",
+          transition: mounted ? "transform 0.5s cubic-bezier(0.16,1,0.3,1)" : "transform 1s cubic-bezier(0.16,1,0.3,1), opacity 0.9s ease-out",
         }}
         className="relative isolate mx-auto w-full max-w-[340px] sm:max-w-[420px] md:max-w-[500px] lg:max-w-[700px] [@media(min-width:1600px)]:max-w-[1000px] mb-10 md:my-5 perspective-[1000px] px-2 sm:px-0"
       >
@@ -131,7 +129,7 @@ function HeroDeviceStack({ laptop_mockup, phone_mockup, project_image, project_i
             <img
               src={project_image}
               alt="Project Screenshot"
-              className="object-coverz-10 transform transition-transform duration-300 hover:scale-105 w-full h-full"
+              className="z-10 transform transition-transform duration-300 hover:scale-105 w-full h-full"
             />
             {/* subtle glass glare on hover */}
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 transition-opacity duration-500 hover:opacity-100" />
@@ -146,7 +144,7 @@ function HeroDeviceStack({ laptop_mockup, phone_mockup, project_image, project_i
           style={{ transform: "translateZ(60px)", animationDelay: "0.3s" }}
         >
           <img src={phone_mockup} alt="Phone Mockup" className="w-full  h-full relative z-20 drop-shadow-xl" />
-          <div className="absolute overflow-hidden bg-background w-[99%] h-[99%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-[50.5%] rounded-3xl ">
+          <div className="absolute overflow-hidden bg-background w-[99%] h-[99%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-[50.5%] rounded-lg lg:rounded-3xl ">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-8 bg-muted rounded-full">
               <div className="flex justify-between px-3 pt-0">
                 <span className="text-foreground text-[4px] font-semibold">Dialog</span>
@@ -159,7 +157,7 @@ function HeroDeviceStack({ laptop_mockup, phone_mockup, project_image, project_i
             <img
               src={project_image2_mobile}
               alt="Project Screenshot"
-              className="object-coverz-10 pt-6 transform transition-transform duration-300 hover:scale-105 w-full h-full"
+              className="z-10 pt-6 transform transition-transform duration-300 hover:scale-105 w-full h-full"
             />
           </div>
         </div>
@@ -184,10 +182,7 @@ function GalleryCard({ item, index, onOpen }) {
   const parallaxRef = useParallaxRef(direction * depth);
 
   return (
-    <div
-      ref={parallaxRef}
-      className={`will-change-transform ${index % 2 === 1 ? "sm:translate-y-6" : ""}`}
-    >
+    <div ref={parallaxRef} className={`will-change-transform ${index % 2 === 1 ? "sm:translate-y-6" : ""}`}>
       <button
         type="button"
         onClick={onOpen}
@@ -214,7 +209,11 @@ function GalleryCard({ item, index, onOpen }) {
           <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90">
               <svg viewBox="0 0 24 24" className="h-4 w-4 text-slate-900" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3" strokeLinecap="round" strokeLinejoin="round" />
+                <path
+                  d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </div>
           </div>
@@ -425,14 +424,17 @@ function App() {
   const galleryImages = project.resources?.images ?? [];
   const galleryVideos = project.resources?.videos ?? [];
   const media = [
-    ...galleryImages.map((img) => ({ type: "image", url: img.url, caption: img.caption })),
     ...galleryVideos.map((vid) => ({
       type: "video",
       url: vid.url,
       thumbnail: vid.thumbnail,
       caption: vid.caption,
     })),
+    ...galleryImages.map((img) => ({ type: "image", url: img.url, caption: img.caption })),
   ];
+
+  const videoMedia = media.filter((m) => m.type === "video");
+  const imageMedia = media.filter((m) => m.type === "image");
 
   const openLightbox = (index) => setLightboxIndex(index);
   const closeLightbox = () => setLightboxIndex(null);
@@ -488,11 +490,7 @@ function App() {
           {/* Brand Header */}
           <header
             className="text-center mt-10"
-            style={
-              reducedMotion
-                ? undefined
-                : { animation: "heroFadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both", animationDelay: "0.05s" }
-            }
+            style={reducedMotion ? undefined : { animation: "heroFadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both", animationDelay: "0.05s" }}
           >
             <h1 className="text-4xl font-bold tracking-tight text-text_primary opacity-100">{project.name}</h1>
             <p className="text-[10px] tracking-[4px] mt-1 text-text_muted font-medium opacity-100">WEB ELEMENTS RESOURCE</p>
@@ -503,18 +501,14 @@ function App() {
             <HeroDeviceStack
               laptop_mockup={laptop_mockup}
               phone_mockup={phone_mockup}
-              project_image={project_image}
-              project_image2_mobile={project_image2_mobile}
+              project_image={theme === "dark" ? project.laptop_mockup?.[1] : project.laptop_mockup?.[0]}
+              project_image2_mobile={theme === "dark" ? project.phone_mockup?.[1] : project.phone_mockup?.[0]}
             />
 
             {/* Dynamic Presentation Typography */}
             <div
               className="text-center "
-              style={
-                reducedMotion
-                  ? undefined
-                  : { animation: "heroFadeUp 0.8s cubic-bezier(0.16,1,0.3,1) both", animationDelay: "0.85s" }
-              }
+              style={reducedMotion ? undefined : { animation: "heroFadeUp 0.8s cubic-bezier(0.16,1,0.3,1) both", animationDelay: "0.85s" }}
             >
               <p className="text-[11px] tracking-[5px] text-text_muted mb-3.5 uppercase font-semibold">SELECTED PROJECT DETAILS</p>
               <p className="text-l md:text-[18px] max-w-[800px] font-normal leading-relaxed text-text_primary opacity-95 balance line-clamp-2">
@@ -641,19 +635,124 @@ function App() {
 
             {/* Floating Media Gallery */}
             {media.length > 0 && (
-              <div className="pt-2">
-                <div className="flex items-end justify-between gap-4 mb-6">
+              <div className="pt-2 space-y-10">
+                {videoMedia.length > 0 && (
                   <div>
-                    <p className="text-[11px] tracking-[0.2em] uppercase font-semibold mb-1 text-text_muted">Media gallery</p>
-                    <h3 className="text-lg font-semibold text-foreground">See it in action</h3>
+                    <div className="flex items-end justify-between gap-4 mb-6">
+                      <div>
+                        <p className="text-[11px] tracking-[0.2em] uppercase font-semibold mb-1 text-text_muted">Video gallery</p>
+                        <h3 className="text-lg font-semibold text-foreground">Watch it in action</h3>
+                      </div>
+                      <div className="text-sm text-text_muted hidden sm:block">{videoMedia.length} items &middot; tap to play</div>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[140px] sm:auto-rows-[170px] gap-3 sm:gap-4 grid-flow-row-dense">
+                      {videoMedia.map((item, i) => {
+                        const pattern = i % 6;
+                        const spanClass = pattern === 0 ? "col-span-2 row-span-2" : pattern === 3 ? "row-span-2" : "";
+
+                        return (
+                          <button
+                            key={`video-${i}`}
+                            type="button"
+                            onClick={() => openLightbox(media.indexOf(item))}
+                            className={`group relative overflow-hidden rounded-2xl border border-border bg-card ${spanClass}`}
+                          >
+                            <img
+                              src={item.thumbnail}
+                              alt={item.caption || "Project video"}
+                              loading="lazy"
+                              className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                            />
+
+                            {/* darken base so play button always reads clearly */}
+                            <div className="absolute inset-0 bg-black/25 transition-colors duration-300 group-hover:bg-black/40" />
+
+                            {/* bottom gradient scrim for caption */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+
+                            {/* play button */}
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/20 backdrop-blur-md border border-white/40 transition-transform duration-300 group-hover:scale-110">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg">
+                                  <svg viewBox="0 0 24 24" className="ml-0.5 h-4 w-4 text-slate-900" fill="currentColor">
+                                    <path d="M8 5v14l11-7z" />
+                                  </svg>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* video tag */}
+                            <div className="absolute top-2.5 left-2.5 flex items-center gap-1 rounded-full bg-black/50 backdrop-blur-sm px-2.5 py-1 text-[10px] font-medium uppercase tracking-wide text-white">
+                              <svg viewBox="0 0 24 24" className="h-3 w-3" fill="currentColor">
+                                <path d="M8 5v14l11-7z" />
+                              </svg>
+                              Video
+                            </div>
+
+                            {item.caption && <p className="absolute inset-x-0 bottom-0 p-3 text-xs text-white truncate">{item.caption}</p>}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
-                  <div className="text-sm text-text_muted hidden sm:block">{media.length} items &middot; tap to expand</div>
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-                  {media.map((item, i) => (
-                    <GalleryCard key={`${item.type}-${i}`} item={item} index={i} onOpen={() => openLightbox(i)} />
-                  ))}
-                </div>
+                )}
+
+                {imageMedia.length > 0 && (
+                  <div>
+                    <div className="flex items-end justify-between gap-4 mb-6">
+                      <div>
+                        <p className="text-[11px] tracking-[0.2em] uppercase font-semibold mb-1 text-text_muted">Image gallery</p>
+                        <h3 className="text-lg font-semibold text-foreground">See it in action</h3>
+                      </div>
+                      <div className="text-sm text-text_muted hidden sm:block">{imageMedia.length} items &middot; tap to expand</div>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[140px] sm:auto-rows-[170px] gap-3 sm:gap-4 grid-flow-row-dense">
+                      {imageMedia.map((item, i) => {
+                        const pattern = i % 6;
+                        const spanClass = pattern === 0 ? "col-span-2 row-span-2" : pattern === 3 ? "row-span-2" : "";
+
+                        return (
+                          <button
+                            key={`image-${i}`}
+                            type="button"
+                            onClick={() => openLightbox(media.indexOf(item))}
+                            className={`group relative overflow-hidden rounded-2xl border border-border bg-card ${spanClass}`}
+                          >
+                            <img
+                              src={item.url}
+                              alt={item.caption || "Project media"}
+                              loading="lazy"
+                              className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                            />
+
+                            {/* gradient overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+                            {/* caption */}
+                            {item.caption && (
+                              <p className="absolute inset-x-0 bottom-0 p-3 text-xs text-white truncate opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                                {item.caption}
+                              </p>
+                            )}
+
+                            {/* expand icon */}
+                            <div className="absolute top-2.5 right-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 opacity-0 scale-75 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100">
+                              <svg viewBox="0 0 24 24" className="h-4 w-4 text-slate-900" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path
+                                  d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
@@ -673,8 +772,8 @@ function App() {
                   >
                     <div className="aspect-[16/10] overflow-hidden bg-muted">
                       <img
-                        src={relatedProject.image}
-                        alt={relatedProject.name}
+                        src={relatedProject.resources?.images?.[0]?.url ?? relatedProject.cover}
+                        alt={"relatedProject.name"}
                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     </div>
@@ -691,9 +790,7 @@ function App() {
         </div>
       </div>
 
-      {lightboxIndex !== null && (
-        <MediaLightbox media={media} index={lightboxIndex} onClose={closeLightbox} onPrev={goPrev} onNext={goNext} />
-      )}
+      {lightboxIndex !== null && <MediaLightbox media={media} index={lightboxIndex} onClose={closeLightbox} onPrev={goPrev} onNext={goNext} />}
     </>
   );
 }

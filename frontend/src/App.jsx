@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { Toaster } from 'react-hot-toast';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 
+
 // Public Pages
 import HomePage from './pages/HomePage';
 import ServicesPage from './pages/ServicesPage';
@@ -19,6 +20,10 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 
+// Ad Modal
+import AdModal from "./components/AdModal";
+import useAdModal from "./hooks/useAdModal";
+
 
 const PublicLayout = ({ children }) => (
   <>
@@ -28,30 +33,16 @@ const PublicLayout = ({ children }) => (
   </>
 );
 
-const ScrollToTopOnRouteChange = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-
-    const doScroll = () => {
-      window.scrollTo({ top: 0, left: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
-    };
-
-    // Try immediately, then again shortly after in case the next page renders async content.
-    requestAnimationFrame(doScroll);
-    setTimeout(doScroll, 50);
-  }, [location.pathname]);
-
-  return null;
-};
-
 function App() {
+  const { open, setOpen, startIndex } = useAdModal();
+
   return (
     <ThemeProvider>
-      
         <BrowserRouter>
           <ScrollToTop />
+
+          <AdModal open={open} onClose={() => setOpen(false)} startIndex={startIndex} />
+
           <Toaster
             position="top-right"
             toastOptions={{
