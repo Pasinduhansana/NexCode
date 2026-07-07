@@ -25,6 +25,7 @@ import Button from "../components/Button";
 import SelectionLable from "../components/SectionLabel";
 import SectionLabel from "../components/SectionLabel";
 import OffersBanner from "../components/Offersbanner";
+import FeaturedProjects from "../components/FeaturedProjects";
 
 const stats = [
   { value: "Custom", label: "Projects" },
@@ -81,6 +82,11 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* FEATURED PROJECTS */}
+      <section className="bg-background py-16 lg:py-24">
+        <FeaturedProjects />
       </section>
 
       {/* WHY NEXCODE */}
