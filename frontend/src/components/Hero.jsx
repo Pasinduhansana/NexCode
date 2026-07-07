@@ -581,7 +581,7 @@ export default function Hero({ stats = [] }) {
   return (
     <section
       ref={sceneRef}
-      className="relative min-h-screen w-full overflow-hidden bg-background
+      className="relative h-full md:min-h-screen pb-44 md:pb-0  w-full overflow-hidden bg-background
                  flex flex-col items-center md:justify-center -pt-10 md:pt-0 -mt-16 md:-mt-20"
     >
       {/* ══ BACKGROUND ══════════════════════════════════════════ */}
@@ -673,7 +673,7 @@ export default function Hero({ stats = [] }) {
 
       {/* ══ LARGE WATERMARK TEXT ════════════════════════════════ */}
       <div
-        className="absolute inset-0 flex flex-col items-center justify-center
+        className="absolute inset-0 flex flex-col items-center justify-center pt-40 md:pt-36
                       pointer-events-none select-none overflow-hidden"
         style={{ zIndex: 1 }}
       >
@@ -702,13 +702,13 @@ export default function Hero({ stats = [] }) {
         {/* headline */}
         <h1
           className="text-[clamp(2rem,5.2vw,3rem)] font-bold
-                     leading-[1.05] tracking-tight text-foreground mt-0"
+                     leading-[1.2] tracking-tight text-foreground mt-5 md:mt-0"
           style={{ fontFamily: "'Syne', sans-serif" }}
         >
-          Empower Your <em className="not-italic text-primary">Digital</em> Growth
+          Ready to Transform<em className="not-italic text-primary"><br/>Your Business?</em>
         </h1>
 
-        <p className="section-subtitle">
+        <p className="section-subtitle mt-2 md:mt-0">
           From sleek websites to powerful enterprise systems — NexCode ships software that moves fast, scales further, and delights every user.
         </p>
       </motion.div>
@@ -718,7 +718,7 @@ export default function Hero({ stats = [] }) {
           Perspective wrapper → motion div (lid unfold) →
           tilt wrapper (mouse parallax) → laptop + floating cards
       */}
-      <div className="relative z-10 w-full h-auto flex justify-center items-start " style={{ perspective: "1100px" }}>
+      <div className="relative z-10 w-full h-auto flex justify-center items-start mt-12 md:mt-0 " style={{ perspective: "1100px" }}>
         {/* lid unfold motion */}
         <motion.div
           animate={lidCtrl}
