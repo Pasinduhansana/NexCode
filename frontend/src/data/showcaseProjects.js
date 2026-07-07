@@ -56,6 +56,9 @@ import reportExportImg from "../../assets/Logistic_project/Report_export.webp";
 import securityCheckImg from "../../assets/Logistic_project/Security_Check.webp";
 import securityDashboardImg from "../../assets/Logistic_project/Security_Dashboard.webp";
 import userProfileImg from "../../assets/Logistic_project/User_profile.webp";
+import mobileCoverImg from "../../assets/Logistic_project/mobile_cover.webp";
+import laptopCoverImg from "../../assets/Logistic_project/coverpage.webp";
+import LogimanageVideo from "../../assets/Logistic_project/LogiManage_intro.mp4";
 
 export const showcaseProjects = [
   {
@@ -350,11 +353,11 @@ export const showcaseProjects = [
 
     color: "from-blue-600 to-cyan-500",
 
-    cover: logisticDashboardImg,
+    cover: laptopCoverImg,
 
-    laptop_mockup: [logisticDashboardImg,logisticDashboardImg],
+    laptop_mockup: [laptopCoverImg,laptopCoverImg],
 
-    phone_mockup: [gateCheckImg, gateCheckImg],
+    phone_mockup: [mobileCoverImg, mobileCoverImg],
 
     resources: {
       images: [
@@ -418,8 +421,8 @@ export const showcaseProjects = [
 
       videos: [
         {
-          url: transportVideo,
-          thumbnail: logisticDashboardImg,
+          url: LogimanageVideo,
+          thumbnail: laptopCoverImg,
           caption: "LogiManage walkthrough",
         },
       ],
