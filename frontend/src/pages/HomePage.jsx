@@ -28,10 +28,10 @@ import SectionLabel from "../components/SectionLabel";
 import OffersBanner from "../components/Offersbanner";
 
 const stats = [
-  { value: "Custom", label: "Projects" },
-  { value: "Dedicated", label: "Clientele" },
-  { value: "2025", label: "Founded" },
-  { value: "Responsive", label: "Support" },
+  { value: "100%", label: "Client Satisfaction" },
+  { value: "24/7", label: "Support" },
+  { value: "Fast", label: "Delivery" },
+  { value: "Affordable", label: "Pricing" },
 ];
 
 export default function HomePage() {
