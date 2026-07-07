@@ -67,6 +67,24 @@ function useParallaxRef(speed = 20) {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Persistent Back Button — fixed top-left, always visible on scroll  */
+/* ------------------------------------------------------------------ */
+function BackButton({ to = "/showcase" }) {
+  return (
+    <Link
+      to={to}
+      aria-label="Back to showcase"
+      className="fixed top-15 left-5 z-[70] flex items-center gap-2 rounded-full border border-border bg-card/80 backdrop-blur-md px-4 py-2.5 text-sm font-medium text-foreground shadow-lg transition-all duration-200 hover:bg-card hover:-translate-x-0.5 hover:shadow-xl active:scale-95"
+    >
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      <span className="hidden sm:inline">Back</span>
+    </Link>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Hero device stack: 3D tilt on pointer, cinematic unfold on load,    */
 /*  ambient float + scroll drift for depth. Layout/classes preserved.  */
 /* ------------------------------------------------------------------ */
@@ -462,6 +480,9 @@ function App() {
           50% { transform: rotate(2.5deg); }
         }
       `}</style>
+
+      {/* Persistent Back Button — fixed top-left, visible at all scroll positions */}
+      <BackButton to="/showcase" />
 
       <div className="flex flex-col h-full -mt-20">
         {/* Hero Section */}
