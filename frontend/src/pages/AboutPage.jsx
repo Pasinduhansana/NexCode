@@ -34,10 +34,10 @@ const stats = [
 ];
 
 const STATS = [
-  { value: "20+", label: "Projects" },
-  { value: "17+", label: "Clientele" },
-  { value: "10+", label: "Team" },
-  { value: "2025", label: "Founded" },
+  { value: "100%", label: "Client Satisfaction" },
+  { value: "24/7", label: "Support" },
+  { value: "Fast", label: "Delivery" },
+  { value: "Affordable", label: "Pricing" },
 ];
 
 const values = [
@@ -136,8 +136,9 @@ export default function AboutPage() {
               custom={2}
               className="text-base text-text_secondary leading-relaxed max-w-2xl mb-12"
             >
-              NexCode is a premier software development firm dedicated to bridging the gap between ambitious product ideas and highly optimized, clean
-              digital solutions. We engineer for scale, stability, and speed.
+              NexCode is a growing software development startup creating modern websites, mobile apps, and custom software.
+              We help businesses, startups, and students turn their ideas into reliable, affordable digital solutions.
+
             </motion.p>
 
             <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="flex flex-col md:flex-row md:flex-wrap gap-4 md:justify-start justify-center mx-auto md:mx-0">

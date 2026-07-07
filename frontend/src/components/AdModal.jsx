@@ -307,7 +307,7 @@ export default function AdModal({ open, onClose }) {
             onClick={handleCTA}
             rightIcon={<FaArrowRight />}
           >
-            Explore Now
+            Latest Updates
           </Button>
         </div>
       </div>
