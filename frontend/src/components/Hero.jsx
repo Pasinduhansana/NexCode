@@ -674,18 +674,18 @@ export default function Hero({ stats = [] }) {
       {/* ══ LARGE WATERMARK TEXT ════════════════════════════════ */}
       <div
         className="absolute inset-0 flex flex-col items-center justify-center
-                      pointer-events-none select-none overflow-hidden"
+                      pointer-events-none select-none px-2"
         style={{ zIndex: 1 }}
       >
         <span
-          className="font-extrabold uppercase leading-[0.90] tracking-[0.05em]"
-          style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(5rem,15vw,14rem)", color: tokens.wm }}
+          className="font-extrabold uppercase leading-[0.90] tracking-[0.01em] sm:tracking-[0.05em] w-full text-center"
+          style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(4.2rem,14vw,14rem)", color: tokens.wm }}
         >
           Digital
         </span>
         <span
-          className="font-extrabold uppercase leading-[0.90] tracking-[0.02em]"
-          style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(5rem,15vw,14rem)", color: tokens.wm }}
+          className="font-extrabold uppercase leading-[0.90] tracking-[0em] sm:tracking-[0.02em] w-full text-center"
+          style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(4.2rem,14vw,14rem)", color: tokens.wm }}
         >
           Solutions
         </span>

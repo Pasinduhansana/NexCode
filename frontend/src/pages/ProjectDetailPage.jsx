@@ -66,17 +66,6 @@ function useParallaxRef(speed = 20) {
   return ref;
 }
 
-/* ------------------------------------------------------------------ */
-/*  Persistent Back Button                                             */
-/*  - fixed top-left, always visible on scroll (not affected by page   */
-/*    layout/scroll since it's position: fixed relative to viewport)   */
-/*  - uses browser history (navigate(-1)) instead of a hard-coded link */
-/*    so the user lands back on /showcase at the EXACT scroll position */
-/*    they were at when they clicked into this project, instead of     */
-/*    jumping to the top of the showcase page.                         */
-/*  - falls back to /showcase if there's no real history to go back to */
-/*    (e.g. user opened this project page directly via URL/refresh)    */
-/* ------------------------------------------------------------------ */
 function BackButton({ fallbackTo = "/showcase" }) {
   const navigate = useNavigate();
 
