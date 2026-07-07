@@ -8,16 +8,21 @@ import Button from "./Button";
 const SLIDE_DURATION = 5000;
 
 export default function AdModal({ open, onClose }) {
-    const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(0);
 
   const [animating, setAnimating] = useState(false);
-  const [fillActive, setFillActive] = useState(false);
   const [isMobile, setIsMobile] = useState(typeof window !== "undefined" ? window.innerWidth < 768 : false);
+  const [paused, setPaused] = useState(false);
 
   const navigate = useNavigate();
 
   const startX = useRef(0);
   const deltaX = useRef(0);
+
+  // Time-remaining tracking so pause/resume doesn't reset the 5s countdown
+  const remainingRef = useRef(SLIDE_DURATION);
+  const startTimeRef = useRef(null);
+  const timeoutRef = useRef(null);
 
   useEffect(() => {
     const onResize = () => setIsMobile(window.innerWidth < 768);
@@ -25,25 +30,45 @@ export default function AdModal({ open, onClose }) {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  // Reset to first slide + unpause + reset the countdown each time the modal opens.
+  // Without resetting remainingRef here, closing the modal while paused mid-slide
+  // leaves a small leftover time in place, so reopening fires goNext almost
+  // instantly (looks like the ad "auto closes before it loads").
+  useEffect(() => {
+    if (open) {
+      setIndex(0);
+      setPaused(false);
+      remainingRef.current = SLIDE_DURATION;
+    }
+  }, [open]);
+
+  // Whenever the active slide changes, its countdown starts fresh
+  useEffect(() => {
+    remainingRef.current = SLIDE_DURATION;
+  }, [index]);
+
+  // Auto-advance timer — pauses/resumes from wherever it left off, like a story viewer
+  // (pause only ever gets set to true on desktop — see the hover handlers below)
   useEffect(() => {
     if (!open) return;
 
-    const timer = setInterval(() => {
+    if (paused) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        remainingRef.current -= Date.now() - startTimeRef.current;
+        if (remainingRef.current < 0) remainingRef.current = 0;
+      }
+      return;
+    }
+
+    startTimeRef.current = Date.now();
+    timeoutRef.current = setTimeout(() => {
       goNext();
-    }, SLIDE_DURATION);
+    }, remainingRef.current);
 
-    return () => clearInterval(timer);
+    return () => clearTimeout(timeoutRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, index]);
-
-  // Drive the story-style progress fill for the active slide
-  useEffect(() => {
-    setFillActive(false);
-    const raf = requestAnimationFrame(() => {
-      requestAnimationFrame(() => setFillActive(true));
-    });
-    return () => cancelAnimationFrame(raf);
-  }, [index, open]);
+  }, [open, index, paused]);
 
   useEffect(() => {
     if (open) document.body.style.overflow = "hidden";
@@ -54,7 +79,15 @@ export default function AdModal({ open, onClose }) {
 
   const goNext = () => {
     setAnimating(true);
-    setIndex((p) => (p + 1) % adSlides.length);
+    setIndex((p) => {
+      const isLast = p === adSlides.length - 1;
+      if (isLast) {
+        // Played through all ads — close instead of looping
+        onClose();
+        return p;
+      }
+      return p + 1;
+    });
     setTimeout(() => setAnimating(false), 250);
   };
 
@@ -85,24 +118,34 @@ export default function AdModal({ open, onClose }) {
     deltaX.current = 0;
   };
 
-
-
   const slide = adSlides[index];
-
 
   const handleCTA = () => {
     onClose();
 
-    navigate("/start-project", {
-      state: {
-        ad: slide,
-      },
-    });
+    // Navigate to the home page and scroll to the "Advertise" section.
+    // Home's <section id="advertise"> is the target; HomePage also listens
+    // for location.state.scrollTo in a useEffect for cross-route navigation.
+    navigate("/", { state: { scrollTo: "advertise" } });
+
+    // If we're already on "/", react-router won't remount Home, so nudge
+    // the scroll directly too.
+    setTimeout(() => {
+      document.getElementById("advertise")?.scrollIntoView({ behavior: "smooth" });
+    }, 150);
   };
 
   return createPortal(
     <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/55 backdrop-blur-md px-4 py-5 sm:px-6">
-      {/* Close button — floats above the card, never clipped */}
+      {/* keyframe for the story-style progress fill (pausable/resumable on desktop) */}
+      <style>{`
+        @keyframes adModalFill {
+          from { width: 0%; }
+          to { width: 100%; }
+        }
+      `}</style>
+
+      {/* Close button */}
       <button
         onClick={onClose}
         aria-label="Close"
@@ -131,7 +174,7 @@ export default function AdModal({ open, onClose }) {
         </svg>
       </button>
 
-      {/* Modal — fixed layout, no internal scroll, on any viewport */}
+      {/* Modal */}
       <div
         className="
         relative
@@ -142,7 +185,8 @@ export default function AdModal({ open, onClose }) {
         overflow-hidden
         bg-background
         border border-border
-        shadow-2xl        "
+        shadow-2xl
+        "
         onMouseDown={onPointerDown}
         onMouseMove={onPointerMove}
         onMouseUp={onPointerUp}
@@ -150,25 +194,36 @@ export default function AdModal({ open, onClose }) {
         onTouchMove={onPointerMove}
         onTouchEnd={onPointerUp}
       >
-        {/* IMAGE — 1:1 source, letterboxed via object-contain, never cropped */}
+        {/* IMAGE — pauses autoplay while cursor is over it (desktop only; mobile always keeps playing) */}
         <div
           className="
-            relative md:w-full w-[80vw] h-[80vw] sm:h-[38vh]
-            md:h-auto  md:aspect-square
+            relative w-full aspect-square
             bg-muted overflow-hidden shrink-0
           "
+          onMouseEnter={() => !isMobile && setPaused(true)}
+          onMouseLeave={() => !isMobile && setPaused(false)}
         >
           {/* story-style progress bars */}
           <div className="absolute top-3 left-3 right-3 z-20 flex gap-1.5">
             {adSlides.map((_, i) => (
               <div key={i} className="h-[3px] flex-1 rounded-full bg-white/30 overflow-hidden">
-                <div
-                  className="h-full bg-white rounded-full"
-                  style={{
-                    width: i < index ? "100%" : i > index ? "0%" : fillActive ? "100%" : "0%",
-                    transition: i === index ? `width ${SLIDE_DURATION}ms linear` : "none",
-                  }}
-                />
+                {i < index ? (
+                  <div className="h-full bg-white rounded-full" style={{ width: "100%" }} />
+                ) : i > index ? (
+                  <div className="h-full bg-white rounded-full" style={{ width: "0%" }} />
+                ) : (
+                  // key includes index so the animation restarts fresh on each new slide,
+                  // but animationPlayState freezes/resumes it in place while paused (desktop only)
+                  <div
+                    key={`fill-${index}`}
+                    className="h-full bg-white rounded-full"
+                    style={{
+                      width: "100%",
+                      animation: `adModalFill ${SLIDE_DURATION}ms linear forwards`,
+                      animationPlayState: paused ? "paused" : "running",
+                    }}
+                  />
+                )}
               </div>
             ))}
           </div>
@@ -239,47 +294,20 @@ export default function AdModal({ open, onClose }) {
           )}
         </div>
 
-        {/* CONTENT */}
-        <div
-          className="
-            flex-1 min-w-0
-            flex flex-col md:flex-row justify-between items-center md:items-center
-            text-center md:text-left
-            gap-2 sm:gap-2
-            px-4 py-4 sm:px-4 sm:py-4 md:py-4 md:px-4 lg:px-4 lg:py-5
-          "
-        >
-          <div>
-            <span
-              className="
-              inline-flex items-center
-              text-[10px] sm:text-[11px] font-semibold tracking-wide uppercase
-              text-primary bg-primary/10
-              px-2.5 py-1 rounded-full
-            "
-            >
-              Exclusive offer
-            </span>
-
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight leading-snug line-clamp-2">{slide.title}</h2>
-
-            <p className="text-xs sm:text-sm text-text_secondary leading-relaxed line-clamp-2 md:max-w-[220px] lg:max-w-[240px]">
-              Tailored for you — a limited-time offer designed around what you're building right now.
-            </p>
-          </div>
-
+        {/* Explore button — sits under the poster */}
+        <div className="flex items-center justify-center px-4 py-4">
           <Button
             variant="primary"
             className="
               group w-full md:w-auto md:min-w-[150px]
-              h-11 sm:h-12 mt-1
+              h-11 sm:h-12
               rounded-full font-semibold tracking-tight
               flex items-center justify-center gap-2
             "
             onClick={handleCTA}
             rightIcon={<FaArrowRight />}
           >
-            {slide.buttonText}
+            Latest Updates
           </Button>
         </div>
       </div>

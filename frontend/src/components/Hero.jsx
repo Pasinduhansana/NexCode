@@ -33,7 +33,7 @@ function tv(theme) {
       orbA: "rgba(79,123,255,0.30)",
       orbB: "rgba(99,102,241,0.20)",
       orbC: "rgba(20,184,166,0.14)",
-      wm: "rgba(255,255,255,0.04)",
+      wm: "rgba(0, 0, 0, 0.04)",
       dots: "rgba(79,123,255,0.16)",
       grid: "rgba(79,123,255,0.07)",
       line: "rgba(79,123,255,0.08)",
@@ -674,18 +674,18 @@ export default function Hero({ stats = [] }) {
       {/* ══ LARGE WATERMARK TEXT ════════════════════════════════ */}
       <div
         className="absolute inset-0 flex flex-col items-center justify-center pt-40 md:pt-36
-                      pointer-events-none select-none overflow-hidden"
+                      pointer-events-none select-none overflow-hidden px-2"
         style={{ zIndex: 1 }}
       >
         <span
-          className="font-extrabold uppercase leading-[0.90] tracking-[0.05em]"
-          style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(5rem,15vw,14rem)", color: tokens.wm }}
+          className="font-extrabold uppercase leading-[0.90] tracking-[0.01em] sm:tracking-[0.05em] w-full text-center"
+          style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(4.2rem,14vw,14rem)", color: tokens.wm }}
         >
           Digital
         </span>
         <span
-          className="font-extrabold uppercase leading-[0.90] tracking-[0.02em]"
-          style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(5rem,15vw,14rem)", color: tokens.wm }}
+          className="font-extrabold uppercase leading-[0.90] tracking-[0em] sm:tracking-[0.02em] w-full text-center"
+          style={{ fontFamily: "'Syne',sans-serif", fontSize: "clamp(4.2rem,14vw,14rem)", color: tokens.wm }}
         >
           Solutions
         </span>
