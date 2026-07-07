@@ -140,7 +140,7 @@ function HeroDeviceStack({ laptop_mockup, phone_mockup, project_image, project_i
           opacity: mounted ? 1 : 0,
           transition: mounted ? "transform 0.5s cubic-bezier(0.16,1,0.3,1)" : "transform 1s cubic-bezier(0.16,1,0.3,1), opacity 0.9s ease-out",
         }}
-        className="relative isolate mx-auto w-full max-w-[340px] sm:max-w-[420px] md:max-w-[500px] lg:max-w-[700px] [@media(min-width:1600px)]:max-w-[1000px] mb-10 md:my-5 perspective-[1000px] px-2 sm:px-0"
+        className="relative isolate mx-auto w-full max-w-[340px] sm:max-w-[420px] md:max-w-[500px] lg:max-w-[900px] [@media(min-width:1600px)]:max-w-[1000px] mb-10 md:my-5 perspective-[1000px] px-2 sm:px-0"
       >
         {/* Ambient glow — soft depth layer behind the devices */}
         <div
@@ -499,7 +499,7 @@ function App() {
       <div className="flex flex-col h-full -mt-20">
         {/* Hero Section */}
         <div
-          className={`relative w-full min-h-screen bg-hero-gradient text-white overflow-x-hidden overflow-y-visible flex flex-col items-center justify-between py-10 pt-20 px-5 z-10 select-none`}
+          className={`relative w-full h-full gap-4 md:gap-0 md:pb-0 md:min-h-screen bg-hero-gradient text-white overflow-x-hidden overflow-y-visible flex flex-col items-center justify-between md:py-10 pt-20 px-5 z-10 select-none`}
         >
           {/* Background Watermark Text Layer — drifts on scroll for depth */}
           <div
@@ -530,7 +530,7 @@ function App() {
           </header>
 
           {/* Central Interactive Content Frame */}
-          <main className="flex flex-col items-center w-full">
+          <main className="flex flex-col items-center w-full mt-5 md:mt-0">
             <HeroDeviceStack
               laptop_mockup={laptop_mockup}
               phone_mockup={phone_mockup}
@@ -540,7 +540,7 @@ function App() {
 
             {/* Dynamic Presentation Typography */}
             <div
-              className="text-center "
+              className="text-center my-5 md:my-10"
               style={reducedMotion ? undefined : { animation: "heroFadeUp 0.8s cubic-bezier(0.16,1,0.3,1) both", animationDelay: "0.85s" }}
             >
               <p className="text-[11px] tracking-[5px] text-text_muted mb-3.5 uppercase font-semibold">SELECTED PROJECT DETAILS</p>
@@ -604,7 +604,7 @@ function App() {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2.5">
+                <div className="flex flex-wrap gap-2.5 justify-center md:justify-start">
                   {project.stack.map((tech) => (
                     <span key={tech} className="px-3.5 py-1.5 rounded-full bg-none text-[12px] font-medium text-foreground border border-border_hard">
                       {tech}
@@ -623,7 +623,7 @@ function App() {
                   <p className="text-[11px] tracking-[0.2em] uppercase font-semibold mb-2.5 text-text_primary">Project outcomes</p>
                   <div className="space-y-2">
                     {project.outcomes.map((item) => (
-                      <div key={item} className="flex items-start gap-2.5 text-sm text-text_muted leading-snug">
+                      <div key={item} className="flex items-start gap-2.5 text-sm text-text_muted leading-snug text-left">
                         <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
                         <span>{limitWords(item, 14)}</span>
                       </div>
@@ -649,22 +649,24 @@ function App() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-border bg-card p-5 md:p-6">
-              <div className="flex items-center justify-between gap-4 mb-4">
-                <div>
-                  <p className="text-[11px] tracking-[0.2em] uppercase text-text_muted font-semibold mb-1">Feature list</p>
-                  <h3 className="text-lg font-semibold text-text_primary">What this solution includes</h3>
-                </div>
-                <div className="text-sm text-text_muted">{project.features.length} core capabilities</div>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {project.features.map((feature) => (
-                  <div key={feature} className="rounded-xl border border-border_hard/50 bg-card px-4 py-3 text-sm text-foreground">
-                    {feature}
-                  </div>
-                ))}
-              </div>
-            </div>
+<div className="rounded-2xl border border-border bg-card p-5 md:p-6">
+  <div className="flex flex-col md:flex-row items-center justify-between gap-2 md:gap-4 mb-5">
+    <div>
+      <p className="text-[11px] tracking-[0.2em] uppercase text-text_muted font-semibold mb-1">Feature list</p>
+      <h3 className="text-lg font-semibold text-text_primary">What this solution includes</h3>
+    </div>
+    <div className="text-sm text-text_muted">{project.features.length} core capabilities</div>
+  </div>
+
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3.5 text-left">
+    {project.features.map((feature, index) => (
+      <div key={index} className="flex items-start gap-2.5">
+        <span className="text-[13px] pt-0.5 w-4" >{index+1}{"."}</span>
+        <span className="text-sm text-foreground leading-relaxed">{feature}</span>
+      </div>
+    ))}
+  </div>
+</div>
 
             {/* Floating Media Gallery */}
             {media.length > 0 && (
