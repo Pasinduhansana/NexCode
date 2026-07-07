@@ -62,6 +62,7 @@ import LogimanageVideo from "../../assets/Logistic_project/LogiManage_intro.mp4"
 
 export const showcaseProjects = [
   {
+    featured: true,
     slug: "velmora-travels",
     name: "Velmora Travels",
     type: "Travel Agency Website",
@@ -146,6 +147,7 @@ export const showcaseProjects = [
     },
   },
   {
+    featured: false,
     slug: "student-portfolio-showcase",
     name: "Student Portfolio Showcase",
     type: "Personal Portfolio Website",
@@ -212,6 +214,7 @@ export const showcaseProjects = [
     },
   },
   {
+    featured: true,
     slug: "transport-management-powerbi",
     name: "Employee Transport Management System",
     type: "Power BI Business Intelligence Solution",
@@ -302,6 +305,7 @@ export const showcaseProjects = [
     },
   },
   {
+    featured: true,
     slug: "logimanage",
     name: "LogiManage",
     type: "Logistics Management System",

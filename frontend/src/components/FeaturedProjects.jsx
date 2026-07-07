@@ -88,7 +88,7 @@ function FeaturedProjectCard({ project, idx, onNavigate }) {
 
 export default function FeaturedProjects() {
   const navigate = useNavigate();
-  const featured = showcaseProjects.slice(0, 3);
+  const featured = showcaseProjects.filter((p) => p.featured).slice(0, 3);
 
   return (
     <section className="relative bg-background lg:py-24 overflow-hidden">
