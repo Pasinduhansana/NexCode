@@ -113,9 +113,9 @@ export const showcaseProjects = [
 
     cover: velmoraHomeImg,
 
-    laptop_mockup: [velmoraHomeImg],
+    laptop_mockup: [velmoraHomeImg , velmoraHomeImg],
 
-    phone_mockup: [velmoraMobileImg],
+    phone_mockup: [velmoraMobileImg, velmoraMobileImg],
 
     resources: {
       images: [
@@ -267,9 +267,9 @@ export const showcaseProjects = [
 
     cover: transportHeroImg,
 
-    laptop_mockup: [transportHeroImg],
+    laptop_mockup: [transportHeroImg,transportHeroImg],
 
-    phone_mockup: [transportMobileImg],
+    phone_mockup: [transportMobileImg,transportMobileImg],
 
     resources: {
       images: [
@@ -352,9 +352,9 @@ export const showcaseProjects = [
 
     cover: logisticDashboardImg,
 
-    laptop_mockup: [logisticDashboardImg],
+    laptop_mockup: [logisticDashboardImg,logisticDashboardImg],
 
-    phone_mockup: [gateCheckImg],
+    phone_mockup: [gateCheckImg, gateCheckImg],
 
     resources: {
       images: [
