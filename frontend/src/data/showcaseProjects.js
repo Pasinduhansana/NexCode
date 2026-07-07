@@ -56,7 +56,7 @@ import reportExportImg from "../../assets/Logistic_project/Report_export.webp";
 import securityCheckImg from "../../assets/Logistic_project/Security_Check.webp";
 import securityDashboardImg from "../../assets/Logistic_project/Security_Dashboard.webp";
 import userProfileImg from "../../assets/Logistic_project/User_profile.webp";
-import mobileCoverImg from "../../assets/Logistic_project/mobile_cover.webp";
+import mobileCoverImg from "../../assets/Logistic_project/Mobile_Cover.webp";
 import laptopCoverImg from "../../assets/Logistic_project/coverpage.webp";
 import LogimanageVideo from "../../assets/Logistic_project/LogiManage_intro.mp4";
 
