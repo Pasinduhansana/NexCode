@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import palmLeave from "../../assets/palm-leave.png";
 import project_image from "../../assets/project_image.png";
 import project_image2_mobile from "../../assets/project_image1_mob.png";
@@ -64,6 +64,34 @@ function useParallaxRef(speed = 20) {
   }, [speed]);
 
   return ref;
+}
+
+function BackButton({ fallbackTo = "/showcase" }) {
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    // If there's meaningful browser history, go back to preserve scroll position.
+    // Otherwise (direct link / refresh), fall back to the showcase listing.
+    if (window.history.length > 2) {
+      navigate(-1);
+    } else {
+      navigate(fallbackTo);
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={handleBack}
+      aria-label="Go back"
+      className="fixed top-15 left-4 sm:top-15 sm:left-6 lg:top-20 lg:left-8 z-[70] flex items-center gap-2 rounded-full border border-border bg-card/80 backdrop-blur-md p-2.5 sm:px-4 sm:py-2.5 text-sm font-medium text-foreground shadow-lg transition-all duration-200 hover:bg-card hover:-translate-x-0.5 hover:shadow-xl active:scale-95"
+    >
+      <svg viewBox="0 0 24 24" className="h-4 w-4 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      <span className="hidden sm:inline">Back</span>
+    </button>
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -462,6 +490,11 @@ function App() {
           50% { transform: rotate(2.5deg); }
         }
       `}</style>
+
+      {/* Persistent Back Button — fixed top-left, visible at all scroll positions.
+          Now uses browser history so it returns the user to the exact scroll
+          position they left on /showcase. */}
+      <BackButton fallbackTo="/showcase" />
 
       <div className="flex flex-col h-full -mt-20">
         {/* Hero Section */}
