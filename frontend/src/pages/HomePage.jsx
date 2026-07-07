@@ -26,6 +26,7 @@ import Button from "../components/Button";
 import SelectionLable from "../components/SectionLabel";
 import SectionLabel from "../components/SectionLabel";
 import OffersBanner from "../components/Offersbanner";
+import FeaturedProjects from "../components/FeaturedProjects";
 
 const stats = [
   { value: "100%", label: "Client Satisfaction" },
@@ -56,7 +57,7 @@ export default function HomePage() {
       <Hero stats={stats} className="bg-green-800" />
 
       {/* SERVICES PREVIEW */}
-      <section className="bg-background py-16 lg:py-24">
+      <section className="bg-background py-16 lg:py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-10 text-center md:mb-14">
             <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
@@ -95,8 +96,11 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* FEATURED PROJECTS */}
+        <FeaturedProjects />
+
       {/* WHY NEXCODE */}
-      <section className="bg-background py-8 lg:py-24">
+      <section className="bg-background py-8 lg:py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-10 items-center lg:grid-cols-2 lg:gap-16">
             {/* LEFT CONTENT (TEXT FIRST ON MOBILE, NORMAL ON DESKTOP) */}
