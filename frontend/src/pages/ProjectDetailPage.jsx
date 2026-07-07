@@ -605,7 +605,7 @@ function App() {
                 </div>
 
                 <div className="flex flex-wrap gap-2.5">
-                  {project.stack.slice(0, 5).map((tech) => (
+                  {project.stack.map((tech) => (
                     <span key={tech} className="px-3.5 py-1.5 rounded-full bg-none text-[12px] font-medium text-foreground border border-border_hard">
                       {tech}
                     </span>

@@ -347,9 +347,9 @@ export const showcaseProjects = [
     ],
     relatedSlugs: ["velmora-travels", "student-portfolio-showcase"],
 
-    stack: ["Power BI", "Power Query", "DAX", "SQL", "Microsoft Excel", "HTML/CSS for embedded dashboards"],
+    stack: ["React.js", "Vite", "JavaScript", "CSS3", "Node.js", "Express.js", "MongoDB", "JWT Authentication", "Role-Based Access Control (RBAC)"],
 
-    results: ["Automated transport reporting", "Centralized employee assignments", "Interactive management dashboards"],
+    results: ["SAP-integrated logistics workflows", "Centralized shipment management", "Real-time logistics tracking"],
 
     color: "from-blue-600 to-cyan-500",
 
