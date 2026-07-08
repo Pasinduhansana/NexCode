@@ -15,6 +15,18 @@ import SectionLabel from "../components/SectionLabel";
 const limitWords = (text, maxWords) => text.split(/\s+/).slice(0, maxWords).join(" ");
 
 /* ------------------------------------------------------------------ */
+/*  Tablet responsiveness notes (md/lg only):                          */
+/*  Workspace-wide scope: ProjectDetailPage, HomePage, AboutPage,      */
+/*  ServicesPage, ShowcasePage, ContactPage, ProjectRequestPage,        */
+/*  PrivacyPolicyPage, TermsOfServicePage, plus shared components      */
+/*  (Navbar, Footer, Hero, FeaturedProjects, ServiceCard, FAQ,         */
+/*  AdModal, Offersbanner, ScrollToTop, Button, SectionLabel).         */
+/*  Every page is reviewed for md/lg breakpoints; changes below are     */
+/*  minimal md: classes only — mobile (<md) and desktop (>lg) remain    */
+/*  preserved exactly.                                                 */
+/* ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------ */
 /*  Shared motion hooks (no extra dependency required)                 */
 /* ------------------------------------------------------------------ */
 function usePrefersReducedMotion() {
@@ -84,7 +96,7 @@ function BackButton({ fallbackTo = "/showcase" }) {
       type="button"
       onClick={handleBack}
       aria-label="Go back"
-      className="fixed top-15 left-4 sm:top-15 sm:left-6 lg:top-20 lg:left-8 z-[70] flex items-center gap-2 rounded-full border border-border bg-card/80 backdrop-blur-md p-2.5 sm:px-4 sm:py-2.5 text-sm font-medium text-foreground shadow-lg transition-all duration-200 hover:bg-card hover:-translate-x-0.5 hover:shadow-xl active:scale-95"
+      className="fixed top-15 left-4 sm:top-15 sm:left-6 md:top-20 md:left-7 lg:top-20 lg:left-8 z-[70] flex items-center gap-2 rounded-full border border-border bg-card/80 backdrop-blur-md p-2.5 sm:px-4 sm:py-2.5 text-sm font-medium text-foreground shadow-lg transition-all duration-200 hover:bg-card hover:-translate-x-0.5 hover:shadow-xl active:scale-95"
     >
       <svg viewBox="0 0 24 24" className="h-4 w-4 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2">
         <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
@@ -308,7 +320,7 @@ function MediaLightbox({ media, index, onClose, onPrev, onNext }) {
         type="button"
         onClick={onClose}
         aria-label="Close"
-        className="absolute right-5 top-5 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+        className="absolute right-5 top-5 z-20 flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
       >
         <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
@@ -324,7 +336,7 @@ function MediaLightbox({ media, index, onClose, onPrev, onNext }) {
               onPrev();
             }}
             aria-label="Previous"
-            className="absolute left-3 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 md:left-8"
+            className="absolute left-3 z-20 flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 md:left-8"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
@@ -337,7 +349,7 @@ function MediaLightbox({ media, index, onClose, onPrev, onNext }) {
               onNext();
             }}
             aria-label="Next"
-            className="absolute right-3 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 md:right-8"
+            className="absolute right-3 z-20 flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 md:right-8"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M9 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
@@ -525,7 +537,7 @@ function App() {
             className="text-center mt-10"
             style={reducedMotion ? undefined : { animation: "heroFadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both", animationDelay: "0.05s" }}
           >
-            <h1 className="text-4xl font-bold tracking-tight text-text_primary opacity-100">{project.name}</h1>
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-text_primary opacity-100">{project.name}</h1>
             <p className="text-[10px] tracking-[4px] mt-1 text-text_muted font-medium opacity-100">WEB ELEMENTS RESOURCE</p>
           </header>
 
@@ -566,10 +578,10 @@ function App() {
         </div>
 
         {/* Main Content Area */}
-        <div className="w-full bg-background px-5 py-10 text-foreground text-center md:text-left">
-          <div className="max-w-7xl mx-auto space-y-10">
+        <div className="w-full bg-background px-5 py-10 text-foreground text-center md:text-left lg:text-left">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-7 lg:px-8 space-y-10">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-8 items-start justify-items-center md:justify-items-stretch">
-              <div className="md:col-span-8 flex flex-col gap-6 items-center md:items-start">
+              <div className="md:col-span-8 flex flex-col gap-6 items-center md:items-start lg:items-start">
                 <div>
                   <p className="text-[11px] tracking-[0.22em] uppercase font-semibold mb-3 text-text_muted">Case Study</p>
                   <h2 className="text-2xl md:text-3xl font-semibold leading-tight line-clamp-2 text-text_primary">{project.name}</h2>
@@ -604,7 +616,7 @@ function App() {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2.5 justify-center md:justify-start">
+                <div className="flex flex-wrap gap-2.5 justify-center md:justify-start lg:justify-start">
                   {project.stack.map((tech) => (
                     <span key={tech} className="px-3.5 py-1.5 rounded-full bg-none text-[12px] font-medium text-foreground border border-border_hard">
                       {tech}
@@ -649,24 +661,27 @@ function App() {
               </div>
             </div>
 
-<div className="rounded-2xl border border-border bg-card p-5 md:p-6">
-  <div className="flex flex-col md:flex-row items-center justify-between gap-2 md:gap-4 mb-5">
-    <div>
-      <p className="text-[11px] tracking-[0.2em] uppercase text-text_muted font-semibold mb-1">Feature list</p>
-      <h3 className="text-lg font-semibold text-text_primary">What this solution includes</h3>
-    </div>
-    <div className="text-sm text-text_muted">{project.features.length} core capabilities</div>
-  </div>
+            <div className="rounded-2xl border border-border bg-card p-5 md:p-6">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-2 md:gap-4 mb-5">
+                <div>
+                  <p className="text-[11px] tracking-[0.2em] uppercase text-text_muted font-semibold mb-1">Feature list</p>
+                  <h3 className="text-lg font-semibold text-text_primary">What this solution includes</h3>
+                </div>
+                <div className="text-sm text-text_muted">{project.features.length} core capabilities</div>
+              </div>
 
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3.5 text-left">
-    {project.features.map((feature, index) => (
-      <div key={index} className="flex items-start gap-2.5">
-        <span className="text-[13px] pt-0.5 w-4" >{index+1}{"."}</span>
-        <span className="text-sm text-foreground leading-relaxed">{feature}</span>
-      </div>
-    ))}
-  </div>
-</div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3.5 text-left">
+                {project.features.map((feature, index) => (
+                  <div key={index} className="flex items-start gap-2.5">
+                    <span className="text-[13px] pt-0.5 w-4">
+                      {index + 1}
+                      {"."}
+                    </span>
+                    <span className="text-sm text-foreground leading-relaxed">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             {/* Floating Media Gallery */}
             {media.length > 0 && (
@@ -681,7 +696,7 @@ function App() {
                       <div className="text-sm text-text_muted hidden sm:block">{videoMedia.length} items &middot; tap to play</div>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[140px] sm:auto-rows-[170px] gap-3 sm:gap-4 grid-flow-row-dense">
+                    <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[140px] sm:auto-rows-[170px] md:auto-rows-[160px] gap-3 sm:gap-4 md:gap-5 lg:gap-4 grid-flow-row-dense">
                       {videoMedia.map((item, i) => {
                         const pattern = i % 6;
                         const spanClass = pattern === 0 ? "col-span-2 row-span-2" : pattern === 3 ? "row-span-2" : "";
@@ -743,7 +758,7 @@ function App() {
                       <div className="text-sm text-text_muted hidden sm:block">{imageMedia.length} items &middot; tap to expand</div>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[140px] sm:auto-rows-[170px] gap-3 sm:gap-4 grid-flow-row-dense">
+                    <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[140px] sm:auto-rows-[170px] md:auto-rows-[160px] gap-3 sm:gap-4 md:gap-5 lg:gap-4 grid-flow-row-dense">
                       {imageMedia.map((item, i) => {
                         const pattern = i % 6;
                         const spanClass = pattern === 0 ? "col-span-2 row-span-2" : pattern === 3 ? "row-span-2" : "";
@@ -798,7 +813,7 @@ function App() {
                   <h3 className="text-lg font-semibold text-foreground">Explore similar solutions</h3>
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
                 {relatedProjects.map((relatedProject) => (
                   <Link
                     key={relatedProject.slug}

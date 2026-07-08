@@ -308,7 +308,7 @@ export default function ServicesPage() {
 
         <motion.div
           style={{ y: heroY, opacity: heroOpacity }}
-          className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-24 pb-16 sm:pb-24 text-center md:text-left"
+          className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-7 lg:px-8 pt-24 sm:pt-24 pb-16 sm:pb-24 text-center md:text-left lg:text-left"
         >
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.9fr] gap-12 lg:gap-16 items-center">
             {/* ── Left: headline ── */}
@@ -432,7 +432,7 @@ export default function ServicesPage() {
           </div>
 
           {/* 4-col grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 md:grid-cols-2 md:gap-5 lg:grid-cols-3 xl:grid-cols-4">
             {services.map((svc, i) => (
               <ServiceCard key={svc.id} service={svc} index={i} onSelect={setSelected} />
             ))}
@@ -617,7 +617,7 @@ export default function ServicesPage() {
             {/* Desktop connector line */}
             <div className="hidden lg:block absolute top-[3.4rem] left-[calc(12.5%+2rem)] right-[calc(12.5%+2rem)] h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 md:gap-6 lg:grid-cols-4 gap-8">
               {PROCESS.map((step, i) => (
                 <motion.div
                   key={i}

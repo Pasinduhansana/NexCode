@@ -111,7 +111,7 @@ export default function AboutPage() {
           />
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center md:text-left">
+        <div className="flex flex-col md:flex-row justify-between items-center mx-auto max-w-7xl px-4 sm:px-6 md:px-7 lg:px-8 text-center md:text-left">
           <div className="relative z-10 w-auto  flex flex-col items-start md:justify-start justify-center text-center md:text-left pt-24 pb-12 md:pb-24">
             <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0} className="mx-auto md:ml-0">
               <SectionLabel icon={HiSparkles} content={"About NexCode"}/>
@@ -193,7 +193,7 @@ export default function AboutPage() {
           § 3 MISSION & VISION — Bento layout cards
       ────────────────────────────────────────────────────────────── */}
       <section className="py-10 md:py-24 bg-page-alt border-y border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-7 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             {/* Mission Card */}
             <motion.div
@@ -257,7 +257,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 md:gap-5 lg:grid-cols-4 gap-6">
             {values.map((v, i) => (
               <motion.div
                 key={i}
@@ -292,7 +292,7 @@ export default function AboutPage() {
           }}
         />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 md:px-7 text-center text-white">
           <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
             <h2 className="font-display font-extrabold mb-5 tracking-tight leading-[1.1]" style={{ fontSize: "clamp(2.2rem, 5.5vw, 3.8rem)" }}>
               Ready to Partner <br />
