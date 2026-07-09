@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react"; 
+import { useState, useEffect } from "react";
 import {
   HiGlobe,
   HiDeviceMobile,
@@ -58,7 +58,7 @@ export default function HomePage() {
 
       {/* SERVICES PREVIEW */}
       <section className="bg-background py-16 lg:py-12">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-7 lg:px-8">
           <div className="mb-10 text-center md:mb-14">
             <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
               <SectionLabel content="Our Services" />
@@ -80,7 +80,7 @@ export default function HomePage() {
             </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 md:grid-cols-2 md:gap-5 lg:grid-cols-3 xl:grid-cols-4">
             {services.map((s, i) => (
               <ServiceCard key={i} {...s} index={i} />
             ))}
@@ -102,22 +102,22 @@ export default function HomePage() {
       {/* WHY NEXCODE */}
       <section className="bg-background py-8 lg:py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-10 items-center lg:grid-cols-2 lg:gap-16">
+          <div className="grid grid-cols-1 gap-10 items-center md:grid-cols-2 md:gap-12 lg:grid-cols-2 lg:gap-16">
             {/* LEFT CONTENT (TEXT FIRST ON MOBILE, NORMAL ON DESKTOP) */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="order-1 text-left lg:text-left flex flex-col"
+              className="order-1 text-left md:text-left lg:text-left flex flex-col"
             >
               <SectionLabel content="Why Choose Us?" />
 
-              <h2 className="section-title mb-6 text-center lg:text-left">
+              <h2 className="section-title mb-6 text-center md:text-left lg:text-left">
                 We Build Products That <br className="hidden sm:block" />
                 <span className="gradient-text">Actually Work</span>
               </h2>
 
-              <p className="section-subtitle mb-8 leading-relaxed text-gray-500 text-center lg:text-left">
+              <p className="section-subtitle mb-8 leading-relaxed text-gray-500 text-center md:text-left lg:text-left">
                 We're not just developers — we're digital partners who care about your success. Our team brings together expertise, creativity, and
                 technical excellence to deliver solutions that drive real business outcomes.
               </p>
@@ -168,7 +168,7 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div className="mb-8 grid grid-cols-2 gap-4">
+                  <div className="mb-8 grid grid-cols-2 gap-4 md:gap-5">
                     {stats.map((s, i) => (
                       <div key={i} className="rounded-2xl bg-white/10 p-4 text-center">
                         <div className="font-display text-2xl font-bold">{s.value}</div>
@@ -232,7 +232,7 @@ export default function HomePage() {
       <section className="py-8 lg:py-20 bg-hero-gradient dark-grid">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 className="font-display section-title text-3xl md:text-4xl font-bold  mb-4">
+            <h2 className="font-display section-title text-3xl md:text-4xl md:text-[2.5rem] font-bold  mb-4">
               Let's Build Your Next <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">Digital Project!</span>
             </h2>
             <p className="text-gray-500 mb-8 text-lg">Have an idea? Let's turn it into reality. Get a free consultation today.</p>
