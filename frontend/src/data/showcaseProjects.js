@@ -92,6 +92,7 @@ import BuildBit_POS_expenses from "../../assets/BuildBit_POS/expenses.webp";
 import BuildBit_POS_reports2 from "../../assets/BuildBit_POS/reports2.webp";
 import BuildBit_POS_settings from "../../assets/BuildBit_POS/settings.webp";
 import BuildBit_POS_notification from "../../assets/BuildBit_POS/notification.webp";
+import BuildBit_POS_Video from "../../assets/BuildBit_POS/Buildbit_Pos_Intro.mp4";
 
 export const showcaseProjects = [
   // {
@@ -160,7 +161,7 @@ export const showcaseProjects = [
     featured: true,
     slug: "velmora-travels",
     name: "Velmora Travels",
-    type: "Travel Agency Website",
+    type: "Personal Branding Platform",
     summary: `Velmora Travels is a premium travel agency website developed by NexCode to deliver a modern digital experience for travelers seeking unforgettable journeys. The platform showcases curated tour packages, popular destinations, travel experiences, and personalized travel services through a visually immersive interface. Designed with cinematic animations, responsive layouts, and high-performance architecture, the website focuses on inspiring visitors while simplifying the journey from destination discovery to booking inquiries. By combining elegant UI/UX with modern web technologies, Velmora Travels strengthens the agency's online presence, increases customer engagement, and provides a seamless experience across desktop and mobile devices.`,
 
     whatIs:
@@ -248,7 +249,7 @@ export const showcaseProjects = [
 
     name: "Thineth Villa",
 
-    type: "Luxury Villa Booking Website",
+    type: "Personal Branding Platform",
 
     summary: `Thineth Villa is a modern, premium villa booking website designed to provide an elegant online experience for luxury accommodation providers. The platform showcases exclusive villas through immersive visuals, responsive layouts, and smooth user interactions while allowing visitors to explore destinations, amenities, and booking information with ease. Built with a clean, high-end UI inspired by modern hospitality brands, the website strengthens brand identity, improves customer engagement, and delivers a seamless booking experience across desktop and mobile devices.`,
 
@@ -335,7 +336,7 @@ export const showcaseProjects = [
     featured: true,
     slug: "transport-management-powerbi",
     name: "Employee Transport Management System",
-    type: "Power BI Business Intelligence Solution",
+    type: "Business Intelligence Solution",
     summary: `Employee Transport Management System is an enterprise Power BI solution developed by NexCode to streamline employee transportation operations within an organization. The platform centralizes employee records, transport routes, vehicles, drivers, and seat allocations into a unified reporting environment. Interactive dashboards provide real-time visibility into transport utilization, route efficiency, employee assignments, and operational performance. Designed for internal organizational use, the solution enables transport administrators and management teams to make informed decisions through data-driven insights while simplifying day-to-day transport administration.`,
 
     whatIs:
@@ -415,7 +416,7 @@ export const showcaseProjects = [
     featured: true,
     slug: "logimanage",
     name: "LogiManage",
-    type: "Logistics Management System",
+    type: "E-Commerce",
 
     summary: `LogiManage is a comprehensive logistics management system developed to streamline shipment operations through a centralized digital platform. The system enables Security Officers, Logistics Officers, and Quality Officers to collaborate efficiently using role-based access control. It manages the complete shipment lifecycle, from request creation and verification to quality inspection and final dispatch. Built with a modern, responsive interface and secure authentication, LogiManage improves operational efficiency, minimizes paperwork, enhances shipment visibility, and ensures seamless coordination between departments.`,
 
@@ -543,7 +544,7 @@ export const showcaseProjects = [
     featured: false,
     slug: "student-portfolio-showcase",
     name: "Student Portfolio Showcase",
-    type: "Personal Portfolio Website",
+    type: "Personal Branding Platform",
     summary: `Student Portfolio Showcase is a modern personal branding platform developed by NexCode for university students, fresh graduates, and aspiring professionals. The platform helps individuals present their projects, technical skills, achievements, certifications, and experience in a professional online portfolio. Each portfolio is designed with a strong focus on storytelling, performance, responsive design, and recruiter-friendly presentation, enabling students to stand out during internships, job applications, and freelance opportunities. By combining clean UI/UX with modern web technologies, the platform transforms traditional resumes into interactive digital experiences that effectively showcase technical capability and personal branding.`,
     whatIs: "A modern portfolio website that helps students showcase their skills, projects, achievements, and professional journey.",
     whyDeveloped:
@@ -609,7 +610,7 @@ export const showcaseProjects = [
     featured: true,
     slug: "buildbit-hardware-pos",
     name: "BuildBit POS — Hardware POS",
-    type: "Point of Sale (POS) / Business Management Web App",
+    type: "E-Commerce",
 
     summary: `BuildBit POS is a premium, web-based Point of Sale system developed by NexCode for Sri Lankan hardware and building-materials retailers. The platform brings a modern, Apple-quality interface to an industry still running on spreadsheets and legacy software, giving store owners a single dashboard to manage sales, inventory, purchasing, suppliers, and customers in real time. Designed around a fast, distraction-free checkout flow and a clean, data-rich dashboard, BuildBit POS turns everyday hardware retail operations — from ringing up cement and PVC pipe to tracking low-stock power tools — into a smooth, professional digital experience for cashiers and managers alike.`,
     whatIs:
@@ -651,7 +652,6 @@ export const showcaseProjects = [
     resources: {
       images: [
         { url: BuildBit_POS_dashboard_light, caption: "Dashboard (Light)" },
-
         { url: BuildBit_POS_mobile_light, caption: "Mobile POS (Light)" },
         { url: BuildBit_POS_customers, caption: "Customers" },
         { url: BuildBit_POS_pos, caption: "POS Checkout" },
@@ -665,6 +665,14 @@ export const showcaseProjects = [
         { url: BuildBit_POS_notification, caption: "Notifications" },
         { url: BuildBit_POS_settings, caption: "Settings" },
       ],
+            videos: [
+        {
+          url: BuildBit_POS_Video,
+          thumbnail: BuildBit_POS_dashboard_light,
+          caption: "BuildBit POS Management System walkthrough",
+        },
+      ],
+
     },
   },
 ];
