@@ -76,6 +76,23 @@ import thinethTestimonialImg from "../../assets/Thineth_Villa/testimonial.webp";
 import thinethmobileImg from "../../assets/Thineth_Villa/mobilecover.webp";
 import thinethVideo from "../../assets/Thineth_Villa/Thineth_Promo.mp4";
 
+// Hardware Store Management System (BuildBit POS) assets
+import BuildBit_POS_dashboard_dark from "../../assets/BuildBit_POS/dashboard_dark.webp";
+import BuildBit_POS_dashboard_light from "../../assets/BuildBit_POS/dashboard_light.webp";
+import BuildBit_POS_pos from "../../assets/BuildBit_POS/pos.webp";
+import BuildBit_POS_mobile_dark from "../../assets/BuildBit_POS/mobile_dark.webp";
+import BuildBit_POS_mobile_light from "../../assets/BuildBit_POS/mobile_light.webp";
+import BuildBit_POS_customers from "../../assets/BuildBit_POS/customers.webp";
+import BuildBit_POS_suppliers from "../../assets/BuildBit_POS/suppliers.webp";
+import BuildBit_POS_inventory from "../../assets/BuildBit_POS/inventory.webp";
+import BuildBit_POS_invoices from "../../assets/BuildBit_POS/invoices.webp";
+import BuildBit_POS_purchases from "../../assets/BuildBit_POS/purchases.webp";
+import BuildBit_POS_sales_history from "../../assets/BuildBit_POS/sales_history.webp";
+import BuildBit_POS_expenses from "../../assets/BuildBit_POS/expenses.webp";
+import BuildBit_POS_reports2 from "../../assets/BuildBit_POS/reports2.webp";
+import BuildBit_POS_settings from "../../assets/BuildBit_POS/settings.webp";
+import BuildBit_POS_notification from "../../assets/BuildBit_POS/notification.webp";
+
 export const showcaseProjects = [
   // {
   //   featured: false,
@@ -585,6 +602,68 @@ export const showcaseProjects = [
           thumbnail: heroDarkImg,
           caption: "Student Portfolio Showcase walkthrough",
         },
+      ],
+    },
+  },
+  {
+    featured: true,
+    slug: "buildbit-hardware-pos",
+    name: "BuildBit POS — Hardware POS",
+    type: "Point of Sale (POS) / Business Management Web App",
+
+    summary: `BuildBit POS is a premium, web-based Point of Sale system developed by NexCode for Sri Lankan hardware and building-materials retailers. The platform brings a modern, Apple-quality interface to an industry still running on spreadsheets and legacy software, giving store owners a single dashboard to manage sales, inventory, purchasing, suppliers, and customers in real time. Designed around a fast, distraction-free checkout flow and a clean, data-rich dashboard, BuildBit POS turns everyday hardware retail operations — from ringing up cement and PVC pipe to tracking low-stock power tools — into a smooth, professional digital experience for cashiers and managers alike.`,
+    whatIs:
+      "A premium, fully responsive POS and store-management web app purpose-built for hardware stores, covering sales, inventory, purchasing, suppliers, and reporting.",
+    whyDeveloped:
+      "To replace manual, spreadsheet-based billing and stock tracking in hardware stores with a fast, modern, recruiter-and-client-impressive digital system that scales from a single counter to a multi-branch operation.",
+    businessValue:
+      "Speeds up checkout, reduces stock-outs and manual errors, gives owners real-time visibility into sales and inventory, and presents a professional, trustworthy interface to staff and customers.",
+    challengeBefore:
+      "Hardware store owners typically relied on manual ledgers, generic spreadsheets, or outdated desktop billing software that lacked real-time stock visibility, proper reporting, and any kind of modern, intuitive interface.",
+    features: [
+      "Modern animated dashboard with sales, profit & stock analytics",
+      "Fast POS checkout with category filters & live product search",
+      "Cart system with per-item & order-level discounts",
+      "Multi-method checkout modal (Cash, Card, Bank Transfer, QR) with numeric keypad",
+      "Hold / resume draft orders",
+      "Product, category & inventory management (CRUD)",
+      "Low-stock & out-of-stock alerts",
+      "Purchase orders & supplier management",
+      "Customer directory with purchase history",
+      "Sales history, invoices & returns tracking",
+      "Expense tracking",
+      "Sales, inventory & best-seller reports",
+      "Dark mode, collapsible sidebar & full responsiveness",
+    ],
+    outcomes: [
+      "Faster, error-free checkout process",
+      "Real-time inventory visibility",
+      "Professional, modern retail experience",
+      "Centralized control over sales, stock & suppliers",
+    ],
+    relatedSlugs: ["transport-management-powerbi", "logimanage"],
+    stack: ["React (Vite)", "Tailwind CSS", "Framer Motion", "React Router", "Context API"],
+    results: ["Streamlined store operations", "Reduced manual billing errors", "Modern, mobile-friendly POS experience"],
+    color: "from-orange-500 to-amber-600",
+    cover: BuildBit_POS_dashboard_light,
+    laptop_mockup: [BuildBit_POS_dashboard_light, BuildBit_POS_dashboard_dark],
+    phone_mockup: [BuildBit_POS_mobile_light, BuildBit_POS_mobile_dark],
+    resources: {
+      images: [
+        { url: BuildBit_POS_dashboard_light, caption: "Dashboard (Light)" },
+
+        { url: BuildBit_POS_mobile_light, caption: "Mobile POS (Light)" },
+        { url: BuildBit_POS_customers, caption: "Customers" },
+        { url: BuildBit_POS_pos, caption: "POS Checkout" },
+        { url: BuildBit_POS_suppliers, caption: "Suppliers" },
+        { url: BuildBit_POS_inventory, caption: "Inventory" },
+        { url: BuildBit_POS_expenses, caption: "Expenses" },
+        { url: BuildBit_POS_purchases, caption: "Purchases" },
+        { url: BuildBit_POS_sales_history, caption: "Sales History" },
+        { url: BuildBit_POS_invoices, caption: "Invoices" },
+        { url: BuildBit_POS_reports2, caption: "Reports" },
+        { url: BuildBit_POS_notification, caption: "Notifications" },
+        { url: BuildBit_POS_settings, caption: "Settings" },
       ],
     },
   },
