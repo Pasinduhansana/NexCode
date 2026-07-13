@@ -74,71 +74,71 @@ import thinethPackageOpenImg from "../../assets/Thineth_Villa/packageopen.webp";
 import thinethPackagesImg from "../../assets/Thineth_Villa/packages.webp";
 import thinethTestimonialImg from "../../assets/Thineth_Villa/testimonial.webp";
 import thinethmobileImg from "../../assets/Thineth_Villa/mobilecover.webp";
-// import thinethVideo from "../../assets/Thineth_Villa/Thineth Villa Intro.mp4";
+import thinethVideo from "../../assets/Thineth_Villa/Thineth_Promo.mp4";
 
 export const showcaseProjects = [
-  {
-    featured: false,
+  // {
+  //   featured: false,
 
-    slug: "bashita-ceramic-inventory",
+  //   slug: "bashita-ceramic-inventory",
 
-    name: "Bashita Ceramic Inventory",
+  //   name: "Bashita Ceramic Inventory",
 
-    type: "Inventory Management System",
+  //   type: "Inventory Management System",
 
-    summary: `Bashita Ceramic Inventory is a modern inventory management system developed to streamline stock operations for a ceramic manufacturing and distribution business. The platform centralizes product inventory, stock movements, supplier information, and inventory reporting into a single digital solution. Designed with an intuitive interface and real-time inventory tracking, the system minimizes manual record keeping, improves stock visibility, and enables faster operational decision-making. By digitizing inventory processes, the platform helps businesses maintain accurate stock levels, reduce inventory discrepancies, and improve overall warehouse efficiency.`,
+  //   summary: `Bashita Ceramic Inventory is a modern inventory management system developed to streamline stock operations for a ceramic manufacturing and distribution business. The platform centralizes product inventory, stock movements, supplier information, and inventory reporting into a single digital solution. Designed with an intuitive interface and real-time inventory tracking, the system minimizes manual record keeping, improves stock visibility, and enables faster operational decision-making. By digitizing inventory processes, the platform helps businesses maintain accurate stock levels, reduce inventory discrepancies, and improve overall warehouse efficiency.`,
 
-    whatIs:
-      "A centralized inventory management system that simplifies stock management, product tracking, supplier management, and inventory reporting for ceramic businesses.",
+  //   whatIs:
+  //     "A centralized inventory management system that simplifies stock management, product tracking, supplier management, and inventory reporting for ceramic businesses.",
 
-    whyDeveloped:
-      "To replace spreadsheet-based inventory management with a centralized web application that improves inventory accuracy, operational efficiency, and stock visibility.",
+  //   whyDeveloped:
+  //     "To replace spreadsheet-based inventory management with a centralized web application that improves inventory accuracy, operational efficiency, and stock visibility.",
 
-    businessValue:
-      "Improves inventory accuracy, reduces stock discrepancies, streamlines warehouse operations, minimizes manual work, and enables data-driven inventory decisions.",
+  //   businessValue:
+  //     "Improves inventory accuracy, reduces stock discrepancies, streamlines warehouse operations, minimizes manual work, and enables data-driven inventory decisions.",
 
-    challengeBefore:
-      "Inventory records were maintained manually, making it difficult to monitor stock availability, track inventory movements, manage suppliers, and generate reliable inventory reports.",
+  //   challengeBefore:
+  //     "Inventory records were maintained manually, making it difficult to monitor stock availability, track inventory movements, manage suppliers, and generate reliable inventory reports.",
 
-    features: [
-      "Real-time inventory dashboard",
-      "invoice management",
-      "Product management",
-      "Category management",
-      "Stock in & stock out management",
-      "Inventory movement tracking",
-      "Supplier management",
-      "Low stock monitoring",
-      "Inventory search & filtering",
-      "Inventory reporting",
-      "Responsive management dashboard",
-      "Role-based authentication",
-      "User profile management",
-      "Secure data management",
-      "Performance-optimized interface",
-    ],
+  //   features: [
+  //     "Real-time inventory dashboard",
+  //     "invoice management",
+  //     "Product management",
+  //     "Category management",
+  //     "Stock in & stock out management",
+  //     "Inventory movement tracking",
+  //     "Supplier management",
+  //     "Low stock monitoring",
+  //     "Inventory search & filtering",
+  //     "Inventory reporting",
+  //     "Responsive management dashboard",
+  //     "Role-based authentication",
+  //     "User profile management",
+  //     "Secure data management",
+  //     "Performance-optimized interface",
+  //   ],
 
-    outcomes: [
-      "Centralized inventory management",
-      "Improved stock accuracy",
-      "Reduced manual inventory processes",
-      "Faster stock monitoring",
-      "Better warehouse visibility",
-      "Improved inventory reporting",
-    ],
+  //   outcomes: [
+  //     "Centralized inventory management",
+  //     "Improved stock accuracy",
+  //     "Reduced manual inventory processes",
+  //     "Faster stock monitoring",
+  //     "Better warehouse visibility",
+  //     "Improved inventory reporting",
+  //   ],
 
-    relatedSlugs: ["transport-management-powerbi", "logimanage"],
+  //   relatedSlugs: ["transport-management-powerbi", "logimanage"],
 
-    stack: ["Next.js", "JavaScript", "Tailwind CSS", "Node.js", "Express.js", "MongoDB", "JWT Authentication"],
+  //   stack: ["Next.js", "JavaScript", "Tailwind CSS", "Node.js", "Express.js", "MongoDB", "JWT Authentication"],
 
-    results: ["Centralized inventory operations", "Real-time stock visibility", "Automated inventory tracking"],
+  //   results: ["Centralized inventory operations", "Real-time stock visibility", "Automated inventory tracking"],
 
-    color: "from-orange-500 to-amber-600",
+  //   color: "from-orange-500 to-amber-600",
 
-    resources: {
-      images: [],
-    },
-  },
+  //   resources: {
+  //     images: [],
+  //   },
+  // },
   {
     featured: true,
     slug: "velmora-travels",
@@ -304,8 +304,13 @@ export const showcaseProjects = [
         { url: thinethImg2, caption: "Web Component Showcase image 2" },
         { url: thinethPackageOpenImg, caption: "Package Selection Page" },
         { url: thinethBookingImg, caption: "Booking Section" },
-
-
+      ],
+      videos: [
+        {
+          url: thinethVideo,
+          thumbnail: thinethHeroImg,
+          caption: "Thineth Villa Site walkthrough",
+        },
       ],
     },
   },

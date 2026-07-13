@@ -4,11 +4,10 @@
  *   light | dark | primary themes via Tailwind semantic tokens.
  */
 import { useEffect, useMemo, useState, useRef } from "react";
-import { motion, AnimatePresence, useMotionValue, useTransform ,useSpring } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import {
-  HiX,
   HiFilter,
   HiChevronRight,
   HiSearch,
@@ -18,9 +17,6 @@ import {
   HiDatabase,
   HiCode,
   HiLightningBolt,
-  HiExternalLink,
-  HiMenu,
-  HiChevronDown,
   HiChevronLeft,
 } from "react-icons/hi";
 import { FaRocket, FaWhatsapp } from "react-icons/fa";
@@ -141,7 +137,7 @@ const scaleIn = {
    ═══════════════════════════════════════════════════════════════════════ */
 
 /** Premium Project Card with hover-active effects */
-function ProjectCard({ project, onNavigate, themeClasses }) {
+function ProjectCard({ project, onNavigate, idx = 0 }) {
   // Extract accent styles from project colors
   const gradientClass = project.color || "from-blue-600 to-indigo-600";
   const rgbValues = gradientClass.includes("cyan") ? "6,182,212" : "54,153,243";
@@ -149,6 +145,7 @@ function ProjectCard({ project, onNavigate, themeClasses }) {
   return (
     <motion.article
       variants={scaleIn}
+      custom={idx}
       whileHover={{ y: -6, transition: { duration: 0.22 } }}
       onClick={() => onNavigate(`/showcase/${project.slug}`)}
       className="group relative flex flex-col rounded-3xl border border-border bg-card overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-card-hover hover:border-primary/45"
@@ -161,7 +158,7 @@ function ProjectCard({ project, onNavigate, themeClasses }) {
         }}
       />
       {/* Media frame */}
-      <div className="relative h-48 lg:h-60 overflow-hidden bg-background">
+      <div className="relative h-48 lg:h-56 overflow-hidden bg-background">
         <img
           src={project.cover}
           alt={project.name}
@@ -197,8 +194,8 @@ function ProjectCard({ project, onNavigate, themeClasses }) {
         {project.results && project.results.length > 0 && (
           <div className="space-y-1.5 mb-5 border-t border-border pt-4">
             <div className="text-[10px] uppercase font-extrabold tracking-widest text-text_muted mb-1">Impact Metrics</div>
-            {project.results.map((result, idx) => (
-              <div key={idx} className="flex items-center gap-2 text-xs font-semibold text-primary">
+            {project.results.map((result, ridx) => (
+              <div key={ridx} className="flex items-center gap-2 text-xs font-semibold text-primary">
                 <HiCheckCircle className="text-sm flex-shrink-0" />
                 <span>{result}</span>
               </div>
@@ -234,9 +231,7 @@ export default function ShowcasePage() {
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedStacks, setSelectedStacks] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const themeClasses = useThemeClasses();
   const heroRef = useRef(null);
@@ -249,16 +244,12 @@ export default function ShowcasePage() {
     setLoading(false);
   }, []);
 
-  // Filter Categories & Tech stacks lists dynamically based on active data
+  // Filter Categories list dynamically based on active data
   const allCategories = useMemo(() => {
     return Array.from(new Set(projects.map((p) => p.type))).sort();
   }, [projects]);
 
-  const allStacks = useMemo(() => {
-    return Array.from(new Set(projects.flatMap((p) => p.stack))).sort();
-  }, [projects]);
-
-  // Main dynamic filter process
+  // Main dynamic filter process (category + keyword search only)
   const filteredProjects = useMemo(() => {
     return projects.filter((project) => {
       const matchSearch =
@@ -269,31 +260,28 @@ export default function ShowcasePage() {
 
       const matchCategory = selectedCategories.length === 0 || selectedCategories.includes(project.type);
 
-      const matchStack = selectedStacks.length === 0 || selectedStacks.some((stk) => project.stack.includes(stk));
-
-      return matchSearch && matchCategory && matchStack;
+      return matchSearch && matchCategory;
     });
-  }, [projects, searchQuery, selectedCategories, selectedStacks]);
+  }, [projects, searchQuery, selectedCategories]);
 
   // Category Filter Toggle Action
   const toggleCategory = (category) => {
     setSelectedCategories((prev) => (prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]));
   };
 
-  // Tech Stack Filter Toggle Action
-  const toggleStack = (stack) => {
-    setSelectedStacks((prev) => (prev.includes(stack) ? prev.filter((s) => s !== stack) : [...prev, stack]));
-  };
-
   // Reset filter settings
   const resetFilters = () => {
     setSelectedCategories([]);
-    setSelectedStacks([]);
     setSearchQuery("");
   };
 
   // Check if any filters are active
-  const hasActiveFilters = selectedCategories.length > 0 || selectedStacks.length > 0 || searchQuery !== "";
+  const hasActiveFilters = selectedCategories.length > 0 || searchQuery !== "";
+
+  // Unique signature so the results grid remounts cleanly on every filter
+  // change — fixes the bug where clearing a category left the grid stuck
+  // invisible even though the cards (and their click targets) were present.
+  const filterSignature = useMemo(() => `${selectedCategories.join("-")}|${searchQuery}`, [selectedCategories, searchQuery]);
 
   // Identify featured projects to spotlight (first 2 projects)
   const spotlightProjects = useMemo(() => {
@@ -323,7 +311,7 @@ export default function ShowcasePage() {
         </div>
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-24 pb-10 md:pb-24">
-          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-10 md:gap-16 items-center">
             {/* Left Column Content */}
             <div className="text-center lg:text-left">
               <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
@@ -336,7 +324,7 @@ export default function ShowcasePage() {
                 animate="show"
                 custom={1}
                 className="font-display font-extrabold text-foreground tracking-tight mb-6 leading-[1.08]"
-                style={{ fontSize: "clamp(2.6rem, 5.5vw, 4.8rem)" }}
+                style={{ fontSize: "clamp(2.4rem, 5.5vw, 4.8rem)" }}
               >
                 Stunning Digital Products,
                 <br />
@@ -360,7 +348,7 @@ export default function ShowcasePage() {
                 initial="hidden"
                 animate="show"
                 custom={3}
-                className="flex flex-col md:flex-row md:flex-wrap gap-3 lg:gap-4 mb-12 justify-center lg:justify-start px-20 lg:px-0"
+                className="flex flex-col md:flex-row md:flex-wrap gap-3 lg:gap-4 mb-12 justify-center lg:justify-start px-6 sm:px-20 lg:px-0"
               >
                 <Button variant="primary" rightIcon={<HiFilter size={16} />} href="#collection" className="w-full lg:w-auto">
                   Start Your Project
@@ -502,7 +490,7 @@ export default function ShowcasePage() {
                       )}
 
                       {/* CTA link to detailed case page */}
-                      <div className="px-16 md:px-0">
+                      <div className="px-6 sm:px-16 md:px-0">
                         <Button
                           varient="primary"
                           rightIcon={<HiChevronRight size={20} />}
@@ -589,7 +577,7 @@ export default function ShowcasePage() {
                                   scale: { delay: 0.2 + ti * 0.1 },
                                   y: { repeat: Infinity, duration: 3.2 + ti * 0.4, ease: "easeInOut" },
                                 }}
-                                className="flex absolute items-center gap-1.5 px-3 z-50 py-1 rounded-full text-[11px] font-medium tracking-tight border border-white/30 bg-white/50 dark:bg-white/10 backdrop-blur-xl shadow-[0_8px_20px_-8px_rgba(0,0,0,0.25)]"
+                                className="hidden sm:flex absolute items-center gap-1.5 px-3 z-50 py-1 rounded-full text-[11px] font-medium tracking-tight border border-white/30 bg-white/50 dark:bg-white/10 backdrop-blur-xl shadow-[0_8px_20px_-8px_rgba(0,0,0,0.25)]"
                                 style={{ ...tooltipsPos[ti], transform: "translateZ(100px)" }}
                               >
                                 <span className="w-1.5 h-1.5 rounded-full" style={{ background: strokeColor }} />
@@ -608,12 +596,12 @@ export default function ShowcasePage() {
       )}
 
       {/* ──────────────────────────────────────────────────────────────
-          § 3 MAIN COLLECTION GRID — Filter sidebar + bento cards list
+          § 3 MAIN COLLECTION — Full-width horizontal filter bar + grid
       ────────────────────────────────────────────────────────────── */}
       <section id="collection" className="py-10 md:py-24 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="flex flex-col items-center text-center mb-16">
+          <div className="flex flex-col items-center text-center mb-10 md:mb-14">
             <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
               <SectionLabel icon={HiDatabase} content="Explore Portfolio" />
             </motion.div>
@@ -621,278 +609,135 @@ export default function ShowcasePage() {
               Featured Case <span className="gradient-text">Showcase</span>
             </h2>
             <p className="text-sm text-text_secondary max-w-lg mt-2.5">
-              Refine our collection by categories, stack, or keywords to inspect specific technologies.
+              Refine our collection by category or keyword to inspect specific case studies.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            {/* Side column: Filtering Controls */}
-            <aside className="hidden lg:block lg:col-span-1">
-              <div className="sticky top-24 bg-card border border-border rounded-3xl p-6 shadow-sm">
-                {/* Heading */}
-                <div className="flex items-center justify-between mb-5 pb-4 border-b border-border">
-                  <h3 className="font-display font-extrabold text-sm text-foreground uppercase tracking-wider">Refine Search</h3>
-                  {hasActiveFilters && (
-                    <Button onClick={resetFilters} variant="link" size="sm" rightIcon={<FaFilterCircleXmark size={16} />}></Button>
-                  )}
-                </div>
-
-                {/* Text search input */}
-                <div className="relative mb-6">
-                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-text_muted">
-                    <HiSearch size={16} />
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="Search stack or keyword..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-border bg-background text-xs text-foreground placeholder-text_muted focus:outline-none focus:border-primary transition-colors"
-                  />
-                </div>
-
-                {/* Category filters */}
-                <div className="mb-6">
-                  <h4 className="text-[10px] font-black uppercase tracking-widest text-text_muted mb-3.5">Categories</h4>
-                  <div className="space-y-2">
-                    {allCategories.map((cat) => {
-                      const isActive = selectedCategories.includes(cat);
-                      return (
-                        <button
-                          key={cat}
-                          onClick={() => toggleCategory(cat)}
-                          className={`w-full flex items-center justify-between text-left px-3 py-2 rounded-xl text-xs font-semibold border transition-all duration-200 ${
-                            isActive
-                              ? "border-primary/40 bg-primary/8 text-primary shadow-sm"
-                              : "border-border bg-background/50 text-text_secondary hover:bg-muted/30"
-                          }`}
-                        >
-                          <span className="truncate">{cat}</span>
-                          <span
-                            className={`text-[9px] px-1.5 py-0.5 rounded-md ${isActive ? "bg-primary/20 text-primary" : "bg-muted text-text_muted"}`}
-                          >
-                            {projects.filter((p) => p.type === cat).length}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Tech stack filters */}
-                <div className="pt-5 border-t border-border">
-                  <h4 className="text-[10px] font-black uppercase tracking-widest text-text_muted mb-3.5">Technologies</h4>
-                  <div className="flex flex-wrap gap-1.5">
-                    {allStacks.map((stk) => {
-                      const isActive = selectedStacks.includes(stk);
-                      return (
-                        <button
-                          key={stk}
-                          onClick={() => toggleStack(stk)}
-                          className={`text-[10px] font-bold px-3 py-1.5 rounded-xl border transition-all duration-200 ${
-                            isActive
-                              ? "border-primary/45 bg-primary/10 text-primary shadow-sm"
-                              : "border-border bg-background/40 text-text_secondary hover:bg-muted/40"
-                          }`}
-                        >
-                          {stk}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            </aside>
-
-            {/* Main project collection grid (col-span 3) */}
-            <main className="lg:col-span-3">
-              {/* Toolbar controls */}
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 pb-5 border-b border-border">
-                <div className="text-left w-full">
-                  <h3 className="font-display font-extrabold text-lg text-foreground leading-none mb-1.5">
-                    {hasActiveFilters ? "Search Results" : "All Case Studies"}
-                  </h3>
-                  <p className="text-xs text-text_muted font-medium">
-                    Found {filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"} matching criteria.
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2 w-full sm:w-auto">
-                  {/* Search box for mobile display */}
-                  <div className="relative flex-1 sm:hidden">
-                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-text_muted pointer-events-none">
-                      <HiSearch size={14} />
-                    </span>
-                    <input
-                      type="text"
-                      placeholder="Search..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-8 pr-3 py-2 rounded-xl border border-border bg-card text-xs text-foreground placeholder-text_muted focus:outline-none"
-                    />
-                  </div>
-
-                  {/* Toggle filter panel on mobile */}
-                  <button
-                    onClick={() => setMobileFiltersOpen(true)}
-                    className="lg:hidden flex items-center gap-1.5 px-4 py-2 border border-border rounded-xl text-xs font-semibold bg-card text-text_secondary hover:bg-muted"
-                  >
-                    <HiFilter /> Filters
-                  </button>
-                </div>
+          {/* Full-width horizontal filter bar */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="mb-10 md:mb-14 rounded-3xl border border-border bg-card/70 backdrop-blur-xl shadow-sm p-4 sm:p-5 md:p-6"
+          >
+            <div className="flex flex-col lg:flex-row lg:items-center gap-4 md:gap-5 lg:gap-6">
+              {/* Search input */}
+              <div className="relative w-full lg:w-72 flex-shrink-0">
+                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-text_muted">
+                  <HiSearch size={16} />
+                </span>
+                <input
+                  type="text"
+                  placeholder="Search stack or keyword..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-border bg-background text-xs text-foreground placeholder-text_muted focus:outline-none focus:border-primary transition-colors"
+                />
               </div>
 
-              {/* Dynamic projects grid */}
-              {loading ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-12">
-                  {[1, 2, 4].map((i) => (
-                    <div key={i} className="animate-pulse rounded-3xl border border-border bg-card overflow-hidden h-[340px] flex flex-col p-6 gap-4">
-                      <div className="bg-muted w-full h-40 rounded-2xl" />
-                      <div className="bg-muted w-2/3 h-5 rounded-md" />
-                      <div className="bg-muted w-full h-12 rounded-md" />
-                    </div>
-                  ))}
-                </div>
-              ) : filteredProjects.length > 0 ? (
-                <motion.div
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true, margin: "-20px" }}
-                  className="grid grid-cols-1 md:grid-cols-2 gap-6"
+              {/* Reset button */}
+              {hasActiveFilters && (
+                <button
+                  type="button"
+                  onClick={resetFilters}
+                  className="flex-shrink-0 inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg border border-border bg-background/60 text-xs font-semibold text-text_secondary hover:text-danger hover:border-danger/40 hover:bg-danger/5 transition-colors"
                 >
-                  {filteredProjects.map((proj, idx) => (
-                    <ProjectCard key={proj.slug} project={proj} onNavigate={navigate} themeClasses={themeClasses} />
-                  ))}
-                </motion.div>
-              ) : (
-                /* Empty state when no filters match */
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-16 px-6 border-2 border-dashed border-border rounded-3xl bg-card"
-                >
-                  <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center text-2xl mx-auto mb-4 text-text_muted">🔍</div>
-                  <h3 className="font-display font-bold text-foreground text-sm mb-4">No Matching Case Studies</h3>
-                  <p className="text-text_secondary mb-6 max-w-lg mx-auto">
-                    Try adjusting your keyword query, selected categories, or active technologies stack to explore other case studies.
-                  </p>
-                  <Button variant="secondary" size="sm" leftIcon={<HiChevronLeft size={20} />} onClick={resetFilters}>
-                    Reset All Filters
-                  </Button>
-                </motion.div>
+                  <FaFilterCircleXmark size={13} /> Clear
+                </button>
               )}
-            </main>
+
+              {/* Divider (desktop / tablet only) */}
+              <div className="hidden lg:block w-px h-8 bg-border flex-shrink-0" />
+              <div className="lg:hidden h-px w-full bg-border" />
+
+              {/* Category chips — wraps on mobile & tablet, single row on desktop */}
+              <div className="flex-1 flex flex-wrap items-center gap-2">
+                <span className="text-[10px] font-black uppercase tracking-widest text-text_muted mr-1 inline-flex items-center gap-1.5 py-1.5">
+                  <HiFilter size={12} /> Categories
+                </span>
+                {allCategories.map((cat) => {
+                  const isActive = selectedCategories.includes(cat);
+                  return (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() => toggleCategory(cat)}
+                      className={`relative z-10 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-bold border transition-all duration-200 ${
+                        isActive
+                          ? "border-primary/50 bg-primary/10 text-primary shadow-sm"
+                          : "border-border bg-background/60 text-text_secondary hover:border-primary/30 hover:bg-muted/40"
+                      }`}
+                    >
+                      {cat}
+                      <span
+                        className={`text-[9px] px-1.5 py-0.5 rounded-full ${isActive ? "bg-primary/20 text-primary" : "bg-muted text-text_muted"}`}
+                      >
+                        {projects.filter((p) => p.type === cat).length}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Toolbar: title + result count */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-6 pb-5 border-b border-border">
+            <div>
+              <h3 className="font-display font-extrabold text-lg text-foreground leading-none mb-1.5">
+                {hasActiveFilters ? "Search Results" : "All Case Studies"}
+              </h3>
+              <p className="text-xs text-text_muted font-medium">
+                Found {filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"} matching criteria.
+              </p>
+            </div>
           </div>
+
+          {/* Full-width projects grid */}
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-12">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="animate-pulse rounded-3xl border border-border bg-card overflow-hidden h-[340px] flex flex-col p-6 gap-4">
+                  <div className="bg-muted w-full h-40 rounded-2xl" />
+                  <div className="bg-muted w-2/3 h-5 rounded-md" />
+                  <div className="bg-muted w-full h-12 rounded-md" />
+                </div>
+              ))}
+            </div>
+          ) : filteredProjects.length > 0 ? (
+            <motion.div key={filterSignature} initial="hidden" animate="show" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredProjects.map((proj, idx) => (
+                <ProjectCard key={proj.slug} project={proj} idx={idx} onNavigate={navigate} themeClasses={themeClasses} />
+              ))}
+            </motion.div>
+          ) : (
+            /* Empty state when no filters match */
+            <motion.div
+              key="empty-state"
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="text-center py-16 px-6 border-2 border-dashed border-border rounded-3xl bg-card"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center text-2xl mx-auto mb-4 text-text_muted">🔍</div>
+              <h3 className="font-display font-bold text-foreground text-sm mb-4">No Matching Case Studies</h3>
+              <p className="text-text_secondary mb-6 max-w-lg mx-auto">
+                Try adjusting your keyword query or selected categories to explore other case studies.
+              </p>
+              <Button variant="secondary" size="sm" leftIcon={<HiChevronLeft size={20} />} onClick={resetFilters}>
+                Reset All Filters
+              </Button>
+            </motion.div>
+          )}
         </div>
       </section>
 
       {/* ──────────────────────────────────────────────────────────────
-          § 4 MOBILE SIDEBAR DRAWERS — Filtering overlay
-      ────────────────────────────────────────────────────────────── */}
-      <AnimatePresence>
-        {mobileFiltersOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setMobileFiltersOpen(false)}
-            className="fixed inset-0 z-[250] bg-black/60 backdrop-blur-xs flex justify-end"
-          >
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "tween", duration: 0.3 }}
-              onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-xs h-full bg-card border-l border-border p-6 overflow-y-auto flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between pb-4 border-b border-border mb-6">
-                  <h3 className="font-display font-extrabold text-sm text-foreground uppercase tracking-wider">Filters</h3>
-                  <button
-                    onClick={() => setMobileFiltersOpen(false)}
-                    className="p-1.5 border border-border rounded-lg hover:bg-muted text-text_muted hover:text-foreground"
-                  >
-                    <HiX size={16} />
-                  </button>
-                </div>
-
-                {/* Categories */}
-                <div className="mb-6">
-                  <h4 className="text-[10px] font-black uppercase tracking-widest text-text_muted mb-3">Categories</h4>
-                  <div className="space-y-1.5">
-                    {allCategories.map((cat) => {
-                      const isActive = selectedCategories.includes(cat);
-                      return (
-                        <button
-                          key={cat}
-                          onClick={() => toggleCategory(cat)}
-                          className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium border text-left ${
-                            isActive ? "border-primary bg-primary/5 text-primary" : "border-border bg-background text-text_secondary"
-                          }`}
-                        >
-                          <span>{cat}</span>
-                          <span className="text-[9px] bg-muted px-1.5 py-0.5 rounded-md text-text_muted">
-                            {projects.filter((p) => p.type === cat).length}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Stacks */}
-                <div className="mb-6 pt-5 border-t border-border">
-                  <h4 className="text-[10px] font-black uppercase tracking-widest text-text_muted mb-3">Technologies</h4>
-                  <div className="flex flex-wrap gap-1.5">
-                    {allStacks.map((stk) => {
-                      const isActive = selectedStacks.includes(stk);
-                      return (
-                        <button
-                          key={stk}
-                          onClick={() => toggleStack(stk)}
-                          className={`text-[9px] font-bold px-2.5 py-1.5 rounded-lg border ${
-                            isActive ? "border-primary bg-primary/10 text-primary" : "border-border bg-background text-text_secondary"
-                          }`}
-                        >
-                          {stk}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-4 border-t border-border">
-                {hasActiveFilters && (
-                  <button
-                    onClick={() => {
-                      resetFilters();
-                      setMobileFiltersOpen(false);
-                    }}
-                    className="w-full py-2.5 rounded-xl border border-border bg-background text-xs font-semibold text-text_secondary hover:bg-muted mb-2"
-                  >
-                    Clear All
-                  </button>
-                )}
-                <button
-                  onClick={() => setMobileFiltersOpen(false)}
-                  className="w-full py-2.5 rounded-xl bg-primary text-white text-xs font-semibold shadow-md"
-                >
-                  Apply Filters
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ──────────────────────────────────────────────────────────────
-          § 5 STANDARDS — Engineering principles
+          § 4 STANDARDS — Engineering principles
       ────────────────────────────────────────────────────────────── */}
       <section className="py-10 md:py-24 bg-page-alt border-t border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
             {/* Left Column info */}
             <div>
               <SectionLabel icon={HiCode} content="NexCode Standards" />
@@ -954,7 +799,7 @@ export default function ShowcasePage() {
                   <span className="w-2.5 h-2.5 rounded-full bg-green-400" />
                   <span className="text-[10px] font-mono text-text_muted ml-2">nexcode-performance.log</span>
                 </div>
-                <div className="font-mono text-xs text-text_muted space-y-2 leading-relaxed">
+                <div className="font-mono text-xs text-text_muted space-y-2 leading-relaxed overflow-x-auto">
                   <div className="text-green-500">// 1. Performance Audit successful</div>
                   <div>&gt; webpack --mode production --profile --json</div>
                   <div className="text-primary">&gt; Chunk loaded: main-js-bundle.js (968kb gzip)</div>
@@ -970,7 +815,7 @@ export default function ShowcasePage() {
       </section>
 
       {/* ──────────────────────────────────────────────────────────────
-          § 6 CTA BANNER — Full-bleed gradients CTA
+          § 5 CTA BANNER — Full-bleed gradients CTA
       ────────────────────────────────────────────────────────────── */}
       <section className="relative py-10 md:py-32 overflow-hidden bg-background">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-700" />
@@ -993,7 +838,7 @@ export default function ShowcasePage() {
           <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
             <SectionLabel icon={HiLightningBolt} content="Build with NexCode" />
 
-            <h2 className="font-display font-extrabold mb-5 tracking-tight leading-[1.1]" style={{ fontSize: "clamp(2.2rem, 5.5vw, 3.8rem)" }}>
+            <h2 className="font-display font-extrabold mb-5 tracking-tight leading-[1.1]" style={{ fontSize: "clamp(2.1rem, 5.5vw, 3.8rem)" }}>
               Let's Collaborate to <br />
               <span className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">Launch Your Platform.</span>
             </h2>
