@@ -11,6 +11,8 @@ import { showcaseProjects } from "../data/showcaseProjects";
 import usePageTitle from "../utils/usePageTitle";
 import Button from "../components/Button";
 import SectionLabel from "../components/SectionLabel";
+import { FaArrowAltCircleLeft } from "react-icons/fa";
+import { HiArrowLeft } from "react-icons/hi";
 
 const limitWords = (text, maxWords) => text.split(/\s+/).slice(0, maxWords).join(" ");
 
@@ -76,34 +78,6 @@ function useParallaxRef(speed = 20) {
   }, [speed]);
 
   return ref;
-}
-
-function BackButton({ fallbackTo = "/showcase" }) {
-  const navigate = useNavigate();
-
-  const handleBack = () => {
-    // If there's meaningful browser history, go back to preserve scroll position.
-    // Otherwise (direct link / refresh), fall back to the showcase listing.
-    if (window.history.length > 2) {
-      navigate(-1);
-    } else {
-      navigate(fallbackTo);
-    }
-  };
-
-  return (
-    <button
-      type="button"
-      onClick={handleBack}
-      aria-label="Go back"
-      className="fixed top-15 left-4 sm:top-15 sm:left-6 md:top-20 md:left-7 lg:top-20 lg:left-8 z-[70] flex items-center gap-2 rounded-full border border-border bg-card/80 backdrop-blur-md p-2.5 sm:px-4 sm:py-2.5 text-sm font-medium text-foreground shadow-lg transition-all duration-200 hover:bg-card hover:-translate-x-0.5 hover:shadow-xl active:scale-95"
-    >
-      <svg viewBox="0 0 24 24" className="h-4 w-4 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-      <span className="hidden sm:inline">Back</span>
-    </button>
-  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -413,6 +387,7 @@ function App() {
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const { theme } = useTheme();
   const reducedMotion = usePrefersReducedMotion();
+  const navigate = useNavigate();
 
   const watermarkRef = useParallaxRef(reducedMotion ? 0 : -34);
   const palmRef = useParallaxRef(reducedMotion ? 0 : 22);
@@ -503,16 +478,12 @@ function App() {
         }
       `}</style>
 
-      {/* Persistent Back Button — fixed top-left, visible at all scroll positions.
-          Now uses browser history so it returns the user to the exact scroll
-          position they left on /showcase. */}
-      <BackButton fallbackTo="/showcase" />
-
       <div className="flex flex-col h-full -mt-20">
         {/* Hero Section */}
         <div
           className={`relative w-full h-full gap-4 md:gap-0 md:pb-0 md:min-h-screen bg-hero-gradient text-white overflow-x-hidden overflow-y-visible flex flex-col items-center justify-between md:py-10 pt-20 px-5 z-10 select-none`}
         >
+
           {/* Background Watermark Text Layer — drifts on scroll for depth */}
           <div
             ref={watermarkRef}
@@ -530,6 +501,24 @@ function App() {
             >
               Overview
             </span>
+          </div>
+
+          <div className="absolute w-full max-w-7xl mx-auto top-10 pt-10 pl-5">
+            <Button
+              variant="ghost"
+              className={"text-text_primary border-border_hard border"}
+              size="sm"
+              onClick={() => {
+                if (window.history.length > 2) {
+                  navigate(-1);
+                } else {
+                  navigate("/showcase");
+                }
+              }}
+              leftIcon={<HiArrowLeft/>}
+            >
+              Back
+            </Button>
           </div>
 
           {/* Brand Header */}

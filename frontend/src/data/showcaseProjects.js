@@ -60,7 +60,85 @@ import mobileCoverImg from "../../assets/Logistic_project/Mobile_Cover.webp";
 import laptopCoverImg from "../../assets/Logistic_project/coverpage.webp";
 import LogimanageVideo from "../../assets/Logistic_project/LogiManage_intro.mp4";
 
+//Importing Thineth Villa assets
+import thinethHeroImg from "../../assets/Thineth_Villa/Landing.webp";
+import thinethBookingImg from "../../assets/Thineth_Villa/booking.webp";
+import thinethContactImg from "../../assets/Thineth_Villa/contactus.webp";
+import thinethFeaturesImg from "../../assets/Thineth_Villa/features.webp";
+import thinethGalleryImg from "../../assets/Thineth_Villa/gallery.webp";
+import thinethGalleryFullImg from "../../assets/Thineth_Villa/galleryfull.webp";
+import thinethImg1 from "../../assets/Thineth_Villa/img1.webp";
+import thinethImg2 from "../../assets/Thineth_Villa/img2.webp";
+import thinethImg4 from "../../assets/Thineth_Villa/img4.webp";
+import thinethPackageOpenImg from "../../assets/Thineth_Villa/packageopen.webp";
+import thinethPackagesImg from "../../assets/Thineth_Villa/packages.webp";
+import thinethTestimonialImg from "../../assets/Thineth_Villa/testimonial.webp";
+import thinethmobileImg from "../../assets/Thineth_Villa/mobilecover.webp";
+import thinethVideo from "../../assets/Thineth_Villa/Thineth_Promo.mp4";
+
 export const showcaseProjects = [
+  // {
+  //   featured: false,
+
+  //   slug: "bashita-ceramic-inventory",
+
+  //   name: "Bashita Ceramic Inventory",
+
+  //   type: "Inventory Management System",
+
+  //   summary: `Bashita Ceramic Inventory is a modern inventory management system developed to streamline stock operations for a ceramic manufacturing and distribution business. The platform centralizes product inventory, stock movements, supplier information, and inventory reporting into a single digital solution. Designed with an intuitive interface and real-time inventory tracking, the system minimizes manual record keeping, improves stock visibility, and enables faster operational decision-making. By digitizing inventory processes, the platform helps businesses maintain accurate stock levels, reduce inventory discrepancies, and improve overall warehouse efficiency.`,
+
+  //   whatIs:
+  //     "A centralized inventory management system that simplifies stock management, product tracking, supplier management, and inventory reporting for ceramic businesses.",
+
+  //   whyDeveloped:
+  //     "To replace spreadsheet-based inventory management with a centralized web application that improves inventory accuracy, operational efficiency, and stock visibility.",
+
+  //   businessValue:
+  //     "Improves inventory accuracy, reduces stock discrepancies, streamlines warehouse operations, minimizes manual work, and enables data-driven inventory decisions.",
+
+  //   challengeBefore:
+  //     "Inventory records were maintained manually, making it difficult to monitor stock availability, track inventory movements, manage suppliers, and generate reliable inventory reports.",
+
+  //   features: [
+  //     "Real-time inventory dashboard",
+  //     "invoice management",
+  //     "Product management",
+  //     "Category management",
+  //     "Stock in & stock out management",
+  //     "Inventory movement tracking",
+  //     "Supplier management",
+  //     "Low stock monitoring",
+  //     "Inventory search & filtering",
+  //     "Inventory reporting",
+  //     "Responsive management dashboard",
+  //     "Role-based authentication",
+  //     "User profile management",
+  //     "Secure data management",
+  //     "Performance-optimized interface",
+  //   ],
+
+  //   outcomes: [
+  //     "Centralized inventory management",
+  //     "Improved stock accuracy",
+  //     "Reduced manual inventory processes",
+  //     "Faster stock monitoring",
+  //     "Better warehouse visibility",
+  //     "Improved inventory reporting",
+  //   ],
+
+  //   relatedSlugs: ["transport-management-powerbi", "logimanage"],
+
+  //   stack: ["Next.js", "JavaScript", "Tailwind CSS", "Node.js", "Express.js", "MongoDB", "JWT Authentication"],
+
+  //   results: ["Centralized inventory operations", "Real-time stock visibility", "Automated inventory tracking"],
+
+  //   color: "from-orange-500 to-amber-600",
+
+  //   resources: {
+  //     images: [],
+  //   },
+  // },
   {
     featured: true,
     slug: "velmora-travels",
@@ -102,7 +180,7 @@ export const showcaseProjects = [
       "Professional presentation of travel services",
     ],
 
-    relatedSlugs: ["student-portfolio-showcase"],
+    relatedSlugs: ["Thineth Villa"],
 
     stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"],
 
@@ -117,7 +195,7 @@ export const showcaseProjects = [
 
     cover: velmoraHomeImg,
 
-    laptop_mockup: [velmoraHomeImg , velmoraHomeImg],
+    laptop_mockup: [velmoraHomeImg, velmoraHomeImg],
 
     phone_mockup: [velmoraMobileImg, velmoraMobileImg],
 
@@ -147,68 +225,91 @@ export const showcaseProjects = [
     },
   },
   {
-    featured: false,
-    slug: "student-portfolio-showcase",
-    name: "Student Portfolio Showcase",
-    type: "Personal Portfolio Website",
-    summary: `Student Portfolio Showcase is a modern personal branding platform developed by NexCode for university students, fresh graduates, and aspiring professionals. The platform helps individuals present their projects, technical skills, achievements, certifications, and experience in a professional online portfolio. Each portfolio is designed with a strong focus on storytelling, performance, responsive design, and recruiter-friendly presentation, enabling students to stand out during internships, job applications, and freelance opportunities. By combining clean UI/UX with modern web technologies, the platform transforms traditional resumes into interactive digital experiences that effectively showcase technical capability and personal branding.`,
+    featured: true,
+
+    slug: "Thineth Villa",
+
+    name: "Thineth Villa",
+
+    type: "Luxury Villa Booking Website",
+
+    summary: `Thineth Villa is a modern, premium villa booking website designed to provide an elegant online experience for luxury accommodation providers. The platform showcases exclusive villas through immersive visuals, responsive layouts, and smooth user interactions while allowing visitors to explore destinations, amenities, and booking information with ease. Built with a clean, high-end UI inspired by modern hospitality brands, the website strengthens brand identity, improves customer engagement, and delivers a seamless booking experience across desktop and mobile devices.`,
+
     whatIs:
-      "A modern portfolio website that helps students showcase their skills, projects, achievements, and professional journey.",
+      "A premium single-page luxury villa booking website that showcases high-end accommodations with an intuitive user experience and modern responsive design.",
+
     whyDeveloped:
-      "To help students build a professional online presence and increase their visibility to recruiters, universities, and potential clients.",
+      "To create a visually stunning hospitality website that helps villa owners present their properties professionally, improve customer engagement, and simplify the online booking journey.",
+
     businessValue:
-      "Strengthens personal branding, improves employability, and provides students with a professional platform to showcase their work.",
+      "Enhances brand credibility, increases customer trust, improves online visibility, delivers an engaging user experience, and encourages direct booking inquiries.",
+
     challengeBefore:
-      "Most students relied on static resumes or generic portfolio templates that failed to effectively demonstrate their technical skills, project experience, and achievements.",
+      "Traditional villa websites often lack modern design, responsive layouts, intuitive navigation, and premium user experiences, resulting in lower customer engagement and reduced booking conversions.",
+
     features: [
-      "Modern responsive design",
-      "Project showcase",
-      "Skills & technology timeline",
-      "Experience & achievements",
-      "Certification gallery",
-      "Research publication section",
-      "Interactive animations",
-      "Contact & social integration",
-      "SEO optimized pages",
-      "Performance optimized",
+      "Premium landing page",
+      "Luxury hero section",
+      "Responsive navigation with smooth scrolling",
+      "Featured villa showcase",
+      "Amenities section",
+      "Interactive image gallery",
+      "About section",
+      "Customer testimonials",
+      "Frequently Asked Questions (FAQ)",
+      "Booking page UI",
+      "Contact section",
+      "Google Maps integration placeholder",
+      "Responsive design",
+      "Modern animations",
+      "Mobile-first interface",
+      "SEO-friendly structure",
+      "Optimized performance",
     ],
+
     outcomes: [
-      "Professional personal branding",
-      "Higher recruiter engagement",
-      "Improved online visibility",
-      "Better presentation of technical projects",
+      "Premium online brand presence",
+      "Improved customer engagement",
+      "Better mobile experience",
+      "Enhanced property presentation",
+      "Professional booking interface",
+      "Improved user experience",
     ],
-    relatedSlugs: ["velmora-travels"],
-    stack: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    results: ["Professional digital identity", "Mobile-first experience", "Fast loading performance"],
-    color: "from-violet-500 to-fuchsia-600",
-    cover: heroImg,
-    laptop_mockup: [heroImg, heroDarkImg],
-    phone_mockup: [Portfolio_mobile, Portfolio_mobile_dark],
+
+    relatedSlugs: ["personal-portfolio", "velmora-travels"],
+
+    stack: ["React", "Vite", "JavaScript", "Tailwind CSS", "Framer Motion", "React Router", "React Icons"],
+
+    results: ["Modern luxury UI", "Responsive user experience", "High-performance frontend"],
+
+    color: "from-emerald-600 to-green-800",
+
+    cover: thinethHeroImg,
+
+    laptop_mockup: [thinethHeroImg, thinethHeroImg],
+
+    phone_mockup: [thinethmobileImg, thinethmobileImg],
+
     resources: {
       images: [
-        { url: heroDarkImg, caption: "Hero Section (Dark)" },
-        { url: aboutDarkImg, caption: "About Section (Dark)" },
-        { url: aboutDarkImg2, caption: "About Section" },
-        { url: experienceDarkImg, caption: "Experience Section (Dark)" },
-        { url: testimonialDarkImg, caption: "Testimonial Section (Dark)" },
-        { url: certificateDarkImg, caption: "Certificate Section (Dark)" },
-        { url: projectSectionDarkImg, caption: "Project Section (Dark)" },
-        { url: project2DarkImg, caption: "Projects Section 2 (Dark)" },
-        { url: project3DarkImg, caption: "Projects Section 3 (Dark)" },
-        { url: project4DarkImg, caption: "Projects Section 4 (Dark)" },
-        { url: heroImg, caption: "Hero Section" },
-        { url: aboutImg2, caption: "About Section" },
-        { url: aboutImg, caption: "About Section" },
-        { url: experienceImg, caption: "Experience Section" },
-        { url: certificateImg, caption: "Certificate Section" },
-        { url: testimonialImg, caption: "Testimonial Section" },
+        { url: thinethHeroImg, caption: "Landing Page" },
+        { url: thinethContactImg, caption: "Contact Page" },
+        { url: thinethFeaturesImg, caption: "Features Page" },
+        { url: thinethImg1, caption: "Web Component Showcase image 1" },
+        { url: thinethTestimonialImg, caption: "Testimonials Section" },
+        { url: thinethGalleryFullImg, caption: "Gallery Full View when Click" },
+        { url: thinethGalleryImg, caption: "Gallery View Page" },
+        { url: thinethImg4, caption: "Web Component Showcase image 4" },
+        { url: thinethPackagesImg, caption: "Packages Section" },
+        { url: thinethImg2, caption: "Web Component Showcase image 2" },
+        { url: thinethPackageOpenImg, caption: "Package Selection Page" },
+        { url: thinethBookingImg, caption: "Booking Section" },
       ],
       videos: [
         {
-          url: portfoliovideo,
-          thumbnail: heroDarkImg,
-          caption: "Student Portfolio Showcase walkthrough",
+          url: thinethVideo,
+          thumbnail: thinethHeroImg,
+          caption: "Thineth Villa Site walkthrough",
         },
       ],
     },
@@ -254,28 +355,17 @@ export const showcaseProjects = [
 
     relatedSlugs: ["velmora-travels", "student-portfolio-showcase"],
 
-    stack: [
-      "Power BI",
-      "Power Query",
-      "DAX",
-      "SQL",
-      "Microsoft Excel",
-      "HTML/CSS for embedded dashboards",
-    ],
+    stack: ["Power BI", "Power Query", "DAX", "SQL", "Microsoft Excel", "HTML/CSS for embedded dashboards"],
 
-    results: [
-      "Automated transport reporting",
-      "Centralized employee assignments",
-      "Interactive management dashboards",
-    ],
+    results: ["Automated transport reporting", "Centralized employee assignments", "Interactive management dashboards"],
 
     color: "from-blue-600 to-cyan-500",
 
     cover: transportHeroImg,
 
-    laptop_mockup: [transportHeroImg,transportHeroImg],
+    laptop_mockup: [transportHeroImg, transportHeroImg],
 
-    phone_mockup: [transportMobileImg,transportMobileImg],
+    phone_mockup: [transportMobileImg, transportMobileImg],
 
     resources: {
       images: [
@@ -359,7 +449,7 @@ export const showcaseProjects = [
 
     cover: laptopCoverImg,
 
-    laptop_mockup: [laptopCoverImg,laptopCoverImg],
+    laptop_mockup: [laptopCoverImg, laptopCoverImg],
 
     phone_mockup: [mobileCoverImg, mobileCoverImg],
 
@@ -432,5 +522,70 @@ export const showcaseProjects = [
       ],
     },
   },
+  {
+    featured: false,
+    slug: "student-portfolio-showcase",
+    name: "Student Portfolio Showcase",
+    type: "Personal Portfolio Website",
+    summary: `Student Portfolio Showcase is a modern personal branding platform developed by NexCode for university students, fresh graduates, and aspiring professionals. The platform helps individuals present their projects, technical skills, achievements, certifications, and experience in a professional online portfolio. Each portfolio is designed with a strong focus on storytelling, performance, responsive design, and recruiter-friendly presentation, enabling students to stand out during internships, job applications, and freelance opportunities. By combining clean UI/UX with modern web technologies, the platform transforms traditional resumes into interactive digital experiences that effectively showcase technical capability and personal branding.`,
+    whatIs: "A modern portfolio website that helps students showcase their skills, projects, achievements, and professional journey.",
+    whyDeveloped:
+      "To help students build a professional online presence and increase their visibility to recruiters, universities, and potential clients.",
+    businessValue:
+      "Strengthens personal branding, improves employability, and provides students with a professional platform to showcase their work.",
+    challengeBefore:
+      "Most students relied on static resumes or generic portfolio templates that failed to effectively demonstrate their technical skills, project experience, and achievements.",
+    features: [
+      "Modern responsive design",
+      "Project showcase",
+      "Skills & technology timeline",
+      "Experience & achievements",
+      "Certification gallery",
+      "Research publication section",
+      "Interactive animations",
+      "Contact & social integration",
+      "SEO optimized pages",
+      "Performance optimized",
+    ],
+    outcomes: [
+      "Professional personal branding",
+      "Higher recruiter engagement",
+      "Improved online visibility",
+      "Better presentation of technical projects",
+    ],
+    relatedSlugs: ["velmora-travels"],
+    stack: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
+    results: ["Professional digital identity", "Mobile-first experience", "Fast loading performance"],
+    color: "from-violet-500 to-fuchsia-600",
+    cover: heroImg,
+    laptop_mockup: [heroImg, heroDarkImg],
+    phone_mockup: [Portfolio_mobile, Portfolio_mobile_dark],
+    resources: {
+      images: [
+        { url: heroDarkImg, caption: "Hero Section (Dark)" },
+        { url: aboutDarkImg, caption: "About Section (Dark)" },
+        { url: aboutDarkImg2, caption: "About Section" },
+        { url: experienceDarkImg, caption: "Experience Section (Dark)" },
+        { url: testimonialDarkImg, caption: "Testimonial Section (Dark)" },
+        { url: certificateDarkImg, caption: "Certificate Section (Dark)" },
+        { url: projectSectionDarkImg, caption: "Project Section (Dark)" },
+        { url: project2DarkImg, caption: "Projects Section 2 (Dark)" },
+        { url: project3DarkImg, caption: "Projects Section 3 (Dark)" },
+        { url: project4DarkImg, caption: "Projects Section 4 (Dark)" },
+        { url: heroImg, caption: "Hero Section" },
+        { url: aboutImg2, caption: "About Section" },
+        { url: aboutImg, caption: "About Section" },
+        { url: experienceImg, caption: "Experience Section" },
+        { url: certificateImg, caption: "Certificate Section" },
+        { url: testimonialImg, caption: "Testimonial Section" },
+      ],
+      videos: [
+        {
+          url: portfoliovideo,
+          thumbnail: heroDarkImg,
+          caption: "Student Portfolio Showcase walkthrough",
+        },
+      ],
+    },
+  },
 ];
-
