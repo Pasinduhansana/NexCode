@@ -60,9 +60,25 @@ import mobileCoverImg from "../../assets/Logistic_project/Mobile_Cover.webp";
 import laptopCoverImg from "../../assets/Logistic_project/coverpage.webp";
 import LogimanageVideo from "../../assets/Logistic_project/LogiManage_intro.mp4";
 
+//Importing Thineth Villa assets
+import thinethHeroImg from "../../assets/Thineth_Villa/Landing.webp";
+import thinethBookingImg from "../../assets/Thineth_Villa/booking.webp";
+import thinethContactImg from "../../assets/Thineth_Villa/contactus.webp";
+import thinethFeaturesImg from "../../assets/Thineth_Villa/features.webp";
+import thinethGalleryImg from "../../assets/Thineth_Villa/gallery.webp";
+import thinethGalleryFullImg from "../../assets/Thineth_Villa/galleryfull.webp";
+import thinethImg1 from "../../assets/Thineth_Villa/img1.webp";
+import thinethImg2 from "../../assets/Thineth_Villa/img2.webp";
+import thinethImg4 from "../../assets/Thineth_Villa/img4.webp";
+import thinethPackageOpenImg from "../../assets/Thineth_Villa/packageopen.webp";
+import thinethPackagesImg from "../../assets/Thineth_Villa/packages.webp";
+import thinethTestimonialImg from "../../assets/Thineth_Villa/testimonial.webp";
+import thinethmobileImg from "../../assets/Thineth_Villa/mobilecover.webp";
+// import thinethVideo from "../../assets/Thineth_Villa/Thineth Villa Intro.mp4";
+
 export const showcaseProjects = [
   {
-    featured: true,
+    featured: false,
 
     slug: "bashita-ceramic-inventory",
 
@@ -268,8 +284,29 @@ export const showcaseProjects = [
 
     color: "from-emerald-600 to-green-800",
 
+    cover: thinethHeroImg,
+
+    laptop_mockup: [thinethHeroImg, thinethHeroImg],
+
+    phone_mockup: [thinethmobileImg, thinethmobileImg],
+
     resources: {
-      images: [],
+      images: [
+        { url: thinethHeroImg, caption: "Landing Page" },
+        { url: thinethContactImg, caption: "Contact Page" },
+        { url: thinethFeaturesImg, caption: "Features Page" },
+        { url: thinethImg1, caption: "Web Component Showcase image 1" },
+        { url: thinethTestimonialImg, caption: "Testimonials Section" },
+        { url: thinethGalleryFullImg, caption: "Gallery Full View when Click" },
+        { url: thinethGalleryImg, caption: "Gallery View Page" },
+        { url: thinethImg4, caption: "Web Component Showcase image 4" },
+        { url: thinethPackagesImg, caption: "Packages Section" },
+        { url: thinethImg2, caption: "Web Component Showcase image 2" },
+        { url: thinethPackageOpenImg, caption: "Package Selection Page" },
+        { url: thinethBookingImg, caption: "Booking Section" },
+
+
+      ],
     },
   },
   {
