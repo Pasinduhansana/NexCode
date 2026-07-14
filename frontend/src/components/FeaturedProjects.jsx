@@ -16,7 +16,7 @@ function FeaturedProjectCard({ project, idx, onNavigate }) {
       whileHover={{ y: -6 }}
       onClick={() => onNavigate(`/showcase/${project.slug}`)}
       className="group relative flex flex-col rounded-xl border border-border bg-card overflow-hidden cursor-pointer
-                 transition-all duration-300 hover:shadow-2xl hover:border-primary/40"
+                 transition-all duration-300 hover:shadow-xl hover:border-primary/40"
     >
       {/* glow on hover */}
       <div
@@ -25,7 +25,7 @@ function FeaturedProjectCard({ project, idx, onNavigate }) {
       />
 
       {/* media */}
-      <div className="relative h-44 sm:h-52 overflow-hidden bg-background">
+      <div className="relative h-48 sm:h-56 overflow-hidden bg-background">
         <img
           src={project.cover}
           alt={project.name}
@@ -45,7 +45,7 @@ function FeaturedProjectCard({ project, idx, onNavigate }) {
 
         {project.results?.[0] && (
           <div
-            className="absolute bottom-3.5 right-3.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg
+            className="absolute hidden bottom-3.5 right-3.5  items-center gap-1.5 px-3 py-1 rounded-lg
                        text-[11px] font-black bg-gradient-to-r from-primary/90 to-blue-500/90 text-white
                        backdrop-blur shadow-md"
           >
@@ -56,10 +56,10 @@ function FeaturedProjectCard({ project, idx, onNavigate }) {
 
       {/* body */}
       <div className="relative z-20 p-5 flex flex-col flex-1">
-        <h3 className="font-extrabold text-[15px] text-foreground mb-1.5 group-hover:text-primary transition-colors duration-200 line-clamp-1">
+        <h3 className="font-semibold text-[15px] text-foreground mb-1.5 group-hover:text-primary transition-colors duration-200 line-clamp-1">
           {project.name}
         </h3>
-        <p className="text-xs text-foreground leading-relaxed mb-4 line-clamp-2 flex-1">{project.summary}</p>
+        <p className="text-xs text-text_secondary leading-relaxed mb-4 line-clamp-2 flex-1">{project.summary}</p>
 
         <div className="flex items-center justify-between pt-3.5 border-t border-border mt-auto">
           <div className="flex flex-wrap gap-1.5">
@@ -88,7 +88,13 @@ function FeaturedProjectCard({ project, idx, onNavigate }) {
 
 export default function FeaturedProjects() {
   const navigate = useNavigate();
-  const featured = showcaseProjects.filter((p) => p.featured).slice(0, 3);
+
+  //if mobile responsive, show only 4 projects, else show 6 projects
+  let featured = showcaseProjects.filter((p) => p.featured).slice(0, 6);
+  const isMobile = window.innerWidth < 768;
+  if (isMobile) {
+    featured = showcaseProjects.filter((p) => p.featured).slice(0, 4);
+  }
 
   return (
     <section className="relative bg-background lg:py-24 overflow-hidden">
@@ -124,7 +130,8 @@ export default function FeaturedProjects() {
               transition={{ duration: 0.55, delay: 0.1 }}
               className="section-subtitle mx-auto max-w-md"
             >
-             A curated showcase of the platforms, dashboards, and digital products we've designed, developed, and delivered from concept to completion.
+              A curated showcase of the platforms, dashboards, and digital products we've designed, developed, and delivered from concept to
+              completion.
             </motion.p>
           </div>
 
