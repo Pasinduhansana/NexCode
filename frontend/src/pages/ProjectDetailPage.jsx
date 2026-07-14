@@ -7,6 +7,7 @@ import laptop_mockup from "../../assets/laptop_mockup.png";
 import phone_mockup from "../../assets/phone_mockup.png";
 import { useTheme } from "../context/ThemeContext";
 import { showcaseProjects } from "../data/showcaseProjects";
+import { normalizeSlug } from "../utils/normalizeSlug";
 
 import usePageTitle from "../utils/usePageTitle";
 import Button from "../components/Button";
@@ -14,7 +15,10 @@ import SectionLabel from "../components/SectionLabel";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 import { HiArrowLeft } from "react-icons/hi";
 
-const limitWords = (text, maxWords) => text.split(/\s+/).slice(0, maxWords).join(" ");
+const limitWords = (text, maxWords) => {
+  if (typeof text !== "string") return "";
+  return text.split(/\s+/).slice(0, maxWords).join(" ");
+};
 
 /* ------------------------------------------------------------------ */
 /*  Tablet responsiveness notes (md/lg only):                          */
@@ -397,10 +401,15 @@ function App() {
 
     const loadProject = async () => {
       if (mounted) {
-        setProject(showcaseProjects.find((item) => item.slug === slug));
+        const normalizedSlug = normalizeSlug(slug);
+        const found = showcaseProjects.find(
+          (item) => normalizeSlug(item.slug) === normalizedSlug
+        );
+        setProject(found);
         setLoading(false);
       }
     };
+
 
     loadProject();
 
@@ -420,11 +429,31 @@ function App() {
   }
 
   if (!project) {
-    return <Navigate to="/showcase" replace />;
+    //Show Back Button
+    return (
+      <div className="flex items-center justify-center p-4">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path
+              fillRule="evenodd"
+              d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+              clipRule="evenodd"
+            />
+          </svg>
+          Back to Showcase
+        </button>
+      </div>
+    );
   }
 
-  const relatedProjects = (project.relatedSlugs ?? [])
-    .map((relatedSlug) => showcaseProjects.find((item) => item.slug === relatedSlug))
+const relatedProjects = (project.relatedSlugs ?? [])
+    .map((relatedSlug) => {
+      const normalizedRelated = normalizeSlug(relatedSlug);
+      return showcaseProjects.find((item) => normalizeSlug(item.slug) === normalizedRelated);
+    })
     .filter(Boolean);
   const summaryText = limitWords(project.summary, 60);
   const whatIsText = limitWords(project.whatIs, 28);
@@ -483,7 +512,6 @@ function App() {
         <div
           className={`relative w-full h-full gap-4 md:gap-0 md:pb-0 md:min-h-screen bg-hero-gradient text-white overflow-x-hidden overflow-y-visible flex flex-col items-center justify-between md:py-10 pt-20 px-5 z-10 select-none`}
         >
-
           {/* Background Watermark Text Layer — drifts on scroll for depth */}
           <div
             ref={watermarkRef}
@@ -515,7 +543,7 @@ function App() {
                   navigate("/showcase");
                 }
               }}
-              leftIcon={<HiArrowLeft/>}
+              leftIcon={<HiArrowLeft />}
             >
               Back
             </Button>
