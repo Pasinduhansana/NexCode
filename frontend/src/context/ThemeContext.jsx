@@ -3,11 +3,11 @@ import { createContext, useContext, useState, useEffect } from 'react';
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('primary');
+  const [theme, setTheme] = useState('light');
 
   // Load theme from localStorage on mount
   useEffect(() => {
-    const savedTheme = localStorage.getItem('nexcode_theme') || 'primary';
+    const savedTheme = localStorage.getItem('nexcode_theme') || 'light';
     setTheme(savedTheme);
   }, []);
 
