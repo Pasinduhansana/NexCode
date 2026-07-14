@@ -42,7 +42,7 @@ function App() {
         <BrowserRouter>
           <ScrollToTop />
 
-          <AdModal open={open} onClose={() => setOpen(false)} startIndex={startIndex} />
+          {/* <AdModal open={open} onClose={() => setOpen(false)} startIndex={startIndex} /> */}
 
           <Toaster
             position="top-right"
