@@ -702,14 +702,14 @@ export default function Hero({ stats = [] }) {
         {/* headline */}
         <h1
           className="text-[clamp(2rem,5.2vw,3rem)] font-bold
-                     leading-[1.2] tracking-tight text-foreground mt-5 md:mt-0"
+                     leading-[1.3] tracking-tight text-foreground mt-5 md:mt-0"
           style={{ fontFamily: "'Syne', sans-serif" }}
         >
-          Ready to Transform<em className="not-italic text-primary"><br/>Your Business?</em>
+          Build Digital Solutions That<em className="not-italic text-primary"><br/>Grow Your Business</em>
         </h1>
 
         <p className="section-subtitle mt-2 md:mt-0">
-          From sleek websites to powerful enterprise systems — NexCode ships software that moves fast, scales further, and delights every user.
+          From modern websites to custom business systems, NexCode helps companies automate operations, improve efficiency, and create better digital experiences for their customers.
         </p>
       </motion.div>
 

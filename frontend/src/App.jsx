@@ -19,6 +19,7 @@ import TermsOfServicePage from './pages/TermsOfServicePage';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import WhatsAppFloat from "./components/WhatsAppFloat";
 
 // Ad Modal
 import AdModal from "./components/AdModal";
@@ -64,6 +65,7 @@ function App() {
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          <WhatsAppFloat />
         </BrowserRouter>
     </ThemeProvider>
   );

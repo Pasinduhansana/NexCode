@@ -94,87 +94,36 @@ import BuildBit_POS_settings from "../../assets/BuildBit_POS/settings.webp";
 import BuildBit_POS_notification from "../../assets/BuildBit_POS/notification.webp";
 import BuildBit_POS_Video from "../../assets/BuildBit_POS/Buildbit_Pos_Intro.mp4";
 
+// Import Bashitha_Ceramic_Inventory assets
+import bashithaActivityImg from "../../assets/Bashitha_Ceramics/activity.webp";
+import bashithaAddProductsImg from "../../assets/Bashitha_Ceramics/add_products.webp";
+import bashithaBillingImg from "../../assets/Bashitha_Ceramics/Billing.webp";
+import bashithaLoginImg from "../../assets/Bashitha_Ceramics/login.webp";
+import bashithaProductListImg from "../../assets/Bashitha_Ceramics/product List.webp";
+import bashithaRegisterImg from "../../assets/Bashitha_Ceramics/register.webp";
+import bashithaReportingImg from "../../assets/Bashitha_Ceramics/reporting.webp";
+import bashithaUserManagementImg from "../../assets/Bashitha_Ceramics/user_management.webp";
+import bashithaMobileimg from "../../assets/Bashitha_Ceramics/Mobile_Cover.webp";
+
 export const showcaseProjects = [
-  // {
-  //   featured: false,
-
-  //   slug: "bashita-ceramic-inventory",
-
-  //   name: "Bashita Ceramic Inventory",
-
-  //   type: "Inventory Management System",
-
-  //   summary: `Bashita Ceramic Inventory is a modern inventory management system developed to streamline stock operations for a ceramic manufacturing and distribution business. The platform centralizes product inventory, stock movements, supplier information, and inventory reporting into a single digital solution. Designed with an intuitive interface and real-time inventory tracking, the system minimizes manual record keeping, improves stock visibility, and enables faster operational decision-making. By digitizing inventory processes, the platform helps businesses maintain accurate stock levels, reduce inventory discrepancies, and improve overall warehouse efficiency.`,
-
-  //   whatIs:
-  //     "A centralized inventory management system that simplifies stock management, product tracking, supplier management, and inventory reporting for ceramic businesses.",
-
-  //   whyDeveloped:
-  //     "To replace spreadsheet-based inventory management with a centralized web application that improves inventory accuracy, operational efficiency, and stock visibility.",
-
-  //   businessValue:
-  //     "Improves inventory accuracy, reduces stock discrepancies, streamlines warehouse operations, minimizes manual work, and enables data-driven inventory decisions.",
-
-  //   challengeBefore:
-  //     "Inventory records were maintained manually, making it difficult to monitor stock availability, track inventory movements, manage suppliers, and generate reliable inventory reports.",
-
-  //   features: [
-  //     "Real-time inventory dashboard",
-  //     "invoice management",
-  //     "Product management",
-  //     "Category management",
-  //     "Stock in & stock out management",
-  //     "Inventory movement tracking",
-  //     "Supplier management",
-  //     "Low stock monitoring",
-  //     "Inventory search & filtering",
-  //     "Inventory reporting",
-  //     "Responsive management dashboard",
-  //     "Role-based authentication",
-  //     "User profile management",
-  //     "Secure data management",
-  //     "Performance-optimized interface",
-  //   ],
-
-  //   outcomes: [
-  //     "Centralized inventory management",
-  //     "Improved stock accuracy",
-  //     "Reduced manual inventory processes",
-  //     "Faster stock monitoring",
-  //     "Better warehouse visibility",
-  //     "Improved inventory reporting",
-  //   ],
-
-  //   relatedSlugs: ["transport-management-powerbi", "logimanage"],
-
-  //   stack: ["Next.js", "JavaScript", "Tailwind CSS", "Node.js", "Express.js", "MongoDB", "JWT Authentication"],
-
-  //   results: ["Centralized inventory operations", "Real-time stock visibility", "Automated inventory tracking"],
-
-  //   color: "from-orange-500 to-amber-600",
-
-  //   resources: {
-  //     images: [],
-  //   },
-  // },
   {
     featured: true,
     slug: "velmora-travels",
-    name: "Velmora Travels",
-    type: "Personal Branding Platform",
-    summary: `Velmora Travels is a premium travel agency website developed by NexCode to deliver a modern digital experience for travelers seeking unforgettable journeys. The platform showcases curated tour packages, popular destinations, travel experiences, and personalized travel services through a visually immersive interface. Designed with cinematic animations, responsive layouts, and high-performance architecture, the website focuses on inspiring visitors while simplifying the journey from destination discovery to booking inquiries. By combining elegant UI/UX with modern web technologies, Velmora Travels strengthens the agency's online presence, increases customer engagement, and provides a seamless experience across desktop and mobile devices.`,
 
-    whatIs:
-      "A premium travel agency website designed to showcase destinations, tour packages, and travel services while generating customer inquiries.",
+    name: "Velmora Travels",
+    type: "Luxury Travel Website",
+    summary: `Velmora Travels is a premium travel agency website designed to showcase destinations, tour packages, and travel experiences through a modern, immersive digital experience. The platform helps strengthen the brand, engage visitors, and convert interest into travel inquiries.`,
+
+    whatIs: "A premium travel website that showcases destinations, tour packages, and services while encouraging customer inquiries.",
 
     whyDeveloped:
-      "To establish a strong digital presence for the travel agency, improve customer engagement, and provide an inspiring platform where visitors can easily explore and inquire about travel experiences.",
+      "Built to establish a strong online presence and make it easier for travelers to discover, explore, and inquire about travel experiences.",
 
     businessValue:
-      "Increases travel inquiries, strengthens brand credibility, showcases travel services professionally, and improves customer conversion through a modern digital experience.",
+      "Enhances brand credibility, increases customer engagement, and helps generate more travel inquiries through a premium digital experience.",
 
     challengeBefore:
-      "The travel agency lacked a modern online platform capable of effectively showcasing destinations, tour packages, and travel experiences, making it difficult to engage visitors and convert them into customers.",
+      "The agency lacked a modern website to effectively showcase its services, engage visitors, and convert them into potential customers.",
 
     features: [
       "SEO optimized pages",
@@ -245,60 +194,57 @@ export const showcaseProjects = [
   {
     featured: true,
 
-    slug: "Thineth Villa",
+    slug: "thineth-villa",
 
     name: "Thineth Villa",
 
-    type: "Personal Branding Platform",
+    type: "Luxury Hospitality Website",
 
-    summary: `Thineth Villa is a modern, premium villa booking website designed to provide an elegant online experience for luxury accommodation providers. The platform showcases exclusive villas through immersive visuals, responsive layouts, and smooth user interactions while allowing visitors to explore destinations, amenities, and booking information with ease. Built with a clean, high-end UI inspired by modern hospitality brands, the website strengthens brand identity, improves customer engagement, and delivers a seamless booking experience across desktop and mobile devices.`,
+    summary:
+      "Thineth Villa is a premium villa showcase and booking platform designed to help luxury accommodation providers build a strong online presence. The website delivers an elegant browsing experience with immersive visuals, clear property information, and a smooth inquiry journey across all devices.",
 
     whatIs:
-      "A premium single-page luxury villa booking website that showcases high-end accommodations with an intuitive user experience and modern responsive design.",
+      "A modern luxury villa website that helps property owners showcase accommodations, highlight experiences, and attract potential guests through a premium digital experience.",
 
     whyDeveloped:
-      "To create a visually stunning hospitality website that helps villa owners present their properties professionally, improve customer engagement, and simplify the online booking journey.",
+      "Created to help villa businesses move beyond traditional online listings by providing a professional platform that builds trust, improves property visibility, and increases direct booking opportunities.",
 
     businessValue:
-      "Enhances brand credibility, increases customer trust, improves online visibility, delivers an engaging user experience, and encourages direct booking inquiries.",
+      "Strengthens brand credibility, creates a premium first impression, improves customer engagement, and helps convert website visitors into booking inquiries.",
 
-    challengeBefore:
-      "Traditional villa websites often lack modern design, responsive layouts, intuitive navigation, and premium user experiences, resulting in lower customer engagement and reduced booking conversions.",
+    challengeBefore: [
+      "Limited online presence for luxury properties",
+      "Difficulty presenting villa experiences professionally",
+      "Poor customer experience with outdated websites",
+      "Reduced trust during the booking decision process",
+    ],
 
     features: [
-      "Premium landing page",
-      "Luxury hero section",
-      "Responsive navigation with smooth scrolling",
-      "Featured villa showcase",
-      "Amenities section",
+      "Premium landing experience",
+      "Luxury property showcase",
       "Interactive image gallery",
-      "About section",
+      "Amenities and facilities presentation",
       "Customer testimonials",
-      "Frequently Asked Questions (FAQ)",
-      "Booking page UI",
-      "Contact section",
-      "Google Maps integration placeholder",
-      "Responsive design",
-      "Modern animations",
-      "Mobile-first interface",
-      "SEO-friendly structure",
-      "Optimized performance",
+      "FAQ section",
+      "Booking inquiry interface",
+      "Contact and location integration",
+      "Mobile-friendly experience",
+      "Smooth animations and interactions",
     ],
 
     outcomes: [
-      "Premium online brand presence",
-      "Improved customer engagement",
-      "Better mobile experience",
-      "Enhanced property presentation",
-      "Professional booking interface",
-      "Improved user experience",
+      "Professional luxury brand presence",
+      "Improved customer trust",
+      "Better property presentation",
+      "Enhanced booking experience",
+      "Increased visitor engagement",
     ],
 
-    relatedSlugs: ["personal-portfolio", "velmora-travels"],
+    relatedSlugs: ["velmora-travels", "travelcore-booking-hub"],
 
-    stack: ["React", "Vite", "JavaScript", "Tailwind CSS", "Framer Motion", "React Router", "React Icons"],
+    stack: ["React", "Vite", "JavaScript", "Tailwind CSS", "Framer Motion"],
 
-    results: ["Modern luxury UI", "Responsive user experience", "High-performance frontend"],
+    results: ["Premium hospitality-focused design", "Responsive customer experience", "Modern high-performance website"],
 
     color: "from-emerald-600 to-green-800",
 
@@ -310,72 +256,111 @@ export const showcaseProjects = [
 
     resources: {
       images: [
-        { url: thinethHeroImg, caption: "Landing Page" },
-        { url: thinethContactImg, caption: "Contact Page" },
-        { url: thinethFeaturesImg, caption: "Features Page" },
-        { url: thinethImg1, caption: "Web Component Showcase image 1" },
-        { url: thinethTestimonialImg, caption: "Testimonials Section" },
-        { url: thinethGalleryFullImg, caption: "Gallery Full View when Click" },
-        { url: thinethGalleryImg, caption: "Gallery View Page" },
-        { url: thinethImg4, caption: "Web Component Showcase image 4" },
-        { url: thinethPackagesImg, caption: "Packages Section" },
-        { url: thinethImg2, caption: "Web Component Showcase image 2" },
-        { url: thinethPackageOpenImg, caption: "Package Selection Page" },
-        { url: thinethBookingImg, caption: "Booking Section" },
+        {
+          url: thinethHeroImg,
+          caption: "Luxury Villa Landing Experience",
+        },
+        {
+          url: thinethContactImg,
+          caption: "Contact and Booking Inquiry Section",
+        },
+        {
+          url: thinethFeaturesImg,
+          caption: "Villa Features Showcase",
+        },
+        {
+          url: thinethImg1,
+          caption: "Website Component Showcase",
+        },
+        {
+          url: thinethTestimonialImg,
+          caption: "Guest Testimonials Section",
+        },
+        {
+          url: thinethGalleryFullImg,
+          caption: "Full Image Gallery Experience",
+        },
+        {
+          url: thinethGalleryImg,
+          caption: "Property Gallery View",
+        },
+        {
+          url: thinethImg4,
+          caption: "Website Component Showcase",
+        },
+        {
+          url: thinethPackagesImg,
+          caption: "Villa Packages Section",
+        },
+        {
+          url: thinethImg2,
+          caption: "Website Component Showcase",
+        },
+        {
+          url: thinethPackageOpenImg,
+          caption: "Package Details Experience",
+        },
+        {
+          url: thinethBookingImg,
+          caption: "Booking Interface",
+        },
       ],
+
       videos: [
         {
           url: thinethVideo,
           thumbnail: thinethHeroImg,
-          caption: "Thineth Villa Site walkthrough",
+          caption: "Thineth Villa Website Walkthrough",
         },
       ],
     },
   },
   {
     featured: true,
+
     slug: "transport-management-powerbi",
+
     name: "Employee Transport Management System",
+
     type: "Business Intelligence Solution",
-    summary: `Employee Transport Management System is an enterprise Power BI solution developed by NexCode to streamline employee transportation operations within an organization. The platform centralizes employee records, transport routes, vehicles, drivers, and seat allocations into a unified reporting environment. Interactive dashboards provide real-time visibility into transport utilization, route efficiency, employee assignments, and operational performance. Designed for internal organizational use, the solution enables transport administrators and management teams to make informed decisions through data-driven insights while simplifying day-to-day transport administration.`,
+
+    summary:
+      "A Power BI-based transport management solution designed to help organizations monitor employee transportation operations through centralized dashboards. The platform provides clear visibility into routes, vehicle usage, seat allocation, and operational performance, enabling smarter decisions through data-driven insights.",
 
     whatIs:
-      "A Power BI solution that manages employee transportation, vehicle assignments, routes, seat allocations, and operational reporting through interactive dashboards.",
+      "A business intelligence dashboard solution that helps organizations manage employee transport operations, analyze utilization, and improve reporting efficiency.",
 
     whyDeveloped:
-      "To replace manual transport management processes with a centralized, data-driven platform that improves operational efficiency, reporting accuracy, and decision-making.",
+      "Created to replace manual transport tracking methods with a centralized reporting system that improves accuracy, saves administrative time, and supports better operational planning.",
 
     businessValue:
-      "Improves transport resource utilization, reduces administrative workload, provides real-time operational insights, and supports informed management decisions.",
+      "Helps organizations optimize transport resources, reduce reporting effort, identify operational issues faster, and make informed decisions using real-time insights.",
 
-    challengeBefore:
-      "Employee transport information was managed across multiple spreadsheets and manual processes, making it difficult to track seat allocations, route utilization, employee assignments, and generate reliable management reports.",
+    challengeBefore: [
+      "Transport data managed through disconnected spreadsheets",
+      "Limited visibility into vehicle and route utilization",
+      "Time-consuming manual reporting processes",
+      "Difficulty analyzing transport performance",
+    ],
 
     features: [
       "Interactive Power BI dashboards",
-      "Employee transport management",
-      "Vehicle and driver management",
-      "Transport route monitoring",
-      "Static employee-to-transport assignment model",
+      "Employee transport overview",
+      "Vehicle and route analysis",
       "Seat allocation tracking",
-      "Capacity utilization reporting",
-      "Department-wise transport analysis",
-      "Operational KPI dashboards",
-      "Exportable management reports",
+      "Transport capacity monitoring",
+      "Department-wise insights",
+      "Operational KPI reporting",
+      "Management reporting views",
     ],
 
-    outcomes: [
-      "Centralized transport data management",
-      "Improved reporting accuracy",
-      "Faster operational decision-making",
-      "Better transport resource utilization",
-    ],
+    outcomes: ["Centralized transport information", "Faster management reporting", "Improved resource planning", "Better operational visibility"],
 
-    relatedSlugs: ["velmora-travels", "student-portfolio-showcase"],
+    relatedSlugs: ["logimanage", "business-management-solutions"],
 
-    stack: ["Power BI", "Power Query", "DAX", "SQL", "Microsoft Excel", "HTML/CSS for embedded dashboards"],
+    stack: ["Power BI", "Power Query", "DAX", "Microsoft Excel", "SQL"],
 
-    results: ["Automated transport reporting", "Centralized employee assignments", "Interactive management dashboards"],
+    results: ["Data-driven transport decisions", "Automated reporting workflow", "Interactive management dashboards"],
 
     color: "from-blue-600 to-cyan-500",
 
@@ -391,15 +376,13 @@ export const showcaseProjects = [
           url: transportHeroImg,
           caption: "Transport Management Dashboard",
         },
-
         {
           url: transportDataImg,
-          caption: "Transport Data Visualization",
+          caption: "Transport Data Analysis",
         },
-
         {
           url: transportwindowImg,
-          caption: "Power BI Workspace for Seat Allocation",
+          caption: "Transport Allocation Dashboard",
         },
       ],
 
@@ -407,61 +390,64 @@ export const showcaseProjects = [
         {
           url: transportVideo,
           thumbnail: transportHeroImg,
-          caption: "Employee Transport Management System walkthrough",
+          caption: "Employee Transport Management Walkthrough",
         },
       ],
     },
   },
   {
     featured: true,
-    slug: "logimanage",
-    name: "LogiManage",
-    type: "E-Commerce",
 
-    summary: `LogiManage is a comprehensive logistics management system developed to streamline shipment operations through a centralized digital platform. The system enables Security Officers, Logistics Officers, and Quality Officers to collaborate efficiently using role-based access control. It manages the complete shipment lifecycle, from request creation and verification to quality inspection and final dispatch. Built with a modern, responsive interface and secure authentication, LogiManage improves operational efficiency, minimizes paperwork, enhances shipment visibility, and ensures seamless coordination between departments.`,
+    slug: "logimanage",
+
+    name: "LogiManage",
+
+    type: "Retail Management System",
+
+    summary:
+      "LogiManage is a digital logistics management platform designed to simplify shipment operations through a centralized workflow system. The solution connects different operational teams, improves shipment visibility, and enables businesses to manage requests, verification, inspections, and dispatch processes efficiently.",
 
     whatIs:
-      "A role-based logistics management system that digitizes shipment management, security verification, and quality inspection through dedicated officer portals.",
+      "A business logistics platform that digitizes shipment workflows, department coordination, and operational tracking through dedicated management dashboards.",
 
     whyDeveloped:
-      "To replace manual logistics processes with a centralized digital platform that improves coordination between departments, enhances shipment tracking, and increases operational efficiency.",
+      "Developed to replace manual logistics processes with a structured digital system that improves coordination, reduces paperwork, and increases operational efficiency.",
 
     businessValue:
-      "Reduces manual paperwork, improves shipment visibility, strengthens security and quality control, increases operational efficiency, and enables faster decision-making through centralized logistics management.",
+      "Improves shipment visibility, reduces administrative workload, strengthens workflow control, and helps teams process logistics operations faster and more accurately.",
 
-    challengeBefore:
-      "Logistics operations relied heavily on manual records and disconnected workflows, making it difficult to track shipments, coordinate between departments, maintain quality inspections, and ensure secure dispatch processes.",
+    challengeBefore: [
+      "Manual shipment documentation",
+      "Disconnected workflows between departments",
+      "Limited shipment tracking visibility",
+      "Slow approval and verification processes",
+    ],
 
     features: [
-      "Role-based authentication & authorization",
-      "Dedicated Security Officer dashboard",
-      "Dedicated Logistics Officer dashboard",
-      "Dedicated Quality Officer dashboard",
-      "Shipment creation and management",
-      "Real-time shipment status tracking",
+      "Role-based access management",
+      "Shipment request management",
       "Security verification workflow",
-      "Quality inspection and approval process",
-      "Interactive logistics dashboard",
-      "Responsive modern user interface",
-      "Secure user management",
-      "Notification and status updates",
-      "Search and filtering capabilities",
-      "Activity history and audit tracking",
+      "Quality inspection process",
+      "Shipment status tracking",
+      "Department dashboards",
+      "Search and filtering",
+      "Activity history tracking",
+      "Operational reporting",
     ],
 
     outcomes: [
-      "Improved logistics workflow efficiency",
+      "Improved logistics coordination",
       "Reduced manual documentation",
-      "Enhanced collaboration between departments",
-      "Better shipment visibility and tracking",
-      "Improved security and quality compliance",
-      "Faster shipment processing and approvals",
+      "Faster shipment processing",
+      "Better operational transparency",
+      "Enhanced workflow control",
     ],
-    relatedSlugs: ["velmora-travels", "student-portfolio-showcase"],
 
-    stack: ["React.js", "Vite", "JavaScript", "CSS3", "Node.js", "Express.js", "MongoDB", "JWT Authentication", "Role-Based Access Control (RBAC)"],
+    relatedSlugs: ["transport-management-powerbi", "business-management-solutions"],
 
-    results: ["SAP-integrated logistics workflows", "Centralized shipment management", "Real-time logistics tracking"],
+    stack: ["React", "Vite", "JavaScript", "Node.js", "Express.js", "MongoDB", "JWT Authentication"],
+
+    results: ["Centralized logistics operations", "Digital shipment workflow", "Improved team collaboration"],
 
     color: "from-blue-600 to-cyan-500",
 
@@ -475,59 +461,43 @@ export const showcaseProjects = [
       images: [
         {
           url: logisticDashboardImg,
-          caption: "Logistic_dashboard - Logistic Dashboard",
+          caption: "Logistics Management Dashboard",
         },
         {
           url: gateCheckImg,
-          caption: "Logistic_dashboard - Gate Check",
-        },
-        {
-          url: securityCheckImg,
-          caption: "Logistic_dashboard - Security Check",
+          caption: "Security Verification Workflow",
         },
         {
           url: securityDashboardImg,
-          caption: "Logistic_dashboard - Security Dashboard",
+          caption: "Security Operations Dashboard",
         },
         {
           url: manageOrdersImg,
-          caption: "Logistic_dashboard - Manage Orders",
+          caption: "Shipment Management",
         },
         {
           url: newOrderImg,
-          caption: "Logistic_dashboard - New Order",
+          caption: "Shipment Creation",
         },
         {
           url: orderHistoryImg,
-          caption: "Logistic_dashboard - Order History",
-        },
-        {
-          url: orderTransferImg,
-          caption: "Logistic_dashboard - Order Transfer",
-        },
-        {
-          url: notificationsImg,
-          caption: "Logistic_dashboard - Notifications",
-        },
-        {
-          url: inspectionHistoryImg,
-          caption: "Logistic_dashboard - Inspection History",
+          caption: "Shipment History Tracking",
         },
         {
           url: qualityDashboardImg,
-          caption: "Logistic_dashboard - Quality Dashboard",
+          caption: "Quality Management Dashboard",
         },
         {
           url: qualityInspectionImg,
-          caption: "Logistic_dashboard - Quality Inspection",
+          caption: "Quality Inspection Workflow",
         },
         {
           url: reportExportImg,
-          caption: "Logistic_dashboard - Report Export",
+          caption: "Operational Reports",
         },
         {
           url: userProfileImg,
-          caption: "Logistic_dashboard - User Profile",
+          caption: "User Management",
         },
       ],
 
@@ -535,144 +505,239 @@ export const showcaseProjects = [
         {
           url: LogimanageVideo,
           thumbnail: laptopCoverImg,
-          caption: "LogiManage walkthrough",
-        },
-      ],
-    },
-  },
-  {
-    featured: false,
-    slug: "student-portfolio-showcase",
-    name: "Student Portfolio Showcase",
-    type: "Personal Branding Platform",
-    summary: `Student Portfolio Showcase is a modern personal branding platform developed by NexCode for university students, fresh graduates, and aspiring professionals. The platform helps individuals present their projects, technical skills, achievements, certifications, and experience in a professional online portfolio. Each portfolio is designed with a strong focus on storytelling, performance, responsive design, and recruiter-friendly presentation, enabling students to stand out during internships, job applications, and freelance opportunities. By combining clean UI/UX with modern web technologies, the platform transforms traditional resumes into interactive digital experiences that effectively showcase technical capability and personal branding.`,
-    whatIs: "A modern portfolio website that helps students showcase their skills, projects, achievements, and professional journey.",
-    whyDeveloped:
-      "To help students build a professional online presence and increase their visibility to recruiters, universities, and potential clients.",
-    businessValue:
-      "Strengthens personal branding, improves employability, and provides students with a professional platform to showcase their work.",
-    challengeBefore:
-      "Most students relied on static resumes or generic portfolio templates that failed to effectively demonstrate their technical skills, project experience, and achievements.",
-    features: [
-      "Modern responsive design",
-      "Project showcase",
-      "Skills & technology timeline",
-      "Experience & achievements",
-      "Certification gallery",
-      "Research publication section",
-      "Interactive animations",
-      "Contact & social integration",
-      "SEO optimized pages",
-      "Performance optimized",
-    ],
-    outcomes: [
-      "Professional personal branding",
-      "Higher recruiter engagement",
-      "Improved online visibility",
-      "Better presentation of technical projects",
-    ],
-    relatedSlugs: ["velmora-travels"],
-    stack: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    results: ["Professional digital identity", "Mobile-first experience", "Fast loading performance"],
-    color: "from-violet-500 to-fuchsia-600",
-    cover: heroImg,
-    laptop_mockup: [heroImg, heroDarkImg],
-    phone_mockup: [Portfolio_mobile, Portfolio_mobile_dark],
-    resources: {
-      images: [
-        { url: heroDarkImg, caption: "Hero Section (Dark)" },
-        { url: aboutDarkImg, caption: "About Section (Dark)" },
-        { url: aboutDarkImg2, caption: "About Section" },
-        { url: experienceDarkImg, caption: "Experience Section (Dark)" },
-        { url: testimonialDarkImg, caption: "Testimonial Section (Dark)" },
-        { url: certificateDarkImg, caption: "Certificate Section (Dark)" },
-        { url: projectSectionDarkImg, caption: "Project Section (Dark)" },
-        { url: project2DarkImg, caption: "Projects Section 2 (Dark)" },
-        { url: project3DarkImg, caption: "Projects Section 3 (Dark)" },
-        { url: project4DarkImg, caption: "Projects Section 4 (Dark)" },
-        { url: heroImg, caption: "Hero Section" },
-        { url: aboutImg2, caption: "About Section" },
-        { url: aboutImg, caption: "About Section" },
-        { url: experienceImg, caption: "Experience Section" },
-        { url: certificateImg, caption: "Certificate Section" },
-        { url: testimonialImg, caption: "Testimonial Section" },
-      ],
-      videos: [
-        {
-          url: portfoliovideo,
-          thumbnail: heroDarkImg,
-          caption: "Student Portfolio Showcase walkthrough",
+          caption: "LogiManage System Walkthrough",
         },
       ],
     },
   },
   {
     featured: true,
-    slug: "buildbit-hardware-pos",
-    name: "BuildBit POS — Hardware POS",
-    type: "E-Commerce",
 
-    summary: `BuildBit POS is a premium, web-based Point of Sale system developed by NexCode for Sri Lankan hardware and building-materials retailers. The platform brings a modern, Apple-quality interface to an industry still running on spreadsheets and legacy software, giving store owners a single dashboard to manage sales, inventory, purchasing, suppliers, and customers in real time. Designed around a fast, distraction-free checkout flow and a clean, data-rich dashboard, BuildBit POS turns everyday hardware retail operations — from ringing up cement and PVC pipe to tracking low-stock power tools — into a smooth, professional digital experience for cashiers and managers alike.`,
+    slug: "buildbit-hardware-pos",
+
+    name: "BuildBit POS",
+
+    type: "Retail Management System",
+
+    summary:
+      "BuildBit POS is a modern point-of-sale and inventory management solution designed for hardware and retail businesses. The platform helps store owners manage sales, inventory, suppliers, customers, and reports through a simple and efficient digital system, replacing manual processes with a faster and more reliable retail experience.",
+
     whatIs:
-      "A premium, fully responsive POS and store-management web app purpose-built for hardware stores, covering sales, inventory, purchasing, suppliers, and reporting.",
+      "A complete retail management platform that combines POS billing, inventory control, supplier management, and business reporting in one centralized system.",
+
     whyDeveloped:
-      "To replace manual, spreadsheet-based billing and stock tracking in hardware stores with a fast, modern, recruiter-and-client-impressive digital system that scales from a single counter to a multi-branch operation.",
+      "Developed to help traditional retail businesses move from manual billing and spreadsheet-based tracking into a modern digital workflow that improves daily operations.",
+
     businessValue:
-      "Speeds up checkout, reduces stock-outs and manual errors, gives owners real-time visibility into sales and inventory, and presents a professional, trustworthy interface to staff and customers.",
-    challengeBefore:
-      "Hardware store owners typically relied on manual ledgers, generic spreadsheets, or outdated desktop billing software that lacked real-time stock visibility, proper reporting, and any kind of modern, intuitive interface.",
+      "Reduces billing errors, improves stock visibility, speeds up checkout processes, and gives business owners better control over sales and inventory decisions.",
+
+    challengeBefore: [
+      "Manual billing and inventory tracking",
+      "Limited visibility into stock availability",
+      "Time-consuming sales reporting",
+      "Difficulty managing suppliers and customer records",
+    ],
+
     features: [
-      "Modern animated dashboard with sales, profit & stock analytics",
-      "Fast POS checkout with category filters & live product search",
-      "Cart system with per-item & order-level discounts",
-      "Multi-method checkout modal (Cash, Card, Bank Transfer, QR) with numeric keypad",
-      "Hold / resume draft orders",
-      "Product, category & inventory management (CRUD)",
-      "Low-stock & out-of-stock alerts",
-      "Purchase orders & supplier management",
-      "Customer directory with purchase history",
-      "Sales history, invoices & returns tracking",
+      "Fast POS checkout system",
+      "Product and inventory management",
+      "Stock availability tracking",
+      "Supplier management",
+      "Customer management",
+      "Sales history and invoice tracking",
+      "Purchase management",
       "Expense tracking",
-      "Sales, inventory & best-seller reports",
-      "Dark mode, collapsible sidebar & full responsiveness",
+      "Sales and inventory reports",
+      "Business analytics dashboard",
+      "Responsive interface",
     ],
-    outcomes: [
-      "Faster, error-free checkout process",
-      "Real-time inventory visibility",
-      "Professional, modern retail experience",
-      "Centralized control over sales, stock & suppliers",
-    ],
-    relatedSlugs: ["transport-management-powerbi", "logimanage"],
-    stack: ["React (Vite)", "Tailwind CSS", "Framer Motion", "React Router", "Context API"],
-    results: ["Streamlined store operations", "Reduced manual billing errors", "Modern, mobile-friendly POS experience"],
+
+    outcomes: ["Faster checkout operations", "Improved inventory control", "Reduced manual workload", "Better business visibility"],
+
+    relatedSlugs: ["logimanage", "transport-management-powerbi"],
+
+    stack: ["React", "Vite", "JavaScript", "Tailwind CSS", "Framer Motion"],
+
+    results: ["Digital retail workflow", "Centralized sales management", "Modern POS experience"],
+
     color: "from-orange-500 to-amber-600",
+
     cover: BuildBit_POS_dashboard_light,
+
     laptop_mockup: [BuildBit_POS_dashboard_light, BuildBit_POS_dashboard_dark],
+
     phone_mockup: [BuildBit_POS_mobile_light, BuildBit_POS_mobile_dark],
+
     resources: {
       images: [
-        { url: BuildBit_POS_dashboard_light, caption: "Dashboard (Light)" },
-        { url: BuildBit_POS_mobile_light, caption: "Mobile POS (Light)" },
-        { url: BuildBit_POS_customers, caption: "Customers" },
-        { url: BuildBit_POS_pos, caption: "POS Checkout" },
-        { url: BuildBit_POS_suppliers, caption: "Suppliers" },
-        { url: BuildBit_POS_inventory, caption: "Inventory" },
-        { url: BuildBit_POS_expenses, caption: "Expenses" },
-        { url: BuildBit_POS_purchases, caption: "Purchases" },
-        { url: BuildBit_POS_sales_history, caption: "Sales History" },
-        { url: BuildBit_POS_invoices, caption: "Invoices" },
-        { url: BuildBit_POS_reports2, caption: "Reports" },
-        { url: BuildBit_POS_notification, caption: "Notifications" },
-        { url: BuildBit_POS_settings, caption: "Settings" },
+        { url: BuildBit_POS_dashboard_light, caption: "Business Dashboard" },
+        { url: BuildBit_POS_mobile_light, caption: "Mobile POS Experience" },
+        { url: BuildBit_POS_pos, caption: "POS Checkout System" },
+        { url: BuildBit_POS_inventory, caption: "Inventory Management" },
+        { url: BuildBit_POS_suppliers, caption: "Supplier Management" },
+        { url: BuildBit_POS_customers, caption: "Customer Management" },
+        { url: BuildBit_POS_purchases, caption: "Purchase Management" },
+        { url: BuildBit_POS_sales_history, caption: "Sales Tracking" },
+        { url: BuildBit_POS_reports2, caption: "Business Reports" },
+        { url: BuildBit_POS_settings, caption: "System Settings" },
       ],
-            videos: [
+
+      videos: [
         {
           url: BuildBit_POS_Video,
           thumbnail: BuildBit_POS_dashboard_light,
-          caption: "BuildBit POS Management System walkthrough",
+          caption: "BuildBit POS System Walkthrough",
         },
       ],
+    },
+  },
+  {
+    featured: false,
+    slug: "bashita-ceramic-inventory",
+    name: "Bashita Ceramic Inventory",
+    type: "Retail Management System",
 
+    summary: `Bashita Ceramic Inventory is a centralized inventory management system built to simplify stock operations for ceramic businesses. It provides real-time inventory visibility, supplier management, and reporting through a modern, easy-to-use web application.`,
+
+    whatIs:
+      "A web-based inventory management system for tracking products, stock movements, suppliers, and inventory reports from a single dashboard.",
+
+    whyDeveloped: "Built to replace manual spreadsheet-based inventory management with a faster, more accurate, and centralized digital solution.",
+
+    businessValue: "Reduces manual work, improves inventory accuracy, and gives businesses real-time visibility into stock and warehouse operations.",
+
+    challengeBefore: "Manual inventory records made it difficult to track stock levels, supplier information, and inventory movements efficiently.",
+
+    features: [
+      "Real-time inventory dashboard",
+      "Product management",
+      "Category management",
+      "Stock in & stock out management",
+      "Inventory movement tracking",
+      "Supplier management",
+      "Low stock monitoring",
+      "Inventory search & filtering",
+      "Inventory reporting",
+      "Responsive management dashboard",
+      "Role-based authentication",
+      "User profile management",
+      "Secure data management",
+    ],
+
+    outcomes: [
+      "Centralized inventory management",
+      "Improved stock accuracy",
+      "Reduced manual inventory processes",
+      "Faster stock monitoring",
+      "Better warehouse visibility",
+      "Improved inventory reporting",
+    ],
+
+    relatedSlugs: ["buildbit-hardware-pos", "logimanage"],
+
+    stack: ["Next.js", "JavaScript", "Tailwind CSS", "Node.js", "Express.js", "MongoDB", "JWT Authentication"],
+
+    results: ["Centralized inventory operations", "Real-time stock visibility", "Automated inventory tracking"],
+
+    color: "from-orange-500 to-amber-600",
+
+    cover: bashithaLoginImg,
+
+    laptop_mockup: [bashithaLoginImg, bashithaLoginImg],
+
+    phone_mockup: [bashithaMobileimg, bashithaMobileimg],
+
+    resources: {
+      images: [
+        { url: bashithaLoginImg, caption: "Login Page" },
+        { url: bashithaActivityImg, caption: "Activity Page" },
+        { url: bashithaAddProductsImg, caption: "Add Products Panel" },
+        { url: bashithaProductListImg, caption: "Product List" },
+        { url: bashithaRegisterImg, caption: "Register Page" },
+        { url: bashithaBillingImg, caption: "Billing Page" },
+                { url: bashithaUserManagementImg, caption: "User Management Page" },
+        { url: bashithaReportingImg, caption: "Reporting Page" },
+
+      ],
+      videos: [],
+    },
+  },
+  {
+    featured: false,
+
+    slug: "student-portfolio-showcase",
+
+    name: "Student Portfolio Showcase",
+
+    type: "Personal Branding Platform",
+
+    summary:
+      "Student Portfolio Showcase is a modern personal branding platform designed to help students and professionals present their skills, projects, achievements, and career journey through an interactive digital portfolio. The platform transforms traditional resumes into engaging online experiences that improve visibility and create stronger impressions with recruiters, universities, and potential clients.",
+
+    whatIs:
+      "A professional portfolio platform that helps individuals showcase their projects, skills, achievements, certifications, and experience through a modern online presence.",
+
+    whyDeveloped:
+      "Created to help students and early professionals stand out in competitive job markets by presenting their abilities through a professional and personalized digital platform.",
+
+    businessValue:
+      "Improves personal branding, increases professional visibility, strengthens recruiter engagement, and provides a better way to showcase skills beyond traditional resumes.",
+
+    challengeBefore: [
+      "Students relied mainly on traditional resumes",
+      "Limited visibility of projects and achievements",
+      "Generic portfolio templates lacked personalization",
+      "Difficulty presenting technical skills professionally",
+    ],
+
+    features: [
+      "Modern personal portfolio design",
+      "Project showcase section",
+      "Skills and technology presentation",
+      "Experience timeline",
+      "Certification showcase",
+      "Achievement highlights",
+      "Interactive animations",
+      "Contact and social integration",
+      "Responsive user experience",
+    ],
+
+    outcomes: ["Professional digital identity", "Better project presentation", "Improved recruiter engagement", "Stronger online presence"],
+
+    relatedSlugs: ["velmora-travels", "thineth-villa"],
+
+    stack: ["React", "Tailwind CSS", "Framer Motion"],
+
+    results: ["Modern personal branding experience", "Interactive portfolio presentation", "Fast and responsive website"],
+
+    color: "from-violet-500 to-fuchsia-600",
+
+    cover: heroImg,
+
+    laptop_mockup: [heroImg, heroDarkImg],
+
+    phone_mockup: [Portfolio_mobile, Portfolio_mobile_dark],
+
+    resources: {
+      images: [
+        { url: heroDarkImg, caption: "Portfolio Hero Experience" },
+        { url: aboutDarkImg, caption: "About Section" },
+        { url: experienceDarkImg, caption: "Experience Timeline" },
+        { url: certificateDarkImg, caption: "Certification Showcase" },
+        { url: projectSectionDarkImg, caption: "Project Showcase" },
+        { url: testimonialDarkImg, caption: "Testimonials Section" },
+        { url: heroImg, caption: "Portfolio Homepage" },
+        { url: experienceImg, caption: "Professional Journey" },
+        { url: certificateImg, caption: "Certificates Section" },
+      ],
+
+      videos: [
+        {
+          url: portfoliovideo,
+          thumbnail: heroDarkImg,
+          caption: "Student Portfolio Showcase Walkthrough",
+        },
+      ],
     },
   },
 ];
