@@ -318,81 +318,152 @@ export const showcaseProjects = [
   {
     featured: true,
 
-    slug: "transport-management-powerbi",
+    slug: "buildbit-hardware-pos",
 
-    name: "Employee Transport Management System",
+    name: "BuildBit POS",
 
-    type: "Business Intelligence Solution",
+    type: "Retail Management System",
 
     summary:
-      "A Power BI-based transport management solution designed to help organizations monitor employee transportation operations through centralized dashboards. The platform provides clear visibility into routes, vehicle usage, seat allocation, and operational performance, enabling smarter decisions through data-driven insights.",
+      "BuildBit POS is a modern point-of-sale and inventory management solution designed for hardware and retail businesses. The platform helps store owners manage sales, inventory, suppliers, customers, and reports through a simple and efficient digital system, replacing manual processes with a faster and more reliable retail experience.",
 
     whatIs:
-      "A business intelligence dashboard solution that helps organizations manage employee transport operations, analyze utilization, and improve reporting efficiency.",
+      "A complete retail management platform that combines POS billing, inventory control, supplier management, and business reporting in one centralized system.",
 
     whyDeveloped:
-      "Created to replace manual transport tracking methods with a centralized reporting system that improves accuracy, saves administrative time, and supports better operational planning.",
+      "Developed to help traditional retail businesses move from manual billing and spreadsheet-based tracking into a modern digital workflow that improves daily operations.",
 
     businessValue:
-      "Helps organizations optimize transport resources, reduce reporting effort, identify operational issues faster, and make informed decisions using real-time insights.",
+      "Reduces billing errors, improves stock visibility, speeds up checkout processes, and gives business owners better control over sales and inventory decisions.",
 
     challengeBefore: [
-      "Transport data managed through disconnected spreadsheets",
-      "Limited visibility into vehicle and route utilization",
-      "Time-consuming manual reporting processes",
-      "Difficulty analyzing transport performance",
+      "Manual billing and inventory tracking",
+      "Limited visibility into stock availability",
+      "Time-consuming sales reporting",
+      "Difficulty managing suppliers and customer records",
     ],
 
     features: [
-      "Interactive Power BI dashboards",
-      "Employee transport overview",
-      "Vehicle and route analysis",
-      "Seat allocation tracking",
-      "Transport capacity monitoring",
-      "Department-wise insights",
-      "Operational KPI reporting",
-      "Management reporting views",
+      "Fast POS checkout system",
+      "Product and inventory management",
+      "Stock availability tracking",
+      "Supplier management",
+      "Customer management",
+      "Sales history and invoice tracking",
+      "Purchase management",
+      "Expense tracking",
+      "Sales and inventory reports",
+      "Business analytics dashboard",
+      "Responsive interface",
     ],
 
-    outcomes: ["Centralized transport information", "Faster management reporting", "Improved resource planning", "Better operational visibility"],
+    outcomes: ["Faster checkout operations", "Improved inventory control", "Reduced manual workload", "Better business visibility"],
 
-    relatedSlugs: ["logimanage", "business-management-solutions"],
+    relatedSlugs: ["logimanage", "transport-management-powerbi"],
 
-    stack: ["Power BI", "Power Query", "DAX", "Microsoft Excel", "SQL"],
+    stack: ["React", "Vite", "JavaScript", "Tailwind CSS", "Framer Motion"],
 
-    results: ["Data-driven transport decisions", "Automated reporting workflow", "Interactive management dashboards"],
+    results: ["Digital retail workflow", "Centralized sales management", "Modern POS experience"],
 
-    color: "from-blue-600 to-cyan-500",
+    color: "from-orange-500 to-amber-600",
 
-    cover: transportHeroImg,
+    cover: BuildBit_POS_dashboard_light,
 
-    laptop_mockup: [transportHeroImg, transportHeroImg],
+    laptop_mockup: [BuildBit_POS_dashboard_light, BuildBit_POS_dashboard_dark],
 
-    phone_mockup: [transportMobileImg, transportMobileImg],
+    phone_mockup: [BuildBit_POS_mobile_light, BuildBit_POS_mobile_dark],
 
     resources: {
       images: [
-        {
-          url: transportHeroImg,
-          caption: "Transport Management Dashboard",
-        },
-        {
-          url: transportDataImg,
-          caption: "Transport Data Analysis",
-        },
-        {
-          url: transportwindowImg,
-          caption: "Transport Allocation Dashboard",
-        },
+        { url: BuildBit_POS_dashboard_light, caption: "Business Dashboard" },
+        { url: BuildBit_POS_mobile_light, caption: "Mobile POS Experience" },
+        { url: BuildBit_POS_pos, caption: "POS Checkout System" },
+        { url: BuildBit_POS_inventory, caption: "Inventory Management" },
+        { url: BuildBit_POS_suppliers, caption: "Supplier Management" },
+        { url: BuildBit_POS_customers, caption: "Customer Management" },
+        { url: BuildBit_POS_purchases, caption: "Purchase Management" },
+        { url: BuildBit_POS_sales_history, caption: "Sales Tracking" },
+        { url: BuildBit_POS_reports2, caption: "Business Reports" },
+        { url: BuildBit_POS_settings, caption: "System Settings" },
       ],
 
       videos: [
         {
-          url: transportVideo,
-          thumbnail: transportHeroImg,
-          caption: "Employee Transport Management Walkthrough",
+          url: BuildBit_POS_Video,
+          thumbnail: BuildBit_POS_dashboard_light,
+          caption: "BuildBit POS System Walkthrough",
         },
       ],
+    },
+  },
+  {
+    featured: true,
+    slug: "bashita-ceramic-inventory",
+    name: "Bashita Ceramic Inventory",
+    type: "Retail Management System",
+
+    summary: `Bashita Ceramic Inventory is a centralized inventory management system built to simplify stock operations for ceramic businesses. It provides real-time inventory visibility, supplier management, and reporting through a modern, easy-to-use web application.`,
+
+    whatIs:
+      "A web-based inventory management system for tracking products, stock movements, suppliers, and inventory reports from a single dashboard.",
+
+    whyDeveloped: "Built to replace manual spreadsheet-based inventory management with a faster, more accurate, and centralized digital solution.",
+
+    businessValue: "Reduces manual work, improves inventory accuracy, and gives businesses real-time visibility into stock and warehouse operations.",
+
+    challengeBefore: "Manual inventory records made it difficult to track stock levels, supplier information, and inventory movements efficiently.",
+
+    features: [
+      "Real-time inventory dashboard",
+      "Product management",
+      "Category management",
+      "Stock in & stock out management",
+      "Inventory movement tracking",
+      "Supplier management",
+      "Low stock monitoring",
+      "Inventory search & filtering",
+      "Inventory reporting",
+      "Responsive management dashboard",
+      "Role-based authentication",
+      "User profile management",
+      "Secure data management",
+    ],
+
+    outcomes: [
+      "Centralized inventory management",
+      "Improved stock accuracy",
+      "Reduced manual inventory processes",
+      "Faster stock monitoring",
+      "Better warehouse visibility",
+      "Improved inventory reporting",
+    ],
+
+    relatedSlugs: ["buildbit-hardware-pos", "logimanage"],
+
+    stack: ["Next.js", "JavaScript", "Tailwind CSS", "Node.js", "Express.js", "MongoDB", "JWT Authentication"],
+
+    results: ["Centralized inventory operations", "Real-time stock visibility", "Automated inventory tracking"],
+
+    color: "from-orange-500 to-amber-600",
+
+    cover: bashithaLoginImg,
+
+    laptop_mockup: [bashithaLoginImg, bashithaLoginImg],
+
+    phone_mockup: [bashithaMobileimg, bashithaMobileimg],
+
+    resources: {
+      images: [
+        { url: bashithaLoginImg, caption: "Login Page" },
+        { url: bashithaActivityImg, caption: "Activity Page" },
+        { url: bashithaAddProductsImg, caption: "Add Products Panel" },
+        { url: bashithaProductListImg, caption: "Product List" },
+        { url: bashithaRegisterImg, caption: "Register Page" },
+        { url: bashithaBillingImg, caption: "Billing Page" },
+        { url: bashithaUserManagementImg, caption: "User Management Page" },
+        { url: bashithaReportingImg, caption: "Reporting Page" },
+      ],
+      videos: [],
     },
   },
   {
@@ -513,155 +584,84 @@ export const showcaseProjects = [
   {
     featured: true,
 
-    slug: "buildbit-hardware-pos",
+    slug: "transport-management-powerbi",
 
-    name: "BuildBit POS",
+    name: "Employee Transport Management System",
 
-    type: "Retail Management System",
+    type: "Business Intelligence Solution",
 
     summary:
-      "BuildBit POS is a modern point-of-sale and inventory management solution designed for hardware and retail businesses. The platform helps store owners manage sales, inventory, suppliers, customers, and reports through a simple and efficient digital system, replacing manual processes with a faster and more reliable retail experience.",
+      "A Power BI-based transport management solution designed to help organizations monitor employee transportation operations through centralized dashboards. The platform provides clear visibility into routes, vehicle usage, seat allocation, and operational performance, enabling smarter decisions through data-driven insights.",
 
     whatIs:
-      "A complete retail management platform that combines POS billing, inventory control, supplier management, and business reporting in one centralized system.",
+      "A business intelligence dashboard solution that helps organizations manage employee transport operations, analyze utilization, and improve reporting efficiency.",
 
     whyDeveloped:
-      "Developed to help traditional retail businesses move from manual billing and spreadsheet-based tracking into a modern digital workflow that improves daily operations.",
+      "Created to replace manual transport tracking methods with a centralized reporting system that improves accuracy, saves administrative time, and supports better operational planning.",
 
     businessValue:
-      "Reduces billing errors, improves stock visibility, speeds up checkout processes, and gives business owners better control over sales and inventory decisions.",
+      "Helps organizations optimize transport resources, reduce reporting effort, identify operational issues faster, and make informed decisions using real-time insights.",
 
     challengeBefore: [
-      "Manual billing and inventory tracking",
-      "Limited visibility into stock availability",
-      "Time-consuming sales reporting",
-      "Difficulty managing suppliers and customer records",
+      "Transport data managed through disconnected spreadsheets",
+      "Limited visibility into vehicle and route utilization",
+      "Time-consuming manual reporting processes",
+      "Difficulty analyzing transport performance",
     ],
 
     features: [
-      "Fast POS checkout system",
-      "Product and inventory management",
-      "Stock availability tracking",
-      "Supplier management",
-      "Customer management",
-      "Sales history and invoice tracking",
-      "Purchase management",
-      "Expense tracking",
-      "Sales and inventory reports",
-      "Business analytics dashboard",
-      "Responsive interface",
+      "Interactive Power BI dashboards",
+      "Employee transport overview",
+      "Vehicle and route analysis",
+      "Seat allocation tracking",
+      "Transport capacity monitoring",
+      "Department-wise insights",
+      "Operational KPI reporting",
+      "Management reporting views",
     ],
 
-    outcomes: ["Faster checkout operations", "Improved inventory control", "Reduced manual workload", "Better business visibility"],
+    outcomes: ["Centralized transport information", "Faster management reporting", "Improved resource planning", "Better operational visibility"],
 
-    relatedSlugs: ["logimanage", "transport-management-powerbi"],
+    relatedSlugs: ["logimanage", "business-management-solutions"],
 
-    stack: ["React", "Vite", "JavaScript", "Tailwind CSS", "Framer Motion"],
+    stack: ["Power BI", "Power Query", "DAX", "Microsoft Excel", "SQL"],
 
-    results: ["Digital retail workflow", "Centralized sales management", "Modern POS experience"],
+    results: ["Data-driven transport decisions", "Automated reporting workflow", "Interactive management dashboards"],
 
-    color: "from-orange-500 to-amber-600",
+    color: "from-blue-600 to-cyan-500",
 
-    cover: BuildBit_POS_dashboard_light,
+    cover: transportHeroImg,
 
-    laptop_mockup: [BuildBit_POS_dashboard_light, BuildBit_POS_dashboard_dark],
+    laptop_mockup: [transportHeroImg, transportHeroImg],
 
-    phone_mockup: [BuildBit_POS_mobile_light, BuildBit_POS_mobile_dark],
+    phone_mockup: [transportMobileImg, transportMobileImg],
 
     resources: {
       images: [
-        { url: BuildBit_POS_dashboard_light, caption: "Business Dashboard" },
-        { url: BuildBit_POS_mobile_light, caption: "Mobile POS Experience" },
-        { url: BuildBit_POS_pos, caption: "POS Checkout System" },
-        { url: BuildBit_POS_inventory, caption: "Inventory Management" },
-        { url: BuildBit_POS_suppliers, caption: "Supplier Management" },
-        { url: BuildBit_POS_customers, caption: "Customer Management" },
-        { url: BuildBit_POS_purchases, caption: "Purchase Management" },
-        { url: BuildBit_POS_sales_history, caption: "Sales Tracking" },
-        { url: BuildBit_POS_reports2, caption: "Business Reports" },
-        { url: BuildBit_POS_settings, caption: "System Settings" },
+        {
+          url: transportHeroImg,
+          caption: "Transport Management Dashboard",
+        },
+        {
+          url: transportDataImg,
+          caption: "Transport Data Analysis",
+        },
+        {
+          url: transportwindowImg,
+          caption: "Transport Allocation Dashboard",
+        },
       ],
 
       videos: [
         {
-          url: BuildBit_POS_Video,
-          thumbnail: BuildBit_POS_dashboard_light,
-          caption: "BuildBit POS System Walkthrough",
+          url: transportVideo,
+          thumbnail: transportHeroImg,
+          caption: "Employee Transport Management Walkthrough",
         },
       ],
     },
   },
-  {
-    featured: false,
-    slug: "bashita-ceramic-inventory",
-    name: "Bashita Ceramic Inventory",
-    type: "Retail Management System",
 
-    summary: `Bashita Ceramic Inventory is a centralized inventory management system built to simplify stock operations for ceramic businesses. It provides real-time inventory visibility, supplier management, and reporting through a modern, easy-to-use web application.`,
-
-    whatIs:
-      "A web-based inventory management system for tracking products, stock movements, suppliers, and inventory reports from a single dashboard.",
-
-    whyDeveloped: "Built to replace manual spreadsheet-based inventory management with a faster, more accurate, and centralized digital solution.",
-
-    businessValue: "Reduces manual work, improves inventory accuracy, and gives businesses real-time visibility into stock and warehouse operations.",
-
-    challengeBefore: "Manual inventory records made it difficult to track stock levels, supplier information, and inventory movements efficiently.",
-
-    features: [
-      "Real-time inventory dashboard",
-      "Product management",
-      "Category management",
-      "Stock in & stock out management",
-      "Inventory movement tracking",
-      "Supplier management",
-      "Low stock monitoring",
-      "Inventory search & filtering",
-      "Inventory reporting",
-      "Responsive management dashboard",
-      "Role-based authentication",
-      "User profile management",
-      "Secure data management",
-    ],
-
-    outcomes: [
-      "Centralized inventory management",
-      "Improved stock accuracy",
-      "Reduced manual inventory processes",
-      "Faster stock monitoring",
-      "Better warehouse visibility",
-      "Improved inventory reporting",
-    ],
-
-    relatedSlugs: ["buildbit-hardware-pos", "logimanage"],
-
-    stack: ["Next.js", "JavaScript", "Tailwind CSS", "Node.js", "Express.js", "MongoDB", "JWT Authentication"],
-
-    results: ["Centralized inventory operations", "Real-time stock visibility", "Automated inventory tracking"],
-
-    color: "from-orange-500 to-amber-600",
-
-    cover: bashithaLoginImg,
-
-    laptop_mockup: [bashithaLoginImg, bashithaLoginImg],
-
-    phone_mockup: [bashithaMobileimg, bashithaMobileimg],
-
-    resources: {
-      images: [
-        { url: bashithaLoginImg, caption: "Login Page" },
-        { url: bashithaActivityImg, caption: "Activity Page" },
-        { url: bashithaAddProductsImg, caption: "Add Products Panel" },
-        { url: bashithaProductListImg, caption: "Product List" },
-        { url: bashithaRegisterImg, caption: "Register Page" },
-        { url: bashithaBillingImg, caption: "Billing Page" },
-                { url: bashithaUserManagementImg, caption: "User Management Page" },
-        { url: bashithaReportingImg, caption: "Reporting Page" },
-
-      ],
-      videos: [],
-    },
-  },
   {
     featured: false,
 
