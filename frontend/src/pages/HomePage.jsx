@@ -27,6 +27,7 @@ import SelectionLable from "../components/SectionLabel";
 import SectionLabel from "../components/SectionLabel";
 import OffersBanner from "../components/Offersbanner";
 import FeaturedProjects from "../components/FeaturedProjects";
+import IndustrySolutions from "../components/IndustrySolutions";
 
 const stats = [
   { value: "100%", label: "Client Satisfaction" },
@@ -55,6 +56,11 @@ export default function HomePage() {
     <div className="min-h-screen h-full">
       {/* HERO */}
       <Hero stats={stats} className="bg-green-800" />
+
+      <IndustrySolutions />
+
+      {/* FEATURED PROJECTS */}
+        <FeaturedProjects />
 
       {/* SERVICES PREVIEW */}
       <section className="bg-background py-16 lg:py-12">
@@ -95,9 +101,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* FEATURED PROJECTS */}
-        <FeaturedProjects />
 
       {/* WHY NEXCODE */}
       <section className="bg-background py-8 lg:py-12">

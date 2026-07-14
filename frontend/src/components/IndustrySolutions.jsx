@@ -7,42 +7,42 @@ const industries = [
     title: "Restaurants & Cafés",
     description: "Modern POS systems, order management, inventory tracking, and digital solutions designed for Sri Lankan food businesses.",
     solutions: ["POS Systems", "Inventory Management", "Sales Analytics"],
-    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1200&auto=format&fit=crop", // barista at POS counter
   },
   {
     icon: Hotel,
     title: "Tourism & Hospitality",
     description: "Booking platforms and digital experiences that help hotels, villas, and tour operators attract more customers.",
     solutions: ["Booking Platforms", "Villa Websites", "Travel Management"],
-    image: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=1200&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=1200&auto=format&fit=crop", // villa pool, unmistakably hospitality
   },
   {
     icon: Truck,
     title: "Logistics & Distribution",
     description: "Custom systems that simplify inventory, transportation, delivery tracking, and daily business operations.",
     solutions: ["Inventory Systems", "Fleet Management", "Business Dashboards"],
-    image: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=1200&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=1200&auto=format&fit=crop", // warehouse worker with boxes
   },
   {
     icon: GraduationCap,
     title: "Education & Institutes",
     description: "Digital platforms for tuition classes and educational organizations to manage students efficiently.",
     solutions: ["Student Management", "Attendance Tracking", "Payment Systems"],
-    image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop", // classroom/students
   },
   {
     icon: ShoppingBag,
     title: "Retail & E-Commerce",
     description: "Scalable online stores and management systems built for growing Sri Lankan businesses.",
     solutions: ["E-Commerce Platforms", "Customer Management", "Order Processing"],
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?q=80&w=1200&auto=format&fit=crop", // retail checkout / shopping
   },
   {
     icon: Building2,
     title: "SME Business Solutions",
     description: "Custom software solutions that automate workflows and improve productivity for businesses.",
     solutions: ["ERP Systems", "Custom Applications", "Reporting Dashboards"],
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1200&auto=format&fit=crop", // modern office team
   },
 ];
 
@@ -86,7 +86,7 @@ export default function IndustrySolutions() {
         </motion.div>
 
         {/* Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" >
           {industries.map((item, index) => {
             const Icon = item.icon;
 
@@ -100,70 +100,53 @@ export default function IndustrySolutions() {
                 whileHover={{ y: -6 }}
                 className="
                 group relative rounded-3xl overflow-hidden
-                border border-border/60
-                aspect-[4/5] sm:aspect-[3/4]
+                border border-border/60 bg-card
                 transition-all duration-500
-                hover:border-primary/50
+                hover:border-primary/40
                 hover:shadow-2xl hover:shadow-primary/10
                 "
               >
-                {/* Background image */}
-                <div
-                  className="
-                  absolute inset-0
-                  bg-cover bg-center
-                  scale-105 group-hover:scale-110
-                  transition-transform duration-700 ease-out
-                  "
-                  style={{ backgroundImage: `url(${item.image})` }}
-                />
-
-                {/* Base darken for legibility everywhere */}
-                <div className="absolute inset-0 bg-black/40" />
-
-                {/* Bottom-to-top gradient scrim */}
-                <div
-                  className="
-                  absolute inset-0
-                  bg-gradient-to-t
-                  from-black/95 via-black/60 to-transparent
-                  "
-                />
-
-                {/* Subtle top sheen on hover */}
-                <div
-                  className="
-                  absolute inset-0 opacity-0 group-hover:opacity-100
-                  transition-opacity duration-500
-                  bg-gradient-to-b from-primary/15 via-transparent to-transparent
-                  "
-                />
-
-                {/* Content */}
-                <div className="relative z-10 h-full flex flex-col justify-end p-6">
-                  {/* Icon */}
+                {/* IMAGE ZONE — fully visible, clearly readable */}
+                <div className="relative h-48 md:h-52 overflow-hidden">
                   <div
                     className="
+                    absolute inset-0
+                    bg-cover bg-center
+                    scale-100 group-hover:scale-108
+                    transition-transform duration-700 ease-out
+                    "
+                    style={{ backgroundImage: `url(${item.image})` }}
+                  />
+
+                  {/* Faint bottom fade only — just enough to seat the icon badge, image stays legible */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/0 to-black/10" />
+
+                  {/* Icon badge, anchored over the image */}
+                  <div
+                    className="
+                    absolute bottom-4 left-5
                     w-11 h-11 rounded-xl
                     flex items-center justify-center
-                    bg-white/10 backdrop-blur-md
-                    border border-white/20
-                    mb-4
+                    bg-white/15 backdrop-blur-md
+                    border border-white/25
                     transition-colors duration-300
-                    group-hover:bg-primary/20 group-hover:border-primary/40
+                    group-hover:bg-primary/25 group-hover:border-primary/50
                     "
                   >
-                    <Icon size={20} className="text-white group-hover:text-primary transition-colors duration-300" />
+                    <Icon size={20} className="text-white" />
                   </div>
+                </div>
 
+                {/* CONTENT ZONE — solid panel, high readability */}
+                <div className="relative p-6">
                   <h3
-                    className="text-xl font-bold text-white tracking-tight"
+                    className="text-xl font-bold text-foreground tracking-tight"
                     style={{ fontFamily: "'Syne',sans-serif" }}
                   >
                     {item.title}
                   </h3>
 
-                  <p className="mt-2 text-sm leading-relaxed text-white/70 line-clamp-2">
+                  <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">
                     {item.description}
                   </p>
 
@@ -175,9 +158,8 @@ export default function IndustrySolutions() {
                         className="
                         text-[11px] font-medium
                         px-2.5 py-1 rounded-full
-                        bg-white/10 backdrop-blur-md
-                        border border-white/15
-                        text-white/80
+                        bg-primary/8 border border-primary/15
+                        text-foreground/80
                         "
                       >
                         {solution}
@@ -185,20 +167,29 @@ export default function IndustrySolutions() {
                     ))}
                   </div>
 
-                  {/* CTA — reveals on hover */}
+                  {/* CTA */}
                   <div
                     className="
-                    mt-5 flex items-center gap-2
-                    text-sm font-medium text-primary
-                    opacity-0 -translate-y-1
-                    group-hover:opacity-100 group-hover:translate-y-0
-                    transition-all duration-300
+                    hidden mt-5 pt-4 border-t border-border/50
+                    items-center justify-between
                     "
                   >
-                    Explore Solutions
-                    <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+                    <span className="text-sm font-medium text-primary flex items-center gap-2">
+                      Explore Solutions
+                      <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+                    </span>
                   </div>
                 </div>
+
+                {/* Subtle hover ring */}
+                <div
+                  className="
+                  pointer-events-none absolute inset-0 rounded-3xl
+                  ring-1 ring-inset ring-transparent
+                  group-hover:ring-primary/30
+                  transition-all duration-500
+                  "
+                />
               </motion.div>
             );
           })}
