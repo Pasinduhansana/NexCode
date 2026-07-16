@@ -480,6 +480,16 @@ export default function Hero({ stats = [] }) {
   const tokens = tv(theme);
   const prefersRed = useReducedMotion();
 
+  /* preload critical hero image */
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = laptopMockup.src;
+    document.head.appendChild(link);
+    return () => link.remove();
+  }, []);
+
   /* refs */
   const sceneRef = useRef(null);
   const tiltRef = useRef(null); // outer tilt wrapper

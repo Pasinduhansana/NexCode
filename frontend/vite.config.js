@@ -1,10 +1,12 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import { imagetools } from 'vite-imagetools'
 
 export default defineConfig({
   plugins: [
     react(),
+    imagetools(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['fonts/*.woff2', 'assets/*.{png,webp,jpg}'],
