@@ -34,6 +34,7 @@ export default function Footer() {
                 <img
                   src={logo}
                   alt="NexCode"
+                  loading="lazy"
                   className="w-10 h-10 rounded-md object-cover bg-slate-100 shadow-sm"
                 />
 

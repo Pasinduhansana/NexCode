@@ -224,13 +224,13 @@ function LaptopScreenContent({ theme }) {
           </div>
           {/* Right Panel with image */}
           <div className="w-full relative h-full flex items-center justify-center ">
-            <img src={palm_tree} alt="Palm Tree" className="absolute w-[60%] object-cover -right-10 -bottom-4 z-50" />
+            <img src={palm_tree} alt="Palm Tree" loading="lazy" className="absolute w-[60%] object-cover -right-10 -bottom-4 z-50" />
             <div className="w-full scale-125 flex relative  mr-20 mt-16 overflow-hidden">
               <div className="absolute z-0 inset-0 overflow-hidden  text-center flex items-center justify-center p-3.5 pt-6">
-                <img src={laptop_display} alt="Palm Tree" className="object-cover w-[90%] " />
+                <img src={laptop_display} alt="Palm Tree" loading="lazy" className="object-cover w-[90%] " />
               </div>
 
-              <img src={laptopMockup} alt="Palm Tree" className="object-cover z-10" />
+              <img src={laptopMockup} alt="Palm Tree" loading="lazy" className="object-cover z-10" />
             </div>
 
             {/* Revenue sparkline — mid right */}
@@ -357,7 +357,7 @@ function LaptopScreenContent({ theme }) {
         />
       </div>
       <div className="w-full h-full flex flex-col items-center justify-center  select-none overflow-hidden md:hidden">
-        <img src={theme === "dark" ? dark_L_display : light_L_display} alt="Mobile Display" className="object-cover w-[100%] h-[100%]" />
+        <img src={theme === "dark" ? dark_L_display : light_L_display} alt="Mobile Display" loading="lazy" className="object-cover w-[100%] h-[100%]" />
       </div>
     </>
   );
@@ -466,7 +466,7 @@ function PhoneScreenContent({ theme }) {
         </div>
       </div>
       <div className="w-full h-full  flex flex-col items-center justify-center  select-none overflow-hidden md:hidden">
-        <img src={theme === "dark" ? dark_m_display : light_m_display} alt="Mobile Display" className="object-cover w-[90%] h-[95%]" />
+        <img src={theme === "dark" ? dark_m_display : light_m_display} alt="Mobile Display" loading="lazy" className="object-cover w-[90%] h-[95%]" />
       </div>
     </>
   );
@@ -745,6 +745,7 @@ export default function Hero({ stats = [] }) {
               <img
                 src={laptopMockup}
                 alt="Laptop"
+                loading="eager"
                 className="w-full h-auto relative select-none drop-shadow-2xl"
                 style={{ zIndex: 20, pointerEvents: "none" }}
                 draggable={false}
@@ -786,7 +787,7 @@ export default function Hero({ stats = [] }) {
               {/* ── phone mockup — bottom-left ──────────────────── */}
               <div className="absolute z-30" style={{ bottom: "-1%", left: "1%", width: "12%" }}>
                 <div className="relative">
-                  <img src={phoneMockup} alt="Phone" className="w-full h-auto relative z-20 drop-shadow-xl" draggable={false} />
+                  <img src={phoneMockup} alt="Phone" loading="lazy" className="w-full h-auto relative z-20 drop-shadow-xl" draggable={false} />
                   <div className="absolute inset-0 z-10 overflow-hidden" style={{ borderRadius: "18%" }}>
                     <PhoneScreenContent theme={theme} />
                   </div>

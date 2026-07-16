@@ -22,6 +22,7 @@ function OfferCard({ offer, onCta }) {
         <img
           src={offer.image}
           alt={offer.title}
+          loading="lazy"
           className="absolute inset-0 w-full h-full object-contain"
           draggable={false}
         />

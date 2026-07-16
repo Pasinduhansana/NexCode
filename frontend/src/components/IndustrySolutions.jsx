@@ -115,14 +115,15 @@ export default function IndustrySolutions() {
               >
                 {/* IMAGE ZONE — fully visible, clearly readable */}
                 <div className="relative h-48 md:h-52 overflow-hidden">
-                  <div
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    loading="lazy"
                     className="
-                    absolute inset-0
-                    bg-cover bg-center
+                    absolute inset-0 w-full h-full object-cover
                     scale-100 group-hover:scale-108
                     transition-transform duration-700 ease-out
                     "
-                    style={{ backgroundImage: `url(${item.image})` }}
                   />
 
                   {/* Faint bottom fade only — just enough to seat the icon badge, image stays legible */}
