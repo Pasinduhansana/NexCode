@@ -97,7 +97,7 @@ export default function FeaturedProjects() {
   }
 
   return (
-    <section className="relative bg-background lg:py-24 overflow-hidden">
+    <section className="relative bg-background lg:py-24 overflow-hidden content-visibility-auto">
       {/* ambient glow */}
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none"

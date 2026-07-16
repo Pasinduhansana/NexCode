@@ -1,20 +1,18 @@
-import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "./context/ThemeContext";
 import { Analytics } from "@vercel/analytics/react";
-import PageSkeleton from "./components/PageSkeleton";
 
-// Public Pages (lazy loaded)
-const HomePage = lazy(() => import("./pages/HomePage"));
-const ServicesPage = lazy(() => import("./pages/ServicesPage"));
-const AboutPage = lazy(() => import("./pages/AboutPage"));
-const ContactPage = lazy(() => import("./pages/ContactPage"));
-const ProjectRequestPage = lazy(() => import("./pages/ProjectRequestPage"));
-const ShowcasePage = lazy(() => import("./pages/ShowcasePage"));
-const ProjectDetailPage = lazy(() => import("./pages/ProjectDetailPage"));
-const PrivacyPolicyPage = lazy(() => import("./pages/PrivacyPolicyPage"));
-const TermsOfServicePage = lazy(() => import("./pages/TermsOfServicePage"));
+
+import HomePage from "./pages/HomePage";
+import ServicesPage from "./pages/ServicesPage";
+import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
+import ProjectRequestPage from "./pages/ProjectRequestPage";
+import ShowcasePage from "./pages/ShowcasePage";
+import ProjectDetailPage from "./pages/ProjectDetailPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import TermsOfServicePage from "./pages/TermsOfServicePage";
 
 // Layout
 import Navbar from "./components/Navbar";
@@ -58,9 +56,7 @@ function App() {
               path="/"
               element={
                 <PublicLayout>
-                  <Suspense fallback={<PageSkeleton />}>
                     <HomePage />
-                  </Suspense>
                 </PublicLayout>
               }
             />
@@ -68,9 +64,7 @@ function App() {
               path="/services"
               element={
                 <PublicLayout>
-                  <Suspense fallback={<PageSkeleton />}>
                     <ServicesPage />
-                  </Suspense>
                 </PublicLayout>
               }
             />
@@ -78,9 +72,7 @@ function App() {
               path="/showcase"
               element={
                 <PublicLayout>
-                  <Suspense fallback={<PageSkeleton />}>
                     <ShowcasePage />
-                  </Suspense>
                 </PublicLayout>
               }
             />
@@ -88,9 +80,7 @@ function App() {
               path="/showcase/:slug"
               element={
                 <PublicLayout>
-                  <Suspense fallback={<PageSkeleton />}>
                     <ProjectDetailPage />
-                  </Suspense>
                 </PublicLayout>
               }
             />
@@ -98,9 +88,7 @@ function App() {
               path="/about"
               element={
                 <PublicLayout>
-                  <Suspense fallback={<PageSkeleton />}>
                     <AboutPage />
-                  </Suspense>
                 </PublicLayout>
               }
             />
@@ -108,9 +96,7 @@ function App() {
               path="/contact"
               element={
                 <PublicLayout>
-                  <Suspense fallback={<PageSkeleton />}>
                     <ContactPage />
-                  </Suspense>
                 </PublicLayout>
               }
             />
@@ -118,9 +104,7 @@ function App() {
               path="/start-project"
               element={
                 <PublicLayout>
-                  <Suspense fallback={<PageSkeleton />}>
                     <ProjectRequestPage />
-                  </Suspense>
                 </PublicLayout>
               }
             />
@@ -128,9 +112,7 @@ function App() {
               path="/privacy-policy"
               element={
                 <PublicLayout>
-                  <Suspense fallback={<PageSkeleton />}>
                     <PrivacyPolicyPage />
-                  </Suspense>
                 </PublicLayout>
               }
             />
@@ -138,9 +120,7 @@ function App() {
               path="/terms-of-service"
               element={
                 <PublicLayout>
-                  <Suspense fallback={<PageSkeleton />}>
                     <TermsOfServicePage />
-                  </Suspense>
                 </PublicLayout>
               }
             />

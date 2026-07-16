@@ -142,11 +142,13 @@ function HeroDeviceStack({ laptop_mockup, phone_mockup, project_image, project_i
 
         {/* Laptop Screen Bezel */}
         <div className="relative" style={{ transform: "translateZ(30px)", transformStyle: "preserve-3d" }}>
-          <img src={laptop_mockup} alt="Laptop Mockup" className="w-full h-full relative z-20 drop-shadow-2xl" />
+          <img src={laptop_mockup} alt="Laptop Mockup" loading="eager" fetchpriority="high" decoding="sync" className="w-full h-full relative z-20 drop-shadow-2xl" />
           <div className="absolute overflow-hidden w-[77%]  h-[84%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-[52%] ">
             <img
               src={project_image}
               alt="Project Screenshot"
+              loading="eager"
+              decoding="sync"
               className="z-10 transform transition-transform duration-300 hover:scale-105 w-full h-full"
             />
             {/* subtle glass glare on hover */}
@@ -161,7 +163,7 @@ function HeroDeviceStack({ laptop_mockup, phone_mockup, project_image, project_i
           }`}
           style={{ transform: "translateZ(60px)", animationDelay: "0.3s" }}
         >
-          <img src={phone_mockup} alt="Phone Mockup" className="w-full  h-full relative z-20 drop-shadow-xl" />
+          <img src={phone_mockup} alt="Phone Mockup" loading="lazy" decoding="async" fetchpriority="low" className="w-full  h-full relative z-20 drop-shadow-xl" />
           <div className="absolute overflow-hidden bg-background w-[99%] h-[99%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-[50.5%] rounded-lg lg:rounded-3xl ">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-8 bg-muted rounded-full">
               <div className="flex justify-between px-3 pt-0">
@@ -175,6 +177,8 @@ function HeroDeviceStack({ laptop_mockup, phone_mockup, project_image, project_i
             <img
               src={project_image2_mobile}
               alt="Project Screenshot"
+              loading="lazy"
+              decoding="async"
               className="z-10 pt-6 transform transition-transform duration-300 hover:scale-105 w-full h-full"
             />
           </div>
@@ -589,6 +593,8 @@ const relatedProjects = (project.relatedSlugs ?? [])
             <img
               src={palmLeave}
               alt="Decorative Palm Corner Graphic"
+              loading="lazy"
+              decoding="async"
               className={`w-full h-auto relative z-20 origin-bottom-left ${reducedMotion ? "" : "animate-[heroSway_7s_ease-in-out_infinite]"}`}
             />
           </div>
@@ -841,6 +847,8 @@ const relatedProjects = (project.relatedSlugs ?? [])
                       <img
                         src={relatedProject.resources?.images?.[0]?.url ?? relatedProject.cover}
                         alt={"relatedProject.name"}
+                        loading="lazy"
+                        decoding="async"
                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     </div>
