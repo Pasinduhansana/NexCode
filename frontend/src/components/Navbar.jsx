@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { HiMenu, HiX, HiChevronDown, HiSun, HiMoon } from "react-icons/hi";
 import { useTheme } from "../context/ThemeContext";
 import { useThemeClasses } from "../utils/useThemeClasses";
-import logo from "../../assets/Logo.png";
+import logo from "../../assets/Logo.webp";
 import Button  from "./Button";
 
 const navLinks = [

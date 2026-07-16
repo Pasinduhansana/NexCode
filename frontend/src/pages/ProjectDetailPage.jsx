@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
-import palmLeave from "../../assets/palm-leave.png";
-import project_image from "../../assets/project_image.png";
-import project_image2_mobile from "../../assets/project_image1_mob.png";
-import laptop_mockup from "../../assets/laptop_mockup.png";
-import phone_mockup from "../../assets/phone_mockup.png";
+import palmLeave from "../../assets/palm-leave.webp";
+import project_image from "../../assets/project_image.webp";
+import project_image2_mobile from "../../assets/project_image1_mob.webp";
+import laptop_mockup from "../../assets/laptop_mockup.webp";
+import phone_mockup from "../../assets/phone_mockup.webp";
 import { useTheme } from "../context/ThemeContext";
 import { showcaseProjects } from "../data/showcaseProjects";
 import { normalizeSlug } from "../utils/normalizeSlug";

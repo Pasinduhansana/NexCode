@@ -2,14 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useAnimation, useReducedMotion } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
-import laptopMockup from "../../assets/laptop_mockup.png";
-import phoneMockup from "../../assets/phone_mockup.png";
-import palm_tree from "../../assets/palm-leave.png";
-import laptop_display from "../../assets/project_image.png";
-import dark_L_display from "../../assets/dark_desktop.png";
-import light_L_display from "../../assets/light_desktop.png";
-import dark_m_display from "../../assets/dark_mobile.png";
-import light_m_display from "../../assets/light_mobile.png";
+import laptopMockup from "../../assets/laptop_mockup.webp";
+import phoneMockup from "../../assets/phone_mockup.webp";
+import palm_tree from "../../assets/palm-leave.webp";
+import laptop_display from "../../assets/project_image.webp";
+import dark_L_display from "../../assets/dark_desktop.webp";
+import light_L_display from "../../assets/light_desktop.webp";
+import dark_m_display from "../../assets/dark_mobile.webp";
+import light_m_display from "../../assets/light_mobile.webp";
 import Button from "../components/Button";
 /* ─────────────────────────────────────────────────────────────
    THEME TOKENS
@@ -741,7 +741,7 @@ export default function Hero({ stats = [] }) {
           >
             {/* ── laptop frame ─────────────────────────────────── */}
             <div className="relative" style={{ width: "min(800px, 88vw)" }}>
-              {/* the PNG frame */}
+              {/* the webp frame */}
               <img
                 src={laptopMockup}
                 alt="Laptop"
@@ -751,7 +751,7 @@ export default function Hero({ stats = [] }) {
               />
 
               {/* ── SCREEN CONTENT inside bezel ──────────────────
-                  Adjust these % to match your laptop_mockup.png exactly.
+                  Adjust these % to match your laptop_mockup.webp exactly.
                   width/height/top/left are relative to the img size.       */}
               <div
                 className="absolute overflow-hidden"

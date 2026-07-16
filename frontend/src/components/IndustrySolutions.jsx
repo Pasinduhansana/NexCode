@@ -79,14 +79,14 @@ export default function IndustrySolutions() {
           </p>
 
           <h2
-            className="text-3xl md:text-5xl font-bold tracking-tight text-foreground"
+            className="section-title mb-4"
             style={{ fontFamily: "'Syne',sans-serif" }}
           >
-            Technology Built Around
+            Technology Built Around<br className="hidden sm:block" />
             <span className="text-primary"> Your Business</span>
           </h2>
 
-          <p className="mt-5 text-muted-foreground text-sm md:text-base leading-relaxed">
+          <p className="section-subtitle mx-auto max-w-2xl">
             From Sri Lankan startups to established businesses, NexCode creates custom digital solutions
             that automate operations, improve efficiency, and help companies grow.
           </p>

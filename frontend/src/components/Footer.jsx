@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { FaWhatsapp, FaPhone, FaGlobe } from "react-icons/fa";
 import { useThemeClasses } from "../utils/useThemeClasses";
 import { footerSocialLinks } from "../data/socialLinks";
-import logo from "../../assets/Logo.png";
+import logo from "../../assets/Logo.webp";
 
 const quickLinks = [
   { label: "Home", path: "/" },
