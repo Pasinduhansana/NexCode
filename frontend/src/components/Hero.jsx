@@ -517,10 +517,7 @@ export default function Hero({ stats = [] }) {
       return;
     }
 
-    /* 1. Start closed (lid flat, scene scaled down) */
-    lidCtrl.set({ rotateX: 75, opacity: 0.3, scale: 0.88, y: 40 });
-
-    /* 2. Short pause, then unfold */
+    /* Short pause, then unfold */
     const t = setTimeout(async () => {
       await lidCtrl.start({
         rotateX: 0,
@@ -752,6 +749,7 @@ export default function Hero({ stats = [] }) {
       <div className="relative z-10 w-full h-auto flex justify-center items-start mt-12 md:mt-0 " style={{ perspective: "1100px" }}>
         {/* lid unfold motion */}
         <motion.div
+          initial={{ rotateX: 75, opacity: 0.3, scale: 0.88, y: 40 }}
           animate={lidCtrl}
           style={{
             transformStyle: "preserve-3d",
