@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { FaWhatsapp, FaPhone, FaGlobe } from "react-icons/fa";
 import { useThemeClasses } from "../utils/useThemeClasses";
 import { footerSocialLinks } from "../data/socialLinks";
-import logo from "../../assets/Logo.png";
+import logo from "../../assets/Logo.webp";
 
 const quickLinks = [
   { label: "Home", path: "/" },
@@ -34,6 +34,7 @@ export default function Footer() {
                 <img
                   src={logo}
                   alt="NexCode"
+                  loading="lazy"
                   className="w-10 h-10 rounded-md object-cover bg-slate-100 shadow-sm"
                 />
 

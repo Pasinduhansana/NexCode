@@ -1,5 +1,12 @@
 import { motion } from "framer-motion";
 import { Utensils, Hotel, Truck, GraduationCap, ShoppingBag, Building2, ArrowRight } from "lucide-react";
+//IMport images
+import Cafe from "../../assets/Industry_Images/Cafe.webp";
+import Hostitality from "../../assets/Industry_Images/Hostitality.webp";
+import Logistics from "../../assets/Industry_Images/Logistic.webp";
+import Education from "../../assets/Industry_Images/Education.webp";
+import Retail from "../../assets/Industry_Images/Retail.webp";
+import Office from "../../assets/Industry_Images/Office.webp";
 
 const industries = [
   {
@@ -7,42 +14,42 @@ const industries = [
     title: "Restaurants & Cafés",
     description: "Modern POS systems, order management, inventory tracking, and digital solutions designed for Sri Lankan food businesses.",
     solutions: ["POS Systems", "Inventory Management", "Sales Analytics"],
-    image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1200&auto=format&fit=crop", // barista at POS counter
+    image: Cafe,
   },
   {
     icon: Hotel,
     title: "Tourism & Hospitality",
     description: "Booking platforms and digital experiences that help hotels, villas, and tour operators attract more customers.",
     solutions: ["Booking Platforms", "Villa Websites", "Travel Management"],
-    image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=1200&auto=format&fit=crop", // villa pool, unmistakably hospitality
+    image: Hostitality, // villa pool, unmistakably hospitality
   },
   {
     icon: Truck,
     title: "Logistics & Distribution",
     description: "Custom systems that simplify inventory, transportation, delivery tracking, and daily business operations.",
     solutions: ["Inventory Systems", "Fleet Management", "Business Dashboards"],
-    image: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=1200&auto=format&fit=crop", // warehouse worker with boxes
+    image: Logistics,
   },
   {
     icon: GraduationCap,
     title: "Education & Institutes",
     description: "Digital platforms for tuition classes and educational organizations to manage students efficiently.",
     solutions: ["Student Management", "Attendance Tracking", "Payment Systems"],
-    image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop", // classroom/students
+    image: Education, // classroom/students
   },
   {
     icon: ShoppingBag,
     title: "Retail & E-Commerce",
     description: "Scalable online stores and management systems built for growing Sri Lankan businesses.",
     solutions: ["E-Commerce Platforms", "Customer Management", "Order Processing"],
-    image: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?q=80&w=1200&auto=format&fit=crop", // retail checkout / shopping
+    image: Retail, // retail checkout / shopping
   },
   {
     icon: Building2,
     title: "SME Business Solutions",
     description: "Custom software solutions that automate workflows and improve productivity for businesses.",
     solutions: ["ERP Systems", "Custom Applications", "Reporting Dashboards"],
-    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1200&auto=format&fit=crop", // modern office team
+    image: Office, // modern office team
   },
 ];
 
@@ -72,14 +79,14 @@ export default function IndustrySolutions() {
           </p>
 
           <h2
-            className="text-3xl md:text-5xl font-bold tracking-tight text-foreground"
+            className="section-title mb-4"
             style={{ fontFamily: "'Syne',sans-serif" }}
           >
-            Technology Built Around
+            Technology Built Around<br className="hidden sm:block" />
             <span className="text-primary"> Your Business</span>
           </h2>
 
-          <p className="mt-5 text-muted-foreground text-sm md:text-base leading-relaxed">
+          <p className="section-subtitle mx-auto max-w-2xl">
             From Sri Lankan startups to established businesses, NexCode creates custom digital solutions
             that automate operations, improve efficiency, and help companies grow.
           </p>
@@ -108,14 +115,15 @@ export default function IndustrySolutions() {
               >
                 {/* IMAGE ZONE — fully visible, clearly readable */}
                 <div className="relative h-48 md:h-52 overflow-hidden">
-                  <div
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    loading="lazy"
                     className="
-                    absolute inset-0
-                    bg-cover bg-center
+                    absolute inset-0 w-full h-full object-cover
                     scale-100 group-hover:scale-108
                     transition-transform duration-700 ease-out
                     "
-                    style={{ backgroundImage: `url(${item.image})` }}
                   />
 
                   {/* Faint bottom fade only — just enough to seat the icon badge, image stays legible */}
