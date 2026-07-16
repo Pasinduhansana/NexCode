@@ -414,13 +414,31 @@ function App() {
       }
     };
 
-
     loadProject();
 
     return () => {
       mounted = false;
     };
   }, [slug]);
+
+  useEffect(() => {
+    if (!project) return;
+    const imgs = [
+      project.laptop_mockup?.[0],
+      project.laptop_mockup?.[1],
+      project.phone_mockup?.[0],
+      project.phone_mockup?.[1],
+    ].filter(Boolean);
+    const links = imgs.map((src) => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = src;
+      document.head.appendChild(link);
+      return link;
+    });
+    return () => links.forEach((l) => l.remove());
+  }, [project]);
 
   usePageTitle(project ? `${project.name} | Showcase` : "Project Not Found");
 
