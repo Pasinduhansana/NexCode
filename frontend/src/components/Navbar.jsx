@@ -89,7 +89,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
           <div className={`w-8 h-8 rounded-md overflow-hidden shadow-md ${ui.logoBg} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-            <img src={logo} alt="NexCode" className="object-cover" /></div>
+            <img src={logo} alt="NexCode" className="object-cover" loading="lazy" decoding="async" /></div>
             <span className={`font-display font-bold text-lg ${themeClasses.text.primary}`}>
               Nex<span className="text-foreground">Code</span>
             </span>

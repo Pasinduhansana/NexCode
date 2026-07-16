@@ -83,7 +83,7 @@ function TiltMockup({ proj, idx }) {
         className="relative rounded-[10px] overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.20)] border border-border bg-background "
       >
         <div className="relative">
-          <img src={proj.cover} alt={proj.name} className="w-full h-54 object-cover" />
+          <img src={proj.cover} alt={proj.name} className="w-full h-54 object-cover" loading="lazy" decoding="async" />
           {/* Glassy top highlight, like light hitting a curved surface */}
           <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-white/25 to-transparent pointer-events-none" />
           {/* Cursor-tracking sheen */}
@@ -159,12 +159,13 @@ function ProjectCard({ project, onNavigate, idx = 0 }) {
       />
       {/* Media frame */}
       <div className="relative h-48 lg:h-56 overflow-hidden bg-background">
-        <img
-          src={project.cover}
-          alt={project.name}
-          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-          loading="lazy"
-        />
+          <img
+            src={project.cover}
+            alt={project.name}
+            className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            loading="lazy"
+            decoding="async"
+          />
 
         {/* Category tag */}
         <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider uppercase bg-card/90 text-foreground backdrop-blur border border-border/40 shadow-sm">
@@ -400,7 +401,7 @@ export default function ShowcasePage() {
                   className="group relative flex flex-col items-center justify-center bg-card border border-border  rounded-xl mx-2 my-1 p-4  text-center cursor-pointer shadow-sm transition-all duration-300"
                 >
                   <div className="w-10 h-10 rounded-full overflow-hidden mb-2.5 border border-border bg-background ">
-                    <img src={proj.cover} alt={proj.name} className="w-full h-full object-cover" />
+                    <img src={proj.cover} alt={proj.name} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                   </div>
                   <span className="text-[10px] font-bold text-foreground line-clamp-1 uppercase tracking-wide group-hover:text-primary">
                     {proj.name.split(" ")[0]}

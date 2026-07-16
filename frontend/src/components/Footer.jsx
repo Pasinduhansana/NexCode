@@ -17,7 +17,7 @@ export default function Footer() {
   const themeClasses = useThemeClasses();
 
   return (
-    <footer className="bg-background text-foreground border-t border-border/40">
+    <footer className="bg-background text-foreground border-t border-border/40 content-visibility-auto">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-5 lg:py-10">
 
         <div className="rounded-[2rem] border border-border/60 bg-card/80 backdrop-blur-xl px-6 sm:px-8 lg:px-10 py-6 shadow-[0_18px_45px_rgba(15,23,42,0.06)]">
@@ -35,6 +35,8 @@ export default function Footer() {
                   src={logo}
                   alt="NexCode"
                   loading="lazy"
+                  decoding="async"
+                  fetchpriority="low"
                   className="w-10 h-10 rounded-md object-cover bg-slate-100 shadow-sm"
                 />
 

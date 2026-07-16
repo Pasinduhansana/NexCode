@@ -138,6 +138,12 @@
   }
 }
 
+/* Improve rendering performance for below-fold content */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 500px;
+}
+
 /* Disabale text selection for labels that user not active with */
 /* Disable text selection everywhere */
 * {
