@@ -163,7 +163,7 @@ function HeroDeviceStack({ laptop_mockup, phone_mockup, project_image, project_i
           }`}
           style={{ transform: "translateZ(60px)", animationDelay: "0.3s" }}
         >
-          <img src={phone_mockup} alt="Phone Mockup" loading="lazy" decoding="async" fetchpriority="low" className="w-full  h-full relative z-20 drop-shadow-xl" />
+          <img src={phone_mockup} alt="Phone Mockup" loading="eager" decoding="sync" className="w-full  h-full relative z-20 drop-shadow-xl" />
           <div className="absolute overflow-hidden bg-background w-[99%] h-[99%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-[50.5%] rounded-lg lg:rounded-3xl ">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-8 bg-muted rounded-full">
               <div className="flex justify-between px-3 pt-0">
@@ -177,8 +177,8 @@ function HeroDeviceStack({ laptop_mockup, phone_mockup, project_image, project_i
             <img
               src={project_image2_mobile}
               alt="Project Screenshot"
-              loading="lazy"
-              decoding="async"
+              loading="eager"
+              decoding="sync"
               className="z-10 pt-6 transform transition-transform duration-300 hover:scale-105 w-full h-full"
             />
           </div>

@@ -308,7 +308,7 @@ export default function ServicesPage() {
 
         <motion.div
           style={{ y: heroY, opacity: heroOpacity }}
-          className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-7 lg:px-8 pt-24 sm:pt-24 pb-16 sm:pb-24 text-center md:text-left lg:text-left"
+          className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-7 lg:px-8 pt-20 md:pt-24 pb-16 sm:pb-24 text-center md:text-left lg:text-left"
         >
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.9fr] gap-12 lg:gap-16 items-center">
             {/* ── Left: headline ── */}
