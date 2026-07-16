@@ -48,7 +48,7 @@ const industries = [
 
 export default function IndustrySolutions() {
   return (
-    <section className="relative w-full overflow-hidden py-20 md:py-28 bg-background">
+    <section className="relative w-full overflow-hidden py-16 md:py-28 bg-background">
       {/* Background glow */}
       <div
         className="

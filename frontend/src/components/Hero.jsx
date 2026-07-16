@@ -695,17 +695,17 @@ export default function Hero({ stats = [] }) {
         initial={{ opacity: 0, y: 28 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="relative text-center  px-5 pt-24 md:pt-28 pb-10
+        className="relative text-center  px-5 pt-20 md:pt-28 pb-10
                    flex flex-col items-center gap-4"
         style={{ zIndex: 10 }}
       >
         {/* headline */}
         <h1
           className="text-[clamp(2rem,5.2vw,3rem)] font-bold
-                     leading-[1.3] tracking-tight text-foreground mt-5 md:mt-0"
+                     leading-[1.3] tracking-tight text-foreground mt-0 md:mt-0"
           style={{ fontFamily: "'Syne', sans-serif" }}
         >
-          Build Digital Solutions That<em className="not-italic text-primary"><br/>Grow Your Business</em>
+          Build Digital Solutions That<em className="not-italic text-primary"><br className="hidden md:block"/> Grow Your Business</em>
         </h1>
 
         <p className="section-subtitle mt-2 md:mt-0">
