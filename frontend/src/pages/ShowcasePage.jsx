@@ -24,6 +24,7 @@ import { FaFilterCircleXmark } from "react-icons/fa6";
 import usePageTitle from "../utils/usePageTitle";
 import { useThemeClasses } from "../utils/useThemeClasses";
 import { showcaseProjects } from "../data/showcaseProjects";
+import { useFilterSync } from "../hooks/useFilterSync";
 import SectionLabel from "../components/SectionLabel";
 
 // Add once, outside the component that maps over your projects
@@ -231,11 +232,24 @@ function ProjectCard({ project, onNavigate, idx = 0 }) {
 export default function ShowcasePage() {
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const themeClasses = useThemeClasses();
   const heroRef = useRef(null);
+  const showcaseRef = useRef(null);
+  const scrollAttempted = useRef(false);
+
+  const {
+    industry,
+    category,
+    setIndustry,
+    setCategory,
+    clearFilters: clearUrlFilters,
+    allIndustries,
+    availableCategories,
+    hasActiveFilters: hasUrlFilters,
+    getIndustryLabel,
+  } = useFilterSync(projects);
 
   usePageTitle("Showcase — NexCode");
 
@@ -245,12 +259,26 @@ export default function ShowcasePage() {
     setLoading(false);
   }, []);
 
-  // Filter Categories list dynamically based on active data
-  const allCategories = useMemo(() => {
-    return Array.from(new Set(projects.map((p) => p.type))).sort();
-  }, [projects]);
+  // Clear category if it falls outside the available categories for the selected industry
+  useEffect(() => {
+    if (category && !availableCategories.includes(category)) {
+      setCategory("");
+    }
+  }, [category, availableCategories, setCategory]);
 
-  // Main dynamic filter process (category + keyword search only)
+  // Auto-scroll to showcase section when filters are restored from URL on mount
+  useEffect(() => {
+    if (!projects.length || scrollAttempted.current) return;
+    if (industry || category) {
+      scrollAttempted.current = true;
+      const timer = setTimeout(() => {
+        showcaseRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 400);
+      return () => clearTimeout(timer);
+    }
+  }, [projects, industry, category]);
+
+  // Main dynamic filter process (industry + category + keyword search)
   const filteredProjects = useMemo(() => {
     return projects.filter((project) => {
       const matchSearch =
@@ -259,30 +287,27 @@ export default function ShowcasePage() {
         project.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
         project.stack.some((s) => s.toLowerCase().includes(searchQuery.toLowerCase()));
 
-      const matchCategory = selectedCategories.length === 0 || selectedCategories.includes(project.type);
+      const matchIndustry = !industry || project.industry === industry;
+      const matchCategory = !category || project.type === category;
 
-      return matchSearch && matchCategory;
+      return matchSearch && matchIndustry && matchCategory;
     });
-  }, [projects, searchQuery, selectedCategories]);
+  }, [projects, searchQuery, industry, category]);
 
-  // Category Filter Toggle Action
-  const toggleCategory = (category) => {
-    setSelectedCategories((prev) => (prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]));
-  };
-
-  // Reset filter settings
+  // Reset all filter settings
   const resetFilters = () => {
-    setSelectedCategories([]);
+    clearUrlFilters();
     setSearchQuery("");
   };
 
   // Check if any filters are active
-  const hasActiveFilters = selectedCategories.length > 0 || searchQuery !== "";
+  const hasActiveFilters = hasUrlFilters || searchQuery !== "";
 
-  // Unique signature so the results grid remounts cleanly on every filter
-  // change — fixes the bug where clearing a category left the grid stuck
-  // invisible even though the cards (and their click targets) were present.
-  const filterSignature = useMemo(() => `${selectedCategories.join("-")}|${searchQuery}`, [selectedCategories, searchQuery]);
+  // Unique signature so the results grid remounts cleanly on every filter change
+  const filterSignature = useMemo(
+    () => `${industry}|${category}|${searchQuery}`,
+    [industry, category, searchQuery]
+  );
 
   // Identify featured projects to spotlight (first 2 projects)
   const spotlightProjects = useMemo(() => {
@@ -599,7 +624,7 @@ export default function ShowcasePage() {
       {/* ──────────────────────────────────────────────────────────────
           § 3 MAIN COLLECTION — Full-width horizontal filter bar + grid
       ────────────────────────────────────────────────────────────── */}
-      <section id="collection" className="py-10 md:py-24 bg-background">
+      <section ref={showcaseRef} id="collection" className="py-10 md:py-24 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="flex flex-col items-center text-center mb-10 md:mb-14">
@@ -622,64 +647,92 @@ export default function ShowcasePage() {
             viewport={{ once: true }}
             className="mb-10 md:mb-14 rounded-3xl border border-border bg-card/70 backdrop-blur-xl shadow-sm p-4 sm:p-5 md:p-6"
           >
-            <div className="flex flex-col lg:flex-row lg:items-center gap-4 md:gap-5 lg:gap-6">
-              {/* Search input */}
-              <div className="relative w-full lg:w-72 flex-shrink-0">
-                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-text_muted">
-                  <HiSearch size={16} />
-                </span>
-                <input
-                  type="text"
-                  placeholder="Search stack or keyword..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-border bg-background text-xs text-foreground placeholder-text_muted focus:outline-none focus:border-primary transition-colors"
-                />
+            <div className="flex flex-col gap-4">
+              {/* Row 1: Search + Clear */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                <div className="relative w-full sm:w-72 flex-shrink-0">
+                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-text_muted">
+                    <HiSearch size={16} />
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="Search stack or keyword..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-border bg-background text-xs text-foreground placeholder-text_muted focus:outline-none focus:border-primary transition-colors"
+                  />
+                </div>
+
+                {hasActiveFilters && (
+                  <button
+                    type="button"
+                    onClick={resetFilters}
+                    className="flex-shrink-0 inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg border border-border bg-background/60 text-xs font-semibold text-text_secondary hover:text-danger hover:border-danger/40 hover:bg-danger/5 transition-colors"
+                  >
+                    <FaFilterCircleXmark size={13} /> Clear
+                  </button>
+                )}
               </div>
 
-              {/* Reset button */}
-              {hasActiveFilters && (
-                <button
-                  type="button"
-                  onClick={resetFilters}
-                  className="flex-shrink-0 inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg border border-border bg-background/60 text-xs font-semibold text-text_secondary hover:text-danger hover:border-danger/40 hover:bg-danger/5 transition-colors"
-                >
-                  <FaFilterCircleXmark size={13} /> Clear
-                </button>
-              )}
-
-              {/* Divider (desktop / tablet only) */}
-              <div className="hidden lg:block w-px h-8 bg-border flex-shrink-0" />
-              <div className="lg:hidden h-px w-full bg-border" />
-
-              {/* Category chips — wraps on mobile & tablet, single row on desktop */}
-              <div className="flex-1 flex flex-wrap items-center gap-2">
+              {/* Row 2: Industry chips */}
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="text-[10px] font-black uppercase tracking-widest text-text_muted mr-1 inline-flex items-center gap-1.5 py-1.5">
-                  <HiFilter size={12} /> Categories
+                  <HiFilter size={12} /> Industry
                 </span>
-                {allCategories.map((cat) => {
-                  const isActive = selectedCategories.includes(cat);
+                {allIndustries.map((ind) => {
+                  const isActive = industry === ind;
                   return (
                     <button
-                      key={cat}
+                      key={ind}
                       type="button"
-                      onClick={() => toggleCategory(cat)}
+                      onClick={() => setIndustry(isActive ? "" : ind)}
                       className={`relative z-10 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-bold border transition-all duration-200 ${
                         isActive
                           ? "border-primary/50 bg-primary/10 text-primary shadow-sm"
                           : "border-border bg-background/60 text-text_secondary hover:border-primary/30 hover:bg-muted/40"
                       }`}
                     >
-                      {cat}
+                      {getIndustryLabel(ind)}
                       <span
                         className={`text-[9px] px-1.5 py-0.5 rounded-full ${isActive ? "bg-primary/20 text-primary" : "bg-muted text-text_muted"}`}
                       >
-                        {projects.filter((p) => p.type === cat).length}
+                        {projects.filter((p) => p.industry === ind).length}
                       </span>
                     </button>
                   );
                 })}
               </div>
+
+              {/* Row 3: Category chips — dynamically updated based on industry */}
+              {availableCategories.length > 0 && (
+                <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-text_muted mr-1 inline-flex items-center gap-1.5 py-1.5">
+                    <HiFilter size={12} /> Category
+                  </span>
+                  {availableCategories.map((cat) => {
+                    const isActive = category === cat;
+                    return (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => setCategory(isActive ? "" : cat)}
+                        className={`relative z-10 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-bold border transition-all duration-200 ${
+                          isActive
+                            ? "border-primary/50 bg-primary/10 text-primary shadow-sm"
+                            : "border-border bg-background/60 text-text_secondary hover:border-primary/30 hover:bg-muted/40"
+                        }`}
+                      >
+                        {cat}
+                        <span
+                          className={`text-[9px] px-1.5 py-0.5 rounded-full ${isActive ? "bg-primary/20 text-primary" : "bg-muted text-text_muted"}`}
+                        >
+                          {projects.filter((p) => (!industry || p.industry === industry) && p.type === cat).length}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </motion.div>
 
@@ -706,29 +759,39 @@ export default function ShowcasePage() {
                 </div>
               ))}
             </div>
-          ) : filteredProjects.length > 0 ? (
-            <motion.div key={filterSignature} initial="hidden" animate="show" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredProjects.map((proj, idx) => (
-                <ProjectCard key={proj.slug} project={proj} idx={idx} onNavigate={navigate} themeClasses={themeClasses} />
-              ))}
-            </motion.div>
           ) : (
-            /* Empty state when no filters match */
-            <motion.div
-              key="empty-state"
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-16 px-6 border-2 border-dashed border-border rounded-3xl bg-card"
-            >
-              <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center text-2xl mx-auto mb-4 text-text_muted">🔍</div>
-              <h3 className="font-display font-bold text-foreground text-sm mb-4">No Matching Case Studies</h3>
-              <p className="text-text_secondary mb-6 max-w-lg mx-auto">
-                Try adjusting your keyword query or selected categories to explore other case studies.
-              </p>
-              <Button variant="secondary" size="sm" leftIcon={<HiChevronLeft size={20} />} onClick={resetFilters}>
-                Reset All Filters
-              </Button>
-            </motion.div>
+            <AnimatePresence mode="wait">
+              {filteredProjects.length > 0 ? (
+                <motion.div
+                  key={filterSignature}
+                  initial="hidden"
+                  animate="show"
+                  exit={{ opacity: 0, y: 20 }}
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                >
+                  {filteredProjects.map((proj, idx) => (
+                    <ProjectCard key={proj.slug} project={proj} idx={idx} onNavigate={navigate} themeClasses={themeClasses} />
+                  ))}
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="empty-state"
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  className="text-center py-16 px-6 border-2 border-dashed border-border rounded-3xl bg-card"
+                >
+                  <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center text-2xl mx-auto mb-4 text-text_muted">🔍</div>
+                  <h3 className="font-display font-bold text-foreground text-sm mb-4">No Matching Case Studies</h3>
+                  <p className="text-text_secondary mb-6 max-w-lg mx-auto">
+                    Try adjusting your keyword query or selected filters to explore other case studies.
+                  </p>
+                  <Button variant="secondary" size="sm" leftIcon={<HiChevronLeft size={20} />} onClick={resetFilters}>
+                    Reset All Filters
+                  </Button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           )}
         </div>
       </section>

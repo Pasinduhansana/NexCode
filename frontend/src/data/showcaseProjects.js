@@ -112,6 +112,7 @@ export const showcaseProjects = [
 
     name: "Velmora Travels",
     type: "Luxury Travel Website",
+    industry: "Tourism & Hospitality",
     summary: `Velmora Travels is a premium travel agency website designed to showcase destinations, tour packages, and travel experiences through a modern, immersive digital experience. The platform helps strengthen the brand, engage visitors, and convert interest into travel inquiries.`,
 
     whatIs: "A premium travel website that showcases destinations, tour packages, and services while encouraging customer inquiries.",
@@ -199,6 +200,7 @@ export const showcaseProjects = [
     name: "Thineth Villa",
 
     type: "Luxury Hospitality Website",
+    industry: "Tourism & Hospitality",
 
     summary:
       "Thineth Villa is a premium villa showcase and booking platform designed to help luxury accommodation providers build a strong online presence. The website delivers an elegant browsing experience with immersive visuals, clear property information, and a smooth inquiry journey across all devices.",
@@ -323,6 +325,7 @@ export const showcaseProjects = [
     name: "BuildBit POS",
 
     type: "Retail Management System",
+    industry: "retail",
 
     summary:
       "BuildBit POS is a modern point-of-sale and inventory management solution designed for hardware and retail businesses. The platform helps store owners manage sales, inventory, suppliers, customers, and reports through a simple and efficient digital system, replacing manual processes with a faster and more reliable retail experience.",
@@ -401,6 +404,7 @@ export const showcaseProjects = [
     slug: "bashita-ceramic-inventory",
     name: "Bashita Ceramic Inventory",
     type: "Retail Management System",
+    industry: "retail",
 
     summary: `Bashita Ceramic Inventory is a centralized inventory management system built to simplify stock operations for ceramic businesses. It provides real-time inventory visibility, supplier management, and reporting through a modern, easy-to-use web application.`,
 
@@ -474,6 +478,7 @@ export const showcaseProjects = [
     name: "LogiManage",
 
     type: "Retail Management System",
+    industry: "logistics",
 
     summary:
       "LogiManage is a digital logistics management platform designed to simplify shipment operations through a centralized workflow system. The solution connects different operational teams, improves shipment visibility, and enables businesses to manage requests, verification, inspections, and dispatch processes efficiently.",
@@ -589,6 +594,7 @@ export const showcaseProjects = [
     name: "Employee Transport Management System",
 
     type: "Business Intelligence Solution",
+    industry: "logistics",
 
     summary:
       "A Power BI-based transport management solution designed to help organizations monitor employee transportation operations through centralized dashboards. The platform provides clear visibility into routes, vehicle usage, seat allocation, and operational performance, enabling smarter decisions through data-driven insights.",
@@ -670,6 +676,7 @@ export const showcaseProjects = [
     name: "Student Portfolio Showcase",
 
     type: "Personal Branding Platform",
+    industry: "education",
 
     summary:
       "Student Portfolio Showcase is a modern personal branding platform designed to help students and professionals present their skills, projects, achievements, and career journey through an interactive digital portfolio. The platform transforms traditional resumes into engaging online experiences that improve visibility and create stronger impressions with recruiters, universities, and potential clients.",
