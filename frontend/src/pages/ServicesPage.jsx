@@ -3,8 +3,9 @@
  * Modern landing-page-feel design with full support for:
  *   light | dark | primary  themes via Tailwind semantic tokens.
  */
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
+import useGsapReveal from "../utils/useGsapReveal";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import {
@@ -69,31 +70,6 @@ const STATS = [
   { value: "Flexible", label: "Service Scope" },
   { value: "24h", label: "Support" },
 ];
-
-/* ═══════════════════════════════════════════════════════════════════════
-   ANIMATION VARIANTS
-═══════════════════════════════════════════════════════════════════════ */
-const fadeUp = {
-  hidden: { opacity: 0, y: 32 },
-  show: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.55,
-      delay: i * 0.08,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
-  }),
-};
-
-const scaleIn = {
-  hidden: { opacity: 0, scale: 0.9 },
-  show: (i = 0) => ({
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 0.45, delay: i * 0.07, ease: [0.25, 0.46, 0.45, 0.94] },
-  }),
-};
 
 /* ═══════════════════════════════════════════════════════════════════════
    SHARED SMALL COMPONENTS
@@ -202,15 +178,9 @@ function ServiceModal({ service, onClose }) {
 ═══════════════════════════════════════════════════════════════════════ */
 function ServiceCard({ service, index, onSelect }) {
   return (
-    <motion.article
-      variants={fadeUp}
-      custom={index}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: "-40px" }}
-      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+    <article
       onClick={() => onSelect(service)}
-      className="group relative rounded-2xl border border-border bg-card overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-card-hover hover:border-opacity-70"
+      className="group relative rounded-2xl border border-border bg-card overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-card-hover hover:border-opacity-70 hover:-translate-y-1.5"
     >
       {/* Hover radial glow */}
       <div
@@ -266,7 +236,7 @@ function ServiceCard({ service, index, onSelect }) {
           </span>
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 }
 
@@ -277,19 +247,14 @@ export default function ServicesPage() {
   usePageTitle("Services — NexCode");
   const [selected, setSelected] = useState(null);
   const [openFaq, setOpenFaq] = useState(null);
-  const heroRef = useRef(null);
-
-  /* Parallax on hero text */
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  useGsapReveal();
 
   return (
     <div className="min-h-screen bg-background -mt-20">
       {/* ──────────────────────────────────────────────────────────────
           § 1  HERO — cinematic full-screen opener
       ────────────────────────────────────────────────────────────── */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden bg-background dark-grid">
+      <section className="relative min-h-screen flex items-center overflow-hidden bg-background dark-grid">
         {/* Ambient orbs — use CSS vars so they respond to any background */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
@@ -306,57 +271,45 @@ export default function ServicesPage() {
           />
         </div>
 
-        <motion.div
-          style={{ y: heroY, opacity: heroOpacity }}
+        <div
+          data-parallax-hero
           className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-7 lg:px-8 pt-20 md:pt-24 pb-16 sm:pb-24 text-center md:text-left lg:text-left"
         >
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.9fr] gap-12 lg:gap-16 items-center">
             {/* ── Left: headline ── */}
             <div>
-              <motion.div variants={fadeUp} initial="hidden" animate="show" custom={0}>
+              <div data-hero="0">
                 <SectionLabel icon={HiSparkles} content="Full-Spectrum Digital Services" />
-              </motion.div>
+              </div>
 
-              <motion.h1
-                variants={fadeUp}
-                initial="hidden"
-                animate="show"
-                custom={1}
+              <h1 data-hero="1"
                 className="font-display font-extrabold text-foreground tracking-tight mb-6 leading-[1.07]"
                 style={{ fontSize: "clamp(2.6rem, 6vw, 5rem)" }}
               >
                 Build Every <span className="gradient-text">Digital Layer</span>
                 <br />
                 of Your Business.
-              </motion.h1>
+              </h1>
 
-              <motion.p
-                variants={fadeUp}
-                initial="hidden"
-                animate="show"
-                custom={2}
+              <p data-hero="2"
                 className="text-base text-text_secondary leading-relaxed mb-10 max-w-xl"
               >
                 From blazing-fast web apps to intelligent AI systems — NexCode engineers every layer of your digital presence with precision,
                 creativity, and a relentless focus on results.
-              </motion.p>
+              </p>
 
               {/* CTAs */}
-              <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="flex flex-col md:flex-row md:flex-wrap gap-3 mb-12 px-16 md:px-0">
+              <div data-hero="3" className="flex flex-col md:flex-row md:flex-wrap gap-3 mb-12 px-16 md:px-0">
                 <Button variant="primary" rightIcon={<HiChevronDoubleRight size={20} />} to="/start-project">
                   Start Your Project
                 </Button>
                 <Button variant="radio" rightIcon={<HiChevronRight size={20} />} href="#services-grid">
                   Explore Services
                 </Button>
-              </motion.div>
+              </div>
 
               {/* Stats */}
-              <motion.div
-                variants={fadeUp}
-                initial="hidden"
-                animate="show"
-                custom={4}
+              <div data-hero="4"
                 className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-8 border-t border-border"
               >
                 {STATS.map((s, i) => (
@@ -365,38 +318,28 @@ export default function ServicesPage() {
                     <div className="text-[10px] text-text_muted mt-1 leading-tight">{s.label}</div>
                   </div>
                 ))}
-              </motion.div>
+              </div>
             </div>
 
             {/* ── Right: floating service icon grid ── */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.75, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+            <div data-hero-grid
               className="hidden lg:grid grid-cols-4 gap-6 gap-y-8 -mt-20"
             >
               {services.map((svc, i) => (
-                <motion.div
+                <div
                   key={svc.id}
-                  animate={{ y: [0, i % 2 === 0 ? -20 : 8, 0] }}
-                  transition={{ repeat: Infinity, duration: 3.5 + i * 0.35, ease: "easeInOut", delay: i * 0.1 }}
-                  whileHover={{
-                    scale: 1.05,
-                    boxShadow: `0 16px 40px rgba(${svc.rgb},0.22)`,
-                    borderColor: `rgba(${svc.rgb},0.4)`,
-                  }}
                   onClick={() => setSelected(svc)}
-                  className={`group flex flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-card p-5 cursor-pointer transition-all duration-300 ${i === 3 ? "col-start-2" : ""}`}
+                  className={`group flex flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-card p-5 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg ${i === 3 ? "col-start-2" : ""}`}
                 >
                   <div className="group-hover:scale-110 transition-transform duration-300">
                     <IconBox service={svc} size="md" />
                   </div>
                   <span className="text-[11px] font-semibold text-text_secondary text-center leading-tight">{svc.title}</span>
-                </motion.div>
-              ))}
-            </motion.div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        </motion.div>
       </section>
 
       {/* ──────────────────────────────────────────────────────────────
@@ -406,33 +349,23 @@ export default function ServicesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="flex flex-col items-center text-center mb-14">
-            <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
+            <div data-reveal>
               <SectionLabel content="Our Capabilities" />
-            </motion.div>
-            <motion.h2
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              custom={1}
+            </div>
+            <h2 data-reveal
               className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold text-foreground tracking-tight mb-4"
             >
               Everything You Need to <span className="gradient-text">Build Digitally</span>
-            </motion.h2>
-            <motion.p
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              custom={2}
+            </h2>
+            <p data-reveal
               className="text-sm text-text_secondary max-w-lg"
             >
               Click any card to explore full details — each service is delivered with precision and a commitment to measurable outcomes.
-            </motion.p>
+            </p>
           </div>
 
           {/* 4-col grid */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 md:grid-cols-2 md:gap-5 lg:grid-cols-3 xl:grid-cols-4">
+          <div data-reveal-stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 md:grid-cols-2 md:gap-5 lg:grid-cols-3 xl:grid-cols-4">
             {services.map((svc, i) => (
               <ServiceCard key={svc.id} service={svc} index={i} onSelect={setSelected} />
             ))}
@@ -447,31 +380,23 @@ export default function ServicesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="flex flex-col items-center text-center mb-20">
-            <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
+            <div data-reveal>
               <SectionLabel icon={HiLightningBolt} content="Deep Dive" />
-            </motion.div>
-            <motion.h2
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              custom={1}
+            </div>
+            <h2 data-reveal
               className="font-display text-3xl md:text-4xl font-extrabold text-foreground tracking-tight"
             >
               What We Deliver, <span className="gradient-text">End to End</span>
-            </motion.h2>
+            </h2>
           </div>
 
           <div className="space-y-28">
             {services.map((svc, i) => {
               const isRight = i % 2 === 1;
               return (
-                <motion.div
+                <div
                   key={svc.id}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true, margin: "-60px" }}
+                  data-reveal
                   className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
                 >
                   {/* Text */}
@@ -541,14 +466,10 @@ export default function ServicesPage() {
                       ))}
 
                       {/* Floating icon */}
-                      <motion.div
-                        animate={{ y: [0, -14, 0] }}
-                        transition={{ repeat: Infinity, duration: 3.8 + i * 0.22, ease: "easeInOut" }}
-                        className="relative z-10"
-                      >
+                      <div className="relative z-10 animate-float">
                         <IconBox service={svc} size="xl" />
                         <div className="absolute -inset-6 rounded-3xl blur-2xl -z-10 opacity-35" style={{ background: `rgba(${svc.rgb},0.45)` }} />
-                      </motion.div>
+                      </div>
 
                       {/* Feature chips floating around */}
                       {svc.features.slice(0, 3).map((f, fi) => {
@@ -558,23 +479,20 @@ export default function ServicesPage() {
                           { top: "50%", right: "4%", transform: "translateY(-50%)" },
                         ];
                         return (
-                          <motion.div
+                          <div
                             key={fi}
-                            initial={{ opacity: 0, scale: 0.85 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.25 + fi * 0.12 }}
+                            data-reveal
                             className="absolute flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border border-border bg-card shadow-md"
                             style={{ ...poses[fi], color: svc.accent }}
                           >
                             <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: svc.accent }} />
                             {f}
-                          </motion.div>
+                </div>
                         );
                       })}
                     </div>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
@@ -587,29 +505,19 @@ export default function ServicesPage() {
       <section className="py-16 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center text-center mb-16">
-            <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
+            <div data-reveal>
               <SectionLabel icon={HiTrendingUp} content="How We Work" />
-            </motion.div>
-            <motion.h2
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              custom={1}
+            </div>
+            <h2 data-reveal
               className="font-display text-3xl md:text-4xl font-extrabold text-foreground tracking-tight mb-4"
             >
               A Process Built for <span className="gradient-text">Excellence</span>
-            </motion.h2>
-            <motion.p
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              custom={2}
+            </h2>
+            <p data-reveal
               className="text-sm text-text_secondary max-w-lg"
             >
               Four battle-tested phases that consistently ship remarkable software products on time and on budget.
-            </motion.p>
+            </p>
           </div>
 
           {/* Steps */}
@@ -617,15 +525,10 @@ export default function ServicesPage() {
             {/* Desktop connector line */}
             <div className="hidden lg:block absolute top-[3.4rem] left-[calc(12.5%+2rem)] right-[calc(12.5%+2rem)] h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 md:gap-6 lg:grid-cols-4 gap-8">
+            <div data-reveal-stagger className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 md:gap-6 lg:grid-cols-4 gap-8">
               {PROCESS.map((step, i) => (
-                <motion.div
+                <div
                   key={i}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true }}
-                  custom={i}
                   className="relative z-10 flex flex-col items-center text-center group"
                 >
                   {/* Icon bubble */}
@@ -642,7 +545,7 @@ export default function ServicesPage() {
                   <div className="text-[10px] font-black tracking-[0.2em] text-text_muted font-mono mb-2">{step.step}</div>
                   <h3 className="font-display text-base font-bold text-foreground mb-2.5">{step.title}</h3>
                   <p className="text-xs text-text_secondary leading-relaxed">{step.desc}</p>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -656,7 +559,7 @@ export default function ServicesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Left */}
-            <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
+            <div data-reveal>
               <SectionLabel icon={HiChip} content="Why NexCode" />
 
               <h2 className="font-display text-3xl md:text-4xl font-extrabold text-foreground tracking-tight mb-5">
@@ -686,13 +589,8 @@ export default function ServicesPage() {
                     desc: "Every engagement is tailored to the specific goals and budget of the project.",
                   },
                 ].map((d, i) => (
-                  <motion.div
+                  <div
                     key={i}
-                    variants={fadeUp}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true }}
-                    custom={i}
                     className="flex items-start gap-4 p-4 rounded-2xl border border-border bg-card hover:border-primary/30 transition-colors duration-200 group"
                   >
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-lg flex-shrink-0 shadow-md shadow-blue-500/20 group-hover:scale-110 transition-transform duration-200">
@@ -702,21 +600,17 @@ export default function ServicesPage() {
                       <div className="font-display font-bold text-foreground text-sm mb-1">{d.title}</div>
                       <div className="text-xs text-text_secondary leading-relaxed">{d.desc}</div>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
 
               <Button variant="primary" rightIcon={<HiChevronRight />} to="/about">
                 Learn More About Us
               </Button>
-            </motion.div>
+            </div>
 
             {/* Right — premium contact card */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.94, y: 30 }}
-              whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
+            <div data-reveal
               className="relative"
             >
               {/* Outer glow */}
@@ -768,7 +662,7 @@ export default function ServicesPage() {
                   Start a Project
                 </Button>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -802,7 +696,7 @@ export default function ServicesPage() {
         />
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
+          <div data-reveal>
             <SectionLabel icon={HiSparkles} content="Let's Build Together" />
 
             <h2 className="font-display font-extrabold tracking-tight mb-5" style={{ fontSize: "clamp(2.2rem, 5.5vw, 4rem)", lineHeight: "1.08" }}>
@@ -822,7 +716,7 @@ export default function ServicesPage() {
                 Contact Us
               </Button>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
