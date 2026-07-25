@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion, useAnimation, useReducedMotion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
 import laptopMockup from "../../assets/laptop_mockup.webp";
 import phoneMockup from "../../assets/phone_mockup.webp";
@@ -484,8 +484,6 @@ function PhoneScreenContent({ theme }) {
 export default function Hero({ stats = [] }) {
   const { theme } = useTheme();
   const tokens = tv(theme);
-  const prefersRed = useReducedMotion();
-
   /* preload critical hero image */
   useEffect(() => {
     const link = document.createElement("link");
@@ -512,12 +510,6 @@ export default function Hero({ stats = [] }) {
 
   /* ── Entry: laptop unfold sequence ───────────────────────── */
   useEffect(() => {
-    if (prefersRed) {
-      setLidDone(true);
-      return;
-    }
-
-    /* Short pause, then unfold */
     const t = setTimeout(async () => {
       await lidCtrl.start({
         rotateX: 0,
@@ -530,7 +522,7 @@ export default function Hero({ stats = [] }) {
     }, 280);
 
     return () => clearTimeout(t);
-  }, [lidCtrl, prefersRed]);
+  }, [lidCtrl]);
 
   /* ── Parallax RAF ─────────────────────────────────────────── */
   useEffect(() => {
