@@ -22,7 +22,7 @@ export default function Footer() {
 
         <div className="rounded-[2rem] border border-border/60 bg-card/80 backdrop-blur-xl px-6 sm:px-8 lg:px-10 py-6 shadow-[0_18px_45px_rgba(15,23,42,0.06)]">
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12 items-start text-center lg:text-left">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12 items-start text-center lg:text-left">
 
             {/* LEFT SECTION */}
             <div className="space-y-4 flex flex-col items-center lg:items-start">
@@ -90,13 +90,12 @@ export default function Footer() {
             </div>
 
             {/* QUICK LINKS */}
-            <div className="space-y-4 hidden md:flex flex-col items-center lg:items-start gap-2">
+            <div className="space-y-4 flex flex-col items-center lg:items-start gap-2 w-full">
               <h3 className={`font-display font-semibold text-sm ${themeClasses.text.primary}`}>
                 Quick Links
               </h3>
 
-              {/* MOBILE: 2 COLUMNS | DESKTOP: ORIGINAL FLOW */}
-              <div className="grid grid-cols-3 gap-2 gap-x-16 sm:justify-center">
+              <div className="grid grid-cols-2 gap-2 gap-x-8 md:gap-x-12 justify-center">
 
                 {quickLinks.map((l) => (
                   <Link
@@ -155,10 +154,10 @@ export default function Footer() {
               </Link>
             </div>
 
+            </div>
           </div>
 
         </div>
-      </div>
     </footer>
   );
 }
