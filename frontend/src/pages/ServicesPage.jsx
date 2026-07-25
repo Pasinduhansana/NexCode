@@ -272,7 +272,6 @@ export default function ServicesPage() {
         </div>
 
         <div
-          data-parallax-hero
           className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-7 lg:px-8 pt-20 md:pt-24 pb-16 sm:pb-24 text-center md:text-left lg:text-left"
         >
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.9fr] gap-12 lg:gap-16 items-center">
@@ -674,7 +673,7 @@ export default function ServicesPage() {
       {/* ──────────────────────────────────────────────────────────────
           § 7  CTA BANNER — full-bleed gradient
       ────────────────────────────────────────────────────────────── */}
-      <section className="relative py-32 overflow-hidden">
+      <section className="relative py-10 md:py-32 overflow-hidden bg-background">
         {/* Gradient BG */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-700" />
         {/* Dot texture */}
