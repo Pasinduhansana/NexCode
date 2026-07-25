@@ -35,18 +35,6 @@ const limitWords = (text, maxWords) => {
 /* ------------------------------------------------------------------ */
 /*  Shared motion hooks (no extra dependency required)                 */
 /* ------------------------------------------------------------------ */
-function usePrefersReducedMotion() {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(mq.matches);
-    const handler = (e) => setReduced(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
-  return reduced;
-}
-
 function useParallaxRef(speed = 20) {
   const ref = useRef(null);
 
@@ -89,8 +77,7 @@ function useParallaxRef(speed = 20) {
 /*  ambient float + scroll drift for depth. Layout/classes preserved.  */
 /* ------------------------------------------------------------------ */
 function HeroDeviceStack({ laptop_mockup, phone_mockup, project_image, project_image2_mobile }) {
-  const reducedMotion = usePrefersReducedMotion();
-  const driftRef = useParallaxRef(reducedMotion ? 0 : -18);
+  const driftRef = useParallaxRef(-18);
   const [mounted, setMounted] = useState(false);
   const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
   const tiltFrame = useRef(null);
@@ -101,7 +88,6 @@ function HeroDeviceStack({ laptop_mockup, phone_mockup, project_image, project_i
   }, []);
 
   const handleMouseMove = (e) => {
-    if (reducedMotion) return;
     const rect = e.currentTarget.getBoundingClientRect();
     if (tiltFrame.current) return;
     tiltFrame.current = requestAnimationFrame(() => {
@@ -135,9 +121,7 @@ function HeroDeviceStack({ laptop_mockup, phone_mockup, project_image, project_i
         {/* Ambient glow — soft depth layer behind the devices */}
         <div
           aria-hidden="true"
-          className={`pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[70%] w-[85%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-[90px] ${
-            reducedMotion ? "" : "animate-[heroGlow_6s_ease-in-out_infinite]"
-          }`}
+          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[70%] w-[85%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-[90px] animate-[heroGlow_6s_ease-in-out_infinite]"
         />
 
         {/* Laptop Screen Bezel */}
@@ -158,9 +142,7 @@ function HeroDeviceStack({ laptop_mockup, phone_mockup, project_image, project_i
 
         {/* Phone Screen */}
         <div
-          className={`absolute bottom-0 left-0 w-[60px] sm:w-[120px] h-auto mt-10 z-50 ${
-            reducedMotion ? "" : "animate-[heroFloat_4.5s_ease-in-out_infinite]"
-          }`}
+          className="absolute bottom-0 left-0 w-[60px] sm:w-[120px] h-auto mt-10 z-50 animate-[heroFloat_4.5s_ease-in-out_infinite]"
           style={{ transform: "translateZ(60px)", animationDelay: "0.3s" }}
         >
           <img src={phone_mockup} alt="Phone Mockup" loading="eager" decoding="sync" className="w-full  h-full relative z-20 drop-shadow-xl" />
@@ -394,11 +376,10 @@ function App() {
   const [isSummaryExpanded, setIsSummaryExpanded] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const { theme } = useTheme();
-  const reducedMotion = usePrefersReducedMotion();
   const navigate = useNavigate();
 
-  const watermarkRef = useParallaxRef(reducedMotion ? 0 : -34);
-  const palmRef = useParallaxRef(reducedMotion ? 0 : 22);
+  const watermarkRef = useParallaxRef(-34);
+  const palmRef = useParallaxRef(22);
 
   useEffect(() => {
     let mounted = true;
@@ -574,7 +555,7 @@ const relatedProjects = (project.relatedSlugs ?? [])
           {/* Brand Header */}
           <header
             className="text-center mt-10"
-            style={reducedMotion ? undefined : { animation: "heroFadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both", animationDelay: "0.05s" }}
+            style={{ animation: "heroFadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both", animationDelay: "0.05s" }}
           >
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-text_primary opacity-100">{project.name}</h1>
             <p className="text-[10px] tracking-[4px] mt-1 text-text_muted font-medium opacity-100">WEB ELEMENTS RESOURCE</p>
@@ -592,7 +573,7 @@ const relatedProjects = (project.relatedSlugs ?? [])
             {/* Dynamic Presentation Typography */}
             <div
               className="text-center my-5 md:my-10"
-              style={reducedMotion ? undefined : { animation: "heroFadeUp 0.8s cubic-bezier(0.16,1,0.3,1) both", animationDelay: "0.85s" }}
+              style={{ animation: "heroFadeUp 0.8s cubic-bezier(0.16,1,0.3,1) both", animationDelay: "0.85s" }}
             >
               <p className="text-[11px] tracking-[5px] text-text_muted mb-3.5 uppercase font-semibold">SELECTED PROJECT DETAILS</p>
               <p className="text-l md:text-[18px] max-w-[800px] font-normal leading-relaxed text-text_primary opacity-95 balance line-clamp-2">
@@ -613,7 +594,7 @@ const relatedProjects = (project.relatedSlugs ?? [])
               alt="Decorative Palm Corner Graphic"
               loading="lazy"
               decoding="async"
-              className={`w-full h-auto relative z-20 origin-bottom-left ${reducedMotion ? "" : "animate-[heroSway_7s_ease-in-out_infinite]"}`}
+              className="w-full h-auto relative z-20 origin-bottom-left animate-[heroSway_7s_ease-in-out_infinite]"
             />
           </div>
         </div>
