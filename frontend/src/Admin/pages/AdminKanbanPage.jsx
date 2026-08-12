@@ -11,6 +11,7 @@ import adminApi from "../utils/adminApi";
 import usePageTitle from "../../utils/usePageTitle";
 import Spinner from "../components/Spinner";
 import EmptyState from "../components/EmptyState";
+import PremiumSelect from "../components/PremiumSelect";
 import TaskCard from "../components/TaskCard";
 import TaskFormModal from "../components/TaskFormModal";
 import TaskNotesModal from "../components/TaskNotesModal";
@@ -66,6 +67,14 @@ export default function AdminKanbanPage() {
     if (projectFilter === "all") return new Set(projects.map((p) => String(p._id)));
     return new Set([projectFilter]);
   }, [projectFilter, projects]);
+
+  const projectOptions = useMemo(
+    () => [
+      { value: "all", label: "All projects" },
+      ...projects.map((p) => ({ value: String(p._id), label: `${p.name} (${p.count})` })),
+    ],
+    [projects]
+  );
 
   const columns = useMemo(() => {
     return TASK_STATUSES.map((s) => {
@@ -144,17 +153,17 @@ export default function AdminKanbanPage() {
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
         <div>
           <h1 className="font-display text-2xl font-extrabold text-foreground sm:text-3xl">Board</h1>
           <p className="mt-1 text-sm text-text_secondary">Drag tasks between columns, add notes, and manage your timeline.</p>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="flex rounded-xl border border-border bg-card p-0.5 text-sm">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex items-center gap-1 rounded-lg border border-border bg-card p-1">
             <button
               type="button"
               onClick={() => setView("board")}
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 font-medium transition-colors ${
+              className={`inline-flex h-8 items-center gap-1.5 rounded-md px-3 text-sm font-medium transition-colors ${
                 view === "board" ? "bg-primary text-white" : "text-text_secondary hover:text-foreground"
               }`}
             >
@@ -164,7 +173,7 @@ export default function AdminKanbanPage() {
             <button
               type="button"
               onClick={() => setView("gantt")}
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 font-medium transition-colors ${
+              className={`inline-flex h-8 items-center gap-1.5 rounded-md px-3 text-sm font-medium transition-colors ${
                 view === "gantt" ? "bg-primary text-white" : "text-text_secondary hover:text-foreground"
               }`}
             >
@@ -173,23 +182,19 @@ export default function AdminKanbanPage() {
             </button>
           </div>
 
-          <select
-            className="input-field sm:w-56"
+          <PremiumSelect
+            className="w-full sm:w-56"
             value={projectFilter}
-            onChange={(e) => setProjectFilter(e.target.value)}
-          >
-            <option value="all">All projects</option>
-            {projects.map((p) => (
-              <option key={String(p._id)} value={String(p._id)}>
-                {p.name} ({p.count})
-              </option>
-            ))}
-          </select>
+            onChange={setProjectFilter}
+            options={projectOptions}
+            icon={HiOutlineFolder}
+            placeholder="All projects"
+          />
 
           <button
             type="button"
             onClick={() => openCreate(null)}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-primary_hover"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-primary_hover"
           >
             <HiOutlinePlus size={16} />
             New Task
@@ -209,7 +214,7 @@ export default function AdminKanbanPage() {
                 }}
                 onDragLeave={() => setOverColumn((v) => (v === col.value ? null : v))}
                 onDrop={() => handleDrop(col.value)}
-                className={`flex flex-col rounded-2xl border bg-muted/30 p-2.5 transition-colors ${
+                className={`flex flex-col rounded-2xl border bg-muted/30 p-3 transition-colors ${
                   overColumn === col.value ? "border-primary/60 bg-primary/5" : "border-border"
                 }`}
               >
@@ -276,6 +281,7 @@ export default function AdminKanbanPage() {
         open={formOpen}
         projectId={formProject}
         task={editing}
+        defaultStatus={formStatus}
         onClose={() => {
           setFormOpen(false);
           setEditing(null);

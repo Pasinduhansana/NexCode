@@ -5,8 +5,26 @@ import { invalidate } from "./_lib/cache.js";
 
 export default requireAuth(async (req, res) => {
   if (req.method === "GET") {
+    // Only ship fields the Projects page cards + edit modal render; project
+    // docs can carry long descriptions that don't belong in a list endpoint.
     const projects = await (await getCollection("projects"))
-      .find({})
+      .find(
+        {},
+        {
+          projection: {
+            name: 1,
+            client: 1,
+            description: 1,
+            status: 1,
+            priority: 1,
+            startDate: 1,
+            dueDate: 1,
+            budget: 1,
+            tags: 1,
+            color: 1,
+          },
+        }
+      )
       .sort({ updatedAt: -1 })
       .toArray();
 

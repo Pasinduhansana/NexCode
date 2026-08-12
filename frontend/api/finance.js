@@ -101,7 +101,7 @@ export default requireAuth(async (req, res) => {
     const { type, category, summary } = req.query;
 
     if (summary === "true" || summary === "1") {
-      const data = await cached("finance:summary", 10_000, buildFinanceSummary);
+      const data = await cached("finance:summary", 30_000, buildFinanceSummary);
       return res.status(200).json(data);
     }
 

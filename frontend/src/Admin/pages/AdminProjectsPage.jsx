@@ -190,7 +190,7 @@ export default function AdminProjectsPage() {
                   </div>
                 )}
 
-                <div className="mt-auto flex items-center justify-between border-t border-border pt-3 text-xs text-text_muted mt-4">
+                <div className=" flex items-center justify-between border-t border-border pt-3 text-xs text-text_muted mt-4">
                   <span className={due !== null && due < 0 ? "text-rose-500 font-medium" : ""}>
                     {p.dueDate ? `Due ${formatDate(p.dueDate)}` : "No due date"}
                   </span>

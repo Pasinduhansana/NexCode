@@ -37,9 +37,11 @@ export default async function connectDB() {
       waitQueueTimeoutMS: 5000,
     })
       .connect()
-      .then(async (client) => {
+      .then((client) => {
         cached.conn = client;
-        await ensureIndexes(client).catch(() => {});
+        // Fire-and-forget: don't block the first request of a cold start on
+        // index creation round-trips (indexes almost always already exist).
+        ensureIndexes(client).catch(() => {});
         return client;
       })
       .catch((err) => {
@@ -66,6 +68,7 @@ async function ensureIndexes(client) {
     db.collection("projects").createIndex({ status: 1 }).catch(() => {}),
     db.collection("tasks").createIndex({ projectId: 1, order: 1 }).catch(() => {}),
     db.collection("tasks").createIndex({ status: 1 }).catch(() => {}),
+    db.collection("tasks").createIndex({ status: 1, dueDate: 1 }).catch(() => {}),
     db.collection("activities").createIndex({ timestamp: -1 }).catch(() => {}),
     db.collection("activities").createIndex({ userId: 1 }).catch(() => {}),
     db.collection("transactions").createIndex({ date: -1 }).catch(() => {}),
