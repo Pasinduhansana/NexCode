@@ -122,7 +122,7 @@ export default function AdminDashboardPage() {
         <StatCard
           icon={HiOutlineCurrencyDollar}
           label="Budget"
-          value={totals.totalBudget ? `$${totals.totalBudget.toLocaleString()}` : "$0"}
+          value={totals.totalBudget ? `Rs. ${totals.totalBudget.toLocaleString()}` : "Rs. 0"}
           sub="Across projects"
           accent="text-cyan-500"
         />
@@ -137,7 +137,7 @@ export default function AdminDashboardPage() {
               </div>
               <div className="min-w-0">
                 <div className="truncate text-lg font-bold text-foreground">
-                  ${Number(value || 0).toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                  Rs. {Number(value || 0).toLocaleString(undefined, { maximumFractionDigits: 0 })}
                 </div>
                 <div className="text-[11px] text-text_muted">{label}</div>
               </div>

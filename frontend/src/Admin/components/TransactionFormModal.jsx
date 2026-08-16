@@ -112,7 +112,7 @@ export default function TransactionFormModal({ open, transaction, projects = [],
     }
   };
 
-  const showPaidBy = form.type === "expense" || form.type === "advance" || form.type === "balance";
+  const showPaidBy = form.type === "expense";
 
   return (
     <Modal open={open} onClose={onClose} title={isEdit ? "Edit Transaction" : "Add Transaction"} subtitle={isEdit ? "Update this record" : "Record income, expense, or a client payment"}>
