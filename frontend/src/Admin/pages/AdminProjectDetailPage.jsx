@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { HiOutlineArrowLeft, HiOutlinePlus, HiOutlinePencilAlt, HiOutlineTrash, HiOutlineFolder, HiOutlineUser, HiOutlineCalendar, HiOutlineCurrencyDollar } from "react-icons/hi";
+import { HiOutlineArrowLeft, HiOutlinePlus, HiOutlinePencilAlt, HiOutlineTrash, HiOutlineFolder, HiOutlineUser, HiOutlineCalendar, HiOutlineCurrencyDollar, HiOutlineCheck, HiOutlineDocumentText, HiOutlineTag } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
 import usePageTitle from "../../utils/usePageTitle";
 import Spinner from "../components/Spinner";
@@ -14,6 +14,12 @@ import ConfirmDialog from "../components/ConfirmDialog";
 import EmptyState from "../components/EmptyState";
 import { PROJECT_STATUSES, TASK_STATUSES, PRIORITIES } from "../data/constants";
 import { formatDate, daysUntil } from "../utils/date";
+
+const PAID_STATUS_META = {
+  pending: { label: "Pending", badge: "bg-amber-500/10 text-amber-500 border-amber-500/30" },
+  partial: { label: "Partial", badge: "bg-blue-500/10 text-blue-500 border-blue-500/30" },
+  paid: { label: "Paid", badge: "bg-emerald-500/10 text-emerald-500 border-emerald-500/30" },
+};
 
 export default function AdminProjectDetailPage() {
   const { id } = useParams();
@@ -47,7 +53,6 @@ export default function AdminProjectDetailPage() {
 
   useEffect(() => {
     fetchProject();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const handleDeleteProject = async () => {
@@ -104,6 +109,8 @@ export default function AdminProjectDetailPage() {
 
   const due = daysUntil(project.dueDate);
   const taskCountByStatus = (status) => tasks.filter((t) => t.status === status).length;
+  const balanceAmount = (project.projectCost || 0) - (project.advanceAmount || 0);
+  const paidMeta = PAID_STATUS_META[project.paidStatus] || PAID_STATUS_META.pending;
 
   return (
     <div className="space-y-6">
@@ -126,6 +133,9 @@ export default function AdminProjectDetailPage() {
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 <StatusBadge list={PROJECT_STATUSES} value={project.status} />
                 <StatusBadge list={PRIORITIES} value={project.priority} />
+                <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${paidMeta.badge}`}>
+                  {paidMeta.label}
+                </span>
               </div>
             </div>
           </div>
@@ -153,7 +163,7 @@ export default function AdminProjectDetailPage() {
           <p className="max-w-3xl text-sm leading-relaxed text-text_secondary">{project.description}</p>
         )}
 
-        <div className="grid grid-cols-2 gap-3 border-t border-border pt-4 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 border-t border-border pt-4 sm:grid-cols-4 lg:grid-cols-6">
           <div className="flex items-center gap-2.5">
             <HiOutlineUser size={18} className="shrink-0 text-text_muted" />
             <div>
@@ -173,9 +183,27 @@ export default function AdminProjectDetailPage() {
           <div className="flex items-center gap-2.5">
             <HiOutlineCurrencyDollar size={18} className="shrink-0 text-text_muted" />
             <div>
-              <div className="text-[11px] uppercase tracking-wider text-text_muted">Budget</div>
+              <div className="text-[11px] uppercase tracking-wider text-text_muted">Project Cost</div>
               <div className="text-sm font-semibold text-foreground">
-                {project.budget != null ? `$${Number(project.budget).toLocaleString()}` : "—"}
+                {project.projectCost != null ? `Rs. ${Number(project.projectCost).toLocaleString()}` : "—"}
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-2.5">
+            <HiOutlineCurrencyDollar size={18} className="shrink-0 text-text_muted" />
+            <div>
+              <div className="text-[11px] uppercase tracking-wider text-text_muted">Advance</div>
+              <div className="text-sm font-semibold text-emerald-500">
+                {project.advanceAmount != null ? `Rs. ${Number(project.advanceAmount).toLocaleString()}` : "—"}
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-2.5">
+            <HiOutlineCurrencyDollar size={18} className="shrink-0 text-text_muted" />
+            <div>
+              <div className="text-[11px] uppercase tracking-wider text-text_muted">Balance</div>
+              <div className="text-sm font-semibold text-amber-500">
+                {project.projectCost != null ? `Rs. ${Number(balanceAmount).toLocaleString()}` : "—"}
               </div>
             </div>
           </div>
@@ -188,6 +216,43 @@ export default function AdminProjectDetailPage() {
           </div>
         </div>
       </div>
+
+      {project.features && project.features.length > 0 && (
+        <div className="rounded-2xl border border-border bg-card p-5">
+          <h3 className="mb-3 flex items-center gap-2 font-display text-sm font-bold text-foreground">
+            <HiOutlineCheck size={16} className="text-primary" />
+            Features
+          </h3>
+          <div className="flex flex-wrap gap-1.5">
+            {project.features.map((f, i) => (
+              <span key={i} className="inline-flex items-center rounded-full border border-border bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-text_secondary">
+                {f}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {project.notes && (
+        <div className="rounded-2xl border border-border bg-card p-5">
+          <h3 className="mb-2 flex items-center gap-2 font-display text-sm font-bold text-foreground">
+            <HiOutlineDocumentText size={16} className="text-primary" />
+            Important Notes
+          </h3>
+          <p className="whitespace-pre-wrap text-sm leading-relaxed text-text_secondary">{project.notes}</p>
+        </div>
+      )}
+
+      {project.tags && project.tags.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2">
+          <HiOutlineTag size={14} className="text-text_muted" />
+          {project.tags.map((tag, i) => (
+            <span key={i} className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-text_secondary">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
 
       <div>
         <div className="mb-4 flex items-center justify-between">

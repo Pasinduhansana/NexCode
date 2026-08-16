@@ -8,13 +8,23 @@ export const FINANCE_TYPES = [
   { value: "income", label: "Income" },
   { value: "expense", label: "Expense" },
   { value: "payment", label: "Payment" },
+  { value: "advance", label: "Advance Amount" },
+  { value: "balance", label: "Balance Amount" },
 ];
 
 export const FINANCE_CATEGORIES = {
   income: ["Design", "Development", "Retainer", "Consulting", "Other"],
-  expense: ["Software", "Hardware", "Marketing", "Salaries", "Hosting", "Other"],
+  expense: ["Software", "Hardware", "Marketing", "Salaries", "Hosting", "Domain", "Third Party", "Other"],
   payment: ["Deposit", "Milestone", "Final", "Refund", "Other"],
+  advance: ["Project Advance", "Client Advance", "Other"],
+  balance: ["Project Balance", "Client Balance", "Other"],
 };
+
+export const PAID_BY_OPTIONS = [
+  { value: "Pasindu", label: "Pasindu" },
+  { value: "Chamara", label: "Chamara" },
+  { value: "NexCode", label: "NexCode (Company Fund)" },
+];
 
 const PAYMENT_STATUSES = [
   { value: "paid", label: "Paid" },
@@ -29,6 +39,7 @@ const emptyForm = () => ({
   description: "",
   date: toDateInput(new Date()),
   projectId: "",
+  paidBy: "",
   paymentStatus: "paid",
 });
 
@@ -48,6 +59,7 @@ export default function TransactionFormModal({ open, transaction, projects = [],
             description: transaction.description || "",
             date: toDateInput(transaction.date),
             projectId: transaction.projectId || "",
+            paidBy: transaction.paidBy || "",
             paymentStatus: transaction.paymentStatus || "paid",
           }
         : emptyForm()
@@ -99,6 +111,8 @@ export default function TransactionFormModal({ open, transaction, projects = [],
     }
   };
 
+  const showPaidBy = form.type === "expense" || form.type === "advance" || form.type === "balance";
+
   return (
     <Modal open={open} onClose={onClose} title={isEdit ? "Edit Transaction" : "Add Transaction"} subtitle={isEdit ? "Update this record" : "Record income, expense, or a client payment"}>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -114,7 +128,7 @@ export default function TransactionFormModal({ open, transaction, projects = [],
             </select>
           </div>
           <div>
-            <label className="label">Amount ($) *</label>
+            <label className="label">Amount (LKR) *</label>
             <input
               className="input-field"
               type="number"
@@ -145,6 +159,20 @@ export default function TransactionFormModal({ open, transaction, projects = [],
           </div>
         </div>
 
+        {showPaidBy && (
+          <div>
+            <label className="label">Paid By</label>
+            <select className="input-field" value={form.paidBy} onChange={set("paidBy")}>
+              <option value="">Select who paid...</option>
+              {PAID_BY_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
         {form.type === "payment" && (
           <div>
             <label className="label">Payment Status</label>
@@ -174,7 +202,7 @@ export default function TransactionFormModal({ open, transaction, projects = [],
           <label className="label">Description</label>
           <input
             className="input-field"
-            placeholder={form.type === "expense" ? "e.g. Figma license" : "e.g. Landing page deposit"}
+            placeholder={form.type === "expense" ? "e.g. Figma license" : form.type === "advance" ? "e.g. Client advance payment" : "e.g. Landing page deposit"}
             value={form.description}
             onChange={set("description")}
           />

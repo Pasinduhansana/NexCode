@@ -3,6 +3,7 @@ import { requireAuth } from "../_lib/auth.js";
 import { getCollection, unwrap } from "../_lib/mongodb.js";
 import { invalidate } from "../_lib/cache.js";
 import { logActivity } from "../_lib/activity.js";
+import { TRANSACTION_TYPES } from "../finance.js";
 
 export default requireAuth(async (req, res) => {
   const { id } = req.query;
@@ -18,8 +19,7 @@ export default requireAuth(async (req, res) => {
     const patch = { updatedAt: new Date() };
 
     if (body.type !== undefined) {
-      const allowed = ["income", "expense", "payment"];
-      if (!allowed.includes(body.type)) return res.status(400).json({ error: "Invalid type" });
+      if (!TRANSACTION_TYPES.includes(body.type)) return res.status(400).json({ error: "Invalid type" });
       patch.type = body.type;
     }
     if (body.amount !== undefined) {
@@ -30,6 +30,7 @@ export default requireAuth(async (req, res) => {
     if (body.category !== undefined) patch.category = String(body.category).trim();
     if (body.description !== undefined) patch.description = String(body.description).trim();
     if (body.projectId !== undefined) patch.projectId = body.projectId ? String(body.projectId) : null;
+    if (body.paidBy !== undefined) patch.paidBy = String(body.paidBy).trim();
     if (body.paymentStatus !== undefined) patch.paymentStatus = String(body.paymentStatus);
     if (body.date !== undefined) patch.date = body.date ? new Date(body.date) : new Date();
 

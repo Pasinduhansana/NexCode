@@ -1,9 +1,9 @@
-import { HiOutlinePencilAlt, HiOutlineTrash, HiOutlineUser, HiOutlineCalendar, HiOutlineDocumentText } from "react-icons/hi";
+import { HiOutlinePencilAlt, HiOutlineTrash, HiOutlineUser, HiOutlineCalendar, HiOutlineDocumentText, HiOutlineEye } from "react-icons/hi";
 import { TASK_STATUSES, PRIORITIES, getMeta } from "../data/constants";
 import StatusBadge from "./StatusBadge";
 import { formatDate, daysUntil } from "../utils/date";
 
-export default function TaskCard({ task, onEdit, onDelete, onStatusChange, onNotes, draggable = false, onDragStart }) {
+export default function TaskCard({ task, onEdit, onDelete, onStatusChange, onNotes, onView, draggable = false, onDragStart }) {
   const priority = getMeta(PRIORITIES, task.priority);
   const due = daysUntil(task.dueDate);
 
@@ -61,6 +61,16 @@ export default function TaskCard({ task, onEdit, onDelete, onStatusChange, onNot
         </div>
 
         <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+          {onView && (
+            <button
+              type="button"
+              onClick={() => onView(task)}
+              className="rounded-md p-1.5 text-text_secondary hover:bg-primary/10 hover:text-primary"
+              aria-label="View task"
+            >
+              <HiOutlineEye size={14} />
+            </button>
+          )}
           {onNotes && (
             <button
               type="button"

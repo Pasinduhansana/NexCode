@@ -5,8 +5,6 @@ import { invalidate } from "./_lib/cache.js";
 
 export default requireAuth(async (req, res) => {
   if (req.method === "GET") {
-    // Only ship fields the Projects page cards + edit modal render; project
-    // docs can carry long descriptions that don't belong in a list endpoint.
     const projects = await (await getCollection("projects"))
       .find(
         {},
@@ -20,6 +18,10 @@ export default requireAuth(async (req, res) => {
             startDate: 1,
             dueDate: 1,
             budget: 1,
+            projectCost: 1,
+            domainCost: 1,
+            advanceAmount: 1,
+            paidStatus: 1,
             tags: 1,
             color: 1,
           },
@@ -41,6 +43,12 @@ export default requireAuth(async (req, res) => {
       startDate,
       dueDate,
       budget,
+      projectCost,
+      domainCost,
+      advanceAmount,
+      paidStatus,
+      features,
+      notes,
       tags,
       color,
     } = req.body || {};
@@ -59,6 +67,12 @@ export default requireAuth(async (req, res) => {
       startDate: startDate ? new Date(startDate) : null,
       dueDate: dueDate ? new Date(dueDate) : null,
       budget: budget !== undefined && budget !== "" && budget !== null ? Number(budget) : null,
+      projectCost: projectCost !== undefined && projectCost !== "" && projectCost !== null ? Number(projectCost) : null,
+      domainCost: domainCost !== undefined && domainCost !== "" && domainCost !== null ? Number(domainCost) : null,
+      advanceAmount: advanceAmount !== undefined && advanceAmount !== "" && advanceAmount !== null ? Number(advanceAmount) : null,
+      paidStatus: paidStatus || "pending",
+      features: Array.isArray(features) ? features.map((f) => String(f).trim()).filter(Boolean) : [],
+      notes: notes ? String(notes).trim() : "",
       tags: Array.isArray(tags) ? tags.map((t) => String(t).trim()).filter(Boolean) : [],
       color: color || "#3699f3",
       createdAt: now,

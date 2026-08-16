@@ -38,6 +38,12 @@ export default requireAuth(async (req, res) => {
       startDate,
       dueDate,
       budget,
+      projectCost,
+      domainCost,
+      advanceAmount,
+      paidStatus,
+      features,
+      notes,
       tags,
       color,
     } = req.body || {};
@@ -58,6 +64,16 @@ export default requireAuth(async (req, res) => {
     if (dueDate !== undefined) patch.dueDate = dueDate ? new Date(dueDate) : null;
     if (budget !== undefined)
       patch.budget = budget !== "" && budget !== null ? Number(budget) : null;
+    if (projectCost !== undefined)
+      patch.projectCost = projectCost !== "" && projectCost !== null ? Number(projectCost) : null;
+    if (domainCost !== undefined)
+      patch.domainCost = domainCost !== "" && domainCost !== null ? Number(domainCost) : null;
+    if (advanceAmount !== undefined)
+      patch.advanceAmount = advanceAmount !== "" && advanceAmount !== null ? Number(advanceAmount) : null;
+    if (paidStatus !== undefined) patch.paidStatus = paidStatus;
+    if (features !== undefined)
+      patch.features = Array.isArray(features) ? features.map((f) => String(f).trim()).filter(Boolean) : [];
+    if (notes !== undefined) patch.notes = String(notes).trim();
     if (tags !== undefined)
       patch.tags = Array.isArray(tags) ? tags.map((t) => String(t).trim()).filter(Boolean) : [];
     if (color !== undefined) patch.color = color;

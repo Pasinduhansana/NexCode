@@ -10,6 +10,7 @@ import {
   HiOutlineTrash,
   HiOutlineCurrencyDollar,
   HiOutlineCash,
+  HiOutlineUserGroup,
 } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
 import usePageTitle from "../../utils/usePageTitle";
@@ -17,6 +18,7 @@ import Spinner from "../components/Spinner";
 import EmptyState from "../components/EmptyState";
 import ConfirmDialog from "../components/ConfirmDialog";
 import TransactionFormModal, { FINANCE_TYPES } from "../components/TransactionFormModal";
+import SettlementSummary from "../components/SettlementSummary";
 import { MonthlyBars, CategoryBreakdown } from "../components/FinanceCharts";
 import { formatDate } from "../utils/date";
 
@@ -24,12 +26,20 @@ const TYPE_META = {
   income: { label: "Income", badge: "bg-emerald-500/10 text-emerald-500 border-emerald-500/30", dot: "bg-emerald-400" },
   expense: { label: "Expense", badge: "bg-rose-500/10 text-rose-500 border-rose-500/30", dot: "bg-rose-400" },
   payment: { label: "Payment", badge: "bg-violet-500/10 text-violet-500 border-violet-500/30", dot: "bg-violet-400" },
+  advance: { label: "Advance", badge: "bg-blue-500/10 text-blue-500 border-blue-500/30", dot: "bg-blue-400" },
+  balance: { label: "Balance", badge: "bg-amber-500/10 text-amber-500 border-amber-500/30", dot: "bg-amber-400" },
 };
 
 const PAYMENT_STATUS_META = {
   paid: { label: "Paid", badge: "bg-emerald-500/10 text-emerald-500 border-emerald-500/30" },
   pending: { label: "Pending", badge: "bg-amber-500/10 text-amber-500 border-amber-500/30" },
   overdue: { label: "Overdue", badge: "bg-rose-500/10 text-rose-500 border-rose-500/30" },
+};
+
+const PAID_BY_COLORS = {
+  Pasindu: "bg-blue-500 text-white",
+  Chamara: "bg-violet-500 text-white",
+  NexCode: "bg-emerald-500 text-white",
 };
 
 export default function AdminFinancePage() {
@@ -82,7 +92,8 @@ export default function AdminFinancePage() {
         !q ||
         (r.description || "").toLowerCase().includes(q) ||
         (r.category || "").toLowerCase().includes(q) ||
-        (projectName[r.projectId] || "").toLowerCase().includes(q);
+        (projectName[r.projectId] || "").toLowerCase().includes(q) ||
+        (r.paidBy || "").toLowerCase().includes(q);
       return matchesType && matchesSearch;
     });
   }, [rows, search, typeFilter, projectName]);
@@ -111,7 +122,7 @@ export default function AdminFinancePage() {
       value: summary?.totals?.income ?? 0,
       icon: HiOutlineTrendingUp,
       tone: "text-emerald-500 bg-emerald-500/10",
-      sub: "All invoiced income",
+      sub: "All income",
     },
     {
       label: "Total Expenses",
@@ -132,7 +143,7 @@ export default function AdminFinancePage() {
       value: summary?.totals?.pendingPayments ?? 0,
       icon: HiOutlineClock,
       tone: "text-amber-500 bg-amber-500/10",
-      sub: `${summary?.totals?.pendingCount ?? 0} awaiting client payment`,
+      sub: `${summary?.totals?.pendingCount ?? 0} awaiting payment`,
     },
   ];
 
@@ -141,7 +152,7 @@ export default function AdminFinancePage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="font-display text-2xl font-extrabold text-foreground sm:text-3xl">Finance</h1>
-          <p className="mt-1 text-sm text-text_secondary">Track income, expenses, and client payments.</p>
+          <p className="mt-1 text-sm text-text_secondary">Track income, expenses, and settlements.</p>
         </div>
         <button
           type="button"
@@ -165,11 +176,36 @@ export default function AdminFinancePage() {
               </div>
               <span className="text-xs text-text_muted">{sub}</span>
             </div>
-            <div className="mt-3 text-2xl font-extrabold text-foreground">${Number(value).toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
+            <div className="mt-3 text-2xl font-extrabold text-foreground">Rs. {Number(value).toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
             <div className="mt-0.5 text-sm font-medium text-text_secondary">{label}</div>
           </div>
         ))}
       </div>
+
+      {summary?.byPaidBy && summary.byPaidBy.length > 0 && (
+        <div className="rounded-2xl border border-border bg-card p-5">
+          <h3 className="mb-3 flex items-center gap-2 font-display text-sm font-bold text-foreground">
+            <HiOutlineUserGroup size={16} className="text-primary" />
+            Expenses by Person
+          </h3>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            {summary.byPaidBy.map((p) => (
+              <div key={p.name} className="flex items-center gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3">
+                <div className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold text-white ${PAID_BY_COLORS[p.name] || "bg-gray-400"}`}>
+                  {p.name[0]}
+                </div>
+                <div className="flex-1">
+                  <div className="text-sm font-semibold text-foreground">{p.name}</div>
+                  <div className="text-xs text-text_muted">Total expenses</div>
+                </div>
+                <div className="text-right text-sm font-bold text-foreground">Rs. {p.amount.toLocaleString()}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {summary?.settlement && <SettlementSummary settlement={summary.settlement} byPaidBy={summary?.byPaidBy} />}
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
         <div className="rounded-2xl border border-border bg-card p-5 lg:col-span-3">
@@ -231,6 +267,7 @@ export default function AdminFinancePage() {
                   <th className="px-4 py-3 font-medium">Type</th>
                   <th className="px-4 py-3 font-medium">Category</th>
                   <th className="px-4 py-3 font-medium">Project</th>
+                  <th className="px-4 py-3 font-medium">Paid By</th>
                   <th className="px-4 py-3 font-medium">Status</th>
                   <th className="px-4 py-3 text-right font-medium">Amount</th>
                   <th className="px-4 py-3" />
@@ -256,6 +293,15 @@ export default function AdminFinancePage() {
                         {projectName[r.projectId] || "—"}
                       </td>
                       <td className="px-4 py-3">
+                        {r.paidBy ? (
+                          <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium text-white ${PAID_BY_COLORS[r.paidBy] || "bg-gray-400"}`}>
+                            {r.paidBy}
+                          </span>
+                        ) : (
+                          <span className="text-text_muted">—</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3">
                         {r.type === "payment" ? (
                           <span className={`inline-flex rounded-md border px-2 py-0.5 text-[11px] font-medium ${PAYMENT_STATUS_META[r.paymentStatus]?.badge || ""}`}>
                             {PAYMENT_STATUS_META[r.paymentStatus]?.label || r.paymentStatus}
@@ -265,7 +311,7 @@ export default function AdminFinancePage() {
                         )}
                       </td>
                       <td className={`whitespace-nowrap px-4 py-3 text-right font-bold ${r.type === "expense" ? "text-rose-500" : "text-emerald-500"}`}>
-                        {r.type === "expense" ? "-" : "+"}${amount.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                        {r.type === "expense" ? "-" : "+"}Rs. {amount.toLocaleString(undefined, { maximumFractionDigits: 2 })}
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">

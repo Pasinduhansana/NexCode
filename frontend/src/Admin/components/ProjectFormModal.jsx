@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { HiOutlinePlus, HiOutlineX } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
 import Modal from "./Modal";
-import { PROJECT_STATUSES, TASK_STATUSES, PRIORITIES, PROJECT_COLORS, DEFAULT_PROJECT_STATUS, DEFAULT_PRIORITY } from "../data/constants";
+import { PROJECT_STATUSES, PRIORITIES, PROJECT_COLORS, DEFAULT_PROJECT_STATUS, DEFAULT_PRIORITY } from "../data/constants";
 import { toDateInput } from "../utils/date";
+
+const PAID_STATUS_OPTIONS = [
+  { value: "pending", label: "Pending" },
+  { value: "partial", label: "Partial" },
+  { value: "paid", label: "Paid" },
+];
 
 const emptyForm = () => ({
   name: "",
@@ -14,6 +21,13 @@ const emptyForm = () => ({
   startDate: "",
   dueDate: "",
   budget: "",
+  projectCost: "",
+  domainCost: "",
+  advanceAmount: "",
+  paidStatus: "pending",
+  features: [],
+  featureInput: "",
+  notes: "",
   tags: "",
   color: PROJECT_COLORS[0],
 });
@@ -36,14 +50,35 @@ export default function ProjectFormModal({ open, project, onClose, onSaved }) {
             startDate: toDateInput(project.startDate),
             dueDate: toDateInput(project.dueDate),
             budget: project.budget != null ? String(project.budget) : "",
+            projectCost: project.projectCost != null ? String(project.projectCost) : "",
+            domainCost: project.domainCost != null ? String(project.domainCost) : "",
+            advanceAmount: project.advanceAmount != null ? String(project.advanceAmount) : "",
+            paidStatus: project.paidStatus || "pending",
+            features: Array.isArray(project.features) ? project.features : [],
+            featureInput: "",
+            notes: project.notes || "",
             tags: Array.isArray(project.tags) ? project.tags.join(", ") : "",
             color: project.color || PROJECT_COLORS[0],
           }
-        : emptyForm()
+        : emptyForm(),
     );
   }, [open, project]);
 
   const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
+
+  const addFeature = () => {
+    const val = form.featureInput.trim();
+    if (!val) return;
+    if (form.features.includes(val)) {
+      toast.error("Feature already added");
+      return;
+    }
+    setForm((f) => ({ ...f, features: [...f.features, val], featureInput: "" }));
+  };
+
+  const removeFeature = (idx) => {
+    setForm((f) => ({ ...f, features: f.features.filter((_, i) => i !== idx) }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,13 +90,25 @@ export default function ProjectFormModal({ open, project, onClose, onSaved }) {
     setSaving(true);
     try {
       const payload = {
-        ...form,
         name: form.name.trim(),
+        client: form.client.trim(),
+        description: form.description.trim(),
+        status: form.status,
+        priority: form.priority,
+        startDate: form.startDate || null,
+        dueDate: form.dueDate || null,
         budget: form.budget === "" ? null : Number(form.budget),
+        projectCost: form.projectCost === "" ? null : Number(form.projectCost),
+        domainCost: form.domainCost === "" ? null : Number(form.domainCost),
+        advanceAmount: form.advanceAmount === "" ? null : Number(form.advanceAmount),
+        paidStatus: form.paidStatus,
+        features: form.features,
+        notes: form.notes.trim(),
         tags: form.tags
           .split(",")
           .map((t) => t.trim())
           .filter(Boolean),
+        color: form.color,
       };
 
       if (isEdit) {
@@ -81,7 +128,13 @@ export default function ProjectFormModal({ open, project, onClose, onSaved }) {
   };
 
   return (
-    <Modal open={open} onClose={onClose} title={isEdit ? "Edit Project" : "New Project"} subtitle={isEdit ? "Update project details" : "Create a new project for your team"}>
+    <Modal
+      open={open}
+      onClose={onClose}
+      title={isEdit ? "Edit Project" : "New Project"}
+      subtitle={isEdit ? "Update project details" : "Create a new project for your team"}
+      size="max-w-2xl"
+    >
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="label">Project Name *</label>
@@ -94,8 +147,53 @@ export default function ProjectFormModal({ open, project, onClose, onSaved }) {
             <input className="input-field" placeholder="Client or company name" value={form.client} onChange={set("client")} />
           </div>
           <div>
-            <label className="label">Budget (USD)</label>
-            <input className="input-field" type="number" min="0" placeholder="5000" value={form.budget} onChange={set("budget")} />
+            <label className="label">Accent Color</label>
+            <div className="flex flex-wrap gap-2 pt-1">
+              {PROJECT_COLORS.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => setForm((f) => ({ ...f, color: c }))}
+                  className={`h-7 w-7 rounded-full transition-transform ${
+                    form.color === c ? "ring-2 ring-offset-1 ring-border scale-110" : "hover:scale-105"
+                  }`}
+                  style={{ backgroundColor: c }}
+                  aria-label={`Color ${c}`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-border pt-4">
+          <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-text_muted">Financial Details</h4>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label className="label">Project Cost (LKR)</label>
+              <input className="input-field" type="number" min="0" placeholder="Total cost" value={form.projectCost} onChange={set("projectCost")} />
+            </div>
+            <div>
+              <label className="label">Budget (LKR)</label>
+              <input className="input-field" type="number" min="0" placeholder="Budget" value={form.budget} onChange={set("budget")} />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 mt-4">
+            <div>
+              <label className="label">Domain & 3rd Party Cost (LKR)</label>
+              <input className="input-field" type="number" min="0" placeholder="0" value={form.domainCost} onChange={set("domainCost")} />
+            </div>
+            <div>
+              <label className="label">Advance Amount (LKR)</label>
+              <input className="input-field" type="number" min="0" placeholder="0" value={form.advanceAmount} onChange={set("advanceAmount")} />
+            </div>
+            <div>
+              <label className="label">Paid Status</label>
+              <select className="input-field" value={form.paidStatus} onChange={set("paidStatus")}>
+                {PAID_STATUS_OPTIONS.map((s) => (
+                  <option key={s.value} value={s.value}>{s.label}</option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 
@@ -104,9 +202,7 @@ export default function ProjectFormModal({ open, project, onClose, onSaved }) {
             <label className="label">Status</label>
             <select className="input-field" value={form.status} onChange={set("status")}>
               {PROJECT_STATUSES.map((s) => (
-                <option key={s.value} value={s.value}>
-                  {s.label}
-                </option>
+                <option key={s.value} value={s.value}>{s.label}</option>
               ))}
             </select>
           </div>
@@ -114,9 +210,7 @@ export default function ProjectFormModal({ open, project, onClose, onSaved }) {
             <label className="label">Priority</label>
             <select className="input-field" value={form.priority} onChange={set("priority")}>
               {PRIORITIES.map((p) => (
-                <option key={p.value} value={p.value}>
-                  {p.label}
-                </option>
+                <option key={p.value} value={p.value}>{p.label}</option>
               ))}
             </select>
           </div>
@@ -134,31 +228,51 @@ export default function ProjectFormModal({ open, project, onClose, onSaved }) {
         </div>
 
         <div>
+          <label className="label">Features</label>
+          <div className="flex gap-2">
+            <input
+              className="input-field flex-1"
+              placeholder="Add a feature and press Enter"
+              value={form.featureInput}
+              onChange={set("featureInput")}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addFeature();
+                }
+              }}
+            />
+            <button type="button" onClick={addFeature} className="rounded-lg border border-border px-3 text-text_secondary hover:bg-muted hover:text-foreground">
+              <HiOutlinePlus size={18} />
+            </button>
+          </div>
+          {form.features.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {form.features.map((f, i) => (
+                <span key={i} className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+                  {f}
+                  <button type="button" onClick={() => removeFeature(i)} className="rounded-full p-0.5 hover:bg-primary/20">
+                    <HiOutlineX size={10} />
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div>
           <label className="label">Tags (comma separated)</label>
           <input className="input-field" placeholder="web, mobile, redesign" value={form.tags} onChange={set("tags")} />
         </div>
 
         <div>
-          <label className="label">Accent Color</label>
-          <div className="flex flex-wrap gap-2">
-            {PROJECT_COLORS.map((c) => (
-              <button
-                key={c}
-                type="button"
-                onClick={() => setForm((f) => ({ ...f, color: c }))}
-                className={`h-8 w-8 rounded-full transition-transform ${
-                  form.color === c ? "ring-2 ring-offset-2 ring-border scale-110" : "hover:scale-105"
-                }`}
-                style={{ backgroundColor: c }}
-                aria-label={`Color ${c}`}
-              />
-            ))}
-          </div>
+          <label className="label">Description</label>
+          <textarea className="input-field resize-none h-20" placeholder="What is this project about?" value={form.description} onChange={set("description")} />
         </div>
 
         <div>
-          <label className="label">Description</label>
-          <textarea className="input-field resize-none h-28" placeholder="What is this project about?" value={form.description} onChange={set("description")} />
+          <label className="label">Important Notes</label>
+          <textarea className="input-field resize-none h-20" placeholder="Key notes, constraints, client requirements..." value={form.notes} onChange={set("notes")} />
         </div>
 
         <div className="flex justify-end gap-2 pt-2">

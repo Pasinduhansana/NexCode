@@ -3,11 +3,14 @@ import { getCollection } from "./_lib/mongodb.js";
 import { cached, invalidate } from "./_lib/cache.js";
 import { logActivity } from "./_lib/activity.js";
 
-export const TRANSACTION_TYPES = ["income", "expense", "payment"];
+export const TRANSACTION_TYPES = ["income", "expense", "payment", "advance", "balance"];
+export const PAID_BY_OPTIONS = ["Pasindu", "Chamara", "NexCode"];
 export const TRANSACTION_CATEGORIES = {
   income: ["Design", "Development", "Retainer", "Consulting", "Other"],
-  expense: ["Software", "Hardware", "Marketing", "Salaries", "Hosting", "Other"],
+  expense: ["Software", "Hardware", "Marketing", "Salaries", "Hosting", "Domain", "Third Party", "Other"],
   payment: ["Deposit", "Milestone", "Final", "Refund", "Other"],
+  advance: ["Project Advance", "Client Advance", "Other"],
+  balance: ["Project Balance", "Client Balance", "Other"],
 };
 
 function parseTransaction(body) {
@@ -25,6 +28,7 @@ function parseTransaction(body) {
     category: body.category ? String(body.category).trim() : "Other",
     description: body.description ? String(body.description).trim() : "",
     projectId: body.projectId ? String(body.projectId) : null,
+    paidBy: body.paidBy ? String(body.paidBy).trim() : "",
     paymentStatus: body.paymentStatus ? String(body.paymentStatus) : "paid",
     date,
     createdAt: new Date(),
@@ -39,21 +43,32 @@ export async function buildFinanceSummary() {
   let totalIncome = 0;
   let totalExpense = 0;
   let totalPayments = 0;
+  let totalAdvance = 0;
+  let totalBalance = 0;
   let pendingPayments = 0;
   let pendingCount = 0;
   const byCategory = {};
   const byMonth = {};
+  const byPaidBy = {};
 
   for (const r of rows) {
     const amount = r.amount || 0;
     if (r.type === "expense") {
       totalExpense += amount;
+      const who = r.paidBy || "NexCode";
+      byPaidBy[who] = (byPaidBy[who] || 0) + amount;
     } else if (r.type === "payment") {
       totalPayments += amount;
       if (r.paymentStatus === "pending") {
         pendingPayments += amount;
         pendingCount += 1;
       }
+    } else if (r.type === "advance") {
+      totalAdvance += amount;
+      totalIncome += amount;
+    } else if (r.type === "balance") {
+      totalBalance += amount;
+      totalIncome += amount;
     } else {
       totalIncome += amount;
     }
@@ -82,18 +97,76 @@ export async function buildFinanceSummary() {
     .sort((a, b) => b[1] - a[1])
     .map(([category, amount]) => ({ category, amount: Math.round(amount * 100) / 100 }));
 
+  // Settlement summary: who paid what for expenses, who owes whom
+  const settlement = calculateSettlement(rows);
+
   return {
     totals: {
       income: Math.round(totalIncome * 100) / 100,
       expense: Math.round(totalExpense * 100) / 100,
       payment: Math.round(totalPayments * 100) / 100,
+      advance: Math.round(totalAdvance * 100) / 100,
+      balance: Math.round(totalBalance * 100) / 100,
       net: Math.round((totalIncome + totalPayments - totalExpense) * 100) / 100,
       pendingPayments: Math.round(pendingPayments * 100) / 100,
       pendingCount,
     },
     categoryBreakdown,
     monthlySeries,
+    byPaidBy: Object.entries(byPaidBy)
+      .map(([name, amount]) => ({ name, amount: Math.round(amount * 100) / 100 }))
+      .sort((a, b) => b.amount - a.amount),
+    settlement,
   };
+}
+
+function calculateSettlement(rows) {
+  const expenses = rows.filter((r) => r.type === "expense");
+  if (expenses.length === 0) return { balances: [], transfers: [] };
+
+  const totals = {};
+  for (const who of PAID_BY_OPTIONS) {
+    totals[who] = 0;
+  }
+
+  for (const r of expenses) {
+    const who = r.paidBy || "NexCode";
+    if (!totals[who]) totals[who] = 0;
+    totals[who] += r.amount || 0;
+  }
+
+  const totalExpenses = Object.values(totals).reduce((a, b) => a + b, 0);
+  const perPerson = PAID_BY_OPTIONS.length > 0 ? totalExpenses / PAID_BY_OPTIONS.length : 0;
+
+  const balances = PAID_BY_OPTIONS.map((name) => ({
+    name,
+    paid: Math.round((totals[name] || 0) * 100) / 100,
+    fairShare: Math.round(perPerson * 100) / 100,
+    balance: Math.round(((totals[name] || 0) - perPerson) * 100) / 100,
+  }));
+
+  const debtors = balances.filter((b) => b.balance < -0.01).map((b) => ({ ...b, remaining: Math.abs(b.balance) }));
+  const creditors = balances.filter((b) => b.balance > 0.01).map((b) => ({ ...b, remaining: b.balance }));
+
+  const transfers = [];
+  let di = 0;
+  let ci = 0;
+  while (di < debtors.length && ci < creditors.length) {
+    const amount = Math.min(debtors[di].remaining, creditors[ci].remaining);
+    if (amount > 0.01) {
+      transfers.push({
+        from: debtors[di].name,
+        to: creditors[ci].name,
+        amount: Math.round(amount * 100) / 100,
+      });
+    }
+    debtors[di].remaining -= amount;
+    creditors[ci].remaining -= amount;
+    if (debtors[di].remaining < 0.01) di++;
+    if (creditors[ci].remaining < 0.01) ci++;
+  }
+
+  return { balances, transfers };
 }
 
 export default requireAuth(async (req, res) => {
