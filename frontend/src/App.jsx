@@ -35,6 +35,7 @@ import AdminKanbanPage from "./Admin/pages/AdminKanbanPage";
 import AdminDesignerPage from "./Admin/pages/AdminDesignerPage";
 import AdminFinancePage from "./Admin/pages/AdminFinancePage";
 import AdminActivityPage from "./Admin/pages/AdminActivityPage";
+import AdminAccessPage from "./Admin/pages/AdminAccessPage";
 
 const PublicLayout = ({ children }) => (
   <>
@@ -136,6 +137,7 @@ const AppContent = () => {
             <Route path="designer" element={<AdminDesignerPage />} />
             <Route path="finance" element={<AdminFinancePage />} />
             <Route path="activity" element={<AdminActivityPage />} />
+            <Route path="access" element={<AdminAccessPage />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

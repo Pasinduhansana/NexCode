@@ -51,8 +51,44 @@ export const AdminAuthProvider = ({ children }) => {
     setUserState(null);
   }, []);
 
+  const hasAccess = useCallback(
+    (pageId) => {
+      if (!user) return false;
+      if (user.superAdmin) return true;
+      return user.access?.pages?.includes(pageId) || false;
+    },
+    [user]
+  );
+
+  const hasExpenseAccess = useCallback(
+    () => {
+      if (!user) return "none";
+      if (user.superAdmin) return "edit";
+      return user.access?.expenseAccess || "none";
+    },
+    [user]
+  );
+
+  const hasProjectAccess = useCallback(
+    () => {
+      if (!user) return "none";
+      if (user.superAdmin) return "all";
+      return user.access?.projectAccess || "all";
+    },
+    [user]
+  );
+
+  const hasDashboardComponent = useCallback(
+    (compId) => {
+      if (!user) return false;
+      if (user.superAdmin) return true;
+      return user.access?.dashboardComponents?.includes(compId) || false;
+    },
+    [user]
+  );
+
   return (
-    <AdminAuthContext.Provider value={{ token, user, ready, isAuthenticated: Boolean(token), login, logout }}>
+    <AdminAuthContext.Provider value={{ token, user, ready, isAuthenticated: Boolean(token), login, logout, hasAccess, hasExpenseAccess, hasProjectAccess, hasDashboardComponent }}>
       {children}
     </AdminAuthContext.Provider>
   );

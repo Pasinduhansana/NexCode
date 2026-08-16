@@ -1,19 +1,22 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { HiOutlineHome, HiOutlineFolder, HiOutlineLogout, HiX, HiGlobeAlt, HiOutlineClipboardList, HiOutlineViewBoards, HiOutlineCurrencyDollar, HiOutlineChevronLeft, HiOutlineChevronRight, HiOutlineSparkles } from "react-icons/hi";
+import { HiOutlineHome, HiOutlineFolder, HiOutlineLogout, HiX, HiGlobeAlt, HiOutlineClipboardList, HiOutlineViewBoards, HiOutlineCurrencyDollar, HiOutlineChevronLeft, HiOutlineChevronRight, HiOutlineSparkles, HiOutlineShieldCheck } from "react-icons/hi";
 import { useAdminAuth } from "../context/AdminAuthContext";
 
-const links = [
-  { to: "/admin", end: true, icon: HiOutlineHome, label: "Dashboard" },
-  { to: "/admin/projects", end: false, icon: HiOutlineFolder, label: "Projects" },
-  { to: "/admin/board", end: false, icon: HiOutlineViewBoards, label: "Board" },
-  { to: "/admin/designer", end: false, icon: HiOutlineSparkles, label: "Designer" },
-  { to: "/admin/finance", end: false, icon: HiOutlineCurrencyDollar, label: "Finance" },
-  { to: "/admin/activity", end: false, icon: HiOutlineClipboardList, label: "Activity" },
+const allLinks = [
+  { to: "/admin", end: true, icon: HiOutlineHome, label: "Dashboard", pageId: "dashboard" },
+  { to: "/admin/projects", end: false, icon: HiOutlineFolder, label: "Projects", pageId: "projects" },
+  { to: "/admin/board", end: false, icon: HiOutlineViewBoards, label: "Board", pageId: "board" },
+  { to: "/admin/designer", end: false, icon: HiOutlineSparkles, label: "Designer", pageId: "designer" },
+  { to: "/admin/finance", end: false, icon: HiOutlineCurrencyDollar, label: "Finance", pageId: "finance" },
+  { to: "/admin/activity", end: false, icon: HiOutlineClipboardList, label: "Activity", pageId: "activity" },
+  { to: "/admin/access", end: false, icon: HiOutlineShieldCheck, label: "Access", pageId: "access" },
 ];
 
 export default function AdminSidebar({ open, onClose, collapsed, onToggleCollapse }) {
-  const { user, logout } = useAdminAuth();
+  const { user, logout, hasAccess } = useAdminAuth();
   const navigate = useNavigate();
+
+  const links = allLinks.filter((l) => hasAccess(l.pageId));
 
   const handleLogout = () => {
     logout();
@@ -69,7 +72,10 @@ export default function AdminSidebar({ open, onClose, collapsed, onToggleCollaps
 
           <div className="mt-4 rounded-xl border border-border bg-muted/40 px-3 py-3">
             <div className="text-[11px] uppercase tracking-wider text-text_muted">Signed in as</div>
-            <div className="mt-0.5 truncate text-sm font-semibold text-foreground">{user?.name || "Admin"}</div>
+            <div className="mt-0.5 flex items-center gap-1.5">
+              <span className="truncate text-sm font-semibold text-foreground">{user?.name || "Admin"}</span>
+              {user?.superAdmin && <HiOutlineShieldCheck size={12} className="shrink-0 text-primary" />}
+            </div>
           </div>
         </div>
 
@@ -150,7 +156,10 @@ export default function AdminSidebar({ open, onClose, collapsed, onToggleCollaps
           {!collapsed && (
             <div className="mt-4 rounded-xl border border-border bg-muted/40 px-3 py-3">
               <div className="text-[11px] uppercase tracking-wider text-text_muted">Signed in as</div>
-              <div className="mt-0.5 truncate text-sm font-semibold text-foreground">{user?.name || "Admin"}</div>
+              <div className="mt-0.5 flex items-center gap-1.5">
+                <span className="truncate text-sm font-semibold text-foreground">{user?.name || "Admin"}</span>
+                {user?.superAdmin && <HiOutlineShieldCheck size={12} className="shrink-0 text-primary" />}
+              </div>
             </div>
           )}
 

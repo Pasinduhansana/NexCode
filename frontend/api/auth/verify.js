@@ -14,7 +14,12 @@ export default function handler(req, res) {
     const payload = verifyToken(token);
     return res.status(200).json({
       valid: true,
-      user: { id: payload.uid, name: payload.name },
+      user: {
+        id: payload.uid,
+        name: payload.name,
+        superAdmin: payload.superAdmin,
+        access: payload.access,
+      },
       role: payload.role,
     });
   } catch (err) {
