@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import adminApi from "../utils/adminApi";
 import Modal from "./Modal";
+import PremiumSelect from "./PremiumSelect";
 import { toDateInput } from "../utils/date";
 
 export const FINANCE_TYPES = [
@@ -119,13 +120,12 @@ export default function TransactionFormModal({ open, transaction, projects = [],
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="label">Type</label>
-            <select className="input-field" value={form.type} onChange={set("type")}>
-              {FINANCE_TYPES.map((t) => (
-                <option key={t.value} value={t.value}>
-                  {t.label}
-                </option>
-              ))}
-            </select>
+            <PremiumSelect
+              value={form.type}
+              onChange={(val) => setForm((f) => ({ ...f, type: val }))}
+              options={FINANCE_TYPES}
+              placeholder="Select type"
+            />
           </div>
           <div>
             <label className="label">Amount (LKR) *</label>
@@ -144,14 +144,12 @@ export default function TransactionFormModal({ open, transaction, projects = [],
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="label">Category</label>
-            <select className="input-field" value={form.category} onChange={set("category")}>
-              <option value="">Select category...</option>
-              {categories.map((c) => (
-                <option key={c.value} value={c.value}>
-                  {c.label}
-                </option>
-              ))}
-            </select>
+            <PremiumSelect
+              value={form.category}
+              onChange={(val) => setForm((f) => ({ ...f, category: val }))}
+              options={[{ value: "", label: "Select category..." }, ...categories]}
+              placeholder="Select category..."
+            />
           </div>
           <div>
             <label className="label">Date</label>
@@ -162,40 +160,35 @@ export default function TransactionFormModal({ open, transaction, projects = [],
         {showPaidBy && (
           <div>
             <label className="label">Paid By</label>
-            <select className="input-field" value={form.paidBy} onChange={set("paidBy")}>
-              <option value="">Select who paid...</option>
-              {PAID_BY_OPTIONS.map((o) => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
-                </option>
-              ))}
-            </select>
+            <PremiumSelect
+              value={form.paidBy}
+              onChange={(val) => setForm((f) => ({ ...f, paidBy: val }))}
+              options={[{ value: "", label: "Select who paid..." }, ...PAID_BY_OPTIONS]}
+              placeholder="Select who paid..."
+            />
           </div>
         )}
 
         {form.type === "payment" && (
           <div>
             <label className="label">Payment Status</label>
-            <select className="input-field" value={form.paymentStatus} onChange={set("paymentStatus")}>
-              {PAYMENT_STATUSES.map((s) => (
-                <option key={s.value} value={s.value}>
-                  {s.label}
-                </option>
-              ))}
-            </select>
+            <PremiumSelect
+              value={form.paymentStatus}
+              onChange={(val) => setForm((f) => ({ ...f, paymentStatus: val }))}
+              options={PAYMENT_STATUSES}
+              placeholder="Select status"
+            />
           </div>
         )}
 
         <div>
           <label className="label">Project</label>
-          <select className="input-field" value={form.projectId} onChange={set("projectId")}>
-            <option value="">No project</option>
-            {projects.map((p) => (
-              <option key={String(p._id)} value={String(p._id)}>
-                {p.name}
-              </option>
-            ))}
-          </select>
+          <PremiumSelect
+            value={form.projectId}
+            onChange={(val) => setForm((f) => ({ ...f, projectId: val }))}
+            options={[{ value: "", label: "No project" }, ...projects.map((p) => ({ value: String(p._id), label: p.name }))]}
+            placeholder="No project"
+          />
         </div>
 
         <div>

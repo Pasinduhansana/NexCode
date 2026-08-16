@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { HiOutlinePlus, HiOutlineX } from "react-icons/hi";
+import PremiumSelect from "./PremiumSelect";
 import adminApi from "../utils/adminApi";
 import Modal from "./Modal";
 import { PROJECT_STATUSES, PRIORITIES, PROJECT_COLORS, DEFAULT_PROJECT_STATUS, DEFAULT_PRIORITY } from "../data/constants";
@@ -188,11 +189,12 @@ export default function ProjectFormModal({ open, project, onClose, onSaved }) {
             </div>
             <div>
               <label className="label">Paid Status</label>
-              <select className="input-field" value={form.paidStatus} onChange={set("paidStatus")}>
-                {PAID_STATUS_OPTIONS.map((s) => (
-                  <option key={s.value} value={s.value}>{s.label}</option>
-                ))}
-              </select>
+              <PremiumSelect
+                value={form.paidStatus}
+                onChange={(val) => setForm((f) => ({ ...f, paidStatus: val }))}
+                options={PAID_STATUS_OPTIONS}
+                placeholder="Select paid status"
+              />
             </div>
           </div>
         </div>
@@ -200,19 +202,21 @@ export default function ProjectFormModal({ open, project, onClose, onSaved }) {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="label">Status</label>
-            <select className="input-field" value={form.status} onChange={set("status")}>
-              {PROJECT_STATUSES.map((s) => (
-                <option key={s.value} value={s.value}>{s.label}</option>
-              ))}
-            </select>
+            <PremiumSelect
+              value={form.status}
+              onChange={(val) => setForm((f) => ({ ...f, status: val }))}
+              options={PROJECT_STATUSES.map((s) => ({ value: s.value, label: s.label }))}
+              placeholder="Select status"
+            />
           </div>
           <div>
             <label className="label">Priority</label>
-            <select className="input-field" value={form.priority} onChange={set("priority")}>
-              {PRIORITIES.map((p) => (
-                <option key={p.value} value={p.value}>{p.label}</option>
-              ))}
-            </select>
+            <PremiumSelect
+              value={form.priority}
+              onChange={(val) => setForm((f) => ({ ...f, priority: val }))}
+              options={PRIORITIES.map((p) => ({ value: p.value, label: p.label }))}
+              placeholder="Select priority"
+            />
           </div>
         </div>
 

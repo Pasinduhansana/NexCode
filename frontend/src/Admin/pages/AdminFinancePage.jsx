@@ -20,6 +20,7 @@ import ConfirmDialog from "../components/ConfirmDialog";
 import TransactionFormModal, { FINANCE_TYPES } from "../components/TransactionFormModal";
 import SettlementSummary from "../components/SettlementSummary";
 import { MonthlyBars, CategoryBreakdown } from "../components/FinanceCharts";
+import PremiumSelect from "../components/PremiumSelect";
 import { formatDate } from "../utils/date";
 
 const TYPE_META = {
@@ -229,14 +230,12 @@ export default function AdminFinancePage() {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <select className="input-field sm:w-44" value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
-            <option value="all">All types</option>
-            {FINANCE_TYPES.map((t) => (
-              <option key={t.value} value={t.value}>
-                {t.label}
-              </option>
-            ))}
-          </select>
+          <PremiumSelect
+            value={typeFilter}
+            onChange={setTypeFilter}
+            options={[{ value: "all", label: "All types" }, ...FINANCE_TYPES.map((t) => ({ value: t.value, label: t.label }))]}
+            className="sm:w-44"
+          />
         </div>
 
         {filtered.length === 0 ? (

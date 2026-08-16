@@ -1,6 +1,7 @@
 import { HiOutlinePencilAlt, HiOutlineTrash, HiOutlineUser, HiOutlineCalendar, HiOutlineDocumentText, HiOutlineEye } from "react-icons/hi";
 import { TASK_STATUSES, PRIORITIES, getMeta } from "../data/constants";
 import StatusBadge from "./StatusBadge";
+import PremiumSelect from "./PremiumSelect";
 import { formatDate, daysUntil } from "../utils/date";
 
 export default function TaskCard({ task, onEdit, onDelete, onStatusChange, onNotes, onView, draggable = false, onDragStart }) {
@@ -82,18 +83,13 @@ export default function TaskCard({ task, onEdit, onDelete, onStatusChange, onNot
               {task.notes && <span className="absolute right-0.5 top-0.5 h-1.5 w-1.5 rounded-full bg-primary" />}
             </button>
           )}
-          <select
-            className="rounded-md border border-border bg-background px-1.5 py-1 text-[11px] text-foreground"
+          <PremiumSelect
             value={task.status}
-            onChange={(e) => onStatusChange(task, e.target.value)}
+            onChange={(val) => onStatusChange(task, val)}
+            options={TASK_STATUSES.map((s) => ({ value: s.value, label: s.label, dot: s.dot }))}
+            compact
             title="Change status"
-          >
-            {TASK_STATUSES.map((s) => (
-              <option key={s.value} value={s.value}>
-                {s.label}
-              </option>
-            ))}
-          </select>
+          />
           <button type="button" onClick={() => onEdit(task)} className="rounded-md p-1.5 text-text_secondary hover:bg-muted hover:text-foreground" aria-label="Edit task">
             <HiOutlinePencilAlt size={14} />
           </button>

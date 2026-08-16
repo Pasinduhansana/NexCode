@@ -1,6 +1,7 @@
 import { HiOutlinePencilAlt, HiOutlineTrash, HiOutlineUser, HiOutlineDocumentText, HiOutlineEye } from "react-icons/hi";
 import { TASK_STATUSES, PRIORITIES, getMeta } from "../data/constants";
 import StatusBadge from "./StatusBadge";
+import PremiumSelect from "./PremiumSelect";
 import { formatDate } from "../utils/date";
 
 export default function TaskTableView({ tasks, projects, onEdit, onDelete, onStatusChange, onNotes, onView }) {
@@ -66,18 +67,13 @@ export default function TaskTableView({ tasks, projects, onEdit, onDelete, onSta
                 </td>
                 <td className="px-3 py-2.5 text-text_secondary">{formatDate(task.dueDate)}</td>
                 <td className="px-3 py-2.5  text-text_secondary">
-                  <select
-                    className="rounded-lg border border-border bg-background px-2 py-1.5 text-[11px] text-foreground"
+                  <PremiumSelect
                     value={task.status}
-                    onChange={(e) => onStatusChange(task, e.target.value)}
+                    onChange={(val) => onStatusChange(task, val)}
+                    options={TASK_STATUSES.map((s) => ({ value: s.value, label: s.label, dot: s.dot }))}
+                    compact
                     title="Change status"
-                  >
-                    {TASK_STATUSES.map((s) => (
-                      <option key={s.value} value={s.value}>
-                        {s.label}
-                      </option>
-                    ))}
-                  </select>
+                  />
                 </td>
                 <td className="px-3 py-2.5 text-left">
                   <div className="flex items-center justify-start gap-1">

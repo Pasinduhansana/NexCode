@@ -98,23 +98,21 @@ export default function TaskFormModal({ open, projectId, task, onClose, onSaved,
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="label">Status</label>
-            <select className="input-field" value={form.status} onChange={set("status")}>
-              {TASK_STATUSES.map((s) => (
-                <option key={s.value} value={s.value}>
-                  {s.label}
-                </option>
-              ))}
-            </select>
+            <PremiumSelect
+              value={form.status}
+              onChange={(val) => setForm((f) => ({ ...f, status: val }))}
+              options={TASK_STATUSES.map((s) => ({ value: s.value, label: s.label, dot: s.dot }))}
+              placeholder="Select status"
+            />
           </div>
           <div>
             <label className="label">Priority</label>
-            <select className="input-field" value={form.priority} onChange={set("priority")}>
-              {PRIORITIES.map((p) => (
-                <option key={p.value} value={p.value}>
-                  {p.label}
-                </option>
-              ))}
-            </select>
+            <PremiumSelect
+              value={form.priority}
+              onChange={(val) => setForm((f) => ({ ...f, priority: val }))}
+              options={PRIORITIES.map((p) => ({ value: p.value, label: p.label, dot: p.dot }))}
+              placeholder="Select priority"
+            />
           </div>
         </div>
 
