@@ -7,10 +7,10 @@ const SUGGESTIONS = [
   { icon: HiOutlinePencilAlt, label: "Draft a client update email" },
 ];
 
-export default function ChatEmptyState({ userName, onSuggestion }) {
+export default function ChatEmptyState({ userName, onSuggestion, isTyping }) {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-6 px-6 py-10 text-center">
-      <div className="relative">
+      <div aria-hidden="true" className="relative">
         <div className="absolute inset-0 rounded-full bg-primary/10 blur-2xl" />
         <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary">
           <HiOutlineSparkles size={28} />
@@ -33,7 +33,8 @@ export default function ChatEmptyState({ userName, onSuggestion }) {
             key={label}
             type="button"
             onClick={() => onSuggestion(label)}
-            className="flex items-center gap-2.5 rounded-xl border border-border bg-card px-4 py-3 text-left text-sm font-medium text-text_secondary transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:text-primary hover:shadow-md"
+            disabled={isTyping}
+            className="flex items-center gap-2.5 rounded-xl border border-border bg-card px-4 py-3 text-left text-sm font-medium text-text_secondary transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:text-primary hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-none"
           >
             <Icon size={16} className="shrink-0 text-primary" />
             {label}

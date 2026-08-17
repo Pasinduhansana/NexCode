@@ -1,5 +1,5 @@
-import { requireAuth } from "../_lib/auth.js";
-import { getAllUsers, isSuperAdmin } from "../_lib/users.js";
+import { requireAuth } from "./_lib/auth.js";
+import { getAllUsers, isSuperAdmin } from "./_lib/users.js";
 
 export default requireAuth(async (req, res) => {
   if (req.method !== "GET") {

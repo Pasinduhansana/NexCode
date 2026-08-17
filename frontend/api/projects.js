@@ -1,97 +1,24 @@
 import { requireAuth } from "./_lib/auth.js";
-import { getCollection } from "./_lib/mongodb.js";
-import { logActivity } from "./_lib/activity.js";
-import { invalidate } from "./_lib/cache.js";
+import { listProjects, createProject, ProjectServiceError } from "./_lib/projects.js";
 
 export default requireAuth(async (req, res) => {
   if (req.method === "GET") {
-    const projects = await (await getCollection("projects"))
-      .find(
-        {},
-        {
-          projection: {
-            name: 1,
-            client: 1,
-            description: 1,
-            status: 1,
-            priority: 1,
-            startDate: 1,
-            dueDate: 1,
-            budget: 1,
-            projectCost: 1,
-            domainCost: 1,
-            advanceAmount: 1,
-            paidStatus: 1,
-            tags: 1,
-            color: 1,
-          },
-        }
-      )
-      .sort({ updatedAt: -1 })
-      .toArray();
-
-    return res.status(200).json(projects);
+    try {
+      return res.status(200).json(await listProjects());
+    } catch (err) {
+      if (err instanceof ProjectServiceError) return res.status(err.status).json({ error: err.message });
+      return res.status(500).json({ error: "Something went wrong" });
+    }
   }
 
   if (req.method === "POST") {
-    const {
-      name,
-      client,
-      description,
-      status,
-      priority,
-      startDate,
-      dueDate,
-      budget,
-      projectCost,
-      domainCost,
-      advanceAmount,
-      paidStatus,
-      features,
-      notes,
-      tags,
-      color,
-    } = req.body || {};
-
-    if (!name || !String(name).trim()) {
-      return res.status(400).json({ error: "Project name is required" });
+    try {
+      const project = await createProject(req.body || {}, req.user);
+      return res.status(201).json(project);
+    } catch (err) {
+      if (err instanceof ProjectServiceError) return res.status(err.status).json({ error: err.message });
+      return res.status(500).json({ error: "Something went wrong" });
     }
-
-    const now = new Date();
-    const project = {
-      name: String(name).trim(),
-      client: client ? String(client).trim() : "",
-      description: description ? String(description).trim() : "",
-      status: status || "planning",
-      priority: priority || "medium",
-      startDate: startDate ? new Date(startDate) : null,
-      dueDate: dueDate ? new Date(dueDate) : null,
-      budget: budget !== undefined && budget !== "" && budget !== null ? Number(budget) : null,
-      projectCost: projectCost !== undefined && projectCost !== "" && projectCost !== null ? Number(projectCost) : null,
-      domainCost: domainCost !== undefined && domainCost !== "" && domainCost !== null ? Number(domainCost) : null,
-      advanceAmount: advanceAmount !== undefined && advanceAmount !== "" && advanceAmount !== null ? Number(advanceAmount) : null,
-      paidStatus: paidStatus || "pending",
-      features: Array.isArray(features) ? features.map((f) => String(f).trim()).filter(Boolean) : [],
-      notes: notes ? String(notes).trim() : "",
-      tags: Array.isArray(tags) ? tags.map((t) => String(t).trim()).filter(Boolean) : [],
-      color: color || "#3699f3",
-      createdAt: now,
-      updatedAt: now,
-    };
-
-    const projects = await getCollection("projects");
-    const { insertedId } = await projects.insertOne(project);
-
-    invalidate("kanban", "stats");
-
-    await logActivity(req.user, {
-      action: "create",
-      targetType: "project",
-      target: project.name,
-      details: { status: project.status, priority: project.priority },
-    }).catch(() => {});
-
-    return res.status(201).json({ ...project, _id: insertedId });
   }
 
   return res.status(405).json({ error: "Method not allowed" });

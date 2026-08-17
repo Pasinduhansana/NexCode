@@ -1,5 +1,5 @@
-import { requireAuth } from "../../_lib/auth.js";
-import { getUserById, updateUser, deleteUser, isSuperAdmin } from "../../_lib/users.js";
+import { requireAuth } from "../_lib/auth.js";
+import { getUserById, updateUser, deleteUser, isSuperAdmin } from "../_lib/users.js";
 
 export default requireAuth(async (req, res) => {
   const { id } = req.query;

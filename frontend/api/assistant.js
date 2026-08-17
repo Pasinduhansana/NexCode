@@ -3,8 +3,10 @@ import { generateReply, GeminiServiceError } from "./_lib/gemini.js";
 
 const MAX_HISTORY = 40;
 const MAX_MESSAGE_LENGTH = 4000;
+const MAX_CONTEXT_CHARS = 30000;
+const GENERATE_TIMEOUT_MS = 55000;
 
-function sanitizeMessages(messages) {
+export function sanitizeMessages(messages) {
   if (!Array.isArray(messages) || messages.length === 0) return null;
 
   const clean = [];
@@ -15,7 +17,16 @@ function sanitizeMessages(messages) {
     clean.push({ role, content: content.slice(0, MAX_MESSAGE_LENGTH) });
   }
 
-  return clean.length > 0 ? clean : null;
+  if (clean.length === 0) return null;
+
+  let total = clean.reduce((sum, m) => sum + m.content.length, 0);
+  let from = 0;
+  while (total > MAX_CONTEXT_CHARS && from < clean.length - 1) {
+    total -= clean[from].content.length;
+    from += 1;
+  }
+
+  return clean.slice(from);
 }
 
 export default requireAuth(async (req, res) => {
@@ -23,18 +34,36 @@ export default requireAuth(async (req, res) => {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  const pages = Array.isArray(req.user?.access?.pages) ? req.user.access.pages : [];
+  const allowed = req.user?.superAdmin === true || pages.includes("assistant");
+  if (!allowed) {
+    return res.status(403).json({ error: "Access denied" });
+  }
+
   const messages = sanitizeMessages(req.body?.messages);
   if (!messages || messages[messages.length - 1].role !== "user") {
     return res.status(400).json({ error: "A message is required" });
   }
 
+  let timer;
   try {
-    const { reply, tools } = await generateReply({ messages, user: req.user });
+    const { reply, tools } = await Promise.race([
+      generateReply({ messages, user: req.user }),
+      new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new GeminiServiceError(
+          "TIMEOUT",
+          "The AI service is taking too long to respond. Please try again.",
+          504
+        )), GENERATE_TIMEOUT_MS);
+      }),
+    ]);
     return res.status(200).json(tools && tools.length > 0 ? { reply, tools } : { reply });
   } catch (err) {
     if (err instanceof GeminiServiceError) {
       return res.status(err.status).json({ error: err.message });
     }
     return res.status(500).json({ error: "Something went wrong" });
+  } finally {
+    clearTimeout(timer);
   }
 });

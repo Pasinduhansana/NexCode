@@ -1,12 +1,15 @@
 import adminApi from "./adminApi";
 
-export async function sendAssistantMessage(message, history = []) {
+export async function sendAssistantMessage(message, history = [], { signal } = {}) {
   const messages = [...history, { role: "user", content: message }];
 
   let response;
   try {
-    response = await adminApi.post("/assistant", { messages }, { timeout: 60000 });
+    response = await adminApi.post("/assistant", { messages }, { timeout: 60000, signal });
   } catch (err) {
+    if (signal?.aborted || err?.code === "ERR_CANCELED") {
+      throw new AssistantAbortError();
+    }
     throw new Error(getAssistantErrorMessage(err));
   }
 
@@ -16,6 +19,13 @@ export async function sendAssistantMessage(message, history = []) {
   }
   const tools = Array.isArray(response?.data?.tools) ? response.data.tools : [];
   return { reply, tools };
+}
+
+export class AssistantAbortError extends Error {
+  constructor() {
+    super("Request cancelled");
+    this.name = "AssistantAbortError";
+  }
 }
 
 export function getAssistantErrorMessage(err) {

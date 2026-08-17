@@ -1,13 +1,51 @@
+import { memo } from "react";
 import { HiOutlineSparkles, HiOutlineUserCircle, HiOutlineExclamation, HiOutlineCog } from "react-icons/hi";
 
-export default function ChatMessage({ message }) {
+const TOOL_LABELS = {
+  createProject: "Project created",
+  getProject: "Project loaded",
+  updateProject: "Project updated",
+  createTask: "Task created",
+  getTask: "Task loaded",
+  updateTask: "Task updated",
+  completeTask: "Task completed",
+  createIssue: "Issue created",
+  getIssue: "Issue loaded",
+  updateIssue: "Issue updated",
+  resolveIssue: "Issue resolved",
+  addDesignReference: "Reference added",
+  getDesignReferences: "References loaded",
+  updateDesignReference: "Reference updated",
+  deleteDesignReference: "Reference deleted",
+  createExpense: "Expense recorded",
+  getExpense: "Expense loaded",
+  getExpenses: "Expenses loaded",
+  updateExpense: "Expense updated",
+  deleteExpense: "Expense deleted",
+  getAIHealthStatus: "Health check",
+  deleteProject: "Project deleted",
+  deleteTask: "Task deleted",
+  deleteIssue: "Issue deleted",
+  getDashboardStats: "Dashboard stats",
+  getProjectSummary: "Project summary",
+  getPendingTasks: "Pending tasks",
+  getOpenIssues: "Open issues",
+  getExpenseSummary: "Expense summary",
+  getRecentActivity: "Recent activity",
+};
+
+function ChatMessage({ message }) {
   const isUser = message.role === "user";
   const isError = !isUser && message.isError;
   const tools = isUser || isError ? [] : Array.isArray(message.tools) ? message.tools : [];
 
   return (
-    <div className={`flex items-start gap-3 ${isUser ? "flex-row-reverse" : ""}`}>
+    <div
+      data-role={isUser ? "user" : "assistant"}
+      className={`animate-fade-slide flex items-start gap-3 ${isUser ? "flex-row-reverse" : ""}`}
+    >
       <div
+        aria-hidden="true"
         className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
           isUser ? "bg-primary/10 text-primary" : isError ? "bg-rose-500/10 text-rose-500" : "bg-muted text-text_secondary"
         }`}
@@ -29,19 +67,26 @@ export default function ChatMessage({ message }) {
         </div>
         {tools.length > 0 && (
           <div className="mt-1.5 flex flex-wrap gap-1.5">
-            {tools.map((tool) => (
-              <span
-                key={tool.name}
-                className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-medium ${
-                  tool.ok
-                    ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-600"
-                    : "border-rose-500/30 bg-rose-500/10 text-rose-600"
-                }`}
-              >
-                <HiOutlineCog size={10} />
-                {tool.name}
-              </span>
-            ))}
+            {tools.map((tool) => {
+              const label = TOOL_LABELS[tool.name] || tool.name;
+              const detail = tool.ok
+                ? `${label} — completed`
+                : `${label} — ${tool.status === "duplicate" ? "already handled" : "failed"}`;
+              return (
+                <span
+                  key={tool.name}
+                  title={detail}
+                  className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-medium ${
+                    tool.ok
+                      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-600"
+                      : "border-rose-500/30 bg-rose-500/10 text-rose-600"
+                  }`}
+                >
+                  <HiOutlineCog size={10} />
+                  {label}
+                </span>
+              );
+            })}
           </div>
         )}
         <div className="mt-1 text-[11px] text-text_muted">
@@ -51,3 +96,5 @@ export default function ChatMessage({ message }) {
     </div>
   );
 }
+
+export default memo(ChatMessage);
