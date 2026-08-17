@@ -1,5 +1,6 @@
 import { requireAuth } from "./_lib/auth.js";
 import { generateReply, GeminiServiceError } from "./_lib/gemini.js";
+import { checkAiRateLimit } from "./_lib/ratelimit.js";
 
 const MAX_HISTORY = 40;
 const MAX_MESSAGE_LENGTH = 4000;
@@ -43,6 +44,19 @@ export default requireAuth(async (req, res) => {
   const messages = sanitizeMessages(req.body?.messages);
   if (!messages || messages[messages.length - 1].role !== "user") {
     return res.status(400).json({ error: "A message is required" });
+  }
+
+  const rate = await checkAiRateLimit({
+    userId: String(req.user?.uid || req.user?.id || req.user?.name || "anon"),
+  });
+  if (!rate.allowed) {
+    if (rate.resetAt) {
+      const seconds = Math.max(1, Math.ceil((new Date(rate.resetAt).getTime() - Date.now()) / 1000));
+      res.setHeader("Retry-After", String(seconds));
+    }
+    return res.status(429).json({
+      error: "Too many AI requests. Please wait a moment and try again.",
+    });
   }
 
   let timer;

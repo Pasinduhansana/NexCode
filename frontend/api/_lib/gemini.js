@@ -96,6 +96,16 @@ function errorMessage(err) {
   return err instanceof Error ? err.message : String(err);
 }
 
+function log(level, payload) {
+  const line = `[ai:${level}] ${JSON.stringify(payload)}`;
+  if (level === "error") console.error(line);
+  else console.log(line);
+}
+
+function userId(user) {
+  return String(user?.uid || user?.id || user?.name || "anon");
+}
+
 function isRetryable(err) {
   if (err instanceof ApiError && RETRYABLE_STATUSES.has(err.status)) return true;
   const lower = errorMessage(err).toLowerCase();
@@ -225,41 +235,65 @@ export async function generateReply({ messages, user }) {
   const contents = toGeminiContents(messages);
   const toolCalls = [];
   const requestId = crypto.randomUUID();
+  const startedAt = Date.now();
+  const uid = userId(user);
 
-  const { model, response: firstResponse } = await generateWithFallback(ai, contents, config);
-  let roundContents = contents;
-  let response = firstResponse;
+  try {
+    const { model, response: firstResponse } = await generateWithFallback(ai, contents, config);
+    let roundContents = contents;
+    let response = firstResponse;
 
-  for (let round = 0; round <= MAX_TOOL_ROUNDS; round++) {
-    const functionCalls = response?.functionCalls;
-    if (!functionCalls || functionCalls.length === 0) {
-      const text = typeof response?.text === "string" ? response.text.trim() : "";
-      if (!text) throw emptyResponseError();
-      return { reply: text, tools: toolCalls };
+    for (let round = 0; round <= MAX_TOOL_ROUNDS; round++) {
+      const functionCalls = response?.functionCalls;
+      if (!functionCalls || functionCalls.length === 0) {
+        const text = typeof response?.text === "string" ? response.text.trim() : "";
+        if (!text) throw emptyResponseError();
+        log("reply", {
+          user: uid,
+          requestId,
+          model,
+          rounds: round + 1,
+          tools: toolCalls.length,
+          ok: true,
+          durationMs: Date.now() - startedAt,
+        });
+        return { reply: text, tools: toolCalls };
+      }
+
+      const modelContent = response.candidates?.[0]?.content;
+      if (!modelContent) throw emptyResponseError();
+
+      const parts = [];
+      for (const call of functionCalls) {
+        const outcome = await executeToolCall({ name: call?.name, args: call?.args, user, requestId });
+        toolCalls.push({
+          name: call?.name,
+          ok: outcome.ok,
+          status: outcome.status,
+          error: outcome.ok ? undefined : outcome.error,
+        });
+        parts.push(createPartFromFunctionResponse(call?.id, call?.name, outcome));
+      }
+
+      roundContents = [...roundContents, modelContent, { role: "user", parts }];
+      response = await generateWithRetry(ai, model, roundContents, config);
     }
 
-    const modelContent = response.candidates?.[0]?.content;
-    if (!modelContent) throw emptyResponseError();
-
-    const parts = [];
-    for (const call of functionCalls) {
-      const outcome = await executeToolCall({ name: call?.name, args: call?.args, user, requestId });
-      toolCalls.push({
-        name: call?.name,
-        ok: outcome.ok,
-        status: outcome.status,
-        error: outcome.ok ? undefined : outcome.error,
-      });
-      parts.push(createPartFromFunctionResponse(call?.id, call?.name, outcome));
-    }
-
-    roundContents = [...roundContents, modelContent, { role: "user", parts }];
-    response = await generateWithRetry(ai, model, roundContents, config);
+    throw new GeminiServiceError(
+      GEMINI_ERROR.GEMINI_ERROR,
+      "The AI assistant reached the tool-call limit. Please try again.",
+      502
+    );
+  } catch (err) {
+    const safeMessage = err instanceof GeminiServiceError ? err.message : "Unexpected error";
+    log("error", {
+      user: uid,
+      requestId,
+      ok: false,
+      code: err?.code || "UNEXPECTED",
+      error: safeMessage,
+      durationMs: Date.now() - startedAt,
+    });
+    throw err;
   }
-
-  throw new GeminiServiceError(
-    GEMINI_ERROR.GEMINI_ERROR,
-    "The AI assistant reached the tool-call limit. Please try again.",
-    502
-  );
 }
