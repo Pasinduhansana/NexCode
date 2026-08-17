@@ -10,6 +10,8 @@ const SUGGESTIONS = [
 export default function ChatEmptyState({ userName, onSuggestion, isTyping }) {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-6 px-6 py-10 text-center">
+
+      <div className="max-w-xl flex flex-row gap-5 justify-center items-center">
       <div aria-hidden="true" className="relative">
         <div className="absolute inset-0 rounded-full bg-primary/10 blur-2xl" />
         <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary">
@@ -17,7 +19,7 @@ export default function ChatEmptyState({ userName, onSuggestion, isTyping }) {
         </div>
       </div>
 
-      <div className="max-w-md">
+      <div className="text-left">
         <h2 className="font-display text-lg font-extrabold text-foreground sm:text-xl">
           Meet your AI Assistant
         </h2>
@@ -26,8 +28,9 @@ export default function ChatEmptyState({ userName, onSuggestion, isTyping }) {
           drafts. Pick a suggestion below or type your own message to get started.
         </p>
       </div>
+      </div>
 
-      <div className="grid w-full max-w-md grid-cols-1 gap-2 sm:grid-cols-2">
+      <div className="grid w-full max-w-xl grid-cols-1 gap-2 sm:grid-cols-2 ">
         {SUGGESTIONS.map(({ icon: Icon, label }) => (
           <button
             key={label}

@@ -30,6 +30,7 @@ NexCode/
     │   │   ├── designreferences.js   # Shared Design Reference service layer (routes + AI tools)
     │   │   ├── finance.js             # Shared Finance/Expense service layer (routes + AI tools)
     │   │   ├── gemini.js             # Google Gemini service (AI Assistant + tool loop)
+    │   │   ├── ai-conversations.js   # Persistent per-user AI conversation service (Phase 13)
     │   │   ├── issues.js             # Shared Issue service layer (routes + AI tools)
     │   │   ├── mongodb.js            # MongoDB connection singleton
     │   │   ├── projects.js           # Shared Project service layer (routes + AI tools)
@@ -54,6 +55,10 @@ NexCode/
     │   ├── kanban.js                 # GET kanban summary (project task counts)
     │   ├── activities.js             # GET activity log
     │   ├── assistant.js              # POST chat messages → Gemini (AI Assistant)
+    │   ├── ai/conversations.js       # GET/POST AI conversations (list/create) (Phase 13)
+    │   ├── ai/conversations/[id].js  # GET/PATCH/DELETE AI conversation (Phase 13)
+    │   ├── ai/conversations/[id]/clear.js  # POST clear AI conversation (Phase 13)
+    │   ├── ai/conversations/[id]/messages.js # POST send message to AI conversation (Phase 13)
     │   ├── projects.js               # GET/POST projects
     │   ├── projects/[id].js          # GET/PUT/DELETE project
     │   ├── stats.js                  # GET dashboard stats
@@ -142,6 +147,7 @@ NexCode/
     │       │       ├── ChatMessage.jsx      # User/AI message bubble
     │       │       ├── ChatInput.jsx        # Message input + send
     │       │       ├── ChatEmptyState.jsx   # Welcome/suggestion state
+    │       │       ├── ConversationSidebar.jsx # Persistent conversation list (Phase 13)
     │       │       └── TypingIndicator.jsx  # Loading dots
     │       │
     │       ├── context/
@@ -166,6 +172,7 @@ NexCode/
     │           ├── adminApi.js       # Axios instance (admin API, JWT header)
     │           ├── auth.js           # localStorage helpers (token, user)
     │           ├── assistantApi.js   # AI Assistant API client (POST /api/assistant)
+    │           ├── aiConversationsApi.js # AI conversation API client (Phase 13)
     │           └── date.js           # Date formatting utilities
     │
     ├── assets/                       # Project showcase images/videos
@@ -536,6 +543,49 @@ Result returned to Gemini as a functionResponse → final reply to user
 - **Recovery (req 18)** — backend restart: confirmations/dedupe/rate-limit state are in MongoDB (survive restarts), the in-memory cache just warms again; frontend restart: only the auth token persists; DB reconnect: the driver auto-reconnects (server selection timeout 8 s); Gemini failure: retries → model-chain fallback → friendly 429/502/503 → the UI shows an error bubble and recovers (verified live).
 - **Monitoring (req 16)** — existing `[ai-tool:info|error|confirm]` logs plus the new `[ai:reply|error]` lines give full request/tool tracing keyed by `requestId`, with no sensitive fields.
 
+### 3.9.3 Persistent AI Conversations (Phase 13)
+
+**Purpose:** turn the AI Assistant into a persistent, per-user chat history (ChatGPT/Gemini style) — conversation list sidebar, create/rename/clear/delete, message persistence, context continuation across a session, and strict per-user isolation.
+
+**Data model — embedded messages (`aiconversations` collection):**
+```
+{ _id: ObjectId,            // conversationId
+  userId: String,           // owner (conversationUserId(req.user))
+  title: String,            // user title or auto-derived on first message
+  createdAt, updatedAt: ISO,
+  messages: [ { role: "user"|"assistant", content, timestamp, tools?: [{ name, ok, status, error? }] } ] }
+```
+Indexes (added in `api/_lib/mongodb.js` → `ensureIndexes`): `{ userId: 1 }` and `{ userId: 1, updatedAt: -1 }` (list query). `conversationId` is the Mongo `_id`.
+
+**User isolation — the core rule:** every read/write query filters by `userId = conversationUserId(req.user)` (`uid` from the JWT; falls back to `id`/`name`/`"anon"`). The frontend never sends a userId; the service always derives the owner from the authenticated user. Cross-user access to any conversation returns **404** (existence is never revealed). `hasAssistantAccess(user)` gates every conversation route (superAdmin or `pages` includes "assistant") → **403**.
+
+**Backend service (`api/_lib/ai-conversations.js`) — shared by routes and (potential) tools:**
+- `listConversations(userId)` — lightweight projection (id, title, createdAt, updatedAt, messageCount via `$size`), sorted `updatedAt desc`, capped at 200.
+- `createConversation(userId, title)` — title defaults to "New Chat".
+- `getConversation(userId, id)` / `renameConversation` / `clearConversation` (resets title to "New Chat" + empties messages) / `deleteConversation`.
+- `appendMessage(userId, id, role, content, tools)` — stores a minimal `tools` summary (name, ok, status, error) alongside the reply.
+- `deriveTitle(content)` — first 8 words, title-cased with minor-word handling, ≤ 60 chars; applied automatically on the **first user message** when the title is still "New Chat" (no extra Gemini call).
+- `buildGeminiContext(messages)` — last 40 messages, ≤ 30,000 chars total, only `role`/`content` (tool chips are UI-only; Gemini never sees tools from history).
+- `sendMessage({ user, conversationId, content })` — the full orchestration: 400 validation → `getConversation` (ownership → 404) → `checkAiRateLimit` (429 + `Retry-After`) → append user message → derive title on first message → `buildGeminiContext` → `generateReply` with the existing 55 s timeout → append assistant message + tools summary. Returns `{ reply, tools, title, messageCount }`.
+
+**API endpoints** (all `requireAuth` + `hasAssistantAccess`):
+| Method & Path | Purpose |
+|---|---|
+| `GET /api/ai/conversations` | list own conversations (lightweight) |
+| `POST /api/ai/conversations` | create conversation |
+| `GET /api/ai/conversations/[id]` | fetch full conversation (own only) |
+| `PATCH /api/ai/conversations/[id]` | rename |
+| `DELETE /api/ai/conversations/[id]` | delete conversation + messages |
+| `POST /api/ai/conversations/[id]/clear` | clear messages (title resets to "New Chat") |
+| `POST /api/ai/conversations/[id]/messages` | send a message (thin wrapper over `sendMessage`) |
+
+**Frontend:**
+- `utils/aiConversationsApi.js` — API client (list/create/get/rename/delete/clear/send); the send call has a 60 s timeout and surfaces `AssistantAbortError` for aborts.
+- `components/Assistant/ConversationSidebar.jsx` — "New Chat" button (clears the current chat without creating a DB row), list grouped **Today / Yesterday / Older** by `updatedAt`, active-highlight, inline rename (pencil), delete via the shared `ConfirmDialog`, mobile close button, empty state.
+- `pages/AdminAssistantPage.jsx` — reworked around conversations: list state, `activeId`, **deferred creation** (a conversation is only created on the first message send — no empty rows), loading a conversation fetches its full history, sending appends the assistant reply + refreshes the list entry, retry/abort guards (`seqRef`/`abortRef`) preserved from Phase 11. Desktop shows a fixed sidebar; mobile shows an overlay toggled from the chat header.
+
+**Dev-only note:** `vercel dev` returns SPA HTML for *all* dynamic bracket routes in this repo (a pre-existing local quirk affecting `/api/projects/[id]`, `/api/issues/[id]`, `/api/users/[id]`, and the new `/api/ai/conversations/[id]*` alike). Production on Vercel is unaffected. Phase 13 HTTP tests therefore cover the flat routes, and full send/ownership behavior is verified through service-level E2E tests (which exercise the exact `sendMessage` path the dynamic route uses).
+
 ### 3.10 Shared Project Service Layer (`api/_lib/projects.js`)
 
 Routes and AI tools both call this single service — no duplicated CRUD logic.
@@ -674,3 +724,5 @@ Every create/update/delete operation calls `logActivity()` → inserts into Mong
 | `users` | Admin users | _id, name, keyHash, superAdmin, access (pages, dashboardComponents, projectAccess, expenseAccess) |
 | `aiconfirmations` | Pending AI destructive-action confirmations (Phase 9) | user, tool, fingerprint (record _id), requestId, targetLabel, createdAt, expiresAt (TTL ~5 min) |
 | `aidedupe` | AI duplicate-operation dedupe ledger (Phase 9) | user, tool, argsKey, createdAt (TTL ~120 s) |
+| `airatelimit` | Durable AI rate-limit counters (Phase 12) | user, type (minute/day), count, expiresAt (TTL) |
+| `aiconversations` | Persistent per-user AI conversations (Phase 13) | userId, title, createdAt, updatedAt, messages[] (embedded, with minimal tools summaries) |

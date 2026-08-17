@@ -73,6 +73,8 @@ async function ensureIndexes(client) {
     db.collection("activities").createIndex({ userId: 1 }).catch(() => {}),
     db.collection("transactions").createIndex({ date: -1 }).catch(() => {}),
     db.collection("transactions").createIndex({ type: 1 }).catch(() => {}),
+    db.collection("aiconversations").createIndex({ userId: 1 }).catch(() => {}),
+    db.collection("aiconversations").createIndex({ userId: 1, updatedAt: -1 }).catch(() => {}),
   ]);
   cached.indexesEnsured = true;
 }
