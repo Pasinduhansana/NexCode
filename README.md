@@ -46,7 +46,7 @@ Push to your repo and let Vercel build the `frontend` directory (it already depl
 - `/admin/projects` — create, edit, delete projects
 - `/admin/projects/:id` — task board (To Do / In Progress / Review / Done)
 - `/admin/activity` — audit log of every action, tagged with which user did it
-- `/admin/assistant` — AI chat assistant (Google Gemini, requires `GEMINI_API_KEY` env var)
+- `/admin/assistant` — AI chat assistant (Google Gemini, requires `GEMINI_API_KEY` env var). Uses a secured tool-calling layer: the model can trigger backend tools (e.g. `getAIHealthStatus`) via a whitelisted registry with argument validation. The other project/task/expense tools are registered but return "not implemented" until live data integration (Phase 4).
 
 ## Security notes
 

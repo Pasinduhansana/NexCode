@@ -1,18 +1,26 @@
-import { GoogleGenAI, ApiError } from "@google/genai";
+import { GoogleGenAI, ApiError, createPartFromFunctionResponse } from "@google/genai";
+import { getToolDefinitions, executeToolCall } from "./tools/index.js";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 const DEFAULT_MODEL_CHAIN = ["gemini-3.6-flash", "gemini-3.7-flash", "gemini-3.5-flash-lite", "gemini-flash-latest"];
 const RETRYABLE_STATUSES = new Set([404, 429, 503]);
+const MAX_TOOL_ROUNDS = 4;
+
+const TOOL_DEFINITIONS = getToolDefinitions();
 
 const SYSTEM_INSTRUCTION = `You are the AI Assistant for the NexCode admin panel.
 
 You help the NexCode team run their software agency: answering questions about projects, tasks, budgets, finance, and drafting text such as client updates.
 
+You have access to a set of backend tools (function calling). Use a tool whenever the user's request maps to one — for example creating or updating projects, tasks, issues, expenses, or fetching projects, tasks, expenses, and dashboard stats. Tool results are executed on the server and returned to you before you answer.
+
 Guidelines:
 - Be concise, practical, and friendly.
 - When figures are mentioned, present them as estimates unless you have real data.
-- You do not have direct access to the NexCode database, tools, or live data. If you are asked to change or query live records, explain that capability is not available yet.
+- Report tool results to the user accurately. Never claim a tool performed or changed something unless the tool result confirms it.
+- Most tools are currently in preview: their results report status "not_implemented" because live data integration is not connected yet. In that case, tell the user the action is not available yet and suggest using the admin panel.
+- If a tool reports status "error", explain the problem to the user and suggest how to fix it.
 - If asked something outside your scope, say so briefly and suggest what you can help with.`;
 
 export const GEMINI_ERROR = {
@@ -117,29 +125,64 @@ function classifyError(err) {
   );
 }
 
-async function generateWithModel(ai, model, messages) {
-  const response = await ai.models.generateContent({
-    model,
-    contents: toGeminiContents(messages),
-    config: {
-      systemInstruction: SYSTEM_INSTRUCTION,
-      temperature: 0.7,
-      maxOutputTokens: 1024,
-    },
-  });
-
-  const text = typeof response?.text === "string" ? response.text.trim() : "";
-  if (!text) {
-    throw new GeminiServiceError(
-      GEMINI_ERROR.GEMINI_ERROR,
-      "The AI service returned an empty response. Please try again.",
-      502
-    );
-  }
-  return text;
+function buildConfig() {
+  return {
+    systemInstruction: SYSTEM_INSTRUCTION,
+    temperature: 0.7,
+    maxOutputTokens: 1024,
+    tools: [{ functionDeclarations: TOOL_DEFINITIONS }],
+  };
 }
 
-export async function generateReply({ messages }) {
+function emptyResponseError() {
+  return new GeminiServiceError(
+    GEMINI_ERROR.GEMINI_ERROR,
+    "The AI service returned an empty response. Please try again.",
+    502
+  );
+}
+
+async function generateWithModel(ai, model, messages, user) {
+  const contents = toGeminiContents(messages);
+  const config = buildConfig();
+  const toolCalls = [];
+  let roundContents = contents;
+
+  for (let round = 0; round <= MAX_TOOL_ROUNDS; round++) {
+    const response = await ai.models.generateContent({
+      model,
+      contents: roundContents,
+      config,
+    });
+
+    const functionCalls = response?.functionCalls;
+    if (!functionCalls || functionCalls.length === 0) {
+      const text = typeof response?.text === "string" ? response.text.trim() : "";
+      if (!text) throw emptyResponseError();
+      return { reply: text, tools: toolCalls };
+    }
+
+    const modelContent = response.candidates?.[0]?.content;
+    if (!modelContent) throw emptyResponseError();
+
+    const parts = [];
+    for (const call of functionCalls) {
+      const outcome = await executeToolCall({ name: call?.name, args: call?.args, user });
+      toolCalls.push({ name: call?.name, ok: outcome.ok });
+      parts.push(createPartFromFunctionResponse(call?.id, call?.name, outcome));
+    }
+
+    roundContents = [...roundContents, modelContent, { role: "user", parts }];
+  }
+
+  throw new GeminiServiceError(
+    GEMINI_ERROR.GEMINI_ERROR,
+    "The AI assistant reached the tool-call limit. Please try again.",
+    502
+  );
+}
+
+export async function generateReply({ messages, user }) {
   if (!GEMINI_API_KEY) {
     throw new GeminiServiceError(
       GEMINI_ERROR.MISSING_API_KEY,
@@ -154,7 +197,7 @@ export async function generateReply({ messages }) {
 
   for (const model of chain) {
     try {
-      return await generateWithModel(ai, model, messages);
+      return await generateWithModel(ai, model, messages, user);
     } catch (err) {
       if (err instanceof GeminiServiceError) throw err;
       if (!isRetryable(err)) throw classifyError(err);

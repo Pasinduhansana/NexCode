@@ -27,8 +27,13 @@ NexCode/
     │   │   ├── activity.js           # Activity logging helper
     │   │   ├── auth.js               # JWT sign/verify, requireAuth middleware
     │   │   ├── cache.js              # In-memory cache (invalidation pattern)
-    │   │   ├── gemini.js             # Google Gemini service (AI Assistant)
+    │   │   ├── gemini.js             # Google Gemini service (AI Assistant + tool loop)
     │   │   ├── mongodb.js            # MongoDB connection singleton
+    │   │   ├── tools/                # AI tool-calling layer (Phase 3)
+    │   │   │   ├── registry.js       # Tool definitions/schemas + handlers (14 tools)
+    │   │   │   ├── executor.js       # Generic tool execution + structured logging
+    │   │   │   ├── validate.js       # JSON-schema argument validation
+    │   │   │   └── index.js          # Public exports
     │   │   └── users.js              # User CRUD, access control, password hashing
     │   ├── auth/
     │   │   ├── login.js              # POST — authenticate by access key
@@ -332,15 +337,30 @@ requireAuth(handler)                       ← verifies Bearer token
 api/assistant.js                           ← validates messages (non-empty, ≤40 turns,
         │                                    ≤4000 chars each, last turn is user)
         ▼
-api/_lib/gemini.js  generateReply({ messages })
+api/_lib/gemini.js  generateReply({ messages, user })
         │
         ├─ Requires GEMINI_API_KEY (env) — never shipped to the browser
         ├─ Maps roles: user→"user", assistant→"model"
+        ├─ Attaches tool definitions (api/_lib/tools/registry.js) to every request
+        │   └─ 14 function declarations passed via config.tools
+        │
         ├─ Calls Google Gemini via @google/genai SDK
         │   └─ Model chain (GEMINI_MODEL first, then gemini-3.6-flash → 3.7-flash
         │      → 3.5-flash-lite → flash-latest) — retries/falls back on 429/503/404
         │
-        ├─ On success → 200 { reply }  → rendered as an AI message bubble
+        ├─ Tool-calling loop (up to 4 rounds):
+        │   ├─ Model returns text → reply is final
+        │   └─ Model returns functionCalls → for each call:
+        │       ├─ executor.js: lookup tool in registry
+        │       │   ├─ unknown name → error result (rejected)
+        │       │   ├─ validate.js: check args vs JSON schema (required + types)
+        │       │   │   └─ invalid → error result
+        │       │   └─ handler(args, { user: req.user }) — auth context passed in
+        │       ├─ result appended as functionResponse part (createPartFromFunctionResponse)
+        │       └─ second generateContent → final reply
+        │
+        ├─ On success → 200 { reply, tools? }  → rendered as an AI message bubble
+        │   └─ tools: [{ name, ok }] — shown as small chips under the bubble
         │
         └─ On failure → classified GeminiServiceError:
             ├─ Missing API key  → 503 "AI assistant is not configured"
@@ -349,6 +369,40 @@ api/_lib/gemini.js  generateReply({ messages })
             └─ Gemini error     → 502 "AI service returned an error"
         └─ Frontend renders the error message in an error-styled bubble
 ```
+
+### 3.9 AI Tool-Calling Layer (Phase 3)
+
+**Purpose:** allow the Gemini assistant to invoke trusted backend actions via a generic, secured tool pipeline — without any real CRUD yet.
+
+```
+User message
+    │
+    ▼
+Gemini (function calling) → selects tool + structured args
+    │
+    ▼
+api/_lib/tools/executor.js  executeToolCall({ name, args, user })
+    │
+    ├─ name not in registry → { ok: false, error: "Unknown tool: …" }
+    │
+    ├─ validate.js → args checked against the tool's JSON schema
+    │   └─ missing required / wrong type / unknown key → { ok: false, error }
+    │
+    └─ tool.handler(args, { user }) → { ok, status, result }
+        │
+        ├─ getAIHealthStatus      → fully working test tool (Phase 3 verification)
+        └─ other 13 tools         → { status: "not_implemented" } stubs
+                                    (no DB access this phase)
+    │
+    ▼
+Result returned to Gemini as a functionResponse → final reply to user
+```
+
+**Security rules:**
+- Tools live server-side only; the browser never executes them.
+- No arbitrary JS, Mongo, shell, or HTTP execution — only whitelisted registry handlers.
+- The authenticated admin (`req.user`) is passed into every tool call.
+- Tool calls are logged with `[ai-tool:info|error]`; args are truncated and credentials/API keys are never logged.
 
 ---
 

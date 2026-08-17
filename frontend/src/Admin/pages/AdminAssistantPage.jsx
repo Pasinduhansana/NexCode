@@ -8,7 +8,13 @@ import ChatInput from "../components/Assistant/ChatInput";
 import ChatEmptyState from "../components/Assistant/ChatEmptyState";
 import TypingIndicator from "../components/Assistant/TypingIndicator";
 
-const createMessage = (role, content, isError = false) => ({ id: crypto.randomUUID(), role, content, isError });
+const createMessage = (role, content, isError = false, tools = []) => ({
+  id: crypto.randomUUID(),
+  role,
+  content,
+  isError,
+  tools,
+});
 
 export default function AdminAssistantPage() {
   const { user } = useAdminAuth();
@@ -36,8 +42,8 @@ export default function AdminAssistantPage() {
     setIsTyping(true);
 
     sendAssistantMessage(text, history)
-      .then((reply) => {
-        setMessages((prev) => [...prev, createMessage("assistant", reply)]);
+      .then(({ reply, tools }) => {
+        setMessages((prev) => [...prev, createMessage("assistant", reply, false, tools)]);
       })
       .catch((err) => {
         setMessages((prev) => [

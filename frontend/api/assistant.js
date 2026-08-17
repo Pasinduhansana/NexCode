@@ -29,8 +29,8 @@ export default requireAuth(async (req, res) => {
   }
 
   try {
-    const reply = await generateReply({ messages });
-    return res.status(200).json({ reply });
+    const { reply, tools } = await generateReply({ messages, user: req.user });
+    return res.status(200).json(tools && tools.length > 0 ? { reply, tools } : { reply });
   } catch (err) {
     if (err instanceof GeminiServiceError) {
       return res.status(err.status).json({ error: err.message });

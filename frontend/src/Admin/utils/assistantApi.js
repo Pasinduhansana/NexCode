@@ -14,7 +14,8 @@ export async function sendAssistantMessage(message, history = []) {
   if (typeof reply !== "string" || !reply.trim()) {
     throw new Error("The AI service returned an empty response. Please try again.");
   }
-  return reply;
+  const tools = Array.isArray(response?.data?.tools) ? response.data.tools : [];
+  return { reply, tools };
 }
 
 export function getAssistantErrorMessage(err) {

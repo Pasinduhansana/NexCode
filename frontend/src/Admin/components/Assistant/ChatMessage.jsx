@@ -1,8 +1,9 @@
-import { HiOutlineSparkles, HiOutlineUserCircle, HiOutlineExclamation } from "react-icons/hi";
+import { HiOutlineSparkles, HiOutlineUserCircle, HiOutlineExclamation, HiOutlineCog } from "react-icons/hi";
 
 export default function ChatMessage({ message }) {
   const isUser = message.role === "user";
   const isError = !isUser && message.isError;
+  const tools = isUser || isError ? [] : Array.isArray(message.tools) ? message.tools : [];
 
   return (
     <div className={`flex items-start gap-3 ${isUser ? "flex-row-reverse" : ""}`}>
@@ -26,6 +27,23 @@ export default function ChatMessage({ message }) {
         >
           {message.content}
         </div>
+        {tools.length > 0 && (
+          <div className="mt-1.5 flex flex-wrap gap-1.5">
+            {tools.map((tool) => (
+              <span
+                key={tool.name}
+                className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-medium ${
+                  tool.ok
+                    ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-600"
+                    : "border-rose-500/30 bg-rose-500/10 text-rose-600"
+                }`}
+              >
+                <HiOutlineCog size={10} />
+                {tool.name}
+              </span>
+            ))}
+          </div>
+        )}
         <div className="mt-1 text-[11px] text-text_muted">
           {isUser ? "You" : isError ? "AI Assistant · Error" : "AI Assistant"}
         </div>
