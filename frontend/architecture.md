@@ -27,6 +27,7 @@ NexCode/
     │   │   ├── activity.js           # Activity logging helper
     │   │   ├── auth.js               # JWT sign/verify, requireAuth middleware
     │   │   ├── cache.js              # In-memory cache (invalidation pattern)
+    │   │   ├── gemini.js             # Google Gemini service (AI Assistant)
     │   │   ├── mongodb.js            # MongoDB connection singleton
     │   │   └── users.js              # User CRUD, access control, password hashing
     │   ├── auth/
@@ -36,6 +37,7 @@ NexCode/
     │   ├── finance/[id].js           # PUT/DELETE transaction
     │   ├── kanban.js                 # GET kanban summary (project task counts)
     │   ├── activities.js             # GET activity log
+    │   ├── assistant.js              # POST chat messages → Gemini (AI Assistant)
     │   ├── projects.js               # GET/POST projects
     │   ├── projects/[id].js          # GET/PUT/DELETE project
     │   ├── stats.js                  # GET dashboard stats
@@ -119,7 +121,12 @@ NexCode/
     │       │   ├── TransactionFormModal.jsx # Finance transaction form
     │       │   ├── FinanceCharts.jsx # Bar + donut charts
     │       │   ├── KanbanGantt.jsx   # Timeline/Gantt chart
-    │       │   └── SettlementSummary.jsx # Splitwise-like settlement
+    │       │   ├── SettlementSummary.jsx # Splitwise-like settlement
+    │       │   └── Assistant/        # AI Assistant chat UI
+    │       │       ├── ChatMessage.jsx      # User/AI message bubble
+    │       │       ├── ChatInput.jsx        # Message input + send
+    │       │       ├── ChatEmptyState.jsx   # Welcome/suggestion state
+    │       │       └── TypingIndicator.jsx  # Loading dots
     │       │
     │       ├── context/
     │       │   └── AdminAuthContext.jsx # Auth state + access hooks
@@ -136,11 +143,13 @@ NexCode/
     │       │   ├── AdminFinancePage.jsx    # Transactions + charts + settlement
     │       │   ├── AdminActivityPage.jsx   # Activity log
     │       │   ├── AdminDesignerPage.jsx   # Placeholder
-    │       │   └── AdminAccessPage.jsx     # User access management
+    │       │   ├── AdminAccessPage.jsx     # User access management
+    │       │   └── AdminAssistantPage.jsx  # AI Assistant chat
     │       │
     │       └── utils/
     │           ├── adminApi.js       # Axios instance (admin API, JWT header)
     │           ├── auth.js           # localStorage helpers (token, user)
+    │           ├── assistantApi.js   # AI Assistant API client (POST /api/assistant)
     │           └── date.js           # Date formatting utilities
     │
     ├── assets/                       # Project showcase images/videos
@@ -301,6 +310,44 @@ git push → Vercel auto-deploys
             ├─ /api/projects → api/projects.js
             ├─ /api/projects/:id → api/projects/[id].js
             └─ /api/users/:id/password → api/users/[id]/password.js
+```
+
+### 3.8 AI Assistant Flow
+
+```
+User sends a chat message
+        │
+        ▼
+sendAssistantMessage(message, history)   ← src/Admin/utils/assistantApi.js
+        │
+        ├─ Builds full conversation: history + new user message
+        │
+        ▼
+POST /api/assistant  { messages: [...] }   ← adminApi (JWT header, 60s timeout)
+        │
+        ▼
+requireAuth(handler)                       ← verifies Bearer token
+        │
+        ▼
+api/assistant.js                           ← validates messages (non-empty, ≤40 turns,
+        │                                    ≤4000 chars each, last turn is user)
+        ▼
+api/_lib/gemini.js  generateReply({ messages })
+        │
+        ├─ Requires GEMINI_API_KEY (env) — never shipped to the browser
+        ├─ Maps roles: user→"user", assistant→"model"
+        ├─ Calls Google Gemini via @google/genai SDK
+        │   └─ Model chain (GEMINI_MODEL first, then gemini-3.6-flash → 3.7-flash
+        │      → 3.5-flash-lite → flash-latest) — retries/falls back on 429/503/404
+        │
+        ├─ On success → 200 { reply }  → rendered as an AI message bubble
+        │
+        └─ On failure → classified GeminiServiceError:
+            ├─ Missing API key  → 503 "AI assistant is not configured"
+            ├─ Rate limit/quota → 429 "AI service temporarily overloaded"
+            ├─ Network error    → 502 "Could not reach the AI service"
+            └─ Gemini error     → 502 "AI service returned an error"
+        └─ Frontend renders the error message in an error-styled bubble
 ```
 
 ---

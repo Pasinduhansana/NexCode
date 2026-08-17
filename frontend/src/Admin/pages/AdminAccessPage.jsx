@@ -19,6 +19,7 @@ import {
   HiOutlineClipboardList,
   HiOutlineSparkles,
   HiOutlineHome,
+  HiOutlineChatAlt2,
 } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
 import usePageTitle from "../../utils/usePageTitle";
@@ -34,6 +35,7 @@ const PAGE_OPTIONS = [
   { id: "finance", label: "Finance", icon: HiOutlineCurrencyDollar },
   { id: "activity", label: "Activity", icon: HiOutlineClipboardList },
   { id: "access", label: "Access", icon: HiOutlineShieldCheck },
+  { id: "assistant", label: "Assistant", icon: HiOutlineChatAlt2 },
 ];
 
 const DASHBOARD_COMPONENTS = [

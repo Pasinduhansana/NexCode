@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { HiOutlineHome, HiOutlineFolder, HiOutlineLogout, HiX, HiGlobeAlt, HiOutlineClipboardList, HiOutlineViewBoards, HiOutlineCurrencyDollar, HiOutlineChevronLeft, HiOutlineChevronRight, HiOutlineSparkles, HiOutlineShieldCheck } from "react-icons/hi";
+import { HiOutlineHome, HiOutlineFolder, HiOutlineLogout, HiX, HiGlobeAlt, HiOutlineClipboardList, HiOutlineViewBoards, HiOutlineCurrencyDollar, HiOutlineChevronLeft, HiOutlineChevronRight, HiOutlineSparkles, HiOutlineShieldCheck, HiOutlineChatAlt2 } from "react-icons/hi";
 import { useAdminAuth } from "../context/AdminAuthContext";
 
 const allLinks = [
@@ -10,6 +10,7 @@ const allLinks = [
   { to: "/admin/finance", end: false, icon: HiOutlineCurrencyDollar, label: "Finance", pageId: "finance" },
   { to: "/admin/activity", end: false, icon: HiOutlineClipboardList, label: "Activity", pageId: "activity" },
   { to: "/admin/access", end: false, icon: HiOutlineShieldCheck, label: "Access", pageId: "access" },
+  { to: "/admin/assistant", end: false, icon: HiOutlineChatAlt2, label: "Assistant", pageId: "assistant" },
 ];
 
 export default function AdminSidebar({ open, onClose, collapsed, onToggleCollapse }) {
