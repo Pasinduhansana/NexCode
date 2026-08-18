@@ -301,7 +301,16 @@ export function resolveDateRangeToken(token) {
 
 export async function buildFinanceSummary() {
   const collection = await getCollection("transactions");
-  const rows = await collection.find({}).sort({ date: 1 }).toArray();
+  // Only the fields the reducer uses are needed — loading full transaction docs
+  // (large description/notes bodies) balloons the transfer and memory on every
+  // dashboard/stats build. Behavior is identical with a projection.
+  const rows = await collection
+    .find(
+      {},
+      { projection: { type: 1, amount: 1, paidBy: 1, paymentStatus: 1, category: 1, date: 1 } }
+    )
+    .sort({ date: 1 })
+    .toArray();
 
   let totalIncome = 0;
   let totalExpense = 0;

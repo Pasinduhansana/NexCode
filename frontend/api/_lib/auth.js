@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { startTimer, endTimer, logPerf, roundMs } from "./perf.js";
 
 export function signToken(payload = {}) {
   return jwt.sign({ role: "admin", ...payload }, process.env.JWT_SECRET, {
@@ -18,15 +19,37 @@ export function getToken(req) {
 
 export function requireAuth(handler) {
   return async (req, res) => {
+    const apiStart = startTimer();
+    const label = `${req.method} ${req.url}`;
+    logPerf("API_START", label);
+    const authStart = startTimer();
     const token = getToken(req);
     if (!token) {
+      logPerf("API_AUTH", label, roundMs(endTimer(authStart)));
+      logPerf("API_RESPONSE", label, "401", roundMs(endTimer(apiStart)));
       return res.status(401).json({ error: "Unauthorized" });
     }
     try {
       req.user = verifyToken(token);
-      return await handler(req, res);
     } catch (err) {
+      logPerf("API_AUTH", label, roundMs(endTimer(authStart)));
+      logPerf("API_RESPONSE", label, "401", roundMs(endTimer(apiStart)));
       return res.status(401).json({ error: "Invalid or expired token" });
+    }
+    logPerf("API_AUTH", label, roundMs(endTimer(authStart)));
+
+    const originalJson = res.json.bind(res);
+    res.json = (body) => {
+      logPerf("API_RESPONSE", label, String(res.statusCode), roundMs(endTimer(apiStart)));
+      return originalJson(body);
+    };
+
+    try {
+      logPerf("BUSINESS_LOGIC_START", label);
+      return await handler(req, res);
+    } finally {
+      logPerf("BUSINESS_LOGIC_END", label);
+      logPerf("API_TOTAL", label, roundMs(endTimer(apiStart)));
     }
   };
 }

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { HiOutlinePlus, HiOutlineSearch, HiOutlineFolder, HiOutlinePencilAlt, HiOutlineTrash, HiOutlineClipboardList, HiOutlineViewList, HiOutlineTemplate } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
+import { clientLog } from "../utils/perfClient";
 import usePageTitle from "../../utils/usePageTitle";
 import Spinner from "../components/Spinner";
 import EmptyState from "../components/EmptyState";
@@ -27,10 +28,13 @@ export default function AdminProjectsPage() {
   usePageTitle("Projects");
 
   const fetchProjects = async () => {
+    const t0 = performance.now();
     try {
       const { data } = await adminApi.get("/projects");
+      clientLog(`projects fetch completed: ${Math.round(performance.now() - t0)}ms`);
       setProjects(data);
     } catch (err) {
+      clientLog("projects fetch failed");
       toast.error(err.response?.data?.error || "Failed to load projects");
     } finally {
       setLoading(false);

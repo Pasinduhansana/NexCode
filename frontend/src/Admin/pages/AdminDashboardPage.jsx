@@ -14,6 +14,7 @@ import {
   HiOutlineExclamation,
 } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
+import { clientLog } from "../utils/perfClient";
 import usePageTitle from "../../utils/usePageTitle";
 import Spinner from "../components/Spinner";
 import StatCard from "../components/StatCard";
@@ -46,13 +47,17 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     let cancelled = false;
+    clientLog("dashboard fetch started");
+    const t0 = performance.now();
     Promise.all([adminApi.get("/stats"), adminApi.get("/activities?limit=8")])
       .then(([statsRes, activitiesRes]) => {
+        clientLog(`dashboard fetch completed: ${Math.round(performance.now() - t0)}ms (parallel)`);
         if (cancelled) return;
         setStats(statsRes.data);
         setActivities(activitiesRes.data);
       })
       .catch(() => {
+        clientLog("dashboard fetch failed");
         if (!cancelled) setStats(null);
       })
       .finally(() => {
