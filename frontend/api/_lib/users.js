@@ -4,7 +4,7 @@ import crypto from "crypto";
 const SUPER_ADMINS = ["pasindu", "chamara"];
 
 const DEFAULT_ACCESS = {
-  pages: ["dashboard", "projects", "board", "finance", "activity"],
+  pages: ["dashboard", "projects", "board", "finance", "activity", "reporting"],
   dashboardComponents: ["stats", "finance", "projects", "tasks"],
   projectAccess: "all",
   projectIds: [],
@@ -107,7 +107,7 @@ export async function ensureDefaultUsers() {
   const now = new Date().toISOString();
   for (const u of envUsers) {
     const access = isSuperAdmin(u.id)
-      ? { ...DEFAULT_ACCESS, pages: ["dashboard", "projects", "board", "designer", "finance", "activity", "access"] }
+      ? { ...DEFAULT_ACCESS, pages: ["dashboard", "projects", "board", "designer", "reporting", "finance", "activity", "access"] }
       : DEFAULT_ACCESS;
     await col.insertOne({
       _id: u.id,

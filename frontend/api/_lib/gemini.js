@@ -65,7 +65,14 @@ Project planning workflow (generateProjectPlan / createProjectFromPlan):
 - Planned expenses are estimates only. Never record an expense as paid/actual unless the user explicitly asks to record it with a real amount.
 - When your text reply includes tables, output GitHub-style markdown tables (rows starting with |) — the UI renders them as tables.
 
-Destructive actions (deleteProject, deleteTask, deleteIssue, deleteDesignReference, deleteDesignSection, deleteDesignNote, deleteExpense) use a confirmation flow:
+Reporting workflow (getReports / generateReportDraft / generateReportPdf / deleteReport):
+- Use getReports to answer questions about documents already created (e.g. "what invoices exist?", "show me the reports for the coffee shop project").
+- When the user asks to create a business document (invoice, price quotation, project proposal, project manual, or a general report) call generateReportDraft with the document type and the project (projectId/searchProject). The tool drafts structured content from real project data and stores a DRAFT. It does NOT generate a PDF.
+- After the draft is created, summarize it to the user and ask: "Would you like me to generate the PDF?" Only when the user explicitly confirms should you call generateReportPdf with the reportId and confirmed: true (in a later message, never in the same message). If they decline, call generateReportPdf with confirmed: false.
+- Editing content, previewing, and downloading PDFs happen in the Reporting page — point the user there.
+- Deleting a report uses the destructive confirmation flow below.
+
+Destructive actions (deleteProject, deleteTask, deleteIssue, deleteDesignReference, deleteDesignSection, deleteDesignNote, deleteExpense, deleteReport) use a confirmation flow:
 - The first time you call a destructive tool it returns { status: "confirmation_required", message } and deletes NOTHING.
 - Relay the message to the user and ask for explicit confirmation, e.g. "You're about to delete the expense \"Hosting - 5000 LKR\". Continue?"
 - Only after the user explicitly agrees, call the SAME destructive tool again with the exact same identifying arguments AND 'confirmed: true' — in a later message, never in the same message. The backend verifies the pending confirmation exists for this exact action before anything is deleted.
@@ -362,5 +369,99 @@ export async function generateReply({ messages, user }) {
       durationMs: Date.now() - startedAt,
     });
     throw err;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Report content generation — a separate, JSON-only Gemini call used by the
+// Reporting module. The model is forced to emit valid JSON matching a strict
+// schema, which is then normalized/validated again on the server.
+// ---------------------------------------------------------------------------
+
+const REPORT_SYSTEM_INSTRUCTION = `You generate structured content for professional business documents for "NexCode · Digital Innovations", a Sri Lankan web development agency.
+
+You receive a JSON object with:
+- "documentType": one of "invoice", "quotation", "proposal", "manual", "other"
+- "notes": optional instructions from the user
+- "data": project data (may be empty)
+
+Return ONLY a single JSON object (no markdown, no commentary) conforming to this schema:
+
+{
+  "title": string,
+  "subtitle": string,
+  "introduction": string,
+  "objectives": [string],
+  "features": [string],
+  "items": [ { "description": string, "qty": number, "unitPrice": number } ],
+  "timeline": [ { "phase": string, "description": string, "timeline": string } ],
+  "client": { "name": string, "company": string, "address": string, "email": string, "phone": string },
+  "project": { "name": string, "client": string, "status": string, "startDate": string, "dueDate": string, "budget": number },
+  "expenses": {
+    "estimated": [ { "item": string, "cost": number } ],
+    "actual": [ { "item": string, "cost": number } ]
+  },
+  "pricing": { "subtotal": number, "discount": number, "taxes": number, "total": number, "paid": number, "balance": number, "currency": "LKR" },
+  "notes": [string],
+  "sections": [ { "heading": string, "body": string } ]
+}
+
+Rules:
+- Amounts are in LKR (Sri Lankan Rupees), plain numbers.
+- invoice: derive line items from the project scope/features/costs. Set pricing.paid from advanceAmount/paidStatus if known, and compute balance = total - paid. Keep it short and professional.
+- quotation: list the scope as items with unit prices, add a valid-until period in documentMeta-like context (date today plus 30 days).
+- proposal: include introduction, objectives, features, a realistic timeline, estimated vs actual expenses, and a total investment figure.
+- manual: include an introduction and several "sections" (each with heading and body) describing the project, deliverables, maintenance, hosting, and support. NEVER invent or include API keys, passwords, tokens, database URIs, or credentials — if the data contains any, leave them out entirely.
+- Do not invent financial figures that are not present in the data; where data is missing, use the values already given or leave them 0.
+- Today's date is ${new Date().toLocaleDateString("en-CA")}.`;
+
+export async function generateReportContent({ user, prompt }) {
+  if (!GEMINI_API_KEY) {
+    throw new GeminiServiceError(
+      GEMINI_ERROR.MISSING_API_KEY,
+      "The AI service is not configured. Add GEMINI_API_KEY to the server environment.",
+      503
+    );
+  }
+
+  const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+  const config = {
+    systemInstruction: REPORT_SYSTEM_INSTRUCTION,
+    responseMimeType: "application/json",
+    temperature: 0.5,
+    maxOutputTokens: 4096,
+  };
+  const contents = [
+    { role: "user", parts: [{ text: JSON.stringify(prompt) }] },
+  ];
+
+  const uid = userId(user);
+  const startedAt = Date.now();
+  try {
+    const { model, response } = await generateWithFallback(ai, contents, config);
+    const text = typeof response?.text === "string" ? response.text.trim() : "";
+    if (!text) throw emptyResponseError();
+    const parsed = JSON.parse(text);
+    log("report", {
+      user: uid,
+      model,
+      ok: true,
+      durationMs: Date.now() - startedAt,
+    });
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+  } catch (err) {
+    if (err instanceof GeminiServiceError) throw err;
+    log("error", {
+      user: uid,
+      ok: false,
+      code: "INVALID_JSON",
+      error: "Report content was not valid JSON",
+      durationMs: Date.now() - startedAt,
+    });
+    throw new GeminiServiceError(
+      GEMINI_ERROR.GEMINI_ERROR,
+      "The AI returned invalid report content. Please try again.",
+      502
+    );
   }
 }

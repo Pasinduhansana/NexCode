@@ -37,6 +37,7 @@ import AdminFinancePage from "./Admin/pages/AdminFinancePage";
 import AdminActivityPage from "./Admin/pages/AdminActivityPage";
 import AdminAccessPage from "./Admin/pages/AdminAccessPage";
 import AdminAssistantPage from "./Admin/pages/AdminAssistantPage";
+import AdminReportingPage from "./Admin/pages/AdminReportingPage";
 
 const PublicLayout = ({ children }) => (
   <>
@@ -140,6 +141,7 @@ const AppContent = () => {
             <Route path="activity" element={<AdminActivityPage />} />
             <Route path="access" element={<AdminAccessPage />} />
             <Route path="assistant" element={<AdminAssistantPage />} />
+            <Route path="reporting" element={<AdminReportingPage />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

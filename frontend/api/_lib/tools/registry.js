@@ -69,6 +69,16 @@ import {
   formatLKR,
   ProjectPlanError,
 } from "../projectplanner.js";
+import {
+  generateReportDraftFromAI,
+  generateReportPdf,
+  deleteReport,
+  getReport,
+  listReports,
+  REPORT_TYPES,
+  REPORT_TYPE_LABELS,
+  REPORT_STATUSES,
+} from "../reports.js";
 
 const PROJECT_STATUSES = ["planning", "in_progress", "on_hold", "completed", "cancelled"];
 const TASK_STATUSES = ["todo", "in_progress", "review", "done"];
@@ -1592,9 +1602,167 @@ const TOOLS = [
     },
     dedupe: true,
   },
+  {
+    name: "getReports",
+    description:
+      "List the reports/documents created in the Reporting workspace (invoices, quotations, proposals, manuals). Optionally filter by `documentType` (invoice/quotation/proposal/manual/other), `projectId`, `status` (draft/generated/failed/archived), or a `search` term. Returns the report summaries.",
+    parameters: {
+      type: "OBJECT",
+      properties: {
+        documentType: e("Report type to filter by", REPORT_TYPES),
+        projectId: s("Project id to filter by"),
+        search: s("Search term matching report title, document number, or project name"),
+        status: e("Status to filter by", REPORT_STATUSES),
+      },
+    },
+    handler: async (args, context) => {
+      const reports = await listReports({ user: context?.user, filters: args });
+      return {
+        success: true,
+        message: `Found ${reports.length} report${reports.length === 1 ? "" : "s"}.`,
+        reports: reports.map(toPlain),
+      };
+    },
+  },
+  {
+    name: "generateReportDraft",
+    description:
+      "Generate a draft professional business document for the Reporting workspace. Pass the `documentType` (invoice, quotation, proposal, manual, other) and identify the project with `projectId`/`searchProject`. `notes` may contain extra instructions (e.g. payment terms, scope clarifications). Uses Gemini to draft structured content from real project data. Creates a DRAFT only — no PDF is produced until the user confirms and generateReportPdf is called.",
+    parameters: {
+      type: "OBJECT",
+      properties: {
+        documentType: e("The type of document to draft", REPORT_TYPES),
+        projectId: s("MongoDB project id"),
+        searchProject: s("Project name to search for (use when the id is unknown)"),
+        notes: s("Optional instructions for the draft content"),
+      },
+      required: ["documentType"],
+    },
+    handler: async (args, context) => {
+      const { documentType, notes } = args;
+      const projectId = await resolveProjectScope(args);
+      const report = await generateReportDraftFromAI({
+        user: context?.user,
+        documentType,
+        projectId,
+        notes,
+      });
+      return {
+        success: true,
+        status: "draft_created",
+        message: `Drafted a ${REPORT_TYPE_LABELS[documentType]} (${report.docNumber}) for "${report.projectName || "the project"}". You can edit the content in the Reporting page or I can generate the PDF once you confirm.`,
+        report: toPlain(report),
+      };
+    },
+    dedupe: true,
+  },
+  {
+    name: "generateReportPdf",
+    description:
+      "Generate the final PDF for an existing report draft. Identify the report with its `reportId`. CONFIRMATION: the first call only requests confirmation and creates nothing; call this tool again with the same `reportId` and `confirmed: true` only after the user explicitly confirms they want the PDF generated, or `confirmed: false` when they decline. Returns the updated report with versioning info.",
+    parameters: {
+      type: "OBJECT",
+      properties: {
+        reportId: s("MongoDB report id to generate a PDF for"),
+        confirmed: { type: "BOOLEAN", description: CONFIRMED_FIELD.description },
+      },
+      required: ["reportId"],
+    },
+    handler: async (args, context) => {
+      const { reportId, confirmed } = args;
+      const fingerprint = String(reportId);
+
+      if (confirmed === true) {
+        const pending = await getConfirmation({ user: context?.user, tool: "generateReportPdf", fingerprint });
+        if (!pending) {
+          throw exposedError("There is no pending confirmation for this PDF generation — nothing was generated. Request it first (without `confirmed`), then confirm in a later message.");
+        }
+        const check = await resolveConfirmation({
+          user: context?.user,
+          tool: "generateReportPdf",
+          fingerprint,
+          requestId: context?.requestId,
+        });
+        if (!check.ok) {
+          throw exposedError(
+            check.reason === "same_turn"
+              ? "This PDF generation was only requested in the current message — it cannot be confirmed in the same message. Ask the user to confirm, then call this tool again with `confirmed: true` in the next message."
+              : "This pending confirmation has expired. Nothing was generated — please start the action again."
+          );
+        }
+        const updated = await generateReportPdf({ user: context?.user, id: reportId });
+        return {
+          success: true,
+          status: "generated",
+          message: `Generated the PDF for ${updated.docNumber} (version ${updated.version}). You can preview and download it from the Reporting page.`,
+          report: toPlain(updated),
+        };
+      }
+
+      if (confirmed === false) {
+        await cancelConfirmation({ user: context?.user, tool: "generateReportPdf", fingerprint });
+        return {
+          success: true,
+          status: "cancelled",
+          message: "PDF generation was cancelled. Nothing was generated.",
+          report: null,
+        };
+      }
+
+      const existing = await getConfirmation({ user: context?.user, tool: "generateReportPdf", fingerprint });
+      if (!existing) {
+        await createConfirmation({
+          user: context?.user,
+          tool: "generateReportPdf",
+          fingerprint,
+          requestId: context?.requestId,
+          targetLabel: reportId,
+        });
+      }
+      return {
+        success: true,
+        status: "confirmation_required",
+        message:
+          "Would you like me to generate the final PDF for this report? Reply to confirm and I'll generate it.",
+        report: toPlain(await getReport({ user: context?.user, id: reportId })),
+      };
+    },
+    dedupe: true,
+  },
+  {
+    name: "deleteReport",
+    description:
+      "Delete a report/document permanently from the Reporting workspace. Identify the report with its `reportId`. DESTRUCTIVE: the first call only requests confirmation and deletes nothing; call this tool again with the same `reportId` and `confirmed: true` only after the user explicitly confirms, or `confirmed: false` when they decline. Returns the deleted report.",
+    parameters: {
+      type: "OBJECT",
+      properties: {
+        reportId: s("MongoDB report id to delete"),
+        confirmed: { type: "BOOLEAN", description: CONFIRMED_FIELD.description },
+      },
+      required: ["reportId"],
+    },
+    handler: async (args, context) => {
+      const { confirmed } = args;
+      const report = await getReport({ user: context?.user, id: args.reportId });
+      return requestOrExecuteDelete({
+        context: { ...context, argsConfirmed: confirmed },
+        tool: "deleteReport",
+        target: { _id: String(report._id) },
+        kind: "report",
+        label: `${report.docNumber} (${REPORT_TYPE_LABELS[report.documentType]})`,
+        execute: async () => {
+          await deleteReport({ user: context?.user, id: String(report._id) });
+          return report;
+        },
+      });
+    },
+    dedupe: true,
+  },
 ];
 
 function stableStringify(value) {
+  if (value === undefined) return "undefined";
+  if (value === null) return "null";
   if (Array.isArray(value)) return `[${value.map(stableStringify).join(",")}]`;
   if (value && typeof value === "object") {
     return `{${Object.keys(value)
@@ -1642,6 +1810,7 @@ const TOOL_CATEGORY_MAP = {
   getOpenIssues: TOOL_CATEGORIES.READ_ONLY,
   getExpenseSummary: TOOL_CATEGORIES.READ_ONLY,
   getRecentActivity: TOOL_CATEGORIES.READ_ONLY,
+  getReports: TOOL_CATEGORIES.READ_ONLY,
 
   createProject: TOOL_CATEGORIES.WRITE,
   updateProject: TOOL_CATEGORIES.WRITE,
@@ -1660,6 +1829,8 @@ const TOOL_CATEGORY_MAP = {
   createExpense: TOOL_CATEGORIES.WRITE,
   updateExpense: TOOL_CATEGORIES.WRITE,
   createProjectFromPlan: TOOL_CATEGORIES.WRITE,
+  generateReportDraft: TOOL_CATEGORIES.WRITE,
+  generateReportPdf: TOOL_CATEGORIES.WRITE,
 
   generateProjectPlan: TOOL_CATEGORIES.READ_ONLY,
 
@@ -1670,6 +1841,7 @@ const TOOL_CATEGORY_MAP = {
   deleteDesignSection: TOOL_CATEGORIES.DESTRUCTIVE,
   deleteDesignNote: TOOL_CATEGORIES.DESTRUCTIVE,
   deleteExpense: TOOL_CATEGORIES.DESTRUCTIVE,
+  deleteReport: TOOL_CATEGORIES.DESTRUCTIVE,
 };
 
 for (const tool of TOOLS) {

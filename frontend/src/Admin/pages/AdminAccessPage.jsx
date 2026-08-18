@@ -20,6 +20,7 @@ import {
   HiOutlineSparkles,
   HiOutlineHome,
   HiOutlineChatAlt2,
+  HiOutlineDocumentReport,
 } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
 import usePageTitle from "../../utils/usePageTitle";
@@ -33,6 +34,7 @@ const PAGE_OPTIONS = [
   { id: "board", label: "Board", icon: HiOutlineViewBoards },
   { id: "designer", label: "Designer", icon: HiOutlineSparkles },
   { id: "finance", label: "Finance", icon: HiOutlineCurrencyDollar },
+  { id: "reporting", label: "Reporting", icon: HiOutlineDocumentReport },
   { id: "activity", label: "Activity", icon: HiOutlineClipboardList },
   { id: "access", label: "Access", icon: HiOutlineShieldCheck },
   { id: "assistant", label: "Assistant", icon: HiOutlineChatAlt2 },

@@ -34,6 +34,17 @@ function applyUpdate(target, update) {
   if (update.$set) {
     for (const [key, value] of Object.entries(update.$set)) target[key] = value;
   }
+  if (update.$inc) {
+    for (const [key, value] of Object.entries(update.$inc)) {
+      target[key] = (target[key] == null ? 0 : target[key]) + value;
+    }
+  }
+  if (update.$push) {
+    for (const [key, value] of Object.entries(update.$push)) {
+      if (!Array.isArray(target[key])) target[key] = [];
+      target[key].push(value);
+    }
+  }
 }
 
 function applySetOnInsert(target, update) {

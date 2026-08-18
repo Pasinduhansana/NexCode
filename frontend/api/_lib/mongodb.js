@@ -80,6 +80,10 @@ async function ensureIndexes(client) {
     db.collection("designreferences").createIndex({ projectId: 1, order: 1 }).catch(() => {}),
     db.collection("designsections").createIndex({ projectId: 1, order: 1 }).catch(() => {}),
     db.collection("designnotes").createIndex({ projectId: 1, parentType: 1, parentId: 1 }).catch(() => {}),
+    db.collection("reports").createIndex({ userId: 1, updatedAt: -1 }).catch(() => {}),
+    db.collection("reports").createIndex({ userId: 1, documentType: 1 }).catch(() => {}),
+    db.collection("reports").createIndex({ userId: 1, projectId: 1 }).catch(() => {}),
+    db.collection("reports").createIndex({ docNumber: 1 }, { unique: true }).catch(() => {}),
   ]);
   cached.indexesEnsured = true;
 }

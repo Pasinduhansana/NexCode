@@ -46,3 +46,12 @@ export function requireDesignerAccess(handler) {
     return handler(req, res);
   });
 }
+
+export function requireReportingAccess(handler) {
+  return requireAuth(async (req, res) => {
+    if (!hasPageAccess(req.user, "reporting")) {
+      return res.status(403).json({ error: "Access denied" });
+    }
+    return handler(req, res);
+  });
+}
