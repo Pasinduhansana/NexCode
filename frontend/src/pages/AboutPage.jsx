@@ -3,8 +3,10 @@
  * Modern About Us page with support for:
  *   light | dark | primary themes via Tailwind semantic tokens.
  */
+"use client";
+
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import {
   HiCheckCircle,
   HiLightBulb,

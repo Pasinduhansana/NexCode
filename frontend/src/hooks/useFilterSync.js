@@ -1,4 +1,6 @@
-import { useSearchParams } from "react-router-dom";
+"use client";
+
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useMemo, useCallback } from "react";
 
 const INDUSTRY_LABELS = {
@@ -10,58 +12,66 @@ const INDUSTRY_LABELS = {
 };
 
 export function useFilterSync(projects) {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const industry = searchParams.get("industry") || "";
-  const category = searchParams.get("category") || "";
+  const industry = searchParams?.get("industry") || "";
+  const category = searchParams?.get("category") || "";
+
+  const updateParams = useCallback(
+    (updater) => {
+      const next = new URLSearchParams(searchParams?.toString() || "");
+      updater(next);
+      const query = next.toString();
+      router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
+    },
+    [searchParams, router, pathname]
+  );
 
   const setIndustry = useCallback(
     (value) => {
-      setSearchParams((prev) => {
-        const next = new URLSearchParams(prev);
+      updateParams((next) => {
         if (value) {
           next.set("industry", value);
         } else {
           next.delete("industry");
         }
         next.delete("category");
-        return next;
       });
     },
-    [setSearchParams]
+    [updateParams]
   );
 
   const setCategory = useCallback(
     (value) => {
-      setSearchParams((prev) => {
-        const next = new URLSearchParams(prev);
+      updateParams((next) => {
         if (value) {
           next.set("category", value);
         } else {
           next.delete("category");
         }
-        return next;
       });
     },
-    [setSearchParams]
+    [updateParams]
   );
 
   const clearFilters = useCallback(() => {
-    setSearchParams({});
-  }, [setSearchParams]);
+    router.push(pathname, { scroll: false });
+  }, [router, pathname]);
 
   const allIndustries = useMemo(() => {
-    const industrySet = new Set(projects.map((p) => p.industry).filter(Boolean));
+    const industrySet = new Set((projects || []).map((p) => p.industry).filter(Boolean));
     return [...industrySet].sort();
   }, [projects]);
 
   const allCategories = useMemo(() => {
-    return [...new Set(projects.map((p) => p.type))].sort();
+    return [...new Set((projects || []).map((p) => p.type))].sort();
   }, [projects]);
 
   const availableCategories = useMemo(() => {
     if (industry) {
-      const cats = projects
+      const cats = (projects || [])
         .filter((p) => p.industry === industry)
         .map((p) => p.type);
       return [...new Set(cats)].sort();

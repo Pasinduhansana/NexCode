@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import toast from "react-hot-toast";
 import { HiOutlinePlus, HiOutlineSearch, HiOutlineFolder, HiOutlinePencilAlt, HiOutlineTrash, HiOutlineClipboardList, HiOutlineViewList, HiOutlineTemplate } from "react-icons/hi";
 import adminApi from "../utils/adminApi";

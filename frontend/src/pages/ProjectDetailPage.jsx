@@ -1,5 +1,8 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
 import palmLeave from "../../assets/palm-leave.webp";
 import project_image from "../../assets/project_image.webp";
 import project_image2_mobile from "../../assets/project_image1_mob.webp";

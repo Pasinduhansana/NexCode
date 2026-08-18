@@ -3,10 +3,12 @@
  * Modern landing-page-feel design with full support for:
  *   light | dark | primary  themes via Tailwind semantic tokens.
  */
+"use client";
+
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import useGsapReveal from "../utils/useGsapReveal";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import Button from "../components/Button";
 import {
   HiGlobe,

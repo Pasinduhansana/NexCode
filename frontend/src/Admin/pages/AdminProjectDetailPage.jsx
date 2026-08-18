@@ -1,5 +1,8 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { HiOutlineArrowLeft, HiOutlinePlus, HiOutlinePencilAlt, HiOutlineTrash, HiOutlineFolder, HiOutlineUser, HiOutlineCalendar, HiOutlineCurrencyDollar, HiOutlineCheck, HiOutlineDocumentText, HiOutlineTag } from "react-icons/hi";
 import adminApi from "../utils/adminApi";

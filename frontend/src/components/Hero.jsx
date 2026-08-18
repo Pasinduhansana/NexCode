@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { motion, useAnimation } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
 import laptopMockup from "../../assets/laptop_mockup.webp";

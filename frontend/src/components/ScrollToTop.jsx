@@ -1,12 +1,13 @@
+"use client";
+
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 
 /**
  * ScrollToTop — scrolls the window to the top on every route change.
- * Place this inside <BrowserRouter> so it has access to useLocation.
  */
 export default function ScrollToTop() {
-  const { pathname } = useLocation();
+  const pathname = usePathname();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });

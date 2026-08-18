@@ -3,9 +3,11 @@
  * Modern portfolio landing-page design with full support for:
  *   light | dark | primary themes via Tailwind semantic tokens.
  */
+"use client";
+
 import { useEffect, useMemo, useState, useRef } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import Button from "../components/Button";
 import {
   HiFilter,

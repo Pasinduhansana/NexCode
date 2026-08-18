@@ -1,5 +1,7 @@
-import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import {

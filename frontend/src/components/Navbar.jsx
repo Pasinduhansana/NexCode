@@ -1,11 +1,15 @@
+"use client";
+
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiMenu, HiX, HiChevronDown, HiSun, HiMoon } from "react-icons/hi";
 import { useTheme } from "../context/ThemeContext";
 import { useThemeClasses } from "../utils/useThemeClasses";
-import logo from "../../assets/Logo.webp";
 import Button  from "./Button";
+
+const logo = "/assets/Logo.webp";
 
 const navLinks = [
   { label: "Home", path: "/" },
@@ -62,7 +66,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [themeDropdownOpen, setThemeDropdownOpen] = useState(false);
-  const location = useLocation();
+  const pathname = usePathname();
   const { theme, updateTheme } = useTheme();
   const themeClasses = useThemeClasses();
 
@@ -72,7 +76,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => setMobileOpen(false), [location]);
+  useEffect(() => setMobileOpen(false), [pathname]);
 
   const ui = themeUi[theme] || themeUi.primary;
   const navbarBg = scrolled ? ui.navScrolled : ui.navTop;
@@ -87,7 +91,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex items-center justify-between h-14 sm:h-16 py-2 sm:py-3">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
+          <Link href="/" className="flex items-center gap-2 group">
           <div className={`w-8 h-8 rounded-md overflow-hidden shadow-md ${ui.logoBg} flex items-center justify-center group-hover:scale-110 transition-transform`}>
             <img src={logo} alt="NexCode" className="object-cover" loading="lazy" decoding="async" /></div>
             <span className={`font-display font-bold text-lg ${themeClasses.text.primary}`}>
@@ -100,9 +104,9 @@ export default function Navbar() {
             {navLinks.map((link) => (
               <Link
                 key={link.path}
-                to={link.path}
+                href={link.path}
                 className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 ${
-                  location.pathname === link.path ? ui.linkActive : ui.linkIdle
+                  pathname === link.path ? ui.linkActive : ui.linkIdle
                 }`}
               >
                 {link.label}
@@ -208,9 +212,9 @@ export default function Navbar() {
               {navLinks.map((link) => (
                 <Link
                   key={link.path}
-                  to={link.path}
+                  href={link.path}
                   className={`block px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
-                    location.pathname === link.path ? ui.linkActive : ui.mobileLinkIdle
+                    pathname === link.path ? ui.linkActive : ui.mobileLinkIdle
                   }`}
                 >
                   {link.label}

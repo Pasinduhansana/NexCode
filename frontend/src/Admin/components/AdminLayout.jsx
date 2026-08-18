@@ -1,5 +1,7 @@
+"use client";
+
 import { useState, useEffect } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { useRouter, usePathname } from "next/navigation";
 import { HiOutlineMenu, HiOutlineUserCircle } from "react-icons/hi";
 import { useAdminAuth } from "../context/AdminAuthContext";
 import AdminSidebar from "./AdminSidebar";
@@ -7,8 +9,10 @@ import Spinner from "./Spinner";
 
 const SIDEBAR_KEY = "nexcode_sidebar_collapsed";
 
-export default function AdminLayout() {
+export default function AdminLayout({ children }) {
   const { isAuthenticated, ready, user } = useAdminAuth();
+  const router = useRouter();
+  const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(() => {
     try {
@@ -24,6 +28,12 @@ export default function AdminLayout() {
     } catch {}
   }, [collapsed]);
 
+  useEffect(() => {
+    if (ready && !isAuthenticated && pathname !== "/admin/login") {
+      router.replace("/admin/login");
+    }
+  }, [ready, isAuthenticated, pathname, router]);
+
   if (!ready) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
@@ -32,8 +42,8 @@ export default function AdminLayout() {
     );
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to="/admin/login" replace />;
+  if (!isAuthenticated && pathname !== "/admin/login") {
+    return null;
   }
 
   return (
@@ -67,7 +77,7 @@ export default function AdminLayout() {
         </header>
 
         <main className="p-4 sm:p-6 lg:p-8">
-          <Outlet />
+          {children}
         </main>
       </div>
     </div>

@@ -1,4 +1,7 @@
-import { NavLink, useNavigate } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import { HiOutlineHome, HiOutlineFolder, HiOutlineLogout, HiX, HiGlobeAlt, HiOutlineClipboardList, HiOutlineViewBoards, HiOutlineCurrencyDollar, HiOutlineChevronLeft, HiOutlineChevronRight, HiOutlineSparkles, HiOutlineShieldCheck, HiOutlineChatAlt2, HiOutlineDocumentReport } from "react-icons/hi";
 import { useAdminAuth } from "../context/AdminAuthContext";
 
@@ -16,13 +19,21 @@ const allLinks = [
 
 export default function AdminSidebar({ open, onClose, collapsed, onToggleCollapse }) {
   const { user, logout, hasAccess } = useAdminAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const links = allLinks.filter((l) => hasAccess(l.pageId));
 
   const handleLogout = () => {
     logout();
-    navigate("/admin/login", { replace: true });
+    router.replace("/admin/login");
+  };
+
+  const checkIsActive = (to, end) => {
+    if (end) {
+      return pathname === to;
+    }
+    return pathname?.startsWith(to) && pathname !== "/admin";
   };
 
   return (
@@ -53,24 +64,24 @@ export default function AdminSidebar({ open, onClose, collapsed, onToggleCollaps
         </div>
 
         <div className="flex-1 space-y-1 px-3 py-4">
-          {links.map(({ to, end, icon: Icon, label }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={end}
-              onClick={onClose}
-              className={({ isActive }) =>
-                `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
+          {links.map(({ to, end, icon: Icon, label }) => {
+            const isActive = checkIsActive(to, end);
+            return (
+              <Link
+                key={to}
+                href={to}
+                onClick={onClose}
+                className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
                   isActive
                     ? "bg-primary/10 text-primary"
                     : "text-text_secondary hover:bg-muted hover:text-foreground"
-                }`
-              }
-            >
-              <Icon size={18} />
-              {label}
-            </NavLink>
-          ))}
+                }`}
+              >
+                <Icon size={18} />
+                {label}
+              </Link>
+            );
+          })}
 
           <div className="mt-4 rounded-xl border border-border bg-muted/40 px-3 py-3">
             <div className="text-[11px] uppercase tracking-wider text-text_muted">Signed in as</div>
@@ -82,13 +93,13 @@ export default function AdminSidebar({ open, onClose, collapsed, onToggleCollaps
         </div>
 
         <div className="border-t border-border px-3 py-4">
-          <a
+          <Link
             href="/"
             className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-text_secondary hover:bg-muted hover:text-foreground"
           >
             <HiGlobeAlt size={18} />
             View Site
-          </a>
+          </Link>
           <button
             type="button"
             onClick={handleLogout}
@@ -134,26 +145,26 @@ export default function AdminSidebar({ open, onClose, collapsed, onToggleCollaps
         </div>
 
         <div className="flex-1 space-y-1 px-2 py-4">
-          {links.map(({ to, end, icon: Icon, label }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={end}
-              title={collapsed ? label : undefined}
-              className={({ isActive }) =>
-                `flex items-center gap-3 rounded-xl text-sm font-medium transition-colors ${
+          {links.map(({ to, end, icon: Icon, label }) => {
+            const isActive = checkIsActive(to, end);
+            return (
+              <Link
+                key={to}
+                href={to}
+                title={collapsed ? label : undefined}
+                className={`flex items-center gap-3 rounded-xl text-sm font-medium transition-colors ${
                   collapsed ? "justify-center px-2 py-2.5" : "px-3 py-2.5"
                 } ${
                   isActive
                     ? "bg-primary/10 text-primary"
                     : "text-text_secondary hover:bg-muted hover:text-foreground"
-                }`
-              }
-            >
-              <Icon size={18} className="shrink-0" />
-              {!collapsed && <span>{label}</span>}
-            </NavLink>
-          ))}
+                }`}
+              >
+                <Icon size={18} className="shrink-0" />
+                {!collapsed && <span>{label}</span>}
+              </Link>
+            );
+          })}
 
           {!collapsed && (
             <div className="mt-4 rounded-xl border border-border bg-muted/40 px-3 py-3">
@@ -177,13 +188,13 @@ export default function AdminSidebar({ open, onClose, collapsed, onToggleCollaps
         <div className="border-t border-border px-2 py-4">
           {!collapsed ? (
             <>
-              <a
+              <Link
                 href="/"
                 className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-text_secondary hover:bg-muted hover:text-foreground"
               >
                 <HiGlobeAlt size={18} />
                 View Site
-              </a>
+              </Link>
               <button
                 type="button"
                 onClick={handleLogout}
@@ -195,13 +206,13 @@ export default function AdminSidebar({ open, onClose, collapsed, onToggleCollaps
             </>
           ) : (
             <>
-              <a
+              <Link
                 href="/"
                 title="View Site"
                 className="flex justify-center rounded-xl px-2 py-2.5 text-text_secondary hover:bg-muted hover:text-foreground"
               >
                 <HiGlobeAlt size={18} />
-              </a>
+              </Link>
               <button
                 type="button"
                 onClick={handleLogout}

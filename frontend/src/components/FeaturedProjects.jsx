@@ -1,6 +1,8 @@
-// ── NEW FILE: src/components/FeaturedProjects.jsx ─────────────────────────
+"use client";
+
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { HiSparkles, HiArrowRight, HiCheckCircle } from "react-icons/hi";
 import { showcaseProjects } from "../data/showcaseProjects";
 import Button from "./Button";
@@ -87,11 +89,10 @@ function FeaturedProjectCard({ project, idx, onNavigate }) {
 }
 
 export default function FeaturedProjects() {
-  const navigate = useNavigate();
+  const router = useRouter();
 
-  //if mobile responsive, show only 4 projects, else show 6 projects
   let featured = showcaseProjects.filter((p) => p.featured).slice(0, 6);
-  const isMobile = window.innerWidth < 768;
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
   if (isMobile) {
     featured = showcaseProjects.filter((p) => p.featured).slice(0, 4);
   }
@@ -147,7 +148,7 @@ export default function FeaturedProjects() {
         {/* cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {featured.map((project, idx) => (
-            <FeaturedProjectCard key={project.slug} project={project} idx={idx} onNavigate={navigate} />
+            <FeaturedProjectCard key={project.slug} project={project} idx={idx} onNavigate={(to) => router.push(to)} />
           ))}
         </div>
 
