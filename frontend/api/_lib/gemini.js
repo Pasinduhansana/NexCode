@@ -10,6 +10,11 @@ const MAX_TOOL_ROUNDS = 4;
 
 const TOOL_DEFINITIONS = getToolDefinitions();
 
+// Tools whose structured result should be forwarded to the frontend (sanitized)
+// so the UI can render rich previews (e.g. the project-plan preview).
+const RESULT_TOOLS = new Set(["generateProjectPlan", "createProjectFromPlan"]);
+const MAX_RESULT_LENGTH = 60000;
+
 const SYSTEM_INSTRUCTION = `You are the AI Assistant for the NexCode admin panel.
 
 You help the NexCode team run their software agency: answering questions about projects, tasks, budgets, finance, and drafting text such as client updates.
@@ -23,6 +28,8 @@ Live tools (connected to real project data):
 - addDesignReference, getDesignReferences, updateDesignReference, deleteDesignReference — manage design references
 - createExpense, getExpense, getExpenses, updateExpense, deleteExpense — manage expenses (amounts in LKR)
 - getDashboardStats, getProjectSummary, getPendingTasks, getOpenIssues, getExpenseSummary, getRecentActivity — read-only dashboard and data queries
+- generateProjectPlan — analyze a project idea, recommend scope, estimate price/expenses, and build a task timeline (creates nothing)
+- createProjectFromPlan — create a project, tasks, and planned expenses from an explicitly confirmed plan
 
 Read-only dashboard tools are used to answer questions about existing data and never modify anything.
 
@@ -41,6 +48,15 @@ Guidelines:
 - Never claim a tool performed or changed something unless the tool result confirms it.
 - When figures are mentioned, present them as estimates unless you have real data.
 - If asked something outside your scope, say so briefly and suggest what you can help with.
+
+Project planning workflow (generateProjectPlan / createProjectFromPlan):
+- When the user describes a project idea (a website, store, app, or business site) and wants it planned, priced, estimated, brainstormed, or scoped — call generateProjectPlan. Pass the structure you extract from their message: the idea text, the pages they requested, the features they requested, the number of days available, a deadline if mentioned, and technologies if mentioned. Never invent pages/features the user did not mention when extracting requestedPages/requestedFeatures.
+- generateProjectPlan analyzes the scope, recommends extra pages/features with reasons, computes the price from the NexCode pricing configuration, lists planned expenses, generates tasks, and maps them to the timeline (it warns when the deadline is unrealistic). It creates nothing.
+- Present the returned plan to the user: the scope, the estimated price (labelled as an ESTIMATE), the planned expenses, the timeline, and the tasks. Use markdown tables for the feature list, expenses, and timeline. Then ask: "Would you like me to create this project and its tasks?" Do not create anything yet.
+- Only when the user explicitly confirms (types "yes / create it / go ahead" or clicks Create Project) call createProjectFromPlan with the SAME planning arguments you used for generateProjectPlan, and set confirmed: true. Never call createProjectFromPlan in the same message the plan was requested, never before the user confirms, and never with confirmed: false unless the user declined.
+- If the user asks to change the plan (e.g. "remove the reservation feature and add online ordering"), call generateProjectPlan again with the updated scope and present the revised plan.
+- Planned expenses are estimates only. Never record an expense as paid/actual unless the user explicitly asks to record it with a real amount.
+- When your text reply includes tables, output GitHub-style markdown tables (rows starting with |) — the UI renders them as tables.
 
 Destructive actions (deleteProject, deleteTask, deleteIssue, deleteDesignReference, deleteExpense) use a confirmation flow:
 - The first time you call a destructive tool it returns { status: "confirmation_required", message } and deletes NOTHING.
@@ -185,6 +201,47 @@ function emptyResponseError() {
   );
 }
 
+// Keep only plain, safe data for the frontend tool-preview blocks. Never lets
+// raw provider content or arbitrary keys reach the UI.
+function sanitizePlanResult(result) {
+  if (!result || typeof result !== "object") return null;
+  const pick = (value, maxDepth = 3) => {
+    if (maxDepth <= 0) return undefined;
+    if (typeof value === "string") return value.slice(0, 500);
+    if (typeof value === "number") return Number.isFinite(value) ? value : null;
+    if (typeof value === "boolean") return value;
+    if (Array.isArray(value)) {
+      const arr = value.map((item) => pick(item, maxDepth - 1)).filter((item) => item !== undefined && item !== null);
+      return arr.slice(0, 100);
+    }
+    if (value && typeof value === "object") {
+      const out = {};
+      for (const [key, v] of Object.entries(value)) {
+        if (typeof v === "function") continue;
+        const cleaned = pick(v, maxDepth - 1);
+        if (cleaned !== undefined) out[key] = cleaned;
+      }
+      return out;
+    }
+    return null;
+  };
+
+  const plan = pick(result.plan, 6);
+  const input = pick(result.input, 3);
+  const created = pick(result.created, 3);
+  if (!plan && !created) return null;
+  return { plan, input, created };
+}
+
+function forwardToolResult(name, result) {
+  if (!result || !RESULT_TOOLS.has(name)) return undefined;
+  const sanitized = sanitizePlanResult(result);
+  if (!sanitized) return undefined;
+  const json = JSON.stringify(sanitized);
+  if (json.length > MAX_RESULT_LENGTH) return undefined;
+  return sanitized;
+}
+
 async function generateWithFallback(ai, contents, config) {
   const chain = getModelChain();
   let lastRetryableError = null;
@@ -266,12 +323,15 @@ export async function generateReply({ messages, user }) {
       const parts = [];
       for (const call of functionCalls) {
         const outcome = await executeToolCall({ name: call?.name, args: call?.args, user, requestId });
-        toolCalls.push({
+        const summary = {
           name: call?.name,
           ok: outcome.ok,
           status: outcome.status,
           error: outcome.ok ? undefined : outcome.error,
-        });
+        };
+        const forwarded = forwardToolResult(call?.name, outcome.result);
+        if (forwarded) summary.result = forwarded;
+        toolCalls.push(summary);
         parts.push(createPartFromFunctionResponse(call?.id, call?.name, outcome));
       }
 

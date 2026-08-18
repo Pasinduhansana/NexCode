@@ -29,10 +29,11 @@ NexCode/
     │   │   ├── cache.js              # In-memory cache (invalidation pattern)
     │   │   ├── designreferences.js   # Shared Design Reference service layer (routes + AI tools)
     │   │   ├── finance.js             # Shared Finance/Expense service layer (routes + AI tools)
-    │   │   ├── gemini.js             # Google Gemini service (AI Assistant + tool loop)
+    │   │   ├── gemini.js             # Google Gemini service (AI Assistant + tool loop, Phase 14 plan sanitizer)
     │   │   ├── ai-conversations.js   # Persistent per-user AI conversation service (Phase 13)
     │   │   ├── issues.js             # Shared Issue service layer (routes + AI tools)
     │   │   ├── mongodb.js            # MongoDB connection singleton
+    │   │   ├── projectplanner.js     # Deterministic project-planning engine (Phase 14)
     │   │   ├── projects.js           # Shared Project service layer (routes + AI tools)
     │   │   ├── stats.js              # Shared Dashboard stats service (routes + AI tools)
     │   │   ├── tasks.js              # Shared Task service layer (routes + AI tools)
@@ -146,9 +147,11 @@ NexCode/
     │       │   └── Assistant/        # AI Assistant chat UI
     │       │       ├── ChatMessage.jsx      # User/AI message bubble
     │       │       ├── ChatInput.jsx        # Message input + send
-    │       │       ├── ChatEmptyState.jsx   # Welcome/suggestion state
-    │       │       ├── ConversationSidebar.jsx # Persistent conversation list (Phase 13)
-    │       │       └── TypingIndicator.jsx  # Loading dots
+│       │   ├── ChatEmptyState.jsx   # Welcome/suggestion state
+    │       │   ├── ConversationSidebar.jsx # Persistent conversation list (Phase 13)
+    │       │   ├── PlanPreview.jsx      # Structured project-plan preview card (Phase 14)
+    │       │   ├── RichText.jsx         # Safe markdown/table renderer (Phase 14)
+    │       │   └── TypingIndicator.jsx  # Loading dots
     │       │
     │       ├── context/
     │       │   └── AdminAuthContext.jsx # Auth state + access hooks
@@ -586,6 +589,37 @@ Indexes (added in `api/_lib/mongodb.js` → `ensureIndexes`): `{ userId: 1 }` an
 
 **Dev-only note:** `vercel dev` returns SPA HTML for *all* dynamic bracket routes in this repo (a pre-existing local quirk affecting `/api/projects/[id]`, `/api/issues/[id]`, `/api/users/[id]`, and the new `/api/ai/conversations/[id]*` alike). Production on Vercel is unaffected. Phase 13 HTTP tests therefore cover the flat routes, and full send/ownership behavior is verified through service-level E2E tests (which exercise the exact `sendMessage` path the dynamic route uses).
 
+### 3.9.4 Project Planning Assistant (Phase 14)
+
+**Purpose:** upgrade the AI Assistant into a Software/Web Project Planning Assistant. Natural-language project ideas are analyzed into a deterministic plan — scope (requested / recommended / optional), price estimate, planned expenses, development tasks, and a phase-based timeline — shown as a Plan Preview card with Create/Modify actions. **Nothing is created until the user explicitly confirms** (two-stage flow).
+
+**Two-stage confirmation (never auto-create):**
+- **STAGE 1 — `generateProjectPlan` (READ_ONLY):** analyzes and proposes. Returns `{ success, status: "plan_ready", message, plan, input }`. Performs no DB writes.
+- **STAGE 2 — `createProjectFromPlan` (WRITE, confirmation-gated + deduped):** the plan is **not** stored; it is deterministically regenerated server-side from the same `input` Gemini passed, then created through the existing project/task services. Planned expenses go to the new `plannedexpenses` collection — **never** to `transactions` (estimated ≠ actual; nothing is recorded as paid without explicit confirmation).
+
+**Confirmation gate (`api/_lib/tools/confirmation.js` + `api/_lib/tools/registry.js`):** `aiconfirmations` docs keyed by `user + tool + fingerprint` (stable hash of canonical args) hold a pending confirmation. A user message like "yes, create it" in a later turn resolves it: `confirmed: true` → create (or create directly if no pending entry exists — the Create Project button path), `false` → cancel, `undefined` → store pending + return `confirmation_required`. Confirmations are **scoped per user** — user B can never consume user A's pending confirmation; each user's confirm creates their own project (test-verified multi-user isolation).
+
+**Deterministic planning engine (`api/_lib/projectplanner.js`)** — Gemini never invents prices:
+- `extractRequestedPages` + `AUTO_SCAN_PAGES` — the curated, keyword-matched page catalog (no false positives like "shop" → product-listing from "coffee shop").
+- `recommendFeatures(industryType, ...)` — per-industry recommended pages/features and optional (cost-adding) features, each with a plain-English reason; recommended items are **never silently added** to the approved scope.
+- `estimatePricing` — everything derives from `PRICING_CONFIG` (page costs, feature costs, complexity multipliers, rush multiplier 1.12 when the requested timeline is shorter than estimated effort) → `{ basePrice, featureCost, rushAdjustment, total, pageBreakdown, featureBreakdown, optionalCost }`. Clearly an ESTIMATE, not a market quote.
+- `estimateExpenses` — approved scope → annual planned expenses (domain, hosting, SSL, business email, image/cloud storage, Google Maps API, payment gateway, third-party APIs, backup & monitoring) labelled with `EXPENSE_CATEGORY`.
+- `generateTasks` — scope-specific tasks with `estimatedHours`, `effortDays`, priority and `phase` (no generic filler).
+- `buildTimeline` — groups consecutive tasks into phases, maps them onto the user's `providedDays`, and flags `unrealistic` with a recommendation when estimated effort exceeds the deadline.
+- `buildProjectPlan` — composes everything (name derivation cuts at sentence boundaries); `createProjectFromPlan` persists project + tasks + planned expenses (tasks/expenses carry the creating user; compensation cleanup on partial failure — Atlas M0 has no transactions).
+
+**Structured result forwarding (`api/_lib/gemini.js`):** tool results shown to the UI are sanitized by `sanitizePlanResult` (recursive `pick`: no raw provider content, strings ≤ 500 chars, arrays ≤ 100 items, **depth 6 for the plan** so tasks/expenses/breakdowns/scope survive) and capped at `MAX_RESULT_LENGTH` (60,000).
+
+**Plan Preview UI:**
+- `components/Assistant/PlanPreview.jsx` — structured card (`data-plan-preview`): project name/industry, estimated cost, unrealistic-deadline warning, Scope (requested/recommended badges + optional), Pricing breakdown, Timeline & tasks (phase bands + task table), Estimated yearly expenses (table + "estimates only" note), Recommendations, Assumptions, and **Create Project** (`data-action="confirm-plan"`) / **Modify Plan** (`data-action="modify-plan"`) buttons.
+- `components/Assistant/RichText.jsx` — safe markdown renderer (GFM tables, headings, bullets, bold, inline code) — raw HTML from Gemini is never rendered.
+- `components/Assistant/ChatMessage.jsx` — `ToolResultBlocks` render the plan preview for `generateProjectPlan` and an emerald confirmation card for `createProjectFromPlan`, plus tool chips.
+- `pages/AdminAssistantPage.jsx` — `handleConfirmPlan` sends the confirmation message embedding the plan `input`; `handleModifyPlan` focuses the composer for continued chatting before any creation.
+
+**Timing (planning is heavier than chat):** the client send timeout was raised to 120 s, `GENERATE_TIMEOUT_MS` to 110 s, and the dev-only vite proxy timeout to 120 s so multi-round planning calls under load (~60–95 s) complete instead of being cut off.
+
+**Multi-user security:** the plan derives from the authenticated user's own message and `input`; Gemini is never asked for a userId; creation reuses the existing permission gates (`hasAssistantAccess` + project/task services); planned expenses and tasks carry the creating user; conversations/confirmations remain strictly per-user.
+
 ### 3.10 Shared Project Service Layer (`api/_lib/projects.js`)
 
 Routes and AI tools both call this single service — no duplicated CRUD logic.
@@ -726,3 +760,4 @@ Every create/update/delete operation calls `logActivity()` → inserts into Mong
 | `aidedupe` | AI duplicate-operation dedupe ledger (Phase 9) | user, tool, argsKey, createdAt (TTL ~120 s) |
 | `airatelimit` | Durable AI rate-limit counters (Phase 12) | user, type (minute/day), count, expiresAt (TTL) |
 | `aiconversations` | Persistent per-user AI conversations (Phase 13) | userId, title, createdAt, updatedAt, messages[] (embedded, with minimal tools summaries) |
+| `plannedexpenses` | Planned/estimated project expenses (Phase 14) | projectId, item, category, estimatedCost, frequency, notes, createdBy, createdAt (never mixed with actual `transactions`) |

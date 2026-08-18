@@ -1,6 +1,7 @@
 import { HiOutlineSparkles, HiOutlineChatAlt2, HiOutlineCalendar, HiOutlinePencilAlt, HiOutlineCurrencyDollar, HiOutlineFolder } from "react-icons/hi";
 
 const SUGGESTIONS = [
+  { icon: HiOutlineSparkles, label: "Plan a coffee shop website (homepage, about, contact, menu)" },
   { icon: HiOutlineCalendar, label: "What's overdue?" },
   { icon: HiOutlineFolder, label: "Summarize project status" },
   { icon: HiOutlineCurrencyDollar, label: "How is the budget?" },
@@ -25,7 +26,8 @@ export default function ChatEmptyState({ userName, onSuggestion, isTyping }) {
         </h2>
         <p className="mt-2 text-sm text-text_secondary">
           {userName ? `Hi ${userName}, ` : ""}ask me anything about your projects, tasks, finances, or
-          drafts. Pick a suggestion below or type your own message to get started.
+          describe a new website idea and I'll draft a full project plan with pricing, timeline and
+          tasks for your review. Pick a suggestion below or type your own message to get started.
         </p>
       </div>
       </div>

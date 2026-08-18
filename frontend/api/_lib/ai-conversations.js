@@ -8,7 +8,7 @@ const MAX_TITLE_LENGTH = 60;
 const MAX_CONTEXT_MESSAGES = 40;
 const MAX_CONTEXT_CHARS = 30000;
 const MAX_MESSAGE_LENGTH = 4000;
-const GENERATE_TIMEOUT_MS = 55000;
+const GENERATE_TIMEOUT_MS = 110000;
 
 export class AiConversationServiceError extends Error {
   constructor(message, status = 400) {
@@ -145,12 +145,16 @@ export async function deleteConversation(userId, conversationId) {
 export async function appendMessage(userId, conversationId, role, content, tools) {
   const message = { role, content, timestamp: now() };
   if (role === "assistant" && Array.isArray(tools) && tools.length > 0) {
-    message.tools = tools.map((t) => ({
-      name: String(t?.name || "tool"),
-      ok: Boolean(t?.ok),
-      status: String(t?.status || (t?.ok ? "completed" : "error")),
-      error: t?.ok ? undefined : String(t?.error || "Tool failed"),
-    }));
+    message.tools = tools.map((t) => {
+      const summary = {
+        name: String(t?.name || "tool"),
+        ok: Boolean(t?.ok),
+        status: String(t?.status || (t?.ok ? "completed" : "error")),
+        error: t?.ok ? undefined : String(t?.error || "Tool failed"),
+      };
+      if (t?.ok && t?.result && typeof t.result === "object") summary.result = t.result;
+      return summary;
+    });
   }
   const col = await getCollection("aiconversations");
   const doc = unwrap(

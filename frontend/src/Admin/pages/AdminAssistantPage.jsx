@@ -40,6 +40,7 @@ export default function AdminAssistantPage() {
   const [loadError, setLoadError] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [stickToBottom, setStickToBottom] = useState(true);
+  const [planCreating, setPlanCreating] = useState(false);
   const scrollRef = useRef(null);
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
@@ -241,11 +242,35 @@ export default function AdminAssistantPage() {
     abortRef.current?.abort();
   }, []);
 
+  const handleConfirmPlan = useCallback(
+    (input) => {
+      if (!input || isTyping || planCreating) return;
+      setPlanCreating(true);
+      const payload = JSON.stringify(input);
+      const text = `Please create this project now. I confirm the plan with these exact inputs:\n${payload}`;
+      handleSend(text).finally(() => setPlanCreating(false));
+    },
+    [handleSend, isTyping, planCreating]
+  );
+
+  const handleModifyPlan = useCallback(() => {
+    requestAnimationFrame(() => inputRef.current?.focus());
+  }, []);
+
   const hasMessages = messages.length > 0;
 
   const messageList = useMemo(
-    () => messages.map((m) => <ChatMessage key={m.id} message={m} />),
-    [messages]
+    () =>
+      messages.map((m) => (
+        <ChatMessage
+          key={m.id}
+          message={m}
+          onConfirmPlan={handleConfirmPlan}
+          onModifyPlan={handleModifyPlan}
+          planCreating={planCreating}
+        />
+      )),
+    [messages, handleConfirmPlan, handleModifyPlan, planCreating]
   );
 
   return (

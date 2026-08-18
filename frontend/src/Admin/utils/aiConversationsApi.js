@@ -37,7 +37,7 @@ export async function sendConversationMessage(id, content, { signal } = {}) {
     response = await adminApi.post(
       `/ai/conversations/${id}/messages`,
       { content },
-      { timeout: 60000, signal }
+      { timeout: 120000, signal }
     );
   } catch (err) {
     if (signal?.aborted || err?.code === "ERR_CANCELED") {

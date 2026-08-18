@@ -1,5 +1,7 @@
 import { memo } from "react";
-import { HiOutlineSparkles, HiOutlineUserCircle, HiOutlineExclamation, HiOutlineCog } from "react-icons/hi";
+import { HiOutlineSparkles, HiOutlineUserCircle, HiOutlineExclamation, HiOutlineCog, HiOutlineCheckCircle } from "react-icons/hi";
+import RichText from "./RichText";
+import PlanPreview from "./PlanPreview";
 
 const TOOL_LABELS = {
   createProject: "Project created",
@@ -32,12 +34,59 @@ const TOOL_LABELS = {
   getOpenIssues: "Open issues",
   getExpenseSummary: "Expense summary",
   getRecentActivity: "Recent activity",
+  generateProjectPlan: "Project plan generated",
+  createProjectFromPlan: "Project plan confirmed",
 };
 
-function ChatMessage({ message }) {
+function ToolResultBlocks({ tools, onConfirmPlan, onModifyPlan, planCreating }) {
+  const previews = [];
+  const confirmations = [];
+  for (const tool of tools || []) {
+    const result = tool?.result;
+    if (!tool?.ok || !result) continue;
+    if (tool.name === "generateProjectPlan" && result?.plan) {
+      previews.push(result);
+    } else if (tool.name === "createProjectFromPlan" && result?.created) {
+      confirmations.push(result);
+    }
+  }
+  return (
+    <>
+      {previews.map((result, i) => (
+        <div key={`preview-${i}`} className="mt-2 w-full">
+          <PlanPreview
+            plan={result.plan}
+            input={result.input}
+            onConfirm={onConfirmPlan ? () => onConfirmPlan(result.input) : undefined}
+            onModify={onModifyPlan}
+            creating={planCreating}
+          />
+        </div>
+      ))}
+      {confirmations.map((result, i) => (
+        <div
+          key={`confirm-${i}`}
+          className="mt-2 flex items-start gap-2 rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-3.5 py-2.5 text-xs text-emerald-700"
+        >
+          <HiOutlineCheckCircle size={16} className="mt-0.5 shrink-0" />
+          <div>
+            <div className="font-semibold">Project created successfully</div>
+            <div className="mt-0.5">
+              {result.project?.name} · {result.tasksCreated} task{result.tasksCreated === 1 ? "" : "s"} ·{" "}
+              {result.plannedExpenses} estimated expense{result.plannedExpenses === 1 ? "" : "s"} planned.
+            </div>
+          </div>
+        </div>
+      ))}
+    </>
+  );
+}
+
+function ChatMessage({ message, onConfirmPlan, onModifyPlan, planCreating }) {
   const isUser = message.role === "user";
   const isError = !isUser && message.isError;
   const tools = isUser || isError ? [] : Array.isArray(message.tools) ? message.tools : [];
+  const content = isUser ? message.content : String(message.content || "");
 
   return (
     <div
@@ -53,18 +102,32 @@ function ChatMessage({ message }) {
         {isUser ? <HiOutlineUserCircle size={17} /> : isError ? <HiOutlineExclamation size={16} /> : <HiOutlineSparkles size={16} />}
       </div>
 
-      <div className={`flex max-w-[85%] flex-col sm:max-w-[75%] ${isUser ? "items-end" : "items-start"}`}>
-        <div
-          className={`whitespace-pre-wrap rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
-            isUser
-              ? "rounded-br-md bg-primary text-white"
-              : isError
-                ? "rounded-bl-md border border-rose-500/30 bg-rose-500/5 text-rose-600"
-                : "rounded-bl-md border border-border bg-card text-foreground"
-          }`}
-        >
-          {message.content}
-        </div>
+      <div className={`flex min-w-0 max-w-[85%] flex-col sm:max-w-[75%] ${isUser ? "items-end" : "items-start"}`}>
+        {content ? (
+          <div
+            className={`w-full rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
+              isUser
+                ? "rounded-br-md bg-primary text-white"
+                : isError
+                  ? "rounded-bl-md border border-rose-500/30 bg-rose-500/5 text-rose-600"
+                  : "rounded-bl-md border border-border bg-card text-foreground"
+            }`}
+          >
+            {isUser ? (
+              <p className="whitespace-pre-wrap">{content}</p>
+            ) : (
+              <RichText text={content} />
+            )}
+          </div>
+        ) : (
+          !isUser && !isError && <div className="h-2 w-8 rounded bg-muted" />
+        )}
+        <ToolResultBlocks
+          tools={tools}
+          onConfirmPlan={onConfirmPlan}
+          onModifyPlan={onModifyPlan}
+          planCreating={planCreating}
+        />
         {tools.length > 0 && (
           <div className="mt-1.5 flex flex-wrap gap-1.5">
             {tools.map((tool) => {

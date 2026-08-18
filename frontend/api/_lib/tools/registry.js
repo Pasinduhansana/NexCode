@@ -48,6 +48,12 @@ import {
   TRANSACTION_TYPES,
   PAID_BY_OPTIONS,
 } from "../finance.js";
+import {
+  buildProjectPlan,
+  createProjectFromPlan,
+  formatLKR,
+  ProjectPlanError,
+} from "../projectplanner.js";
 
 const PROJECT_STATUSES = ["planning", "in_progress", "on_hold", "completed", "cancelled"];
 const TASK_STATUSES = ["todo", "in_progress", "review", "done"];
@@ -1105,7 +1111,155 @@ const TOOLS = [
       };
     },
   },
+  {
+    name: "generateProjectPlan",
+    description:
+      "Project planning tool. Use when the user describes a project idea and asks to plan it, brainstorm it, estimate a price, estimate expenses, build a scope, or get a development timeline. Pass the extracted structure: the user's idea text, any pages they asked for, any features they asked for, the number of days available, a deadline date if given, and technologies if mentioned. The tool analyzes the scope, recommends pages/features with reasons, computes a deterministic price estimate from the NexCode pricing configuration, lists planned expenses, generates development tasks, and maps them onto the timeline (warning if the deadline is unrealistic). It does NOT create anything — no project, no tasks, no expenses. After presenting the plan, ask the user if they would like it created.",
+    parameters: {
+      type: "OBJECT",
+      properties: {
+        idea: s("The user's full project idea / requirements in their own words"),
+        client: s("Client name if provided"),
+        requestedPages: a("Pages the user explicitly requested (e.g. Homepage, About Us, Menu, Contact)", s("Page name")),
+        requestedFeatures: a("Features the user explicitly requested (e.g. online ordering, reservation, gallery)", s("Feature name")),
+        timelineDays: i("Number of days available to complete the project (from the user)"),
+        deadline: s("Target completion date (YYYY-MM-DD) if provided"),
+        technologies: a("Technologies/stack the user mentioned (e.g. React, WordPress)", s("Technology")),
+        complexity: e("Overall complexity of the design/scope", ["low", "medium", "high"]),
+      },
+      required: ["idea"],
+    },
+    handler: async (args) => {
+      const plan = buildProjectPlan(args);
+      return {
+        success: true,
+        status: "plan_ready",
+        message: `Prepared a plan for "${plan.name}". Estimated price ${formatLKR(plan.pricing.total)}${plan.timeline.providedDays ? ` over ${plan.timeline.providedDays} days` : ""}. Nothing has been created.`,
+        plan,
+        input: {
+          idea: plan.description,
+          client: plan.client || undefined,
+          requestedPages: plan.scope.requestedPages.map((p) => p.name),
+          requestedFeatures: plan.scope.requestedFeatures.map((f) => f.name),
+          timelineDays: plan.timeline.providedDays || undefined,
+          deadline: plan.deadline || undefined,
+          technologies: plan.technologies,
+          complexity: plan.complexity,
+        },
+      };
+    },
+  },
+  {
+    name: "createProjectFromPlan",
+    description:
+      "Create a project, its tasks, and its planned expenses from an approved project plan. Use ONLY after the user has explicitly confirmed the plan presented by generateProjectPlan (e.g. they said yes/create it/go ahead, or clicked Create Project). Pass the SAME arguments used for that generateProjectPlan call (idea, requestedPages, requestedFeatures, timelineDays, deadline, technologies, complexity). The plan is regenerated server-side from these arguments and then created using the standard project and task services. Planned expenses are stored separately from actual expenses — nothing is recorded as a paid expense. CONFIDENTIAL: never call this without an explicit user confirmation, and never in the same message the plan was requested.",
+    parameters: {
+      type: "OBJECT",
+      properties: {
+        idea: s("The approved project idea / requirements"),
+        client: s("Client name if provided"),
+        requestedPages: a("Approved pages", s("Page name")),
+        requestedFeatures: a("Approved features", s("Feature name")),
+        timelineDays: i("Approved number of days"),
+        deadline: s("Target completion date (YYYY-MM-DD) if provided"),
+        technologies: a("Technologies", s("Technology")),
+        complexity: e("Overall complexity", ["low", "medium", "high"]),
+        confirmed: {
+          type: "BOOLEAN",
+          description:
+            "Set to true ONLY after the user has explicitly confirmed creation. The first call without `confirmed` only requests confirmation and creates nothing; call again with `confirmed: true` (same arguments) in a later message once the user agrees. Set false if the user declines.",
+        },
+      },
+      required: ["idea"],
+    },
+    handler: async (args, context) => {
+      const { confirmed, ...planInput } = args;
+      const fingerprint = planFingerprint(planInput);
+
+      if (confirmed === true) {
+        const pending = await getConfirmation({ user: context?.user, tool: "createProjectFromPlan", fingerprint });
+        if (pending) {
+          const check = await resolveConfirmation({
+            user: context?.user,
+            tool: "createProjectFromPlan",
+            fingerprint,
+            requestId: context?.requestId,
+          });
+          if (!check.ok) {
+            throw exposedError(
+              check.reason === "same_turn"
+                ? "The plan was only prepared in the current message — it cannot be confirmed in the same message. Ask the user to confirm, then call this tool again with `confirmed: true` in the next message."
+                : "This plan confirmation has expired. Nothing was created — please prepare the plan again."
+            );
+          }
+        }
+        const created = await createProjectFromPlan(planInput, context?.user);
+        return {
+          success: true,
+          status: "created",
+          message: `Created the "${created.projectName}" project with ${created.taskCount} tasks and ${created.plannedExpenseCount} planned expenses.`,
+          created,
+        };
+      }
+
+      if (confirmed === false) {
+        await cancelConfirmation({ user: context?.user, tool: "createProjectFromPlan", fingerprint });
+        return {
+          success: true,
+          status: "cancelled",
+          message: "Project creation was cancelled. Nothing was created.",
+        };
+      }
+
+      const existing = await getConfirmation({ user: context?.user, tool: "createProjectFromPlan", fingerprint });
+      if (!existing) {
+        await createConfirmation({
+          user: context?.user,
+          tool: "createProjectFromPlan",
+          fingerprint,
+          requestId: context?.requestId,
+          targetLabel: planInput.idea ? String(planInput.idea).slice(0, 80) : "project plan",
+        });
+      }
+      return {
+        success: true,
+        status: "confirmation_required",
+        message:
+          "I've prepared this project plan. Would you like me to create the project, its tasks, and the planned expenses? Reply to confirm.",
+      };
+    },
+    dedupe: true,
+  },
 ];
+
+function stableStringify(value) {
+  if (Array.isArray(value)) return `[${value.map(stableStringify).join(",")}]`;
+  if (value && typeof value === "object") {
+    return `{${Object.keys(value)
+      .sort()
+      .map((key) => `${JSON.stringify(key)}:${stableStringify(value[key])}`)
+      .join(",")}}`;
+  }
+  return JSON.stringify(value);
+}
+
+function planFingerprint(input) {
+  const clean = {};
+  for (const key of ["idea", "client", "deadline", "complexity"]) {
+    const value = String(input?.[key] || "").trim().toLowerCase();
+    if (value) clean[key] = value;
+  }
+  for (const key of ["timelineDays"]) {
+    if (Number.isFinite(Number(input?.[key])) && Number(input[key]) > 0) clean[key] = Math.round(Number(input[key]));
+  }
+  for (const key of ["requestedPages", "requestedFeatures", "technologies"]) {
+    if (Array.isArray(input?.[key])) {
+      const arr = input[key].map((v) => String(v).trim().toLowerCase()).filter(Boolean).sort();
+      if (arr.length) clean[key] = arr;
+    }
+  }
+  return stableStringify(clean);
+}
 
 const REGISTRY = new Map(TOOLS.map((tool) => [tool.name, tool]));
 
@@ -1136,6 +1290,9 @@ const TOOL_CATEGORY_MAP = {
   updateDesignReference: TOOL_CATEGORIES.WRITE,
   createExpense: TOOL_CATEGORIES.WRITE,
   updateExpense: TOOL_CATEGORIES.WRITE,
+  createProjectFromPlan: TOOL_CATEGORIES.WRITE,
+
+  generateProjectPlan: TOOL_CATEGORIES.READ_ONLY,
 
   deleteProject: TOOL_CATEGORIES.DESTRUCTIVE,
   deleteTask: TOOL_CATEGORIES.DESTRUCTIVE,
