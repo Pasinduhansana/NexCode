@@ -211,7 +211,7 @@ export default function AdminReportingPage() {
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Link
-            to="/admin/assistant"
+            href="/admin/assistant"
             className="inline-flex items-center gap-2 rounded-lg border border-border px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
           >
             <HiOutlineChatAlt2 size={16} className="text-primary" />
