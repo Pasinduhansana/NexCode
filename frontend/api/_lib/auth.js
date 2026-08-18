@@ -30,3 +30,19 @@ export function requireAuth(handler) {
     }
   };
 }
+
+export function hasPageAccess(user, pageId) {
+  if (!user) return false;
+  if (user.superAdmin === true) return true;
+  const pages = Array.isArray(user?.access?.pages) ? user.access.pages : [];
+  return pages.includes(pageId);
+}
+
+export function requireDesignerAccess(handler) {
+  return requireAuth(async (req, res) => {
+    if (!hasPageAccess(req.user, "designer")) {
+      return res.status(403).json({ error: "Access denied" });
+    }
+    return handler(req, res);
+  });
+}

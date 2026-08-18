@@ -36,7 +36,22 @@ import {
   findDesignReference,
   updateDesignReference,
   deleteDesignReference,
+  listDesignReferencesByProject,
 } from "../designreferences.js";
+import {
+  createDesignSection,
+  findDesignSection,
+  updateDesignSection,
+  deleteDesignSection,
+  listDesignSectionsByProject,
+} from "../designsections.js";
+import {
+  createDesignNote,
+  listDesignNotes,
+  getDesignNoteById,
+  updateDesignNote,
+  deleteDesignNote,
+} from "../designnotes.js";
 import {
   createTransaction,
   getTransactionById,
@@ -132,13 +147,30 @@ const DESIGN_REFERENCE_REF_FIELDS = {
   searchTitle: s("Design reference title to search for (use when the id is unknown)"),
   projectId: s("Id of the parent project"),
   searchProject: s("Parent project name to search for (use when the project id is unknown)"),
+  sectionId: s("Id of the design section the reference belongs to"),
+  searchSection: s("Design section name to scope the search/move by (e.g. \"Landing Page\")"),
 };
 const DESIGN_REFERENCE_FIELDS = {
   title: s("Reference title"),
   url: s("Reference URL (must be a valid http(s) link)"),
   type: e("Reference type", DESIGN_REFERENCE_TYPES),
-  notes: s("Optional notes about the reference"),
+  notes: s("Optional notes/description about the reference"),
+  tags: a("Reference tags", s("Tag")),
+  addTags: a("Tags to add to the reference (keeps existing tags)", s("Tag")),
 };
+
+const DESIGN_SECTION_REF_FIELDS = {
+  id: s("MongoDB design section id"),
+  searchName: s("Design section name to search for (use when the id is unknown)"),
+  projectId: s("Id of the parent project"),
+  searchProject: s("Parent project name to search for (use when the project id is unknown)"),
+};
+const DESIGN_SECTION_FIELDS = {
+  name: s("Design section name (e.g. Landing Page, About Us, Menu)"),
+  order: i("Optional sort order within the project"),
+};
+
+const DESIGN_NOTE_PARENT_TYPES = ["project", "section", "reference"];
 
 const EXPENSE_REF_FIELDS = {
   id: s("MongoDB transaction id"),
@@ -213,6 +245,15 @@ function summarizeList(kind, records) {
     success: true,
     message: `Found ${records.length} ${plural}.`,
     [meta.key]: records.map(toPlain),
+  };
+}
+
+function summarizeDesignSectionList(sections) {
+  const plural = sections.length === 1 ? "section" : "sections";
+  return {
+    success: true,
+    message: `Found ${sections.length} design ${plural}.`,
+    designSections: sections.map(toPlain),
   };
 }
 
@@ -661,30 +702,41 @@ const TOOLS = [
   {
     name: "addDesignReference",
     description:
-      "Add a design reference (e.g. a Figma link or reference link) to a project. Provide the URL and identify the parent project with `projectId` or `searchProject` (the project name). `title` is required; if the user did not give one, derive a short descriptive title from the context (e.g. \"Figma link\", \"Reference link\"). `type` and `notes` are optional. If the URL or the project is missing, ask the user for it instead of guessing. Returns the created reference.",
+      "Add a design reference (e.g. a Figma link or reference link) to a project, optionally inside a specific design section/page (e.g. \"the landing page\"). Provide the URL and identify the parent project with `projectId` or `searchProject` (the project name), and the target section with `sectionId` or `searchSection` (the section name) when known. `title` is required; if the user did not give one, derive a short descriptive title from the context (e.g. \"Figma link\", \"Reference link\"). `type`, `tags`, and `notes` are optional. If the URL or the project is missing, ask the user for it instead of guessing. If the user names a section that does not exist yet, create it first (createDesignSection) when they ask to save the reference there. Returns the created reference.",
     parameters: {
       type: "OBJECT",
       properties: {
         projectId: s("Id of the parent project"),
         searchProject: s("Parent project name to search for (use when the project id is unknown)"),
+        sectionId: s("Id of the design section (page) to add the reference to"),
+        searchSection: s("Design section name (page) to add the reference to (e.g. \"Landing Page\")"),
         title: s("Reference title (derive from context if not given)"),
         url: s("Reference URL (must be a valid http(s) link)"),
         type: e("Reference type", DESIGN_REFERENCE_TYPES),
+        tags: a("Reference tags", s("Tag")),
         notes: s("Optional notes about the reference"),
       },
       required: ["url", "title"],
     },
     handler: async (args, context) => {
-      const { projectId: projectIdArg, searchProject, ...fields } = args;
+      const { projectId: projectIdArg, searchProject, sectionId: sectionIdArg, searchSection, ...fields } = args;
       const projectId = await resolveProjectScope({ projectId: projectIdArg, searchProject });
       if (!projectId) {
         throw exposedError("A project is required. Please specify which project to add the design reference to.");
       }
       await requireExistingProject(projectId);
-      const reference = await createDesignReference({ ...fields, projectId }, context?.user);
+      let sectionId = sectionIdArg;
+      if (!sectionId && searchSection) {
+        const found = await findDesignSection({ searchName: String(searchSection).trim(), projectId });
+        if (found.kind !== "single") {
+          throw exposedError(`Design section "${searchSection}" was not found. Create it first, or check the name.`);
+        }
+        sectionId = String(found.designSection._id);
+      }
+      const reference = await createDesignReference({ ...fields, projectId, sectionId }, context?.user);
       return {
         success: true,
-        message: `Added design reference "${reference.title}"`,
+        message: `Added design reference "${reference.title}"${reference.sectionId ? " to " + reference.sectionId : ""}`,
         designReference: toPlain(reference),
       };
     },
@@ -693,32 +745,48 @@ const TOOLS = [
   {
     name: "getDesignReferences",
     description:
-      "Fetch design references by their MongoDB `id`, by `searchTitle` (their title), or list all references of a project by passing `projectId` or `searchProject` (optionally filtered by `type`). Use when the user asks to show, view, or check design references. Returns the reference or the matching list.",
+      "Fetch design references by their MongoDB `id`, by `searchTitle` (their title), or list references of a project by passing `projectId` or `searchProject` — optionally scoped to a design section/page with `sectionId`/`searchSection` and filtered by `type` or `tags`. Use when the user asks to show, view, or check design references, or to find the best/favorite references for a page. Returns the reference or the matching list.",
     parameters: {
       type: "OBJECT",
       properties: {
         ...DESIGN_REFERENCE_REF_FIELDS,
         type: e("Filter by reference type (when listing a project's references)", DESIGN_REFERENCE_TYPES),
+        tags: a("Only include references having ALL of these tags", s("Tag")),
       },
     },
     handler: async (args) => {
-      const { id, searchTitle, type } = args;
+      const { id, searchTitle, type, tags, sectionId, searchSection } = args;
       const projectId = await resolveProjectScope(args);
-      const result = await findDesignReference({ id, searchTitle, projectId, type });
+      const result = await findDesignReference({ id, searchTitle, projectId, type, sectionId, searchSection, tags });
       if (result.kind === "single") return summarizeSingle("designReference", result.designReference);
-      return summarizeList("designReference", result.designReferences);
+      const withTags = Array.isArray(tags) && tags.length
+        ? result.designReferences.filter((r) => Array.isArray(r.tags) && tags.every((t) => r.tags.map((x) => String(x).toLowerCase()).includes(String(t).toLowerCase())))
+        : result.designReferences;
+      return summarizeList("designReference", withTags);
     },
   },
   {
     name: "updateDesignReference",
     description:
-      "Update fields of an existing design reference. Identify the reference with `id` or `searchTitle` (its title, optionally scoped with `projectId`/`searchProject`), and provide only the fields to change: title, url, type, notes. Returns the updated reference.",
+      "Update fields of an existing design reference. Identify the reference with `id` or `searchTitle` (its title, optionally scoped with `projectId`/`searchProject`/`sectionId`/`searchSection`), and provide only the fields to change: title, url, type, notes, tags, or addTags (append tags without removing existing ones). To MOVE the reference to another page/section, pass `sectionId` or `searchSection` (the destination section name). To move it out of any section, pass `sectionId` set to an empty string. Returns the updated reference.",
     parameters: { type: "OBJECT", properties: { ...DESIGN_REFERENCE_REF_FIELDS, ...DESIGN_REFERENCE_FIELDS } },
     handler: async (args, context) => {
-      const { id, searchTitle, projectId: projectIdArg, searchProject, ...fields } = args;
+      const { id, searchTitle, projectId: projectIdArg, searchProject, sectionId: sectionIdArg, searchSection, ...fields } = args;
       const projectId = await resolveProjectScope({ projectId: projectIdArg, searchProject });
       const result = await findDesignReference({ id, searchTitle, projectId });
-      const reference = await updateDesignReference(result.designReference._id, fields, context?.user);
+      let sectionId;
+      if (sectionIdArg !== undefined && sectionIdArg !== null && String(sectionIdArg).trim() === "") {
+        sectionId = null;
+      } else if (sectionIdArg !== undefined && sectionIdArg !== null && String(sectionIdArg).trim() !== "") {
+        sectionId = String(sectionIdArg).trim();
+      } else if (searchSection !== undefined && searchSection !== null && String(searchSection).trim() !== "") {
+        const found = await findDesignSection({ searchName: String(searchSection).trim(), projectId });
+        if (found.kind !== "single") {
+          throw exposedError(`Design section "${searchSection}" was not found. Create it first, or check the name.`);
+        }
+        sectionId = String(found.designSection._id);
+      }
+      const reference = await updateDesignReference(result.designReference._id, { ...fields, ...(sectionId !== undefined ? { sectionId } : {}) }, context?.user);
       return {
         success: true,
         message: `Updated design reference "${reference.title}"`,
@@ -738,9 +806,9 @@ const TOOLS = [
       },
     },
     handler: async (args, context) => {
-      const { id, searchTitle, projectId: projectIdArg, searchProject, confirmed } = args;
+      const { id, searchTitle, projectId: projectIdArg, searchProject, sectionId: sectionIdArg, searchSection, confirmed } = args;
       const projectId = await resolveProjectScope({ projectId: projectIdArg, searchProject });
-      const result = await findDesignReference({ id, searchTitle, projectId });
+      const result = await findDesignReference({ id, searchTitle, projectId, sectionId: sectionIdArg, searchSection });
       return requestOrExecuteDelete({
         context: { ...context, argsConfirmed: confirmed },
         tool: "deleteDesignReference",
@@ -748,6 +816,300 @@ const TOOLS = [
         kind: "design reference",
         label: result.designReference.title,
         execute: () => deleteDesignReference(result.designReference._id, context?.user),
+      });
+    },
+  },
+  {
+    name: "createDesignSection",
+    description:
+      "Create a design section/page (e.g. \"Landing Page\", \"About Us\", \"Menu\") inside a project to group design references and notes. Identify the parent project with `projectId` or `searchProject` (the project name). Only create a section when the user explicitly asks to create it (they may also mean a reference page in planning). Returns the created section.",
+    parameters: {
+      type: "OBJECT",
+      properties: {
+        projectId: s("Id of the parent project"),
+        searchProject: s("Parent project name to search for (use when the project id is unknown)"),
+        ...DESIGN_SECTION_FIELDS,
+      },
+      required: ["name"],
+    },
+    handler: async (args, context) => {
+      const { projectId: projectIdArg, searchProject, ...fields } = args;
+      const projectId = await resolveProjectScope({ projectId: projectIdArg, searchProject });
+      if (!projectId) {
+        throw exposedError("A project is required. Please specify which project to add the design section to.");
+      }
+      await requireExistingProject(projectId);
+      const section = await createDesignSection({ ...fields, projectId }, context?.user);
+      return {
+        success: true,
+        message: `Created design section "${section.name}"`,
+        designSection: toPlain(section),
+      };
+    },
+    dedupe: true,
+  },
+  {
+    name: "getDesignSections",
+    description:
+      "Fetch the design sections/pages of a project (identified by `projectId` or `searchProject`), or a single section by `id`/`searchName`. Use when the user asks to see the pages/sections of a design project or what sections exist. Returns the section or the matching list.",
+    parameters: {
+      type: "OBJECT",
+      properties: { ...DESIGN_SECTION_REF_FIELDS },
+    },
+    handler: async (args) => {
+      const { id, searchName } = args;
+      const projectId = await resolveProjectScope(args);
+      const result = await findDesignSection({ id, searchName, projectId });
+      if (result.kind === "single") {
+        const section = result.designSection;
+        return {
+          success: true,
+          message: `Design section "${section.name}"`,
+          designSection: toPlain(section),
+        };
+      }
+      return summarizeDesignSectionList(result.designSections);
+    },
+  },
+  {
+    name: "updateDesignSection",
+    description:
+      "Update fields of an existing design section/page (e.g. rename it). Identify the section with `id` or `searchName` (its name, optionally scoped with `projectId`/`searchProject`), and provide the fields to change: name, order. Returns the updated section.",
+    parameters: { type: "OBJECT", properties: { ...DESIGN_SECTION_REF_FIELDS, ...DESIGN_SECTION_FIELDS } },
+    handler: async (args, context) => {
+      const { id, searchName, projectId: projectIdArg, searchProject, ...fields } = args;
+      const projectId = await resolveProjectScope({ projectId: projectIdArg, searchProject });
+      const result = await findDesignSection({ id, searchName, projectId });
+      const section = await updateDesignSection(result.designSection._id, fields, context?.user);
+      return {
+        success: true,
+        message: `Updated design section "${section.name}"`,
+        designSection: toPlain(section),
+      };
+    },
+  },
+  {
+    name: "deleteDesignSection",
+    description:
+      "Delete an existing design section/page permanently. Its references are unlinked (moved out of the section) and its notes are removed. Identify the section with `id` or `searchName` (its name, optionally scoped with `projectId`/`searchProject`). DESTRUCTIVE: the first call only requests confirmation and deletes nothing; call this tool again with the same arguments and `confirmed: true` only after the user explicitly confirms, or `confirmed: false` when they decline. Returns the deleted section.",
+    parameters: {
+      type: "OBJECT",
+      properties: {
+        ...DESIGN_SECTION_REF_FIELDS,
+        confirmed: CONFIRMED_FIELD,
+      },
+    },
+    handler: async (args, context) => {
+      const { id, searchName, projectId: projectIdArg, searchProject, confirmed } = args;
+      const projectId = await resolveProjectScope({ projectId: projectIdArg, searchProject });
+      const result = await findDesignSection({ id, searchName, projectId });
+      return requestOrExecuteDelete({
+        context: { ...context, argsConfirmed: confirmed },
+        tool: "deleteDesignSection",
+        target: result.designSection,
+        kind: "design section",
+        label: result.designSection.name,
+        execute: () => deleteDesignSection(result.designSection._id, context?.user),
+      });
+    },
+  },
+  {
+    name: "getDesignOverview",
+    description:
+      "Fetch a structured overview of a project's designer workspace: its design sections with reference counts and note counts, recent references, and recent notes. Identify the project with `projectId` or `searchProject`. Read-only. Use when the user asks to summarize the design direction of a project, how many references each page has, or what's saved for a project.",
+    parameters: {
+      type: "OBJECT",
+      properties: {
+        projectId: s("MongoDB project id"),
+        searchProject: s("Project name to search for (use when the id is unknown)"),
+      },
+    },
+    handler: async (args) => {
+      const projectId = await resolveProjectScope(args);
+      if (!projectId) {
+        throw exposedError("Which project would you like the design overview for? Please specify a project name or id.");
+      }
+      const project = await getProjectById(projectId);
+      const [sections, references, notes] = await Promise.all([
+        listDesignSectionsByProject(projectId),
+        listDesignReferencesByProject(projectId),
+        listDesignNotes({ projectId }),
+      ]);
+
+      const sectionMap = new Map(sections.map((s) => [String(s._id), s]));
+      const bySection = { uncategorized: 0 };
+      for (const section of sections) bySection[String(section._id)] = 0;
+      const noteCounts = { project: 0, section: new Map(), reference: new Map() };
+      for (const note of notes) {
+        if (note.parentType === "project") noteCounts.project += 1;
+        else if (note.parentType === "section") noteCounts.section.set(note.parentId, (noteCounts.section.get(note.parentId) || 0) + 1);
+        else noteCounts.reference.set(note.parentId, (noteCounts.reference.get(note.parentId) || 0) + 1);
+      }
+      for (const ref of references) {
+        const key = ref.sectionId ? String(ref.sectionId) : "uncategorized";
+        bySection[key] = (bySection[key] || 0) + 1;
+      }
+
+      const sectionSummaries = sections.map((s) => ({
+        id: toPlain(s._id),
+        name: s.name,
+        order: s.order || 0,
+        referenceCount: bySection[String(s._id)] || 0,
+        noteCount: noteCounts.section.get(String(s._id)) || 0,
+      }));
+
+      return {
+        success: true,
+        message: `Design overview for "${project.name}": ${sectionSummaries.length} section${sectionSummaries.length === 1 ? "" : "s"}, ${references.length} reference${references.length === 1 ? "" : "s"}, ${notes.length} note${notes.length === 1 ? "" : "s"}.`,
+        project: trimProject(project),
+        sections: sectionSummaries,
+        uncategorizedReferences: bySection.uncategorized || 0,
+        recentReferences: references.slice(-8).reverse().map((r) => ({
+          id: toPlain(r._id),
+          title: r.title,
+          url: r.url,
+          type: r.type || "website",
+          sectionId: r.sectionId ? toPlain(r.sectionId) : null,
+          section: r.sectionId && sectionMap.has(String(r.sectionId)) ? sectionMap.get(String(r.sectionId)).name : null,
+          tags: Array.isArray(r.tags) ? r.tags : [],
+          createdAt: toPlain(r.createdAt),
+        })),
+        recentNotes: notes.slice(-5).reverse().map((n) => ({
+          id: toPlain(n._id),
+          parentType: n.parentType,
+          parentId: n.parentId,
+          text: n.text,
+          createdAt: toPlain(n.createdAt),
+        })),
+      };
+    },
+  },
+  {
+    name: "addDesignNote",
+    description:
+      "Add a note to a project, a design section/page, or an individual design reference. Provide the project with `projectId`/`searchProject`; set `parentType` to \"project\", \"section\", or \"reference\"; for sections give `parentSection` (the section name) or `parentId`; for references give `parentReference` (the reference title) or `parentId`; for projects leave the parent as the project itself. `text` is the note content. Returns the created note.",
+    parameters: {
+      type: "OBJECT",
+      properties: {
+        projectId: s("Id of the parent project"),
+        searchProject: s("Parent project name to search for (use when the project id is unknown)"),
+        parentType: e("Where to attach the note", DESIGN_NOTE_PARENT_TYPES),
+        parentId: s("Direct id of the section/reference (optional if you use parentSection/parentReference)"),
+        parentSection: s("Design section name the note belongs to (when parentType is section)"),
+        parentReference: s("Design reference title the note belongs to (when parentType is reference)"),
+        text: s("The note content"),
+      },
+      required: ["text", "parentType"],
+    },
+    handler: async (args, context) => {
+      const { projectId: projectIdArg, searchProject, parentType, parentId, parentSection, parentReference, text } = args;
+      const projectId = await resolveProjectScope({ projectId: projectIdArg, searchProject });
+      if (!projectId) {
+        throw exposedError("A project is required. Please specify which project the note belongs to.");
+      }
+      let resolvedParentId = parentId;
+      if (parentType === "project" && !resolvedParentId) {
+        resolvedParentId = projectId;
+      } else if (parentType === "section" && !resolvedParentId && parentSection) {
+        const found = await findDesignSection({ searchName: String(parentSection).trim(), projectId });
+        if (found.kind !== "single") {
+          throw exposedError(`Design section "${parentSection}" was not found.`);
+        }
+        resolvedParentId = String(found.designSection._id);
+      } else if (parentType === "reference" && !resolvedParentId && parentReference) {
+        const found = await findDesignReference({ searchTitle: String(parentReference).trim(), projectId });
+        if (found.kind !== "single") {
+          throw exposedError(`Design reference "${parentReference}" was not found.`);
+        }
+        resolvedParentId = String(found.designReference._id);
+      }
+      const note = await createDesignNote({ projectId, parentType, parentId: resolvedParentId, text }, context?.user);
+      return {
+        success: true,
+        message: `Added note to ${parentType === "project" ? "the project" : parentType === "section" ? "the section" : "the reference"}`,
+        designNote: toPlain(note),
+      };
+    },
+    dedupe: true,
+  },
+  {
+    name: "getDesignNotes",
+    description:
+      "Fetch design notes for a project, optionally filtered by `parentType` (project/section/reference) and `parentSection`/`parentReference` or `parentId`. Use when the user asks what notes exist for a design project or page. Returns the matching notes.",
+    parameters: {
+      type: "OBJECT",
+      properties: {
+        projectId: s("Id of the parent project"),
+        searchProject: s("Parent project name to search for (use when the project id is unknown)"),
+        parentType: e("Filter by note parent type", DESIGN_NOTE_PARENT_TYPES),
+        parentId: s("Direct id of the section/reference"),
+        parentSection: s("Design section name to filter notes by (when parentType is section)"),
+        parentReference: s("Design reference title to filter notes by (when parentType is reference)"),
+      },
+    },
+    handler: async (args) => {
+      const { projectId: projectIdArg, searchProject, parentType, parentId, parentSection, parentReference } = args;
+      const projectId = await resolveProjectScope({ projectId: projectIdArg, searchProject });
+      let resolvedParentId = parentId;
+      if (projectId && parentType === "section" && !resolvedParentId && parentSection) {
+        const found = await findDesignSection({ searchName: String(parentSection).trim(), projectId });
+        if (found.kind === "single") resolvedParentId = String(found.designSection._id);
+      }
+      if (projectId && parentType === "reference" && !resolvedParentId && parentReference) {
+        const found = await findDesignReference({ searchTitle: String(parentReference).trim(), projectId });
+        if (found.kind === "single") resolvedParentId = String(found.designReference._id);
+      }
+      const notes = await listDesignNotes({ projectId, parentType, parentId: resolvedParentId });
+      return {
+        success: true,
+        message: `Found ${notes.length} note${notes.length === 1 ? "" : "s"}.`,
+        designNotes: notes.map(toPlain),
+      };
+    },
+  },
+  {
+    name: "updateDesignNote",
+    description:
+      "Update the text of an existing design note. Identify the note with its MongoDB `id`. Provide the new `text`. Returns the updated note.",
+    parameters: {
+      type: "OBJECT",
+      properties: {
+        id: s("MongoDB design note id"),
+        text: s("The updated note content"),
+      },
+      required: ["id", "text"],
+    },
+    handler: async (args, context) => {
+      const { id, text } = args;
+      const note = await updateDesignNote(id, { text }, context?.user);
+      return {
+        success: true,
+        message: "Updated the design note",
+        designNote: toPlain(note),
+      };
+    },
+  },
+  {
+    name: "deleteDesignNote",
+    description:
+      "Delete an existing design note permanently. Identify the note with its MongoDB `id`. DESTRUCTIVE: the first call only requests confirmation and deletes nothing; call this tool again with the same arguments and `confirmed: true` only after the user explicitly confirms, or `confirmed: false` when they decline. Returns the deleted note.",
+    parameters: {
+      type: "OBJECT",
+      properties: {
+        id: s("MongoDB design note id"),
+        confirmed: CONFIRMED_FIELD,
+      },
+    },
+    handler: async (args, context) => {
+      const { id, confirmed } = args;
+      const note = await getDesignNoteById(id);
+      return requestOrExecuteDelete({
+        context: { ...context, argsConfirmed: confirmed },
+        tool: "deleteDesignNote",
+        target: note,
+        kind: "design note",
+        label: (note.text || "").slice(0, 60),
+        execute: () => deleteDesignNote(id, context?.user),
       });
     },
   },
@@ -1269,6 +1631,9 @@ const TOOL_CATEGORY_MAP = {
   getTask: TOOL_CATEGORIES.READ_ONLY,
   getIssue: TOOL_CATEGORIES.READ_ONLY,
   getDesignReferences: TOOL_CATEGORIES.READ_ONLY,
+  getDesignSections: TOOL_CATEGORIES.READ_ONLY,
+  getDesignOverview: TOOL_CATEGORIES.READ_ONLY,
+  getDesignNotes: TOOL_CATEGORIES.READ_ONLY,
   getExpense: TOOL_CATEGORIES.READ_ONLY,
   getExpenses: TOOL_CATEGORIES.READ_ONLY,
   getDashboardStats: TOOL_CATEGORIES.READ_ONLY,
@@ -1288,6 +1653,10 @@ const TOOL_CATEGORY_MAP = {
   resolveIssue: TOOL_CATEGORIES.WRITE,
   addDesignReference: TOOL_CATEGORIES.WRITE,
   updateDesignReference: TOOL_CATEGORIES.WRITE,
+  createDesignSection: TOOL_CATEGORIES.WRITE,
+  updateDesignSection: TOOL_CATEGORIES.WRITE,
+  addDesignNote: TOOL_CATEGORIES.WRITE,
+  updateDesignNote: TOOL_CATEGORIES.WRITE,
   createExpense: TOOL_CATEGORIES.WRITE,
   updateExpense: TOOL_CATEGORIES.WRITE,
   createProjectFromPlan: TOOL_CATEGORIES.WRITE,
@@ -1298,6 +1667,8 @@ const TOOL_CATEGORY_MAP = {
   deleteTask: TOOL_CATEGORIES.DESTRUCTIVE,
   deleteIssue: TOOL_CATEGORIES.DESTRUCTIVE,
   deleteDesignReference: TOOL_CATEGORIES.DESTRUCTIVE,
+  deleteDesignSection: TOOL_CATEGORIES.DESTRUCTIVE,
+  deleteDesignNote: TOOL_CATEGORIES.DESTRUCTIVE,
   deleteExpense: TOOL_CATEGORIES.DESTRUCTIVE,
 };
 

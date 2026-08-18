@@ -76,6 +76,10 @@ async function ensureIndexes(client) {
     db.collection("aiconversations").createIndex({ userId: 1 }).catch(() => {}),
     db.collection("aiconversations").createIndex({ userId: 1, updatedAt: -1 }).catch(() => {}),
     db.collection("plannedexpenses").createIndex({ projectId: 1 }).catch(() => {}),
+    db.collection("designreferences").createIndex({ projectId: 1, sectionId: 1 }).catch(() => {}),
+    db.collection("designreferences").createIndex({ projectId: 1, order: 1 }).catch(() => {}),
+    db.collection("designsections").createIndex({ projectId: 1, order: 1 }).catch(() => {}),
+    db.collection("designnotes").createIndex({ projectId: 1, parentType: 1, parentId: 1 }).catch(() => {}),
   ]);
   cached.indexesEnsured = true;
 }

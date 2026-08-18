@@ -1,15 +1,15 @@
-import { requireAuth } from "./_lib/auth.js";
+import { requireDesignerAccess } from "./_lib/auth.js";
 import {
   createDesignReference,
   listDesignReferencesByProject,
   DesignReferenceServiceError,
 } from "./_lib/designreferences.js";
 
-export default requireAuth(async (req, res) => {
+export default requireDesignerAccess(async (req, res) => {
   try {
     if (req.method === "GET") {
-      const { projectId, type } = req.query;
-      const references = await listDesignReferencesByProject(projectId, type);
+      const { projectId, type, sectionId } = req.query;
+      const references = await listDesignReferencesByProject(projectId, type, sectionId);
       return res.status(200).json(references);
     }
 

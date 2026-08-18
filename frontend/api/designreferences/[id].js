@@ -1,12 +1,13 @@
-import { requireAuth } from "../_lib/auth.js";
+import { requireDesignerAccess } from "../_lib/auth.js";
 import {
   getDesignReferenceById,
   updateDesignReference,
   deleteDesignReference,
+  reorderDesignReference,
   DesignReferenceServiceError,
 } from "../_lib/designreferences.js";
 
-export default requireAuth(async (req, res) => {
+export default requireDesignerAccess(async (req, res) => {
   const { id } = req.query;
 
   try {
@@ -15,7 +16,11 @@ export default requireAuth(async (req, res) => {
     }
 
     if (req.method === "PUT") {
-      return res.status(200).json(await updateDesignReference(id, req.body || {}, req.user));
+      const body = req.body || {};
+      if (body.reorder) {
+        return res.status(200).json(await reorderDesignReference(id, body.direction, req.user));
+      }
+      return res.status(200).json(await updateDesignReference(id, body, req.user));
     }
 
     if (req.method === "DELETE") {
