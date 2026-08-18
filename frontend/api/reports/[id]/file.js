@@ -1,8 +1,8 @@
-import { requireReportingAccess } from "../../../_lib/auth.js";
+import { requireReportingAccess } from "../../_lib/auth.js";
 import {
   getReportFile,
   ReportServiceError,
-} from "../../../_lib/reports.js";
+} from "../../_lib/reports.js";
 
 export default requireReportingAccess(async (req, res) => {
   if (req.method !== "GET") {

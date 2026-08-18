@@ -22,7 +22,13 @@ export default function AdminProjectsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [viewMode, setViewMode] = useState(() => localStorage.getItem("admin_projects_view") || "grid");
+  const [viewMode, setViewMode] = useState(() => {
+    try {
+      return localStorage.getItem("admin_projects_view") || "grid";
+    } catch {
+      return "grid";
+    }
+  });
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [deleting, setDeleting] = useState(null);
@@ -106,7 +112,7 @@ export default function AdminProjectsPage() {
         <div className="relative flex-1">
           <HiOutlineSearch size={18} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-text_muted" />
           <input
-            className="input-field pl-11"
+            className="input-field pl-20"
             placeholder="Search by name, client, or tag..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -190,7 +196,7 @@ export default function AdminProjectsPage() {
                       <HiOutlineFolder size={18} />
                     </div>
                     <div className="min-w-0">
-                      <Link to={`/admin/projects/${p._id}`} className="block truncate font-display font-bold text-foreground hover:text-primary">
+                      <Link href={`/admin/projects/${p._id}`} className="block truncate font-display font-bold text-foreground hover:text-primary">
                         {p.name}
                       </Link>
                       <div className="truncate text-xs text-text_muted">{p.client || "No client"}</div>
@@ -239,7 +245,7 @@ export default function AdminProjectsPage() {
                   <span className={due !== null && due < 0 ? "text-rose-500 font-medium" : ""}>
                     {p.dueDate ? `Due ${formatDate(p.dueDate)}` : "No due date"}
                   </span>
-                  <Link to={`/admin/projects/${p._id}`} className="inline-flex items-center gap-1 font-medium text-primary hover:text-primary_hover">
+                  <Link href={`/admin/projects/${p._id}`} className="inline-flex items-center gap-1 font-medium text-primary hover:text-primary_hover">
                     <HiOutlineClipboardList size={14} />
                     Manage
                   </Link>

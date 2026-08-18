@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { HiOutlineClipboardList, HiOutlineUserCircle, HiRefresh, HiOutlineUser, HiOutlinePencilAlt } from "react-icons/hi";

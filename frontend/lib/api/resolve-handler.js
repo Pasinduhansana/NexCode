@@ -1,97 +1,65 @@
 /**
- * Maps /api/* paths to existing Vercel serverless handlers (api/**/*.js).
+ * Maps /api/* paths to existing Vercel serverless handlers (api/...).
  * Keeps one Next.js route file → one serverless function on Vercel Hobby.
  */
+
+const handlers = {
+  "auth/login": () => import("../../api/auth/login.js"),
+  "auth/verify": () => import("../../api/auth/verify.js"),
+  "ai/conversations": () => import("../../api/ai/conversations.js"),
+  "ai/conversations/:id": () => import("../../api/ai/conversations/[id].js"),
+  "ai/conversations/:id/clear": () => import("../../api/ai/conversations/[id]/clear.js"),
+  "ai/conversations/:id/messages": () => import("../../api/ai/conversations/[id]/messages.js"),
+  reports: () => import("../../api/reports.js"),
+  "reports/ai": () => import("../../api/reports/ai.js"),
+  "reports/:id": () => import("../../api/reports/[id].js"),
+  "reports/:id/file": () => import("../../api/reports/[id]/file.js"),
+  "reports/:id/generate": () => import("../../api/reports/[id]/generate.js"),
+  users: () => import("../../api/users/index.js"),
+  "users/:id": () => import("../../api/users/[id].js"),
+  "users/:id/password": () => import("../../api/users/[id]/password.js"),
+  activities: () => import("../../api/activities.js"),
+  assistant: () => import("../../api/assistant.js"),
+  stats: () => import("../../api/stats.js"),
+  finance: () => import("../../api/finance.js"),
+  "finance/:id": () => import("../../api/finance/[id].js"),
+  issues: () => import("../../api/issues.js"),
+  "issues/:id": () => import("../../api/issues/[id].js"),
+  tasks: () => import("../../api/tasks.js"),
+  "tasks/:id": () => import("../../api/tasks/[id].js"),
+  projects: () => import("../../api/projects.js"),
+  "projects/:id": () => import("../../api/projects/[id].js"),
+  kanban: () => import("../../api/kanban.js"),
+  designsections: () => import("../../api/designsections.js"),
+  "designsections/:id": () => import("../../api/designsections/[id].js"),
+  designreferences: () => import("../../api/designreferences.js"),
+  "designreferences/:id": () => import("../../api/designreferences/[id].js"),
+  designnotes: () => import("../../api/designnotes.js"),
+  "designnotes/:id": () => import("../../api/designnotes/[id].js"),
+};
+
+const handlerKeys = Object.keys(handlers);
 
 export async function resolveApiHandler(pathSegments) {
   const parts = pathSegments ?? [];
   const joined = parts.join("/");
 
-  if (parts[0] === "auth" && parts[1] === "login") {
-    return (await import("../../api/auth/login.js")).default;
-  }
-  if (parts[0] === "auth" && parts[1] === "verify") {
-    return (await import("../../api/auth/verify.js")).default;
+  const exactKey = handlerKeys.find((key) => key === joined);
+  if (exactKey) {
+    return (await handlers[exactKey]()).default;
   }
 
-  if (parts[0] === "ai" && parts[1] === "conversations") {
-    if (parts.length === 2) {
-      return (await import("../../api/ai/conversations.js")).default;
-    }
-    const id = parts[2];
-    if (parts[3] === "clear") {
-      return (await import("../../api/ai/conversations/[id]/clear.js")).default;
-    }
-    if (parts[3] === "messages") {
-      return (await import("../../api/ai/conversations/[id]/messages.js")).default;
-    }
-    if (parts.length === 3) {
-      return (await import("../../api/ai/conversations/[id].js")).default;
-    }
-  }
+  const paramKey = handlerKeys
+    .filter((key) => key.includes(":"))
+    .sort((a, b) => b.split("/").length - a.split("/").length)
+    .find((key) => {
+      const segs = key.split("/");
+      if (segs.length !== parts.length) return false;
+      return segs.every((s, i) => s === ":id" || s === parts[i]);
+    });
 
-  if (parts[0] === "reports") {
-    if (parts.length === 1) {
-      return (await import("../../api/reports.js")).default;
-    }
-    if (parts[1] === "ai") {
-      return (await import("../../api/reports/ai.js")).default;
-    }
-    const id = parts[1];
-    if (parts[2] === "file") {
-      return (await import("../../api/reports/[id]/file.js")).default;
-    }
-    if (parts[2] === "generate") {
-      return (await import("../../api/reports/[id]/generate.js")).default;
-    }
-    if (parts.length === 2) {
-      return (await import("../../api/reports/[id].js")).default;
-    }
-  }
-
-  if (parts[0] === "users") {
-    if (parts.length === 1) {
-      return (await import("../../api/users/index.js")).default;
-    }
-    const id = parts[1];
-    if (parts[2] === "password") {
-      return (await import("../../api/users/[id]/password.js")).default;
-    }
-    if (parts.length === 2) {
-      return (await import("../../api/users/[id].js")).default;
-    }
-  }
-
-  const singleSegmentHandlers = {
-    activities: "../../api/activities.js",
-    assistant: "../../api/assistant.js",
-    stats: "../../api/stats.js",
-    finance: "../../api/finance.js",
-    issues: "../../api/issues.js",
-    tasks: "../../api/tasks.js",
-    projects: "../../api/projects.js",
-    kanban: "../../api/kanban.js",
-    designsections: "../../api/designsections.js",
-    designreferences: "../../api/designreferences.js",
-    designnotes: "../../api/designnotes.js",
-  };
-
-  if (parts.length === 1 && singleSegmentHandlers[parts[0]]) {
-    return (await import(singleSegmentHandlers[parts[0]])).default;
-  }
-
-  const idHandlers = {
-    finance: "../../api/finance/[id].js",
-    issues: "../../api/issues/[id].js",
-    tasks: "../../api/tasks/[id].js",
-    projects: "../../api/projects/[id].js",
-    designsections: "../../api/designsections/[id].js",
-    designreferences: "../../api/designreferences/[id].js",
-    designnotes: "../../api/designnotes/[id].js",
-  };
-
-  if (parts.length === 2 && idHandlers[parts[0]]) {
-    return (await import(idHandlers[parts[0]])).default;
+  if (paramKey) {
+    return (await handlers[paramKey]()).default;
   }
 
   return null;

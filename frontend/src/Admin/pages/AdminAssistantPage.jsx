@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { HiOutlineSparkles, HiOutlineMenu, HiOutlineChatAlt2 } from "react-icons/hi";
 import usePageTitle from "../../utils/usePageTitle";

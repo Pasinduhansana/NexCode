@@ -1,109 +1,110 @@
-import aboutImg from "../../assets/portfolio_project/About_Section.webp";
-import aboutDarkImg from "../../assets/portfolio_project/About_Section_dark.webp";
-import aboutImg2 from "../../assets/portfolio_project/About_Section_2.webp";
-import aboutDarkImg2 from "../../assets/portfolio_project/About_Section_2_dark.webp";
-import certificateImg from "../../assets/portfolio_project/Certificate_Section.webp";
-import certificateDarkImg from "../../assets/portfolio_project/Certificate_Section_dark.webp";
-import experienceImg from "../../assets/portfolio_project/Experience_Section.webp";
-import experienceDarkImg from "../../assets/portfolio_project/Experience_Section_dark.webp";
-import heroImg from "../../assets/portfolio_project/Hero_Section.webp";
-import heroDarkImg from "../../assets/portfolio_project/Hero_Section_dark.webp";
-import projectSectionDarkImg from "../../assets/portfolio_project/Project_Section_dark.webp";
-import project2DarkImg from "../../assets/portfolio_project/Project_Section_2_dark.webp";
-import project3DarkImg from "../../assets/portfolio_project/Project_Section_3_dark.webp";
-import project4DarkImg from "../../assets/portfolio_project/Project_Section_4_dark.webp";
-import testimonialImg from "../../assets/portfolio_project/Testtimonial_Section.webp";
-import testimonialDarkImg from "../../assets/portfolio_project/Testtimonial_Section_dark.webp";
-import portfoliovideo from "../../assets/portfolio_project/portfolio-intro.mp4";
-import Portfolio_mobile from "../../assets/portfolio_project/Home_mobile_light.webp";
-import Portfolio_mobile_dark from "../../assets/portfolio_project/Home_mobile.webp";
+// ─── Portfolio Project ─────────────────────────────────────────────────────────
+const aboutImg                  = "/assets/portfolio_project/About_Section.webp";
+const aboutDarkImg              = "/assets/portfolio_project/About_Section_dark.webp";
+const aboutImg2                 = "/assets/portfolio_project/About_Section_2.webp";
+const aboutDarkImg2             = "/assets/portfolio_project/About_Section_2_dark.webp";
+const certificateImg            = "/assets/portfolio_project/Certificate_Section.webp";
+const certificateDarkImg        = "/assets/portfolio_project/Certificate_Section_dark.webp";
+const experienceImg             = "/assets/portfolio_project/Experience_Section.webp";
+const experienceDarkImg         = "/assets/portfolio_project/Experience_Section_dark.webp";
+const heroImg                   = "/assets/portfolio_project/Hero_Section.webp";
+const heroDarkImg               = "/assets/portfolio_project/Hero_Section_dark.webp";
+const projectSectionDarkImg     = "/assets/portfolio_project/Project_Section_dark.webp";
+const project2DarkImg           = "/assets/portfolio_project/Project_Section_2_dark.webp";
+const project3DarkImg           = "/assets/portfolio_project/Project_Section_3_dark.webp";
+const project4DarkImg           = "/assets/portfolio_project/Project_Section_4_dark.webp";
+const testimonialImg            = "/assets/portfolio_project/Testtimonial_Section.webp";
+const testimonialDarkImg        = "/assets/portfolio_project/Testtimonial_Section_dark.webp";
+const portfoliovideo            = "/assets/portfolio_project/portfolio-intro.mp4";
+const Portfolio_mobile          = "/assets/portfolio_project/Home_mobile_light.webp";
+const Portfolio_mobile_dark     = "/assets/portfolio_project/Home_mobile.webp";
 
-//Importing Velmora Travels assets
-import velmoraHomeImg from "../../assets/velmora_travels/homepage.webp";
-import velmoraAboutImg from "../../assets/velmora_travels/AboutUsPage.webp";
-import velmoraFaqImg from "../../assets/velmora_travels/Faq.webp";
-import velmoraTestimonialImg from "../../assets/velmora_travels/testimonial.webp";
-import velmoraPackageDetailsImg from "../../assets/velmora_travels/packageDetails.webp";
-import velmoraPackagesImg from "../../assets/velmora_travels/packages.webp";
-import velmoraPricesImg from "../../assets/velmora_travels/prices.webp";
-import velmoraGalleryImg from "../../assets/velmora_travels/gallery.webp";
-import velmoraOffersImg from "../../assets/velmora_travels/offers.webp";
-import velmoraToursImg from "../../assets/velmora_travels/tours.webp";
-import velmoraContactImg from "../../assets/velmora_travels/Contact_form.webp";
-import velmoraMobileImg from "../../assets/velmora_travels/mobile.webp";
-import velmoraVideo from "../../assets/velmora_travels/Velmora Travels Intro.mp4";
-import velmoraHomefullImg from "../../assets/velmora_travels/homepage_fullscreen.webp";
+// ─── Velmora Travels ──────────────────────────────────────────────────────────
+const velmoraHomeImg            = "/assets/velmora_travels/homepage.webp";
+const velmoraAboutImg           = "/assets/velmora_travels/AboutUsPage.webp";
+const velmoraFaqImg             = "/assets/velmora_travels/Faq.webp";
+const velmoraTestimonialImg     = "/assets/velmora_travels/testimonial.webp";
+const velmoraPackageDetailsImg  = "/assets/velmora_travels/packageDetails.webp";
+const velmoraPackagesImg        = "/assets/velmora_travels/packages.webp";
+const velmoraPricesImg          = "/assets/velmora_travels/prices.webp";
+const velmoraGalleryImg         = "/assets/velmora_travels/gallery.webp";
+const velmoraOffersImg          = "/assets/velmora_travels/offers.webp";
+const velmoraToursImg           = "/assets/velmora_travels/tours.webp";
+const velmoraContactImg         = "/assets/velmora_travels/Contact_form.webp";
+const velmoraMobileImg          = "/assets/velmora_travels/mobile.webp";
+const velmoraVideo              = "/assets/velmora_travels/Velmora Travels Intro.mp4";
+const velmoraHomefullImg        = "/assets/velmora_travels/homepage_fullscreen.webp";
 
-//Importing Employee Transport Management System assets
-import transportHeroImg from "../../assets/transport_powerBi/Seat_allocation.webp";
-import transportDataImg from "../../assets/transport_powerBi/dataset.webp";
-import transportwindowImg from "../../assets/transport_powerBi/allocation_window.webp";
-import transportMobileImg from "../../assets/transport_powerBi/mobile_view.webp";
-import transportVideo from "../../assets/transport_powerBi/Transport Intro.mp4";
+// ─── Employee Transport Management System ─────────────────────────────────────
+const transportHeroImg          = "/assets/transport_powerBi/Seat_allocation.webp";
+const transportDataImg          = "/assets/transport_powerBi/dataset.webp";
+const transportwindowImg        = "/assets/transport_powerBi/allocation_window.webp";
+const transportMobileImg        = "/assets/transport_powerBi/mobile_view.webp";
+const transportVideo            = "/assets/transport_powerBi/Transport Intro.mp4";
 
-//Importing LogiManage assets
-import logisticDashboardImg from "../../assets/Logistic_project/logistic_Dashboard.webp";
-import gateCheckImg from "../../assets/Logistic_project/GateCheck.webp";
-import inspectionHistoryImg from "../../assets/Logistic_project/Inspection_History.webp";
-import manageOrdersImg from "../../assets/Logistic_project/Manage_Orders.webp";
-import newOrderImg from "../../assets/Logistic_project/New_order.webp";
-import notificationsImg from "../../assets/Logistic_project/Notifications.webp";
-import orderHistoryImg from "../../assets/Logistic_project/Order_History.webp";
-import orderTransferImg from "../../assets/Logistic_project/Order_Transfer.webp";
-import qualityDashboardImg from "../../assets/Logistic_project/Quality_Dashboard.webp";
-import qualityInspectionImg from "../../assets/Logistic_project/Quality_inspection.webp";
-import reportExportImg from "../../assets/Logistic_project/Report_export.webp";
-import securityCheckImg from "../../assets/Logistic_project/Security_Check.webp";
-import securityDashboardImg from "../../assets/Logistic_project/Security_Dashboard.webp";
-import userProfileImg from "../../assets/Logistic_project/User_profile.webp";
-import mobileCoverImg from "../../assets/Logistic_project/Mobile_Cover.webp";
-import laptopCoverImg from "../../assets/Logistic_project/coverpage.webp";
-import LogimanageVideo from "../../assets/Logistic_project/LogiManage_intro.mp4";
+// ─── LogiManage ───────────────────────────────────────────────────────────────
+const logisticDashboardImg      = "/assets/Logistic_project/logistic_Dashboard.webp";
+const gateCheckImg              = "/assets/Logistic_project/GateCheck.webp";
+const inspectionHistoryImg      = "/assets/Logistic_project/Inspection_History.webp";
+const manageOrdersImg           = "/assets/Logistic_project/Manage_Orders.webp";
+const newOrderImg               = "/assets/Logistic_project/New_order.webp";
+const notificationsImg          = "/assets/Logistic_project/Notifications.webp";
+const orderHistoryImg           = "/assets/Logistic_project/Order_History.webp";
+const orderTransferImg          = "/assets/Logistic_project/Order_Transfer.webp";
+const qualityDashboardImg       = "/assets/Logistic_project/Quality_Dashboard.webp";
+const qualityInspectionImg      = "/assets/Logistic_project/Quality_inspection.webp";
+const reportExportImg           = "/assets/Logistic_project/Report_export.webp";
+const securityCheckImg          = "/assets/Logistic_project/Security_Check.webp";
+const securityDashboardImg      = "/assets/Logistic_project/Security_Dashboard.webp";
+const userProfileImg            = "/assets/Logistic_project/User_profile.webp";
+const mobileCoverImg            = "/assets/Logistic_project/Mobile_Cover.webp";
+const laptopCoverImg            = "/assets/Logistic_project/coverpage.webp";
+const LogimanageVideo           = "/assets/Logistic_project/LogiManage_intro.mp4";
 
-//Importing Thineth Villa assets
-import thinethHeroImg from "../../assets/Thineth_Villa/Landing.webp";
-import thinethBookingImg from "../../assets/Thineth_Villa/booking.webp";
-import thinethContactImg from "../../assets/Thineth_Villa/contactus.webp";
-import thinethFeaturesImg from "../../assets/Thineth_Villa/features.webp";
-import thinethGalleryImg from "../../assets/Thineth_Villa/gallery.webp";
-import thinethGalleryFullImg from "../../assets/Thineth_Villa/galleryfull.webp";
-import thinethImg1 from "../../assets/Thineth_Villa/img1.webp";
-import thinethImg2 from "../../assets/Thineth_Villa/img2.webp";
-import thinethImg4 from "../../assets/Thineth_Villa/img4.webp";
-import thinethPackageOpenImg from "../../assets/Thineth_Villa/packageopen.webp";
-import thinethPackagesImg from "../../assets/Thineth_Villa/packages.webp";
-import thinethTestimonialImg from "../../assets/Thineth_Villa/testimonial.webp";
-import thinethmobileImg from "../../assets/Thineth_Villa/mobilecover.webp";
-import thinethVideo from "../../assets/Thineth_Villa/Thineth_Promo.mp4";
+// ─── Thineth Villa ────────────────────────────────────────────────────────────
+const thinethHeroImg            = "/assets/Thineth_Villa/Landing.webp";
+const thinethBookingImg         = "/assets/Thineth_Villa/booking.webp";
+const thinethContactImg         = "/assets/Thineth_Villa/contactus.webp";
+const thinethFeaturesImg        = "/assets/Thineth_Villa/features.webp";
+const thinethGalleryImg         = "/assets/Thineth_Villa/gallery.webp";
+const thinethGalleryFullImg     = "/assets/Thineth_Villa/galleryfull.webp";
+const thinethImg1               = "/assets/Thineth_Villa/img1.webp";
+const thinethImg2               = "/assets/Thineth_Villa/img2.webp";
+const thinethImg4               = "/assets/Thineth_Villa/img4.webp";
+const thinethPackageOpenImg     = "/assets/Thineth_Villa/packageopen.webp";
+const thinethPackagesImg        = "/assets/Thineth_Villa/packages.webp";
+const thinethTestimonialImg     = "/assets/Thineth_Villa/testimonial.webp";
+const thinethmobileImg          = "/assets/Thineth_Villa/mobilecover.webp";
+const thinethVideo              = "/assets/Thineth_Villa/Thineth_Promo.mp4";
 
-// Hardware Store Management System (BuildBit POS) assets
-import BuildBit_POS_dashboard_dark from "../../assets/BuildBit_POS/dashboard_dark.webp";
-import BuildBit_POS_dashboard_light from "../../assets/BuildBit_POS/dashboard_light.webp";
-import BuildBit_POS_pos from "../../assets/BuildBit_POS/pos.webp";
-import BuildBit_POS_mobile_dark from "../../assets/BuildBit_POS/mobile_dark.webp";
-import BuildBit_POS_mobile_light from "../../assets/BuildBit_POS/mobile_light.webp";
-import BuildBit_POS_customers from "../../assets/BuildBit_POS/customers.webp";
-import BuildBit_POS_suppliers from "../../assets/BuildBit_POS/suppliers.webp";
-import BuildBit_POS_inventory from "../../assets/BuildBit_POS/inventory.webp";
-import BuildBit_POS_invoices from "../../assets/BuildBit_POS/invoices.webp";
-import BuildBit_POS_purchases from "../../assets/BuildBit_POS/purchases.webp";
-import BuildBit_POS_sales_history from "../../assets/BuildBit_POS/sales_history.webp";
-import BuildBit_POS_expenses from "../../assets/BuildBit_POS/expenses.webp";
-import BuildBit_POS_reports2 from "../../assets/BuildBit_POS/reports2.webp";
-import BuildBit_POS_settings from "../../assets/BuildBit_POS/settings.webp";
-import BuildBit_POS_notification from "../../assets/BuildBit_POS/notification.webp";
-import BuildBit_POS_Video from "../../assets/BuildBit_POS/Buildbit_Pos_Intro.mp4";
+// ─── BuildBit POS ─────────────────────────────────────────────────────────────
+const BuildBit_POS_dashboard_dark   = "/assets/BuildBit_POS/dashboard_dark.webp";
+const BuildBit_POS_dashboard_light  = "/assets/BuildBit_POS/dashboard_light.webp";
+const BuildBit_POS_pos              = "/assets/BuildBit_POS/pos.webp";
+const BuildBit_POS_mobile_dark      = "/assets/BuildBit_POS/mobile_dark.webp";
+const BuildBit_POS_mobile_light     = "/assets/BuildBit_POS/mobile_light.webp";
+const BuildBit_POS_customers        = "/assets/BuildBit_POS/customers.webp";
+const BuildBit_POS_suppliers        = "/assets/BuildBit_POS/suppliers.webp";
+const BuildBit_POS_inventory        = "/assets/BuildBit_POS/inventory.webp";
+const BuildBit_POS_invoices         = "/assets/BuildBit_POS/invoices.webp";
+const BuildBit_POS_purchases        = "/assets/BuildBit_POS/purchases.webp";
+const BuildBit_POS_sales_history    = "/assets/BuildBit_POS/sales_history.webp";
+const BuildBit_POS_expenses         = "/assets/BuildBit_POS/expenses.webp";
+const BuildBit_POS_reports2         = "/assets/BuildBit_POS/reports2.webp";
+const BuildBit_POS_settings         = "/assets/BuildBit_POS/settings.webp";
+const BuildBit_POS_notification     = "/assets/BuildBit_POS/notification.webp";
+const BuildBit_POS_Video            = "/assets/BuildBit_POS/Buildbit_Pos_Intro.mp4";
 
-// Import Bashitha_Ceramic_Inventory assets
-import bashithaActivityImg from "../../assets/Bashitha_Ceramics/activity.webp";
-import bashithaAddProductsImg from "../../assets/Bashitha_Ceramics/add_products.webp";
-import bashithaBillingImg from "../../assets/Bashitha_Ceramics/Billing.webp";
-import bashithaLoginImg from "../../assets/Bashitha_Ceramics/login.webp";
-import bashithaProductListImg from "../../assets/Bashitha_Ceramics/product List.webp";
-import bashithaRegisterImg from "../../assets/Bashitha_Ceramics/register.webp";
-import bashithaReportingImg from "../../assets/Bashitha_Ceramics/reporting.webp";
-import bashithaUserManagementImg from "../../assets/Bashitha_Ceramics/user_management.webp";
-import bashithaMobileimg from "../../assets/Bashitha_Ceramics/Mobile_Cover.webp";
+// ─── Bashitha Ceramics ────────────────────────────────────────────────────────
+const bashithaActivityImg       = "/assets/Bashitha_Ceramics/activity.webp";
+const bashithaAddProductsImg    = "/assets/Bashitha_Ceramics/add_products.webp";
+const bashithaBillingImg        = "/assets/Bashitha_Ceramics/Billing.webp";
+const bashithaLoginImg          = "/assets/Bashitha_Ceramics/login.webp";
+const bashithaProductListImg    = "/assets/Bashitha_Ceramics/product List.webp";
+const bashithaRegisterImg       = "/assets/Bashitha_Ceramics/register.webp";
+const bashithaReportingImg      = "/assets/Bashitha_Ceramics/reporting.webp";
+const bashithaUserManagementImg = "/assets/Bashitha_Ceramics/user_management.webp";
+const bashithaMobileimg         = "/assets/Bashitha_Ceramics/Mobile_Cover.webp";
 
 export const showcaseProjects = [
   {

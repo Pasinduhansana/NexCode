@@ -2,6 +2,8 @@
  * TermsOfServicePage — NexCode
  * Theme-aware Terms of Service page matching NexCode's design system.
  */
+"use client";
+
 import { motion } from "framer-motion";
 import {
   HiDocumentText,

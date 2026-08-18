@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default function useGsapReveal() {
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
     const heroTimeline = gsap.timeline({ defaults: { duration: 0.55, ease: 'power2.out' } });
 
     heroTimeline

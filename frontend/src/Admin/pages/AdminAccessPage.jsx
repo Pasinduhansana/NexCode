@@ -75,7 +75,7 @@ const emptyForm = () => ({
 });
 
 export default function AdminAccessPage() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
@@ -115,9 +115,9 @@ export default function AdminAccessPage() {
   useEffect(() => {
     if (currentUser && !currentUser.superAdmin) {
       toast.error("Access denied");
-      navigate("/admin", { replace: true });
+      router.replace("/admin");
     }
-  }, [currentUser, navigate]);
+  }, [currentUser, router]);
 
   const isCallerSuperAdmin = currentUser?.superAdmin;
 

@@ -3,11 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import palmLeave from "../../assets/palm-leave.webp";
-import project_image from "../../assets/project_image.webp";
-import project_image2_mobile from "../../assets/project_image1_mob.webp";
-import laptop_mockup from "../../assets/laptop_mockup.webp";
-import phone_mockup from "../../assets/phone_mockup.webp";
+const palmLeave              = "/assets/palm-leave.webp";
+const project_image          = "/assets/project_image.webp";
+const project_image2_mobile  = "/assets/project_image1_mob.webp";
+const laptop_mockup          = "/assets/laptop_mockup.webp";
+const phone_mockup           = "/assets/phone_mockup.webp";
 import { useTheme } from "../context/ThemeContext";
 import { showcaseProjects } from "../data/showcaseProjects";
 import { normalizeSlug } from "../utils/normalizeSlug";
@@ -379,7 +379,7 @@ function App() {
   const [isSummaryExpanded, setIsSummaryExpanded] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const { theme } = useTheme();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const watermarkRef = useParallaxRef(-34);
   const palmRef = useParallaxRef(22);
@@ -439,7 +439,7 @@ function App() {
     return (
       <div className="flex items-center justify-center p-4">
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => router.back()}
           className="flex items-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 transition-colors"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -544,9 +544,9 @@ const relatedProjects = (project.relatedSlugs ?? [])
               size="sm"
               onClick={() => {
                 if (window.history.length > 2) {
-                  navigate(-1);
+                  router.back();
                 } else {
-                  navigate("/showcase");
+                  router.push("/showcase");
                 }
               }}
               leftIcon={<HiArrowLeft />}
@@ -842,7 +842,7 @@ const relatedProjects = (project.relatedSlugs ?? [])
                 {relatedProjects.map((relatedProject) => (
                   <Link
                     key={relatedProject.slug}
-                    to={`/showcase/${relatedProject.slug}`}
+                    href={`/showcase/${relatedProject.slug}`}
                     className="group overflow-hidden rounded-2xl border border-border bg-card transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
                   >
                     <div className="aspect-[16/10] overflow-hidden bg-muted">

@@ -1,4 +1,4 @@
-import ContactPage from "@/src/pages/ContactPage";
+import ContactPage from "@/src/sitePages/ContactPage";
 import PublicSiteLayout from "@/components/layouts/PublicSiteLayout";
 
 export const metadata = {

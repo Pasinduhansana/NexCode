@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import {
@@ -41,18 +41,7 @@ const stats = [
 export default function HomePage() {
   const [openFaq, setOpenFaq] = useState(null);
   const themeClasses = useThemeClasses();
-  const location = useLocation();
   usePageTitle("Home");
-
-  useEffect(() => {
-    if (location.state?.scrollTo) {
-      const el = document.getElementById(location.state.scrollTo);
-      if (el) {
-        // small delay lets the page finish rendering first
-        setTimeout(() => el.scrollIntoView({ behavior: "smooth" }), 150);
-      }
-    }
-  }, [location]);
 
   return (
     <div className="min-h-screen h-full">

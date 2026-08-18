@@ -1,4 +1,4 @@
-import PrivacyPolicyPage from "@/src/pages/PrivacyPolicyPage";
+import PrivacyPolicyPage from "@/src/sitePages/PrivacyPolicyPage";
 import PublicSiteLayout from "@/components/layouts/PublicSiteLayout";
 
 export const metadata = {

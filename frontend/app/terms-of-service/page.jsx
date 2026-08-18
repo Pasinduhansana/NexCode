@@ -1,4 +1,4 @@
-import TermsOfServicePage from "@/src/pages/TermsOfServicePage";
+import TermsOfServicePage from "@/src/sitePages/TermsOfServicePage";
 import PublicSiteLayout from "@/components/layouts/PublicSiteLayout";
 
 export const metadata = {

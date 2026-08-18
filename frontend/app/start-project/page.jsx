@@ -1,4 +1,4 @@
-import ProjectRequestPage from "@/src/pages/ProjectRequestPage";
+import ProjectRequestPage from "@/src/sitePages/ProjectRequestPage";
 import PublicSiteLayout from "@/components/layouts/PublicSiteLayout";
 
 export const metadata = {

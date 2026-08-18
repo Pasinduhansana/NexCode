@@ -1,4 +1,4 @@
-import AboutPage from "@/src/pages/AboutPage";
+import AboutPage from "@/src/sitePages/AboutPage";
 import PublicSiteLayout from "@/components/layouts/PublicSiteLayout";
 
 export const metadata = {

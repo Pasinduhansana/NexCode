@@ -1,5 +1,6 @@
-import ShowcasePage from "@/src/pages/ShowcasePage";
+import ShowcasePage from "@/src/sitePages/ShowcasePage";
 import PublicSiteLayout from "@/components/layouts/PublicSiteLayout";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "Showcase | NexCode",
@@ -9,7 +10,9 @@ export const metadata = {
 export default function Page() {
   return (
     <PublicSiteLayout>
-      <ShowcasePage />
+      <Suspense fallback={null}>
+        <ShowcasePage />
+      </Suspense>
     </PublicSiteLayout>
   );
 }

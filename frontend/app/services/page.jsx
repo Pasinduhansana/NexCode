@@ -1,4 +1,4 @@
-import ServicesPage from "@/src/pages/ServicesPage";
+import ServicesPage from "@/src/sitePages/ServicesPage";
 import PublicSiteLayout from "@/components/layouts/PublicSiteLayout";
 
 export const metadata = {
