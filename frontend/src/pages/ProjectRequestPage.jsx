@@ -18,7 +18,7 @@ const serviceTypes = [
   "Other",
 ];
 const timelines = ["1-2 weeks", "1 month", "2-3 months", "3-6 months", "6+ months", "Flexible"];
-const budgets = ["Under $1,000", "$1,000 - $5,000", "$5,000 - $15,000", "$15,000 - $50,000", "$50,000+", "Let's Discuss"];
+const budgets = ["Under Rs. 50,000", "Rs. 50,000 - Rs. 250,000", "Rs. 250,000 - Rs. 750,000", "Rs. 750,000 - Rs. 2,500,000", "Rs. 2,500,000+", "Let's Discuss"];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

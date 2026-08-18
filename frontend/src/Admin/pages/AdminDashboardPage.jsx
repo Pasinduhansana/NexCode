@@ -12,10 +12,13 @@ import {
   HiOutlineCash,
   HiOutlineUserCircle,
   HiOutlineExclamation,
-} from "react-icons/hi";import adminApi from "../utils/adminApi";
+} from "react-icons/hi";
+import adminApi from "../utils/adminApi";
+import { clientLog } from "../utils/perfClient";
 import usePageTitle from "../../utils/usePageTitle";
-import StatCard from "../components/StatCard";
 import Spinner from "../components/Spinner";
+import StatCard from "../components/StatCard";
+import { useAdminAuth } from "../context/AdminAuthContext";
 import StatusBadge from "../components/StatusBadge";
 import EmptyState from "../components/EmptyState";
 import { PROJECT_STATUSES, TASK_STATUSES } from "../data/constants";
@@ -36,6 +39,7 @@ const formatActivityTime = (value) => {
 };
 
 export default function AdminDashboardPage() {
+  const { hasDashboardComponent } = useAdminAuth();
   const [stats, setStats] = useState(null);
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -43,13 +47,17 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     let cancelled = false;
+    clientLog("dashboard fetch started");
+    const t0 = performance.now();
     Promise.all([adminApi.get("/stats"), adminApi.get("/activities?limit=8")])
       .then(([statsRes, activitiesRes]) => {
+        clientLog(`dashboard fetch completed: ${Math.round(performance.now() - t0)}ms (parallel)`);
         if (cancelled) return;
         setStats(statsRes.data);
         setActivities(activitiesRes.data);
       })
       .catch(() => {
+        clientLog("dashboard fetch failed");
         if (!cancelled) setStats(null);
       })
       .finally(() => {
@@ -114,37 +122,41 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 xl:grid-cols-5">
-        <StatCard icon={HiOutlineFolder} label="Projects" value={totals.projects || 0} sub="Total projects" />
-        <StatCard icon={HiOutlineClipboardList} label="Tasks" value={totals.tasks || 0} sub="All tasks" />
-        <StatCard icon={HiOutlineClock} label="Open Tasks" value={totals.openTasks || 0} sub="Not yet done" accent="text-amber-500" />
-        <StatCard icon={HiOutlineCheckCircle} label="Completed" value={totals.completedTasks || 0} sub="Done tasks" accent="text-emerald-500" />
-        <StatCard
-          icon={HiOutlineCurrencyDollar}
-          label="Budget"
-          value={totals.totalBudget ? `$${totals.totalBudget.toLocaleString()}` : "$0"}
-          sub="Across projects"
-          accent="text-cyan-500"
-        />
-      </div>
+      {hasDashboardComponent("stats") && (
+        <div className="grid grid-cols-2 gap-4 xl:grid-cols-5">
+          <StatCard icon={HiOutlineFolder} label="Projects" value={totals.projects || 0} sub="Total projects" />
+          <StatCard icon={HiOutlineClipboardList} label="Tasks" value={totals.tasks || 0} sub="All tasks" />
+          <StatCard icon={HiOutlineClock} label="Open Tasks" value={totals.openTasks || 0} sub="Not yet done" accent="text-amber-500" />
+          <StatCard icon={HiOutlineCheckCircle} label="Completed" value={totals.completedTasks || 0} sub="Done tasks" accent="text-emerald-500" />
+          <StatCard
+            icon={HiOutlineCurrencyDollar}
+            label="Budget"
+            value={totals.totalBudget ? `Rs. ${totals.totalBudget.toLocaleString()}` : "Rs. 0"}
+            sub="Across projects"
+            accent="text-cyan-500"
+          />
+        </div>
+      )}
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {financeCards.map(({ label, value, icon: Icon, tone }) => (
-          <div key={label} className="rounded-2xl border border-border bg-card p-4 transition-all hover:-translate-y-0.5 hover:shadow-md">
-            <div className="flex items-center gap-3">
-              <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${tone}`}>
-                <Icon size={17} />
-              </div>
-              <div className="min-w-0">
-                <div className="truncate text-lg font-bold text-foreground">
-                  ${Number(value || 0).toLocaleString(undefined, { maximumFractionDigits: 0 })}
+      {hasDashboardComponent("finance") && (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {financeCards.map(({ label, value, icon: Icon, tone }) => (
+            <div key={label} className="rounded-2xl border border-border bg-card p-4 transition-all hover:-translate-y-0.5 hover:shadow-md">
+              <div className="flex items-center gap-3">
+                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${tone}`}>
+                  <Icon size={17} />
                 </div>
-                <div className="text-[11px] text-text_muted">{label}</div>
+                <div className="min-w-0">
+                  <div className="truncate text-lg font-bold text-foreground">
+                    Rs. {Number(value || 0).toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                  </div>
+                  <div className="text-[11px] text-text_muted">{label}</div>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {overdueTasks.length > 0 && (
         <div className="rounded-2xl border border-rose-500/30 bg-rose-500/5 p-4">
@@ -163,53 +175,59 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border border-border bg-card p-5">
-          <h2 className="font-display text-base font-bold text-foreground">Projects by Status</h2>
-          <div className="mt-4 space-y-3">
-            {PROJECT_STATUSES.map((s) => (
-              <div key={s.value}>
-                <div className="mb-1 flex items-center justify-between text-sm">
-                  <span className="inline-flex items-center gap-2 font-medium text-foreground">
-                    <span className={`h-2 w-2 rounded-full ${s.dot}`} />
-                    {s.label}
-                  </span>
-                  <span className="font-semibold text-text_secondary">{projectCounts[s.value] || 0}</span>
-                </div>
-                <div className="h-2 overflow-hidden rounded-full bg-muted">
-                  <div
-                    className="h-full rounded-full"
-                    style={{ width: `${((projectCounts[s.value] || 0) / maxProjectCount) * 100}%`, backgroundColor: "rgb(54 153 243 / 1)" }}
-                  />
-                </div>
+      {(hasDashboardComponent("projects") || hasDashboardComponent("tasks")) && (
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          {hasDashboardComponent("projects") && (
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <h2 className="font-display text-base font-bold text-foreground">Projects by Status</h2>
+              <div className="mt-4 space-y-3">
+                {PROJECT_STATUSES.map((s) => (
+                  <div key={s.value}>
+                    <div className="mb-1 flex items-center justify-between text-sm">
+                      <span className="inline-flex items-center gap-2 font-medium text-foreground">
+                        <span className={`h-2 w-2 rounded-full ${s.dot}`} />
+                        {s.label}
+                      </span>
+                      <span className="font-semibold text-text_secondary">{projectCounts[s.value] || 0}</span>
+                    </div>
+                    <div className="h-2 overflow-hidden rounded-full bg-muted">
+                      <div
+                        className="h-full rounded-full"
+                        style={{ width: `${((projectCounts[s.value] || 0) / maxProjectCount) * 100}%`, backgroundColor: "rgb(54 153 243 / 1)" }}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          )}
 
-        <div className="rounded-2xl border border-border bg-card p-5">
-          <h2 className="font-display text-base font-bold text-foreground">Tasks by Status</h2>
-          <div className="mt-4 space-y-3">
-            {TASK_STATUSES.map((s) => (
-              <div key={s.value}>
-                <div className="mb-1 flex items-center justify-between text-sm">
-                  <span className="inline-flex items-center gap-2 font-medium text-foreground">
-                    <span className={`h-2 w-2 rounded-full ${s.dot}`} />
-                    {s.label}
-                  </span>
-                  <span className="font-semibold text-text_secondary">{taskCounts[s.value] || 0}</span>
-                </div>
-                <div className="h-2 overflow-hidden rounded-full bg-muted">
-                  <div
-                    className="h-full rounded-full"
-                    style={{ width: `${((taskCounts[s.value] || 0) / maxTaskCount) * 100}%`, backgroundColor: "rgb(6 182 212 / 1)" }}
-                  />
-                </div>
+          {hasDashboardComponent("tasks") && (
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <h2 className="font-display text-base font-bold text-foreground">Tasks by Status</h2>
+              <div className="mt-4 space-y-3">
+                {TASK_STATUSES.map((s) => (
+                  <div key={s.value}>
+                    <div className="mb-1 flex items-center justify-between text-sm">
+                      <span className="inline-flex items-center gap-2 font-medium text-foreground">
+                        <span className={`h-2 w-2 rounded-full ${s.dot}`} />
+                        {s.label}
+                      </span>
+                      <span className="font-semibold text-text_secondary">{taskCounts[s.value] || 0}</span>
+                    </div>
+                    <div className="h-2 overflow-hidden rounded-full bg-muted">
+                      <div
+                        className="h-full rounded-full"
+                        style={{ width: `${((taskCounts[s.value] || 0) / maxTaskCount) * 100}%`, backgroundColor: "rgb(6 182 212 / 1)" }}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          )}
         </div>
-      </div>
+      )}
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <div className="rounded-2xl border border-border bg-card p-5 xl:col-span-2">

@@ -32,8 +32,12 @@ import AdminDashboardPage from "./Admin/pages/AdminDashboardPage";
 import AdminProjectsPage from "./Admin/pages/AdminProjectsPage";
 import AdminProjectDetailPage from "./Admin/pages/AdminProjectDetailPage";
 import AdminKanbanPage from "./Admin/pages/AdminKanbanPage";
+import AdminDesignerPage from "./Admin/pages/AdminDesignerPage";
 import AdminFinancePage from "./Admin/pages/AdminFinancePage";
 import AdminActivityPage from "./Admin/pages/AdminActivityPage";
+import AdminAccessPage from "./Admin/pages/AdminAccessPage";
+import AdminAssistantPage from "./Admin/pages/AdminAssistantPage";
+import AdminReportingPage from "./Admin/pages/AdminReportingPage";
 
 const PublicLayout = ({ children }) => (
   <>
@@ -132,8 +136,12 @@ const AppContent = () => {
             <Route path="projects" element={<AdminProjectsPage />} />
             <Route path="projects/:id" element={<AdminProjectDetailPage />} />
             <Route path="board" element={<AdminKanbanPage />} />
+            <Route path="designer" element={<AdminDesignerPage />} />
             <Route path="finance" element={<AdminFinancePage />} />
             <Route path="activity" element={<AdminActivityPage />} />
+            <Route path="access" element={<AdminAccessPage />} />
+            <Route path="assistant" element={<AdminAssistantPage />} />
+            <Route path="reporting" element={<AdminReportingPage />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

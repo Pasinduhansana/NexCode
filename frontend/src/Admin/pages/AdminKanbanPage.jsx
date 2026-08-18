@@ -6,6 +6,7 @@ import {
   HiOutlineCalendar,
   HiOutlineDocumentText,
   HiOutlineFolder,
+  HiOutlineTable,
 } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
 import usePageTitle from "../../utils/usePageTitle";
@@ -15,6 +16,8 @@ import PremiumSelect from "../components/PremiumSelect";
 import TaskCard from "../components/TaskCard";
 import TaskFormModal from "../components/TaskFormModal";
 import TaskNotesModal from "../components/TaskNotesModal";
+import TaskTableView from "../components/TaskTableView";
+import TaskDetailModal from "../components/TaskDetailModal";
 import ConfirmDialog from "../components/ConfirmDialog";
 import KanbanGantt from "../components/KanbanGantt";
 import { TASK_STATUSES } from "../data/constants";
@@ -36,6 +39,7 @@ export default function AdminKanbanPage() {
   const [notesTask, setNotesTask] = useState(null);
   const [deleting, setDeleting] = useState(null);
   const [deletingLoading, setDeletingLoading] = useState(false);
+  const [viewTask, setViewTask] = useState(null);
 
   usePageTitle("Kanban Board");
 
@@ -83,6 +87,12 @@ export default function AdminKanbanPage() {
         .sort((a, b) => (a.order || 0) - (b.order || 0));
       return { ...s, tasks };
     });
+  }, [data, visibleProjectIds]);
+
+  const visibleTasks = useMemo(() => {
+    return (data.tasks || [])
+      .filter((t) => visibleProjectIds.has(String(t.projectId)))
+      .sort((a, b) => (a.order || 0) - (b.order || 0));
   }, [data, visibleProjectIds]);
 
   const handleStatusChange = async (task, status) => {
@@ -172,6 +182,16 @@ export default function AdminKanbanPage() {
             </button>
             <button
               type="button"
+              onClick={() => setView("table")}
+              className={`inline-flex h-8 items-center gap-1.5 rounded-md px-3 text-sm font-medium transition-colors ${
+                view === "table" ? "bg-primary text-white" : "text-text_secondary hover:text-foreground"
+              }`}
+            >
+              <HiOutlineTable size={16} />
+              Table
+            </button>
+            <button
+              type="button"
               onClick={() => setView("gantt")}
               className={`inline-flex h-8 items-center gap-1.5 rounded-md px-3 text-sm font-medium transition-colors ${
                 view === "gantt" ? "bg-primary text-white" : "text-text_secondary hover:text-foreground"
@@ -245,6 +265,7 @@ export default function AdminKanbanPage() {
                       onDelete={setDeleting}
                       onStatusChange={handleStatusChange}
                       onNotes={setNotesTask}
+                      onView={setViewTask}
                       draggable
                       onDragStart={(e) => {
                         setDraggedId(String(task._id));
@@ -273,6 +294,16 @@ export default function AdminKanbanPage() {
             }
           />
         )
+      ) : view === "table" ? (
+        <TaskTableView
+          tasks={visibleTasks}
+          projects={data.projects || []}
+          onEdit={openEdit}
+          onDelete={setDeleting}
+          onStatusChange={handleStatusChange}
+          onNotes={setNotesTask}
+          onView={setViewTask}
+        />
       ) : (
         <KanbanGantt projects={data.projects || []} zoom={zoom} setZoom={setZoom} onEditTask={openEdit} />
       )}
@@ -291,6 +322,14 @@ export default function AdminKanbanPage() {
 
       <TaskNotesModal open={Boolean(notesTask)} task={notesTask} onClose={() => setNotesTask(null)} onSave={handleSaveNotes} />
 
+      <TaskDetailModal
+        open={Boolean(viewTask)}
+        task={viewTask}
+        projects={data.projects || []}
+        onClose={() => setViewTask(null)}
+        onEdit={openEdit}
+      />
+
       <ConfirmDialog
         open={Boolean(deleting)}
         title="Delete task?"
@@ -303,7 +342,7 @@ export default function AdminKanbanPage() {
       {view === "board" && (
         <div className="flex items-center gap-2 text-xs text-text_muted">
           <HiOutlineDocumentText size={14} />
-          Tip: drag tasks between columns, click the notes icon to add context, and switch to Timeline for scheduling.
+          Tip: drag tasks between columns, click the eye icon to view details, click the notes icon to add context, and switch to Table or Timeline for other views.
         </div>
       )}
     </div>

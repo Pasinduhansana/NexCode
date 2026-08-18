@@ -1,13 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { HiOutlineMenu, HiOutlineUserCircle } from "react-icons/hi";
 import { useAdminAuth } from "../context/AdminAuthContext";
 import AdminSidebar from "./AdminSidebar";
 import Spinner from "./Spinner";
 
+const SIDEBAR_KEY = "nexcode_sidebar_collapsed";
+
 export default function AdminLayout() {
   const { isAuthenticated, ready, user } = useAdminAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem(SIDEBAR_KEY) === "true";
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(SIDEBAR_KEY, String(collapsed));
+    } catch {}
+  }, [collapsed]);
 
   if (!ready) {
     return (
@@ -23,9 +38,14 @@ export default function AdminLayout() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <AdminSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <AdminSidebar
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        collapsed={collapsed}
+        onToggleCollapse={() => setCollapsed((c) => !c)}
+      />
 
-      <div className="lg:pl-64">
+      <div className={`transition-all duration-300 ${collapsed ? "lg:pl-[68px]" : "lg:pl-64"}`}>
         <header className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-border bg-card/90 px-4 py-3 backdrop-blur sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <button

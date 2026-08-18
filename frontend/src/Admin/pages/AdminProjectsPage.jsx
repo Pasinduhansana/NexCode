@@ -1,15 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
-import { HiOutlinePlus, HiOutlineSearch, HiOutlineFolder, HiOutlinePencilAlt, HiOutlineTrash, HiOutlineClipboardList } from "react-icons/hi";
+import { HiOutlinePlus, HiOutlineSearch, HiOutlineFolder, HiOutlinePencilAlt, HiOutlineTrash, HiOutlineClipboardList, HiOutlineViewList, HiOutlineTemplate } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
+import { clientLog } from "../utils/perfClient";
 import usePageTitle from "../../utils/usePageTitle";
 import Spinner from "../components/Spinner";
 import EmptyState from "../components/EmptyState";
 import StatusBadge from "../components/StatusBadge";
 import ProjectFormModal from "../components/ProjectFormModal";
 import ConfirmDialog from "../components/ConfirmDialog";
+import AdminProjectTableView from "../components/AdminProjectTableView";
 import { PROJECT_STATUSES } from "../data/constants";
+import PremiumSelect from "../components/PremiumSelect";
 import { formatDate, daysUntil } from "../utils/date";
 
 export default function AdminProjectsPage() {
@@ -17,6 +20,7 @@ export default function AdminProjectsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [viewMode, setViewMode] = useState(() => localStorage.getItem("admin_projects_view") || "grid");
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [deleting, setDeleting] = useState(null);
@@ -24,10 +28,13 @@ export default function AdminProjectsPage() {
   usePageTitle("Projects");
 
   const fetchProjects = async () => {
+    const t0 = performance.now();
     try {
       const { data } = await adminApi.get("/projects");
+      clientLog(`projects fetch completed: ${Math.round(performance.now() - t0)}ms`);
       setProjects(data);
     } catch (err) {
+      clientLog("projects fetch failed");
       toast.error(err.response?.data?.error || "Failed to load projects");
     } finally {
       setLoading(false);
@@ -66,6 +73,11 @@ export default function AdminProjectsPage() {
     }
   };
 
+  const handleViewChange = (mode) => {
+    setViewMode(mode);
+    localStorage.setItem("admin_projects_view", mode);
+  };
+
   if (loading) return <Spinner label="Loading projects..." />;
 
   return (
@@ -92,20 +104,42 @@ export default function AdminProjectsPage() {
         <div className="relative flex-1">
           <HiOutlineSearch size={18} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-text_muted" />
           <input
-            className="input-field pl-10"
+            className="input-field pl-11"
             placeholder="Search by name, client, or tag..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <select className="input-field sm:w-52" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-          <option value="all">All statuses</option>
-          {PROJECT_STATUSES.map((s) => (
-            <option key={s.value} value={s.value}>
-              {s.label}
-            </option>
-          ))}
-        </select>
+        <PremiumSelect
+          value={statusFilter}
+          onChange={setStatusFilter}
+          options={[{ value: "all", label: "All statuses" }, ...PROJECT_STATUSES.map((s) => ({ value: s.value, label: s.label }))]}
+          className="sm:w-52"
+        />
+        <div className="flex items-center rounded-lg border border-border">
+          <button
+            type="button"
+            onClick={() => handleViewChange("grid")}
+            className={`flex items-center gap-1.5 rounded-l-lg px-3 py-2 text-xs font-medium transition-colors ${
+              viewMode === "grid" ? "bg-primary/10 text-primary" : "text-text_secondary hover:bg-muted"
+            }`}
+            title="Grid view"
+          >
+            <HiOutlineTemplate size={15} />
+            <span className="hidden sm:inline">Grid</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => handleViewChange("table")}
+            className={`flex items-center gap-1.5 rounded-r-lg border-l border-border px-3 py-2 text-xs font-medium transition-colors ${
+              viewMode === "table" ? "bg-primary/10 text-primary" : "text-text_secondary hover:bg-muted"
+            }`}
+            title="Table view"
+          >
+            <HiOutlineViewList size={15} />
+            <span className="hidden sm:inline">Table</span>
+          </button>
+        </div>
       </div>
 
       {filtered.length === 0 ? (
@@ -129,6 +163,15 @@ export default function AdminProjectsPage() {
               </button>
             ) : null
           }
+        />
+      ) : viewMode === "table" ? (
+        <AdminProjectTableView
+          projects={filtered}
+          onEdit={(p) => {
+            setEditing(p);
+            setFormOpen(true);
+          }}
+          onDelete={setDeleting}
         />
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">

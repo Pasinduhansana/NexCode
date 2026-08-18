@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { HiOutlineUser } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
 import Modal from "./Modal";
+import PremiumSelect from "./PremiumSelect";
 import { TASK_STATUSES, PRIORITIES, DEFAULT_TASK_STATUS, DEFAULT_PRIORITY } from "../data/constants";
 import { toDateInput } from "../utils/date";
 
@@ -22,6 +24,15 @@ export default function TaskFormModal({ open, projectId, task, onClose, onSaved,
   const isEdit = Boolean(task);
   const [form, setForm] = useState(emptyForm());
   const [saving, setSaving] = useState(false);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    if (!open) return;
+    adminApi
+      .get("/users")
+      .then(({ data }) => setUsers(data.users || []))
+      .catch(() => {});
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -87,23 +98,21 @@ export default function TaskFormModal({ open, projectId, task, onClose, onSaved,
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="label">Status</label>
-            <select className="input-field" value={form.status} onChange={set("status")}>
-              {TASK_STATUSES.map((s) => (
-                <option key={s.value} value={s.value}>
-                  {s.label}
-                </option>
-              ))}
-            </select>
+            <PremiumSelect
+              value={form.status}
+              onChange={(val) => setForm((f) => ({ ...f, status: val }))}
+              options={TASK_STATUSES.map((s) => ({ value: s.value, label: s.label, dot: s.dot }))}
+              placeholder="Select status"
+            />
           </div>
           <div>
             <label className="label">Priority</label>
-            <select className="input-field" value={form.priority} onChange={set("priority")}>
-              {PRIORITIES.map((p) => (
-                <option key={p.value} value={p.value}>
-                  {p.label}
-                </option>
-              ))}
-            </select>
+            <PremiumSelect
+              value={form.priority}
+              onChange={(val) => setForm((f) => ({ ...f, priority: val }))}
+              options={PRIORITIES.map((p) => ({ value: p.value, label: p.label, dot: p.dot }))}
+              placeholder="Select priority"
+            />
           </div>
         </div>
 
@@ -121,7 +130,16 @@ export default function TaskFormModal({ open, projectId, task, onClose, onSaved,
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="label">Assignee</label>
-            <input className="input-field" placeholder="Team member name" value={form.assignee} onChange={set("assignee")} />
+            <PremiumSelect
+              value={form.assignee}
+              onChange={(val) => setForm((f) => ({ ...f, assignee: val }))}
+              options={[
+                { value: "", label: "Unassigned" },
+                ...users.map((u) => ({ value: u.name, label: u.name })),
+              ]}
+              icon={HiOutlineUser}
+              placeholder="Select assignee"
+            />
           </div>
           <div>
             <label className="label">Due Date</label>

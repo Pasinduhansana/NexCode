@@ -17,13 +17,13 @@ export function MonthlyBars({ series }) {
             <div key={i} className="flex flex-1 flex-col items-center gap-1.5">
               <div className="flex w-full max-w-[46px] flex-col items-center justify-end gap-[3px]" style={{ height: 150 }}>
                 {expenseH > 0 && (
-                  <div title={`Expense $${d.expense.toLocaleString()}`} className="w-full rounded-sm bg-rose-400 transition-all" style={{ height: expenseH }} />
+                  <div title={`Expense Rs. ${d.expense.toLocaleString()}`} className="w-full rounded-sm bg-rose-400 transition-all" style={{ height: expenseH }} />
                 )}
                 {paymentH > 0 && (
-                  <div title={`Payments $${d.payment.toLocaleString()}`} className="w-full rounded-sm bg-violet-400 transition-all" style={{ height: paymentH }} />
+                  <div title={`Payments Rs. ${d.payment.toLocaleString()}`} className="w-full rounded-sm bg-violet-400 transition-all" style={{ height: paymentH }} />
                 )}
                 {incomeH > 0 && (
-                  <div title={`Income $${d.income.toLocaleString()}`} className="w-full rounded-sm bg-emerald-400 transition-all" style={{ height: incomeH }} />
+                  <div title={`Income Rs. ${d.income.toLocaleString()}`} className="w-full rounded-sm bg-emerald-400 transition-all" style={{ height: incomeH }} />
                 )}
               </div>
             </div>
@@ -67,7 +67,7 @@ export function CategoryBreakdown({ rows, tone = "emerald" }) {
         <div key={d.category}>
           <div className="mb-1 flex items-center justify-between text-xs">
             <span className="font-medium text-foreground">{d.category}</span>
-            <span className="font-semibold text-text_secondary">${d.amount.toLocaleString()}</span>
+            <span className="font-semibold text-text_secondary">Rs. {d.amount.toLocaleString()}</span>
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-muted">
             <div
