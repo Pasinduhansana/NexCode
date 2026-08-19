@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently -n api,web -c blue,green \"npx vercel dev --listen 3000\" \"vite\"",
+    "dev:web": "vite",
+    "dev:api": "npx vercel dev --listen 3000",
     "build": "vite build",
     "start": "vite preview",
     "test": "node --experimental-test-module-mocks --test \"tests/*.test.js\""
