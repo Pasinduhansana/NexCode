@@ -4,9 +4,15 @@ import { getToolDefinitions, executeToolCall } from "./tools/index.js";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-const DEFAULT_MODEL_CHAIN = ["gemini-3.6-flash", "gemini-3.7-flash", "gemini-3.5-flash-lite", "gemini-flash-latest"];
+// Order: most universally available + fastest first so a missing model can't
+// add a failed round-trip + retry wait before a working one is tried.
+const DEFAULT_MODEL_CHAIN = ["gemini-flash-latest", "gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.7-flash"];
 const RETRYABLE_STATUSES = new Set([404, 429, 503]);
 const MAX_TOOL_ROUNDS = 4;
+// Cap a single model call. The SDK has no internal timeout, so without this a
+// stalled connection could hang until the OS/TCP timeout. On expiry we fall
+// back to the next model (or overload-retry) instead of making the user wait.
+const PER_CALL_TIMEOUT_MS = 30000;
 
 const TOOL_DEFINITIONS = getToolDefinitions();
 
@@ -139,7 +145,18 @@ function userId(user) {
 function isRetryable(err) {
   if (err instanceof ApiError && RETRYABLE_STATUSES.has(err.status)) return true;
   const lower = errorMessage(err).toLowerCase();
-  return /429|resource_exhausted|rate.?limit|quota|too many requests|no longer available|high demand|overloaded/i.test(lower);
+  return /429|resource_exhausted|rate.?limit|quota|too many requests|no longer available|high demand|overloaded|timed.?out/i.test(lower);
+}
+
+// Race a promise against a timeout. On expiry we reject with a plain Error so
+// the calling retry/fallback loop treats it as retryable and moves on. The
+// underlying HTTP request is left to resolve on its own (harmless).
+function withTimeout(promise, ms = PER_CALL_TIMEOUT_MS) {
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Error("Model call timed out")), ms);
+  });
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
 }
 
 function classifyError(err) {
@@ -157,6 +174,13 @@ function classifyError(err) {
       GEMINI_ERROR.RATE_LIMITED,
       "The AI service is temporarily overloaded. Please wait a moment and try again.",
       429
+    );
+  }
+  if (/timed.?out|took too long/i.test(lower)) {
+    return new GeminiServiceError(
+      GEMINI_ERROR.GEMINI_ERROR,
+      "The AI model took too long to respond. Please try again.",
+      504
     );
   }
   if (err instanceof ApiError && err.status === 503) {
@@ -203,6 +227,9 @@ function buildConfig() {
     systemInstruction: `${SYSTEM_INSTRUCTION}\n\nToday's date is ${today} (server date).`,
     temperature: 0.7,
     maxOutputTokens: 1024,
+    // Flash models think by default, which adds significant latency. Disable
+    // thinking to keep responses snappy (quality is fine for these tasks).
+    thinkingConfig: { thinkingBudget: 0 },
     tools: [{ functionDeclarations: TOOL_DEFINITIONS }],
   };
 }
@@ -262,7 +289,7 @@ async function generateWithFallback(ai, contents, config) {
 
   for (const model of chain) {
     try {
-      const response = await ai.models.generateContent({ model, contents, config });
+      const response = await withTimeout(ai.models.generateContent({ model, contents, config }));
       return { model, response };
     } catch (err) {
       if (err instanceof GeminiServiceError) throw err;
@@ -280,7 +307,7 @@ async function generateWithRetry(ai, model, contents, config, attempts = 3) {
 
   for (let attempt = 0; attempt < attempts; attempt++) {
     try {
-      return await ai.models.generateContent({ model, contents, config });
+      return await withTimeout(ai.models.generateContent({ model, contents, config }));
     } catch (err) {
       if (err instanceof GeminiServiceError) throw err;
       if (!isRetryable(err)) throw classifyError(err);
@@ -290,6 +317,30 @@ async function generateWithRetry(ai, model, contents, config, attempts = 3) {
   }
 
   throw classifyError(lastError || new Error("AI service unavailable"));
+}
+
+// Absorb brief provider overload spikes (429/503) by retrying the whole
+// generation with exponential backoff before surfacing the error to the user.
+async function withOverloadRetry(fn, { attempts = 3, baseDelay = 600 } = {}) {
+  let lastErr;
+  for (let attempt = 0; attempt < attempts; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      const overloaded =
+        err instanceof GeminiServiceError &&
+        (err.status === 429 ||
+          err.status === 503 ||
+          /overloaded|temporarily|rate.?limit|too many requests|resource_exhausted/i.test(err.message));
+      if (!overloaded) throw err;
+      lastErr = err;
+      if (attempt < attempts - 1) {
+        const delay = baseDelay * Math.pow(2, attempt) + Math.floor(Math.random() * 250);
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+    }
+  }
+  throw lastErr;
 }
 
 export async function generateReply({ messages, user }) {
@@ -310,7 +361,9 @@ export async function generateReply({ messages, user }) {
   const uid = userId(user);
 
   try {
-    const { model, response: firstResponse } = await generateWithFallback(ai, contents, config);
+    const { model, response: firstResponse } = await withOverloadRetry(() =>
+      generateWithFallback(ai, contents, config)
+    );
     let roundContents = contents;
     let response = firstResponse;
 
@@ -430,6 +483,7 @@ export async function generateReportContent({ user, prompt }) {
     responseMimeType: "application/json",
     temperature: 0.5,
     maxOutputTokens: 4096,
+    thinkingConfig: { thinkingBudget: 0 },
   };
   const contents = [
     { role: "user", parts: [{ text: JSON.stringify(prompt) }] },
