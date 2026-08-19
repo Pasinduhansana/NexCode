@@ -1,10 +1,11 @@
 import { getCollection } from "./mongodb.js";
 import { buildFinanceSummary } from "./finance.js";
+import { cached } from "./cache.js";
 
 const DEFAULT_PROJECT_STATUS = "planning";
 const DEFAULT_TASK_STATUS = "todo";
 
-export async function buildDashboardStats() {
+async function buildDashboardStatsUncached() {
   const projects = await getCollection("projects");
   const tasks = await getCollection("tasks");
 
@@ -72,4 +73,11 @@ export async function buildDashboardStats() {
     overdueTasks: overdueList,
     finance,
   };
+}
+
+export async function buildDashboardStats() {
+  // 30s TTL; invalidated on project/task/transaction writes via
+  // invalidate("dashboard:") so the dashboard stays fresh immediately after an edit
+  // yet avoids re-running ~7 aggregations on every navigation.
+  return cached("dashboard:stats", 30_000, buildDashboardStatsUncached);
 }

@@ -93,7 +93,7 @@ Effort: S (≤1h) · M (½ day) · L (1+ day).
 
 ## ⚡🗄️ Database & API Performance
 
-- [ ] **P1 · Cache dashboard stats** (P0, S)
+- [x] **P1 · Cache dashboard stats** (P0, S) — DONE: `buildDashboardStats` self-cached 30s; invalidated on project/task/transaction writes via `invalidate("dashboard:")`.
   - **Issue:** `buildDashboardStats` (`frontend/api/_lib/stats.js`) runs ~7 aggregations +
     `buildFinanceSummary()` on **every** dashboard load, with no cache. Repeated navigation
     re-runs all of them.
@@ -103,7 +103,7 @@ Effort: S (≤1h) · M (½ day) · L (1+ day).
   - **Verify:** two rapid loads → second is cache-served (no new DB aggregation); data still
     fresh within 30s.
 
-- [ ] **P2 · Cache derived calendar events** (P0, M)
+- [x] **P2 · Cache derived calendar events** (P0, M) — DONE: `getDerivedEvents` source scans cached per date-window for 60s (`derived:<dayBucket>`); manual events stay live.
   - **Issue:** `listEvents` (`frontend/api/_lib/calendar.js`) calls `getDerivedEvents`, which
     fires 3 separate collection queries (`projects`, `tasks`, `transactions`) plus a
     `getProjectNames` lookup on **every** calendar load/filter change. Browser auto-refresh
@@ -115,7 +115,7 @@ Effort: S (≤1h) · M (½ day) · L (1+ day).
   - **Verify:** repeated calendar loads reduce DB ops; switching filters still reflects
     newly created manual events immediately.
 
-- [ ] **P3 · Index `getUserByCredentials` / avoid full-collection scan on login** (P1, S)
+- [x] **P3 · Index `getUserByCredentials` / avoid full-collection scan on login** (P1, S) — DONE: login now does `findOne({ keyHash })`; unique index on `users.keyHash` added.
   - **Issue:** `getUserByCredentials` (`frontend/api/_lib/users.js`) does `find({}).toArray()`
     and loops comparing hashes. O(n) documents fetched per login.
   - **Files:** `frontend/api/_lib/users.js`
@@ -124,7 +124,7 @@ Effort: S (≤1h) · M (½ day) · L (1+ day).
     derived id rather than scanning all users.
   - **Verify:** login still authenticates; DB profiler shows a single indexed `findOne`.
 
-- [ ] **P4 · Stop running `ensureDefaultUsers` on every login** (P1, S)
+- [x] **P4 · Stop running `ensureDefaultUsers` on every login** (P1, S) — DONE: `globalThis.__defaultUsersEnsured` short-circuits the `countDocuments` after first run/seed.
   - **Issue:** `frontend/api/auth/login.js` calls `await ensureDefaultUsers().catch(()=>{})`
     on every request → a `countDocuments()` round-trip each login.
   - **Files:** `frontend/api/auth/login.js`, `frontend/api/_lib/users.js`
@@ -132,7 +132,7 @@ Effort: S (≤1h) · M (½ day) · L (1+ day).
     `globalThis` (like `mongodb.js` does), or only seed once at deploy/build time.
   - **Verify:** login no longer issues a `countDocuments` after first seed.
 
-- [ ] **P5 · Add compound indexes for derived-event source queries** (P1, S)
+- [x] **P5 · Add compound indexes for derived-event source queries** (P1, S) — DONE: added `tasks(dueDate,status)`, `transactions(date,category)`, `transactions(date,showOnCalendar)`.
   - **Issue:** Task derived query filters `{dueDate:{…}, status:{$ne:"done"}}` — only separate
     `{dueDate:1}` and `{status:1}` indexes exist. Transactions derived query filters by
     `date` + (`showOnCalendar` | `category`) — only single-field indexes exist.
@@ -141,7 +141,7 @@ Effort: S (≤1h) · M (½ day) · L (1+ day).
     `transactions.createIndex({date:1, category:1})` (and/or `{date:1, showOnCalendar:1}`).
   - **Verify:** `explain()` on the derived queries shows `IXSCAN` not `COLLSCAN`.
 
-- [ ] **P6 · Make the in-memory cache cross-instance & bounded** (P2, M)
+- [x] **P6 · Make the in-memory cache cross-instance & bounded** (P2, M) — DONE (short-term): `cache.js` now LRU-evicts at `MAX_ENTRIES` (200) + a 30s sweep of expired entries; timer `unref()`'d so it never keeps serverless instances alive. (Long-term Redis/KV sharing still outstanding, noted in file.)
   - **Issue:** `cache.js` uses a module-level `Map` shared only within one serverless
     instance; other Vercel instances never see it, so hit rate is low. It also never evicts
     by size (only TTL on read), so it can grow.
@@ -150,7 +150,7 @@ Effort: S (≤1h) · M (½ day) · L (1+ day).
     (Long term): back it with Upstash Redis / Vercel KV so all instances share one cache.
   - **Verify:** cache size stays bounded under load; cross-instance hits work with Redis.
 
-- [ ] **P7 · Avoid re-verifying the admin token on every navigation** (P2, S)
+- [x] **P7 · Avoid re-verifying the admin token on every navigation** (P2, S) — DONE: `AdminAuthContext` decodes the JWT client-side for instant routing; `/auth/verify` runs in the background (5-min interval + on window focus) to catch revocation/expiry.
   - **Issue:** `AdminAuthContext` (`frontend/src/Admin/context/AdminAuthContext.jsx`) calls
     `/api/auth/verify` (a DB-backed verify) whenever the token is set, i.e. on every mount.
     The JWT already encodes user/access, so this is redundant per navigation.

@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import { getCollection } from "./mongodb.js";
 import { logActivity } from "./activity.js";
+import { cached } from "./cache.js";
 import {
   EVENT_TYPES,
   PRIORITIES,
@@ -305,6 +306,23 @@ export async function getDerivedEvents({ filters = {}, range } = {}) {
   const window = range && (range.from || range.to)
     ? range
     : expandDateRange({ range: "this month" });
+
+  // The 3 source-collection scans below are expensive and only depend on the date
+  // window (filters are applied afterwards). Cache the raw derived events per window
+  // for 60s so navigation, auto-refresh, and filter changes reuse the result. Manual
+  // events stay live (see listEvents); new projects/tasks/expenses appear within the TTL.
+  const raw = await cached(`derived:${derivedWindowKey(window)}`, 60_000, () => fetchDerivedEvents(window));
+  return raw.filter((e) => matchesFilters(e, filters));
+}
+
+function derivedWindowKey(window) {
+  const from = window.from ? new Date(window.from) : new Date(Date.now() - 1000 * 60 * 60 * 24 * 60);
+  const to = window.to ? new Date(window.to) : new Date(Date.now() + 1000 * 60 * 60 * 24 * 60);
+  // Bucket by day so adjacent windows share a cache entry.
+  return `${from.toISOString().slice(0, 10)}_${to.toISOString().slice(0, 10)}`;
+}
+
+async function fetchDerivedEvents(window) {
   const from = window.from || new Date(Date.now() - 1000 * 60 * 60 * 24 * 60);
   const to = window.to || new Date(Date.now() + 1000 * 60 * 60 * 24 * 60);
 
@@ -433,5 +451,5 @@ export async function getDerivedEvents({ filters = {}, range } = {}) {
     });
   }
 
-  return out.filter((e) => matchesFilters(e, filters));
+  return out;
 }

@@ -36,14 +36,11 @@ export async function getUserById(id) {
 }
 
 export async function getUserByCredentials(accessKey) {
+  if (!accessKey) return null;
   const col = await getCollection("users");
-  const users = await col.find({}).toArray();
-  for (const u of users) {
-    if (compareKey(accessKey, u.keyHash)) {
-      return u;
-    }
-  }
-  return null;
+  // Query by the (indexed, unique) keyHash instead of fetching and scanning every
+  // user document — see ensureIndexes() in mongodb.js. O(1) lookup.
+  return col.findOne({ keyHash: hashKey(accessKey) });
 }
 
 export async function createUser({ id, name, accessKey, access }) {
@@ -87,9 +84,16 @@ export async function changePassword(id, newKey) {
 }
 
 export async function ensureDefaultUsers() {
+  // Cache the "already seeded/checked" result on globalThis so repeated calls
+  // (e.g. on every login) skip the countDocuments round-trip after the first run.
+  if (globalThis.__defaultUsersEnsured) return;
+
   const col = await getCollection("users");
   const existing = await col.countDocuments();
-  if (existing > 0) return;
+  if (existing > 0) {
+    globalThis.__defaultUsersEnsured = true;
+    return;
+  }
 
   const envUsers = [];
   for (const [envKey, value] of Object.entries(process.env)) {
@@ -121,4 +125,6 @@ export async function ensureDefaultUsers() {
       updatedAt: now,
     });
   }
+
+  globalThis.__defaultUsersEnsured = true;
 }

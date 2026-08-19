@@ -92,7 +92,7 @@ export async function createProject(input = {}, user) {
     const projects = await getCollection("projects");
     const { insertedId } = await projects.insertOne(project);
 
-    invalidate("kanban", "stats");
+    invalidate("kanban", "stats", "dashboard:");
 
     await logActivity(user, {
       action: "create",
@@ -222,7 +222,7 @@ export async function updateProject(id, input = {}, user) {
       throw new ProjectServiceError("Project not found", 404);
     }
 
-    invalidate("kanban", "stats");
+    invalidate("kanban", "stats", "dashboard:");
 
     await logActivity(user, {
       action: "update",
@@ -254,7 +254,7 @@ export async function deleteProject(id, user) {
 
     await tasks.deleteMany({ projectId: id instanceof ObjectId ? id.toHexString() : id });
 
-    invalidate("kanban", "stats");
+    invalidate("kanban", "stats", "dashboard:");
 
     await logActivity(user, {
       action: "delete",

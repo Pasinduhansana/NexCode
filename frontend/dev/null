@@ -1,12 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import adminApi from "../utils/adminApi";
 import { getToken, setToken, setUser, clearSession } from "../utils/auth";
-
 const AdminAuthContext = createContext();
-
-// Decode the JWT payload client-side (no signature check — routing/access only).
-// The server still verifies the token on every real API call, and we re-verify in
-// the background, so this is safe for gating the UI without a DB round-trip.
 function decodeJwt(token) {
   try {
     const parts = String(token).split(".");
@@ -20,7 +15,6 @@ function decodeJwt(token) {
     return null;
   }
 }
-
 function decodeJwtUser(token) {
   const payload = decodeJwt(token);
   if (!payload) return null;
@@ -28,10 +22,9 @@ function decodeJwtUser(token) {
     id: payload.uid,
     name: payload.name,
     superAdmin: payload.superAdmin,
-    access: payload.access,
+    access: payload.access
   };
 }
-
 export const AdminAuthProvider = ({ children }) => {
   const [token, setTokenState] = useState(getToken());
   const [user, setUserState] = useState(() => {
@@ -39,70 +32,54 @@ export const AdminAuthProvider = ({ children }) => {
     return t ? decodeJwtUser(t) : null;
   });
   const [ready, setReady] = useState(false);
-
   useEffect(() => {
     let cancelled = false;
-
     if (!token) {
       setReady(true);
       return;
     }
-
-    // Decode the JWT immediately so routing/access decisions are instant — no DB
-    // round-trip blocking every admin mount/navigation.
     const decoded = decodeJwtUser(token);
     if (decoded) {
       setUserState(decoded);
       setUser(decoded);
       setReady(true);
     }
-
-    // Confirm in the background (and on focus) to catch revocation/expiry. Actual
-    // API calls are still rejected by the server if the token is truly invalid.
     const verify = () => {
-      adminApi
-        .get("/auth/verify")
-        .then(({ data }) => {
-          if (cancelled) return;
-          if (data.valid && data.user) {
-            setUserState(data.user);
-            setUser(data.user);
-          }
-          setReady(true);
-        })
-        .catch(() => {
-          if (cancelled) return;
-          clearSession();
-          setTokenState(null);
-          setUserState(null);
-          setReady(true);
-        });
+      adminApi.get("/auth/verify").then(({ data }) => {
+        if (cancelled) return;
+        if (data.valid && data.user) {
+          setUserState(data.user);
+          setUser(data.user);
+        }
+        setReady(true);
+      }).catch(() => {
+        if (cancelled) return;
+        clearSession();
+        setTokenState(null);
+        setUserState(null);
+        setReady(true);
+      });
     };
-
     verify();
-    const interval = setInterval(verify, 5 * 60 * 1000);
+    const interval = setInterval(verify, 5 * 60 * 1e3);
     window.addEventListener("focus", verify);
-
     return () => {
       cancelled = true;
       clearInterval(interval);
       window.removeEventListener("focus", verify);
     };
   }, [token]);
-
   const login = useCallback((nextToken, nextUser) => {
     setToken(nextToken);
     setUser(nextUser);
     setTokenState(nextToken);
     setUserState(nextUser);
   }, []);
-
   const logout = useCallback(() => {
     clearSession();
     setTokenState(null);
     setUserState(null);
   }, []);
-
   const hasAccess = useCallback(
     (pageId) => {
       if (!user) return false;
@@ -111,7 +88,6 @@ export const AdminAuthProvider = ({ children }) => {
     },
     [user]
   );
-
   const hasExpenseAccess = useCallback(
     () => {
       if (!user) return "none";
@@ -120,7 +96,6 @@ export const AdminAuthProvider = ({ children }) => {
     },
     [user]
   );
-
   const hasProjectAccess = useCallback(
     () => {
       if (!user) return "none";
@@ -129,7 +104,6 @@ export const AdminAuthProvider = ({ children }) => {
     },
     [user]
   );
-
   const hasDashboardComponent = useCallback(
     (compId) => {
       if (!user) return false;
@@ -138,14 +112,8 @@ export const AdminAuthProvider = ({ children }) => {
     },
     [user]
   );
-
-  return (
-    <AdminAuthContext.Provider value={{ token, user, ready, isAuthenticated: Boolean(token), login, logout, hasAccess, hasExpenseAccess, hasProjectAccess, hasDashboardComponent }}>
-      {children}
-    </AdminAuthContext.Provider>
-  );
+  return /* @__PURE__ */ React.createElement(AdminAuthContext.Provider, { value: { token, user, ready, isAuthenticated: Boolean(token), login, logout, hasAccess, hasExpenseAccess, hasProjectAccess, hasDashboardComponent } }, children);
 };
-
 export const useAdminAuth = () => {
   const context = useContext(AdminAuthContext);
   if (!context) {

@@ -130,6 +130,8 @@ async function ensureIndexes(client) {
   await Promise.all([
     db.collection("projects").createIndex({ updatedAt: -1 }).catch(() => {}),
     db.collection("projects").createIndex({ status: 1 }).catch(() => {}),
+    // Login lookup: getUserByCredentials queries by keyHash (single indexed findOne).
+    db.collection("users").createIndex({ keyHash: 1 }, { unique: true }).catch(() => {}),
     db.collection("tasks").createIndex({ projectId: 1, order: 1 }).catch(() => {}),
     db.collection("tasks").createIndex({ status: 1 }).catch(() => {}),
     db.collection("tasks").createIndex({ status: 1, dueDate: 1 }).catch(() => {}),
@@ -165,8 +167,14 @@ async function ensureIndexes(client) {
     // Derived-event source scans.
     db.collection("projects").createIndex({ handoverDate: 1 }).catch(() => {}),
     db.collection("tasks").createIndex({ dueDate: 1 }).catch(() => {}),
+    // Derived task query filters {dueDate:{$gte,$lte}, status:{$ne:"done"}} — range on
+    // dueDate first, then status, so a single IXSCAN serves it.
+    db.collection("tasks").createIndex({ dueDate: 1, status: 1 }).catch(() => {}),
     db.collection("transactions").createIndex({ showOnCalendar: 1 }).catch(() => {}),
     db.collection("transactions").createIndex({ category: 1 }).catch(() => {}),
+    // Derived expense query filters by date + (showOnCalendar | category).
+    db.collection("transactions").createIndex({ date: 1, category: 1 }).catch(() => {}),
+    db.collection("transactions").createIndex({ date: 1, showOnCalendar: 1 }).catch(() => {}),
   ]);
   cached.indexesEnsured = true;
 }
