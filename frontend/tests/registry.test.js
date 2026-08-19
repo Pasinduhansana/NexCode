@@ -6,7 +6,7 @@ const {
   getTool,
   getToolNames,
   getToolCategories,
-} = await import("../api/_lib/tools/registry.js");
+} = await import("../lib/api-handlers/_lib/tools/registry.js");
 
 const user = newUser();
 

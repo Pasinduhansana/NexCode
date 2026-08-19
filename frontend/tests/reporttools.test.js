@@ -2,7 +2,7 @@ import { test, describe, beforeEach, mock } from "node:test";
 import assert from "node:assert/strict";
 import { seedProject, reset, newUser } from "./helpers/setup.js";
 
-mock.module("../api/_lib/gemini.js", {
+mock.module("../lib/api-handlers/_lib/gemini.js", {
   namedExports: {
     generateReportContent: async ({ prompt }) => ({
       title: "Tool Draft Invoice",
@@ -22,7 +22,7 @@ const {
   getTool,
   getToolNames,
   getToolCategories,
-} = await import("../api/_lib/tools/registry.js");
+} = await import("../lib/api-handlers/_lib/tools/registry.js");
 
 const user = newUser();
 
