@@ -7,7 +7,7 @@
 
 import { useEffect, useMemo, useState, useRef } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import {
   HiFilter,
@@ -232,7 +232,7 @@ function ProjectCard({ project, onNavigate, idx = 0 }) {
    MAIN PAGE COMPONENT
    ═══════════════════════════════════════════════════════════════════════ */
 export default function ShowcasePage() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
@@ -424,7 +424,7 @@ export default function ShowcasePage() {
                   animate={{ y: [0, idx % 2 === 0 ? -12 : 8, 0] }}
                   transition={{ repeat: Infinity, duration: 4 + idx * 0.4, ease: "easeInOut", delay: idx * 0.15 }}
                   whileHover={{ scale: 1.05, border: "1px solid rgba(54,153,243,0.45)" }}
-                  onClick={() => router.push(`/showcase/${proj.slug}`)}
+                  onClick={() => navigate(`/showcase/${proj.slug}`)}
                   className="group relative flex flex-col items-center justify-center bg-card border border-border  rounded-xl mx-2 my-1 p-4  text-center cursor-pointer shadow-sm transition-all duration-300"
                 >
                   <div className="w-10 h-10 rounded-full overflow-hidden mb-2.5 border border-border bg-background ">
@@ -522,7 +522,7 @@ export default function ShowcasePage() {
                         <Button
                           variant="primary"
                           rightIcon={<HiChevronRight size={20} />}
-                          onClick={() => router.push(`/showcase/${proj.slug}`)}
+                          onClick={() => navigate(`/showcase/${proj.slug}`)}
                           style={{
                             background: `linear-gradient(135deg, ${strokeColor}, rgba(${rgbOverlay}, 0.75))`,
                           }}
@@ -772,7 +772,7 @@ export default function ShowcasePage() {
                   className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
                 >
                   {filteredProjects.map((proj, idx) => (
-                    <ProjectCard key={proj.slug} project={proj} idx={idx} onNavigate={router.push} themeClasses={themeClasses} />
+                    <ProjectCard key={proj.slug} project={proj} idx={idx} onNavigate={navigate} themeClasses={themeClasses} />
                   ))}
                 </motion.div>
               ) : (

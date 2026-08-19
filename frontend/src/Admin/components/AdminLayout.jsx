@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { HiOutlineMenu } from "react-icons/hi";
 import { useAdminAuth } from "../context/AdminAuthContext";
 import AdminSidebar from "./AdminSidebar";
@@ -11,8 +12,8 @@ const SIDEBAR_KEY = "nexcode_sidebar_collapsed";
 
 export default function AdminLayout({ children }) {
   const { isAuthenticated, ready, user } = useAdminAuth();
-  const router = useRouter();
-  const pathname = usePathname();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(() => {
     try {
@@ -30,9 +31,9 @@ export default function AdminLayout({ children }) {
 
   useEffect(() => {
     if (ready && !isAuthenticated && pathname !== "/admin/login") {
-      router.replace("/admin/login");
+      navigate("/admin/login");
     }
-  }, [ready, isAuthenticated, pathname, router]);
+  }, [ready, isAuthenticated, pathname, navigate]);
 
   if (!ready) {
     return (

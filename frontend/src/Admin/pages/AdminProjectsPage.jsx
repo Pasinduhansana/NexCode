@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
+import { Link as RRLink } from "react-router-dom";
 import toast from "react-hot-toast";
 import { HiOutlinePlus, HiOutlineSearch, HiOutlineFolder, HiOutlinePencilAlt, HiOutlineTrash, HiOutlineClipboardList, HiOutlineViewList, HiOutlineTemplate } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
@@ -200,9 +200,9 @@ export default function AdminProjectsPage() {
                       <HiOutlineFolder size={18} />
                     </div>
                     <div className="min-w-0">
-                      <Link href={`/admin/projects/${p._id}`} className="block truncate font-display font-bold text-foreground hover:text-primary">
+                      <RRLink to={`/admin/projects/${p._id}`} className="block truncate font-display font-bold text-foreground hover:text-primary">
                         {p.name}
-                      </Link>
+                      </RRLink>
                       <div className="truncate text-xs text-text_muted">{p.client || "No client"}</div>
                     </div>
                   </div>
@@ -249,10 +249,10 @@ export default function AdminProjectsPage() {
                   <span className={due !== null && due < 0 ? "text-rose-500 font-medium" : ""}>
                     {p.dueDate ? `Due ${formatDate(p.dueDate)}` : "No due date"}
                   </span>
-                  <Link href={`/admin/projects/${p._id}`} className="inline-flex items-center gap-1 font-medium text-primary hover:text-primary_hover">
+                  <RRLink to={`/admin/projects/${p._id}`} className="inline-flex items-center gap-1 font-medium text-primary hover:text-primary_hover">
                     <HiOutlineClipboardList size={14} />
                     Manage
-                  </Link>
+                  </RRLink>
                 </div>
               </div>
             );

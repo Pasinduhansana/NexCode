@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { Link as RRLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { HiOutlineArrowLeft, HiOutlinePlus, HiOutlinePencilAlt, HiOutlineTrash, HiOutlineFolder, HiOutlineUser, HiOutlineCalendar, HiOutlineCurrencyDollar, HiOutlineCheck, HiOutlineDocumentText, HiOutlineTag } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
@@ -26,7 +26,7 @@ const PAID_STATUS_META = {
 
 export default function AdminProjectDetailPage() {
   const { id } = useParams();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const [project, setProject] = useState(null);
   const [tasks, setTasks] = useState([]);
@@ -63,7 +63,7 @@ export default function AdminProjectDetailPage() {
     try {
       await adminApi.delete(`/projects/${id}`);
       toast.success("Project deleted");
-      router.replace("/admin/projects");
+      navigate("/admin/projects");
     } catch (err) {
       toast.error(err.response?.data?.error || "Failed to delete project");
       setDeletingLoading(false);

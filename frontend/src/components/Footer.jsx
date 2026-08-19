@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import { Link as RRLink } from "react-router-dom";
 import { FaWhatsapp, FaPhone, FaGlobe } from "react-icons/fa";
 import { useThemeClasses } from "../utils/useThemeClasses";
 import { footerSocialLinks } from "../data/socialLinks";
@@ -29,7 +29,7 @@ export default function Footer() {
             <div className="space-y-4 flex flex-col items-center lg:items-start">
 
               {/* LOGO + BRAND (MOBILE FIXED ROW) */}
-              <Link href="/" className="flex w-full flex-col md:flex-row items-center justify-center lg:justify-start gap-2 lg:gap-3">
+              <RRLink to="/" className="flex w-full flex-col md:flex-row items-center justify-center lg:justify-start gap-2 lg:gap-3">
                 
                 {/* Left: Logo */}
                 <img
@@ -51,7 +51,7 @@ export default function Footer() {
                   </div>
                 </div>
 
-              </Link>
+              </RRLink>
 
               <p className={`max-w-sm text-sm leading-relaxed ${themeClasses.text.secondary}`}>
                 Modern software built with clarity, precision, and a clean responsive experience across every theme.
@@ -99,13 +99,13 @@ export default function Footer() {
               <div className="grid grid-cols-2 gap-2 gap-x-8 md:gap-x-12 justify-center">
 
                 {quickLinks.map((l) => (
-                  <Link
+                  <RRLink
                     key={l.path}
-                    href={l.path}
+                    to={l.path}
                     className={`text-sm ${themeClasses.text.secondary} hover:text-primary transition-colors `}
                   >
-                    <span className="mr-2 ">•</span> {l.label}
-                  </Link>
+                    <span className="mr-2 ">â€¢</span> {l.label}
+                  </RRLink>
                 ))}
 
               </div>
@@ -143,16 +143,16 @@ export default function Footer() {
           <div className="mt-8 pt-5 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
 
             <p className={`text-sm ${themeClasses.text.secondary}`}>
-              © {new Date().getFullYear()} NexCode Software Development. All rights reserved.
+              Â© {new Date().getFullYear()} NexCode Software Development. All rights reserved.
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
-              <Link href="/privacy-policy" className={`${themeClasses.text.secondary} hover:text-primary transition-colors`}>
+              <RRLink to="/privacy-policy" className={`${themeClasses.text.secondary} hover:text-primary transition-colors`}>
                 Privacy Policy
-              </Link>
-              <Link href="/terms-of-service" className={`${themeClasses.text.secondary} hover:text-primary transition-colors`}>
+              </RRLink>
+              <RRLink to="/terms-of-service" className={`${themeClasses.text.secondary} hover:text-primary transition-colors`}>
                 Terms of Service
-              </Link>
+              </RRLink>
             </div>
 
             </div>
@@ -162,3 +162,6 @@ export default function Footer() {
     </footer>
   );
 }
+
+
+

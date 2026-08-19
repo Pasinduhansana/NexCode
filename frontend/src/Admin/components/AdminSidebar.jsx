@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { Link as RRLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { HiOutlineHome, HiOutlineFolder, HiOutlineLogout, HiX, HiGlobeAlt, HiOutlineClipboardList, HiOutlineViewBoards, HiOutlineCurrencyDollar, HiOutlineChevronLeft, HiOutlineChevronRight, HiOutlineSparkles, HiOutlineShieldCheck, HiOutlineChatAlt2, HiOutlineDocumentReport, HiOutlineCalendar } from "react-icons/hi";
 import { useAdminAuth } from "../context/AdminAuthContext";
 
@@ -20,14 +21,14 @@ const allLinks = [
 
 export default function AdminSidebar({ open, onClose, collapsed, onToggleCollapse }) {
   const { user, logout, hasAccess } = useAdminAuth();
-  const router = useRouter();
-  const pathname = usePathname();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const links = allLinks.filter((l) => hasAccess(l.pageId));
 
   const handleLogout = () => {
     logout();
-    router.replace("/admin/login");
+    navigate("/admin/login");
   };
 
   const checkIsActive = (to, end) => {

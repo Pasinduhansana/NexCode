@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { HiOutlineKey, HiOutlineArrowRight } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
@@ -12,12 +12,12 @@ export default function AdminLoginPage() {
   const { login, isAuthenticated, ready } = useAdminAuth();
   const [accessKey, setAccessKey] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const router = useRouter();
+  const navigate = useNavigate();
   usePageTitle("Admin Login");
 
   useEffect(() => {
-    if (ready && isAuthenticated) router.replace("/admin");
-  }, [ready, isAuthenticated, router]);
+    if (ready && isAuthenticated) navigate("/admin");
+  }, [ready, isAuthenticated, navigate]);
 
   if (ready && isAuthenticated) return null;
 
@@ -33,7 +33,7 @@ export default function AdminLoginPage() {
       const { data } = await adminApi.post("/auth/login", { accessKey: accessKey.trim() });
       login(data.token, data.user);
       toast.success(`Welcome back, ${data.user?.name || "Admin"}!`);
-      router.replace("/admin");
+      navigate("/admin");
     } catch (err) {
       toast.error(err.response?.data?.error || "Login failed");
     } finally {

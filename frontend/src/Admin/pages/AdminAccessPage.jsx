@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, Fragment } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import {
   HiOutlinePlus,
@@ -77,7 +77,7 @@ const emptyForm = () => ({
 });
 
 export default function AdminAccessPage() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
@@ -121,9 +121,9 @@ export default function AdminAccessPage() {
   useEffect(() => {
     if (currentUser && !currentUser.superAdmin) {
       toast.error("Access denied");
-      router.replace("/admin");
+      navigate("/admin");
     }
-  }, [currentUser, router]);
+  }, [currentUser, navigate]);
 
   const isCallerSuperAdmin = currentUser?.superAdmin;
 

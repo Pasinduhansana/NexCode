@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link as RRLink } from "react-router-dom";
 import {
   HiOutlinePlus,
   HiOutlineCollection,

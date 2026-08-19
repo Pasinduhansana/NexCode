@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import { Link as RRLink } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
 import Button from "../components/Button";
