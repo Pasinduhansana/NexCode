@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { HiOutlineMenu } from "react-icons/hi";
 import { useAdminAuth } from "../context/AdminAuthContext";
 import AdminSidebar from "./AdminSidebar";
@@ -10,7 +11,7 @@ import Spinner from "./Spinner";
 
 const SIDEBAR_KEY = "nexcode_sidebar_collapsed";
 
-export default function AdminLayout({ children }) {
+export default function AdminLayout() {
   const { isAuthenticated, ready, user } = useAdminAuth();
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -74,7 +75,7 @@ export default function AdminLayout({ children }) {
         )}
 
         <main className="p-4 sm:p-6 lg:p-8">
-          {children}
+          <Outlet />
         </main>
       </div>
     </div>
