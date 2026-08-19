@@ -242,6 +242,34 @@ export default function AdminCalendarPage() {
       .catch(() => {});
   }, []);
 
+  // Vercel's free/Hobby plan does NOT run `crons`, so the server-side scheduler
+  // is a no-op there. As a free-plan-safe replacement, automatically process
+  // due reminders client-side on the same 15-minute cadence while the calendar
+  // is open (the endpoint accepts the admin JWT via adminApi). It runs once
+  // shortly after mount, then on an interval.
+  useEffect(() => {
+    let cancelled = false;
+    const run = async () => {
+      if (cancelled) return;
+      try {
+        const res = await calendarApi.processReminders();
+        const s = res?.summary || {};
+        if (s.sent > 0) {
+          toast.success(`Reminders sent: ${s.sent}${s.failed ? `, ${s.failed} failed` : ""}`);
+        }
+      } catch {
+        // Background failure — keep the page usable; admin can use the button.
+      }
+    };
+    const initial = setTimeout(run, 2000);
+    const interval = setInterval(run, 15 * 60 * 1000);
+    return () => {
+      cancelled = true;
+      clearTimeout(initial);
+      clearInterval(interval);
+    };
+  }, []);
+
   const eventsForDay = useCallback(
     (day) => {
       const start = startOfDay(day).getTime();
