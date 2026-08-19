@@ -1,5 +1,0 @@
-provider: smtp
-from: info@nexcode.lk
-smtp: mail.nexcode.lk : 465
-to: gallagepasinduhansana@gmail.com
---- sending ---

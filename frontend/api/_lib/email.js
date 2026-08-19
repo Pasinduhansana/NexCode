@@ -183,8 +183,13 @@ async function logFallback({ to, subject, text, html }) {
 }
 
 // Resolves the recipient address for a user (used by the reminder scheduler).
-// Falls back to a configured default. Never returns a credential.
+// Preference order:
+//   1. user.gmail  — the per-user Gmail field stored on the user document
+//   2. user.email  — the account's registered email
+//   3. DEFAULT_REMINDER_EMAIL env var (fallback)
+// Never returns a credential.
 export function getUserEmailSafe(user) {
+  if (user && user.gmail && String(user.gmail).includes("@")) return String(user.gmail).trim();
   if (user && user.email && String(user.email).includes("@")) return String(user.email).trim();
   if (process.env.DEFAULT_REMINDER_EMAIL && process.env.DEFAULT_REMINDER_EMAIL.includes("@")) {
     return process.env.DEFAULT_REMINDER_EMAIL;
