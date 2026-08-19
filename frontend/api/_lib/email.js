@@ -15,6 +15,10 @@
 //                     2-Step Verification > App passwords (2SV must be ON).
 //   EMAIL_SMTP_HOST = default "smtp.gmail.com"
 //   EMAIL_SMTP_PORT = default 465 (SSL); use 587 for STARTTLS.
+//   EMAIL_SMTP_REJECT_UNAUTHORIZED = "false" to allow a self-signed server
+//                       certificate (common on cPanel/.lk shared mail hosts).
+//                       Defaults to "true" (secure). Only set "false" if your
+//                       mail host presents an untrusted/self-signed cert.
 //
 // No credentials ever leave the server. The frontend never sees them.
 //
@@ -98,13 +102,14 @@ async function sendWithSmtp({ to, subject, text, html }) {
   const port = Number(process.env.EMAIL_SMTP_PORT || 465);
   const secure = port === 465;
 
+  const rejectUnauthorized = String(process.env.EMAIL_SMTP_REJECT_UNAUTHORIZED || "").trim().toLowerCase() !== "false";
   const nodemailer = (await import("nodemailer")).default;
   const transporter = nodemailer.createTransport({
     host,
     port,
     secure,
     auth: { user, pass },
-    tls: { rejectUnauthorized: true },
+    tls: { rejectUnauthorized },
   });
   await transporter.sendMail({
     from: fromAddress,

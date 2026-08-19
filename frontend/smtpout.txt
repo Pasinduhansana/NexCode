@@ -1,0 +1,5 @@
+host: mail.nexcode.lk port: 465 user: info@nexcode.lk from: info@nexcode.lk
+--- connecting & sending (TLS verification relaxed for test) ---
+--- SENT OK ---
+messageId: <f5162eb1-6209-39a8-08aa-0ba1bff9627b@nexcode.lk>
+accepted: [ 'gallagepasinduhansana@gmail.com' ]
