@@ -23,6 +23,7 @@ import {
   HiOutlineViewBoards,
   HiOutlineClipboardList,
   HiOutlineChevronDown,
+  HiOutlineCalendar,
 } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
 import usePageTitle from "../../utils/usePageTitle";
@@ -37,6 +38,7 @@ const PAGE_OPTIONS = [
   { id: "designer", label: "Designer", icon: HiOutlineSparkles },
   { id: "finance", label: "Finance", icon: HiOutlineCurrencyDollar },
   { id: "reporting", label: "Reporting", icon: HiOutlineDocumentReport },
+  { id: "calendar", label: "Calendar", icon: HiOutlineCalendar },
   { id: "activity", label: "Activity", icon: HiOutlineClipboardList },
   { id: "access", label: "Access", icon: HiOutlineShieldCheck },
   { id: "assistant", label: "Assistant", icon: HiOutlineChatAlt2 },

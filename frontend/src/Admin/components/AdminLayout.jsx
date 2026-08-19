@@ -46,24 +46,31 @@ export default function AdminLayout({ children }) {
     return null;
   }
 
-  return (
-    <div className="min-h-screen bg-background text-foreground">
-      <AdminSidebar
-        open={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        collapsed={collapsed}
-        onToggleCollapse={() => setCollapsed((c) => !c)}
-      />
+  // The login route is a standalone, centered screen — no sidebar or chrome.
+  const isLoginPage = pathname === "/admin/login";
 
-      <div className={`transition-all duration-300 ${collapsed ? "lg:pl-[68px]" : "lg:pl-64"}`}>
-        <button
-          type="button"
-          onClick={() => setSidebarOpen(true)}
-          className="fixed left-4 top-4 z-30 rounded-lg p-2 text-text_secondary hover:bg-muted hover:text-foreground lg:hidden"
-          aria-label="Open menu"
-        >
-          <HiOutlineMenu size={20} />
-        </button>
+  return (
+    <div className="admin-shell min-h-screen bg-background text-foreground">
+      {!isLoginPage && (
+        <AdminSidebar
+          open={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+          collapsed={collapsed}
+          onToggleCollapse={() => setCollapsed((c) => !c)}
+        />
+      )}
+
+      <div className={`transition-all duration-300 ${!isLoginPage && (collapsed ? "lg:pl-[68px]" : "lg:pl-64")}`}>
+        {!isLoginPage && (
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(true)}
+            className="fixed left-4 top-4 z-30 rounded-lg p-2 text-text_secondary hover:bg-muted hover:text-foreground lg:hidden"
+            aria-label="Open menu"
+          >
+            <HiOutlineMenu size={20} />
+          </button>
+        )}
 
         <main className="p-4 sm:p-6 lg:p-8">
           {children}

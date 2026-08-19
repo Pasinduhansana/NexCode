@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 import { getCollection } from "./mongodb.js";
 import { sendCalendarReminder, getUserEmailSafe } from "./email.js";
-import { computeReminderTriggers, utcToZonedParts, EVENT_TYPE_LABELS } from "../calendarLogic.js";
+import { computeReminderTriggers, utcToZonedParts, EVENT_TYPE_LABELS } from "../../lib/calendarLogic.js";
 
 const COLLECTION = "calendarreminders";
 const STATUSES = ["PENDING", "SENDING", "SENT", "FAILED", "CANCELLED"];
@@ -34,24 +34,69 @@ function formatWhen(startAt, timezone) {
   return `${date} at ${time} (${timezone})`;
 }
 
+function accentColorForPriority(payload) {
+  const p = String(payload && payload.priority ? payload.priority : "").toLowerCase();
+  if (p === "high" || p === "urgent") return { pillBg: "#fff1f2", pillText: "#be123c" };
+  if (p === "low") return { pillBg: "#f0fdfa", pillText: "#0f766e" };
+  return { pillBg: "#eef2ff", pillText: "#4338ca" };
+}
+
 function buildEmailContent({ payload }) {
   const title = payload.title || "Calendar event";
   const when = formatWhen(payload.startAt, payload.timezone || "UTC");
   const typeLabel = EVENT_TYPE_LABELS[payload.eventType] || payload.eventType || "Event";
-  const project = payload.projectName ? `\nProject: ${payload.projectName}` : "";
+  const projectName = payload.projectName;
+  const accent = accentColorForPriority(payload);
   const subject = `Reminder: ${title}`;
+  const projectLine = projectName ? `\nProject: ${projectName}` : "";
   const text =
     `NexCode Calendar Reminder\n\n` +
-    `${typeLabel}: ${title}${project}\n` +
+    `${typeLabel}: ${title}${projectLine}\n` +
     `When: ${when}\n\n` +
     `This is an automated reminder from your NexCode calendar.`;
-  const html = `<div style="font-family:Inter,Arial,sans-serif;max-width:480px;margin:0 auto;color:#1f2937">` +
-    `<h2 style="margin:0 0 12px;font-size:18px">${typeLabel} reminder</h2>` +
-    `<p style="margin:0 0 8px;font-size:15px"><strong>${escapeHtml(title)}</strong></p>` +
-    (payload.projectName ? `<p style="margin:0 0 8px;font-size:14px;color:#6b7280">Project: ${escapeHtml(payload.projectName)}</p>` : "") +
-    `<p style="margin:0 0 16px;font-size:14px;color:#374151">When: ${escapeHtml(when)}</p>` +
-    `<hr style="border:none;border-top:1px solid #e5e7eb;margin:16px 0" />` +
-    `<p style="margin:0;font-size:12px;color:#9ca3af">Automated reminder from your NexCode calendar.</p></div>`;
+  const year = new Date().getFullYear();
+  const html =
+    `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f8;padding:32px 12px;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">` +
+      `<tr><td align="center">` +
+        `<table role="presentation" width="560" cellpadding="0" cellspacing="0" style="width:560px;max-width:560px;background:#ffffff;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(15,23,42,0.08);">` +
+          `<tr><td style="background:linear-gradient(135deg,#6d28d9 0%,#4f46e5 50%,#2563eb 100%);padding:26px 32px;">` +
+            `<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>` +
+              `<td style="color:#ffffff;font-size:20px;font-weight:700;letter-spacing:0.5px;">NexCode</td>` +
+              `<td align="right" style="color:rgba(255,255,255,0.85);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;">Calendar · Reminder</td>` +
+            `</tr></table>` +
+          `</td></tr>` +
+          `<tr><td style="padding:32px 32px 8px;">` +
+            `<table role="presentation" cellpadding="0" cellspacing="0" style="margin-bottom:14px;"><tr>` +
+              `<td style="background:${accent.pillBg};color:${accent.pillText};font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:6px 14px;border-radius:999px;">${escapeHtml(typeLabel)}</td>` +
+            `</tr></table>` +
+            `<h1 style="margin:0 0 6px;font-size:24px;line-height:1.3;color:#0f172a;font-weight:700;">${escapeHtml(title)}</h1>` +
+            (projectName ? `<p style="margin:0 0 18px;font-size:15px;color:#64748b;">&#128193; ${escapeHtml(projectName)}</p>` : `<div style="height:10px;"></div>`) +
+          `</td></tr>` +
+          `<tr><td style="padding:0 32px 28px;">` +
+            `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;border:1px solid #eef2f7;border-radius:14px;">` +
+              `<tr><td style="padding:18px 20px;">` +
+                `<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>` +
+                  `<td width="34" valign="top" style="font-size:22px;line-height:1;">&#128338;</td>` +
+                  `<td valign="top">` +
+                    `<div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#94a3b8;margin-bottom:4px;">When</div>` +
+                    `<div style="font-size:16px;font-weight:600;color:#0f172a;line-height:1.4;">${escapeHtml(when)}</div>` +
+                  `</td>` +
+                `</tr></table>` +
+              `</td></tr>` +
+            `</table>` +
+          `</td></tr>` +
+          `<tr><td style="background:#0f172a;padding:20px 32px;">` +
+            `<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>` +
+              `<td style="color:#94a3b8;font-size:12px;line-height:1.5;">This is an automated reminder from your NexCode calendar.<br/>You received this because a reminder was set on one of your events.</td>` +
+              `<td align="right" style="color:#e2e8f0;font-size:13px;font-weight:700;white-space:nowrap;">NexCode</td>` +
+            `</tr></table>` +
+          `</td></tr>` +
+        `</table>` +
+        `<table role="presentation" width="560" cellpadding="0" cellspacing="0"><tr>` +
+          `<td align="center" style="padding:16px;font-size:11px;color:#94a3b8;">&copy; ${year} NexCode. All rights reserved.</td>` +
+        `</tr></table>` +
+      `</td></tr>` +
+    `</table>`;
   return { subject, text, html };
 }
 

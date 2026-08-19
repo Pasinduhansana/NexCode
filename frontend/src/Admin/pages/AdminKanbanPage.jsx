@@ -23,6 +23,8 @@ import TaskDetailModal from "../components/TaskDetailModal";
 import ConfirmDialog from "../components/ConfirmDialog";
 import KanbanGantt from "../components/KanbanGantt";
 import { TASK_STATUSES } from "../data/constants";
+import { usePagination } from "../hooks/usePagination";
+import Pagination from "../components/Pagination";
 
 export default function AdminKanbanPage() {
   const [data, setData] = useState({ projects: [], tasks: [] });
@@ -96,6 +98,8 @@ export default function AdminKanbanPage() {
       .filter((t) => visibleProjectIds.has(String(t.projectId)))
       .sort((a, b) => (a.order || 0) - (b.order || 0));
   }, [data, visibleProjectIds]);
+
+  const { page, setPage, pageSize, setPageSize, total, slice: pagedTasks } = usePagination(visibleTasks);
 
   const handleStatusChange = async (task, status) => {
     const previous = data.tasks;
@@ -298,7 +302,7 @@ export default function AdminKanbanPage() {
         )
       ) : view === "table" ? (
         <TaskTableView
-          tasks={visibleTasks}
+          tasks={pagedTasks}
           projects={data.projects || []}
           onEdit={openEdit}
           onDelete={setDeleting}
@@ -308,6 +312,16 @@ export default function AdminKanbanPage() {
         />
       ) : (
         <KanbanGantt projects={data.projects || []} zoom={zoom} setZoom={setZoom} onEditTask={openEdit} />
+      )}
+
+      {view === "table" && visibleTasks.length > 0 && (
+        <Pagination
+          page={page}
+          pageSize={pageSize}
+          total={total}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+        />
       )}
 
       <TaskFormModal

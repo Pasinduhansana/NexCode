@@ -16,6 +16,8 @@ import AdminProjectTableView from "../components/AdminProjectTableView";
 import { PROJECT_STATUSES } from "../data/constants";
 import PremiumSelect from "../components/PremiumSelect";
 import { formatDate, daysUntil } from "../utils/date";
+import { usePagination } from "../hooks/usePagination";
+import Pagination from "../components/Pagination";
 
 export default function AdminProjectsPage() {
   const [projects, setProjects] = useState([]);
@@ -65,6 +67,8 @@ export default function AdminProjectsPage() {
       return matchesSearch && matchesStatus;
     });
   }, [projects, search, statusFilter]);
+
+  const { page, setPage, pageSize, setPageSize, total, slice: paged } = usePagination(filtered);
 
   const handleDelete = async () => {
     if (!deleting) return;
@@ -174,7 +178,7 @@ export default function AdminProjectsPage() {
         />
       ) : viewMode === "table" ? (
         <AdminProjectTableView
-          projects={filtered}
+          projects={paged}
           onEdit={(p) => {
             setEditing(p);
             setFormOpen(true);
@@ -183,7 +187,7 @@ export default function AdminProjectsPage() {
         />
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((p) => {
+          {paged.map((p) => {
             const due = daysUntil(p.dueDate);
             return (
               <div key={String(p._id)} className="group flex flex-col rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:shadow-md">
@@ -254,6 +258,16 @@ export default function AdminProjectsPage() {
             );
           })}
         </div>
+      )}
+
+      {filtered.length > 0 && (
+        <Pagination
+          page={page}
+          pageSize={pageSize}
+          total={total}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+        />
       )}
 
       <ProjectFormModal

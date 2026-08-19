@@ -24,6 +24,8 @@ import SettlementSummary from "../components/SettlementSummary";
 import { MonthlyBars, CategoryBreakdown } from "../components/FinanceCharts";
 import PremiumSelect from "../components/PremiumSelect";
 import { formatDate } from "../utils/date";
+import { usePagination } from "../hooks/usePagination";
+import Pagination from "../components/Pagination";
 
 const TYPE_META = {
   income: { label: "Income", badge: "bg-emerald-500/10 text-emerald-500 border-emerald-500/30", dot: "bg-emerald-400" },
@@ -100,6 +102,8 @@ export default function AdminFinancePage() {
       return matchesType && matchesSearch;
     });
   }, [rows, search, typeFilter, projectName]);
+
+  const { page, setPage, pageSize, setPageSize, total, slice: paged } = usePagination(filtered);
 
   const handleDelete = async () => {
     if (!deleting) return;
@@ -259,7 +263,8 @@ export default function AdminFinancePage() {
             }
           />
         ) : (
-          <div className="overflow-x-auto">
+          <>
+            <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border text-left text-xs uppercase tracking-wider text-text_muted">
@@ -275,7 +280,7 @@ export default function AdminFinancePage() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((r) => {
+                {paged.map((r) => {
                   const meta = TYPE_META[r.type] || TYPE_META.income;
                   const amount = Number(r.amount || 0);
                   return (
@@ -343,6 +348,14 @@ export default function AdminFinancePage() {
               </tbody>
             </table>
           </div>
+          <Pagination
+            page={page}
+            pageSize={pageSize}
+            total={total}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+          />
+          </>
         )}
       </div>
 

@@ -8,6 +8,8 @@ import usePageTitle from "../../utils/usePageTitle";
 import Spinner from "../components/Spinner";
 import EmptyState from "../components/EmptyState";
 import PremiumSelect from "../components/PremiumSelect";
+import { usePagination } from "../hooks/usePagination";
+import Pagination from "../components/Pagination";
 
 const ACTION_META = {
   login: { label: "Signed in", badge: "bg-primary/10 text-primary border-primary/30" },
@@ -70,6 +72,8 @@ export default function AdminActivityPage() {
     [activities, userFilter]
   );
 
+  const { page, setPage, pageSize, setPageSize, total, slice: paged } = usePagination(filtered);
+
   const handleRefresh = async () => {
     setRefreshing(true);
     await fetchActivities();
@@ -123,19 +127,20 @@ export default function AdminActivityPage() {
           description="Actions like creating projects, adding tasks, and signing in will appear here."
         />
       ) : (
-        <div className="rounded-2xl border border-border bg-card">
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[560px] text-left text-sm">
-              <thead>
-                <tr className="border-b border-border text-xs uppercase tracking-wider text-text_muted">
-                  <th className="py-3 pl-5 pr-4 font-medium">User</th>
-                  <th className="py-3 pr-4 font-medium">Action</th>
-                  <th className="py-3 pr-4 font-medium">Details</th>
-                  <th className="py-3 pr-5 font-medium">When</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((a) => {
+        <>
+          <div className="rounded-2xl border border-border bg-card">
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[560px] text-left text-sm">
+                <thead>
+                  <tr className="border-b border-border text-xs uppercase tracking-wider text-text_muted">
+                    <th className="py-3 pl-5 pr-4 font-medium">User</th>
+                    <th className="py-3 pr-4 font-medium">Action</th>
+                    <th className="py-3 pr-4 font-medium">Details</th>
+                    <th className="py-3 pr-5 font-medium">When</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paged.map((a) => {
                   const meta = ACTION_META[a.action] || { label: a.action, badge: "bg-muted text-text_secondary border-border" };
                   return (
                     <tr key={String(a._id)} className="border-b border-border/60 last:border-0 hover:bg-muted/40">
@@ -164,6 +169,14 @@ export default function AdminActivityPage() {
             </table>
           </div>
         </div>
+        <Pagination
+          page={page}
+          pageSize={pageSize}
+          total={total}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+        />
+        </>
       )}
     </div>
   );
