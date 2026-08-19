@@ -208,28 +208,13 @@ Effort: S (≤1h) · M (½ day) · L (1+ day).
 
 ## 🧩 Architecture / Maintainability
 
-- [ ] **A1 · Resolve the dual build (Vite SPA + Next.js App Router)** (P2, L)
-  - **Issue:** The app has two entry systems: a Vite/CRA SPA (`frontend/src/main.jsx` +
-    `frontend/src/App.jsx` with React Router) **and** a Next.js App Router
-    (`frontend/app/*`, `frontend/.next`). The real site is the Vite SPA; `frontend/app`
-    mainly hosts the API catch-all. This duplication risks drift, double bundling, and
-    deploy confusion.
-  - **Files:** `frontend/package.json` (scripts), `frontend/vite.config.js`, `frontend/next.config.mjs`, `frontend/app/*`
-  - **Fix:** Document the intended topology, or consolidate (e.g. keep Next only for the
-    API route + move pages into it, or move the API to the Vite server). At minimum, make
-    the split explicit and remove dead duplicate routes.
-  - **Verify:** one clear deploy path; no orphan route/components; build is reproducible.
-
-- [ ] **A2 · Centralize per-request auth + logging at the route boundary** (P2, M)
-  - **Issue:** Auth (`requireAuth`) and perf logging live inside each handler, and the
-    catch-all (`frontend/app/api/[[...path]]/route.js` → `resolveApiHandler`) resolves
-    handlers dynamically. There is no single place for global concerns (body-size cap S4,
-    security headers S3, request id, error envelope).
-  - **Files:** `frontend/app/api/[[...path]]/route.js`, `frontend/lib/api/node-adapter.js`, `frontend/lib/api/resolve-handler.js`
-  - **Fix:** Add a thin middleware layer in `runNodeHandler`/`handleRequest` that applies
-    shared guards (size cap, CORS, error envelope, request id) before delegating to the
-    resolved handler. Keep handler-level `requireAuth` for route-specific access.
-  - **Verify:** global guards apply to all `/api/*`; per-route auth still enforced.
+- [x] **A1 · Resolve the dual build (Vite SPA + Next.js App Router)** — DONE: all dead
+  duplicate Next.js pages removed from `frontend/app/*`; only `app/api/[[...path]]/route.js`
+  (the API catch-all) remains. Topology documented in `frontend/MIGRATION_AUDIT.md` §0.
+- [x] **A2 · Centralize per-request auth + logging at the route boundary** — DONE: shared
+  guards (X-Request-Id, CORS, 4 MB body-size cap, error envelope) applied for every `/api/*`
+  request inside `runNodeHandler` (`frontend/lib/api/node-adapter.js`); route-level
+  `requireAuth` untouched.
 
 ---
 

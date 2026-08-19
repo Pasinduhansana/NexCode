@@ -1,5 +1,24 @@
 # NexCode React → Next.js Migration Audit (Phase 1)
 
+## 0. Current Deployment Topology (final decision)
+
+The app uses **two build systems with a single, explicit responsibility split**:
+
+- **Vite SPA** (`src/main.jsx` → `src/App.jsx`, react-router) is the **entire site UI** —
+  all public pages and the admin panel. It is built with `vite build` into `dist/`,
+  and `vercel.json` rewrites every non-`/api` path to `dist/index.html`.
+- **Next.js App Router** (`frontend/app`) is used **only** for the serverless API.
+  The sole live file is `frontend/app/api/[[...path]]/route.js`, which forwards
+  `/api/*` to the legacy `api/**` handlers via `lib/api/resolve-handler.js`.
+
+The older duplicate Next.js pages (the `app/*` routes that mirrored the SPA) were
+removed — they were never served (vercel.json routes them to the SPA) and caused
+double-bundling / deploy confusion. `next/shims` (vite.config.js) map `next/link`
+and `next/navigation` to react-router so the SPA runs without the Next runtime.
+
+> Note: `next.config.mjs` and the `next` dependency remain because the API route
+> handler (`route.js`) imports `next/server`. Keep them.
+
 ## 1. Existing React entry point
 
 | Item | Location |
