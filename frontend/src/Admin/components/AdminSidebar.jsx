@@ -1,6 +1,6 @@
 "use client";
 
-import { Link as RRLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { HiOutlineHome, HiOutlineFolder, HiOutlineLogout, HiX, HiGlobeAlt, HiOutlineClipboardList, HiOutlineViewBoards, HiOutlineCurrencyDollar, HiOutlineChevronLeft, HiOutlineChevronRight, HiOutlineSparkles, HiOutlineShieldCheck, HiOutlineChatAlt2, HiOutlineDocumentReport, HiOutlineCalendar } from "react-icons/hi";
@@ -71,7 +71,7 @@ export default function AdminSidebar({ open, onClose, collapsed, onToggleCollaps
             return (
               <Link
                 key={to}
-                href={to}
+                to={to}
                 onClick={onClose}
                 className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
                   isActive
@@ -96,7 +96,7 @@ export default function AdminSidebar({ open, onClose, collapsed, onToggleCollaps
 
         <div className="border-t border-border px-3 py-4">
           <Link
-            href="/"
+            to="/"
             className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-text_secondary hover:bg-muted hover:text-foreground"
           >
             <HiGlobeAlt size={18} />
@@ -152,7 +152,7 @@ export default function AdminSidebar({ open, onClose, collapsed, onToggleCollaps
             return (
               <Link
                 key={to}
-                href={to}
+                to={to}
                 title={collapsed ? label : undefined}
                 className={`flex items-center gap-3 rounded-xl text-sm font-medium transition-colors ${
                   collapsed ? "justify-center px-2 py-2.5" : "px-3 py-2.5"
@@ -191,7 +191,7 @@ export default function AdminSidebar({ open, onClose, collapsed, onToggleCollaps
           {!collapsed ? (
             <>
               <Link
-                href="/"
+                to="/"
                 className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-text_secondary hover:bg-muted hover:text-foreground"
               >
                 <HiGlobeAlt size={18} />
@@ -209,7 +209,7 @@ export default function AdminSidebar({ open, onClose, collapsed, onToggleCollaps
           ) : (
             <>
               <Link
-                href="/"
+                to="/"
                 title="View Site"
                 className="flex justify-center rounded-xl px-2 py-2.5 text-text_secondary hover:bg-muted hover:text-foreground"
               >

@@ -84,7 +84,7 @@ export default function AdminProjectTableView({ projects, onEdit, onDelete }) {
                   <td className="px-3 py-2.5 text-right">
                     <div className="flex items-center justify-end gap-1">
                       <RRLink
-                        href={`/admin/projects/${p._id}`}
+                        to={`/admin/projects/${p._id}`}
                         className="rounded-lg p-1.5 text-text_muted hover:bg-muted hover:text-foreground"
                         title="View details"
                       >

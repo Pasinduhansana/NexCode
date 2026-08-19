@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 import { getCollection } from "./mongodb.js";
 import { sendCalendarReminder, getUserEmailSafe } from "./email.js";
-import { computeReminderTriggers, utcToZonedParts, EVENT_TYPE_LABELS } from "../../lib/calendarLogic.js";
+import { computeReminderTriggers, utcToZonedParts, EVENT_TYPE_LABELS } from "../../calendarLogic.js";
 
 const COLLECTION = "calendarreminders";
 const STATUSES = ["PENDING", "SENDING", "SENT", "FAILED", "CANCELLED"];

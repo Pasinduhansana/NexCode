@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Link as RRLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { HiOutlineArrowLeft, HiOutlinePlus, HiOutlinePencilAlt, HiOutlineTrash, HiOutlineFolder, HiOutlineUser, HiOutlineCalendar, HiOutlineCurrencyDollar, HiOutlineCheck, HiOutlineDocumentText, HiOutlineTag } from "react-icons/hi";
@@ -118,7 +118,7 @@ export default function AdminProjectDetailPage() {
 
   return (
     <div className="space-y-6">
-      <Link href="/admin/projects" className="inline-flex items-center gap-1.5 text-sm font-medium text-text_secondary hover:text-primary">
+      <Link to="/admin/projects" className="inline-flex items-center gap-1.5 text-sm font-medium text-text_secondary hover:text-primary">
         <HiOutlineArrowLeft size={15} />
         Back to projects
       </Link>

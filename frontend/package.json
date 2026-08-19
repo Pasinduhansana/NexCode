@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently -n api,web -c blue,green \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:web": "vite",
+    "dev:api": "node scripts/dev-api-server.js",
     "build": "vite build",
     "start": "vite preview",
     "test": "node --experimental-test-module-mocks --test \"tests/*.test.js\""

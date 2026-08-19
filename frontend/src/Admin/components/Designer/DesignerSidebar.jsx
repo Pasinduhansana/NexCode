@@ -1,6 +1,6 @@
 "use client";
 
-import { Link as RRLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   HiOutlinePlus,
   HiOutlineCollection,
@@ -116,7 +116,7 @@ export default function DesignerSidebar({
 
       <div className="border-t border-border p-3">
         <Link
-          href="/admin/assistant"
+          to="/admin/assistant"
           className="flex items-start gap-2.5 rounded-xl border border-primary/20 bg-primary/5 px-3 py-3 transition-colors hover:bg-primary/10"
         >
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">

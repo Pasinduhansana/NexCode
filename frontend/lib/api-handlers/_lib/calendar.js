@@ -12,7 +12,7 @@ import {
   expandDateRange,
   isEventEligibleForReminders,
   defaultReminderLeads,
-} from "../../lib/calendarLogic.js";
+} from "../../calendarLogic.js";
 import { syncEventReminders, deleteEventReminders } from "./reminders.js";
 
 const COLLECTION = "calendarevents";
