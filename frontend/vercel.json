@@ -26,11 +26,5 @@
         { "key": "Cache-Control", "value": "public, max-age=86400" }
       ]
     }
-  ],
-  "crons": [
-    {
-      "path": "/api/calendar/reminders/process",
-      "schedule": "*/15 * * * *"
-    }
   ]
 }
