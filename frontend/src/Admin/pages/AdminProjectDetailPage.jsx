@@ -109,6 +109,7 @@ export default function AdminProjectDetailPage() {
   };
 
   if (loading) return <Spinner label="Loading project..." />;
+  if (!project) return null;
 
   const due = daysUntil(project.dueDate);
   const taskCountByStatus = (status) => tasks.filter((t) => t.status === status).length;

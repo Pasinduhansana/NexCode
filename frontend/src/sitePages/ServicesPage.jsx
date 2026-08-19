@@ -431,7 +431,7 @@ export default function ServicesPage() {
                     </div>
 
                     <Button
-                      varient="primary"
+                      variant="primary"
                       rightIcon={<HiChevronRight size={20} />}
                       onClick={() => setSelected(svc)}
                       style={{

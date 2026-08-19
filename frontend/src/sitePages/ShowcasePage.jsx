@@ -520,7 +520,7 @@ export default function ShowcasePage() {
                       {/* CTA link to detailed case page */}
                       <div className="px-6 sm:px-16 md:px-0">
                         <Button
-                          varient="primary"
+                          variant="primary"
                           rightIcon={<HiChevronRight size={20} />}
                           onClick={() => router.push(`/showcase/${proj.slug}`)}
                           style={{

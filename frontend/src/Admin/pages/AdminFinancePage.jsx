@@ -192,8 +192,8 @@ export default function AdminFinancePage() {
             Expenses by Person
           </h3>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            {summary.byPaidBy.map((p) => (
-              <div key={p.name} className="flex items-center gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3">
+            {summary.byPaidBy.map((p, i) => (
+              <div key={`${p.name}-${i}`} className="flex items-center gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3">
                 <div className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold text-white ${PAID_BY_COLORS[p.name] || "bg-gray-400"}`}>
                   {p.name[0]}
                 </div>

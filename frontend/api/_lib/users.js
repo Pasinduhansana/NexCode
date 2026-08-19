@@ -25,12 +25,14 @@ export function compareKey(key, hash) {
 
 export async function getAllUsers() {
   const col = await getCollection("users");
-  return col.find({}, { projection: { keyHash: 0 } }).sort({ createdAt: 1 }).toArray();
+  const users = await col.find({}, { projection: { keyHash: 0 } }).sort({ createdAt: 1 }).toArray();
+  return users.map((u) => ({ ...u, id: u._id }));
 }
 
 export async function getUserById(id) {
   const col = await getCollection("users");
-  return col.findOne({ _id: id }, { projection: { keyHash: 0 } });
+  const user = await col.findOne({ _id: id }, { projection: { keyHash: 0 } });
+  return user ? { ...user, id: user._id } : null;
 }
 
 export async function getUserByCredentials(accessKey) {
@@ -58,7 +60,7 @@ export async function createUser({ id, name, accessKey, access }) {
   };
   await col.insertOne(doc);
   const { keyHash, ...safe } = doc;
-  return safe;
+  return { ...safe, id: doc._id };
 }
 
 export async function updateUser(id, updates) {

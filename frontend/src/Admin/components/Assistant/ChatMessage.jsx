@@ -130,14 +130,14 @@ function ChatMessage({ message, onConfirmPlan, onModifyPlan, planCreating }) {
         />
         {tools.length > 0 && (
           <div className="mt-1.5 flex flex-wrap gap-1.5">
-            {tools.map((tool) => {
+            {tools.map((tool, idx) => {
               const label = TOOL_LABELS[tool.name] || tool.name;
               const detail = tool.ok
                 ? `${label} — completed`
                 : `${label} — ${tool.status === "duplicate" ? "already handled" : "failed"}`;
               return (
                 <span
-                  key={tool.name}
+                  key={`${tool.name}-${idx}`}
                   title={detail}
                   className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-medium ${
                     tool.ok

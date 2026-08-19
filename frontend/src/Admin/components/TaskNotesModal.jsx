@@ -1,16 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HiX, HiPencil, HiCheck } from "react-icons/hi";
 
 export default function TaskNotesModal({ open, task, onClose, onSave }) {
-  const [text, setText] = useState(task?.notes || "");
+  const [text, setText] = useState("");
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (open) setText(task?.notes || "");
+  }, [open, task]);
 
   if (!open) return null;
 
   const handleSave = async () => {
     setSaving(true);
-    await onSave(text.trim());
-    setSaving(false);
+    try {
+      await onSave(text.trim());
+    } catch {
+      // parent handler surfaces the error via toast
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (

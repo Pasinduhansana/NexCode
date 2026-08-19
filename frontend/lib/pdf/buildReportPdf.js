@@ -25,7 +25,7 @@ const COVER_TYPES = new Set(["proposal", "manual", "other"]);
 function paragraph(flow, text) {
   const { doc } = flow;
   const lines = doc.wrapText(String(text || ""), flow.width, T.sizes.body);
-  const height = lines.length * T.sizes.body * 1.3 + 4;
+  const height = lines.length * T.sizes.body * 1.22 + 3;
   flow.ensure(height);
   doc.font(T.type.body, T.sizes.body).fillColor(T.brand.ink);
   doc.text(String(text || ""), flow.left, flow.y, {
@@ -226,8 +226,6 @@ export function buildReportPdf(report) {
 
   if (COVER_TYPES.has(type)) {
     drawCoverPage(flow, coverMeta);
-    flow.newPage();
-  } else {
     flow.newPage();
   }
 

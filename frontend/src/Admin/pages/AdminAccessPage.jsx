@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import {
@@ -9,7 +9,6 @@ import {
   HiOutlineUser,
   HiOutlineTrash,
   HiOutlineKey,
-  HiOutlinePencilAlt,
   HiOutlineX,
   HiOutlineCheck,
   HiOutlineLockClosed,
@@ -17,12 +16,13 @@ import {
   HiOutlineFolder,
   HiOutlineCurrencyDollar,
   HiOutlineChartBar,
-  HiOutlineViewBoards,
-  HiOutlineClipboardList,
   HiOutlineSparkles,
   HiOutlineHome,
   HiOutlineChatAlt2,
   HiOutlineDocumentReport,
+  HiOutlineViewBoards,
+  HiOutlineClipboardList,
+  HiOutlineChevronDown,
 } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
 import usePageTitle from "../../utils/usePageTitle";
@@ -87,7 +87,11 @@ export default function AdminAccessPage() {
   const [newPassword, setNewPassword] = useState("");
   const [deleting, setDeleting] = useState(null);
   const [deletingLoading, setDeletingLoading] = useState(false);
+  const [expanded, setExpanded] = useState({});
   usePageTitle("Access");
+
+  const toggleExpand = (id) =>
+    setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
 
   const fetchUsers = async () => {
     try {
@@ -204,6 +208,10 @@ export default function AdminAccessPage() {
 
   if (loading) return <Spinner label="Loading users..." />;
 
+  const cellBase =
+    "block px-4 py-3 align-top border-b border-border md:table-cell md:border-b-0 md:border-r md:border-border md:last:border-r-0 " +
+    "before:mb-1.5 before:block before:text-[10px] before:font-semibold before:uppercase before:tracking-wider before:text-text_muted before:content-[attr(data-label)] md:before:hidden";
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -278,195 +286,216 @@ export default function AdminAccessPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-4">
-        {users.map((u) => {
-          const isSuper = u.superAdmin;
-          const isMe = u.id === currentUser?.id;
-          const pages = u.access?.pages || [];
-          const dashComps = u.access?.dashboardComponents || [];
-          const expenseAcc = u.access?.expenseAccess || "none";
-          const projAccess = u.access?.projectAccess || "all";
+      <div className="overflow-x-auto rounded-2xl border border-border bg-card">
+        <table className="w-full text-sm md:min-w-[760px]">
+          <thead className="hidden bg-muted/40 md:table-header-group">
+            <tr>
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text_muted">User</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text_muted">Page Access</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text_muted">Dashboard</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text_muted">Project Access</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text_muted">Expense Access</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text_muted">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((u) => {
+              const isSuper = u.superAdmin;
+              const isMe = u.id === currentUser?.id;
+              const pages = u.access?.pages || [];
+              const dashComps = u.access?.dashboardComponents || [];
+              const expenseAcc = u.access?.expenseAccess || "none";
+              const projAccess = u.access?.projectAccess || "all";
 
-          return (
-            <div key={u.id} className={`rounded-2xl border bg-card p-5 transition-all ${isSuper ? "border-primary/30 shadow-sm" : "border-border"}`}>
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-start">
-                {/* User Info */}
-                <div className="flex items-center gap-3 lg:w-48 shrink-0">
-                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-bold text-white ${isSuper ? "bg-primary" : "bg-muted text-foreground"}`}>
-                    {isSuper ? <HiOutlineShieldCheck size={18} /> : u.name[0]}
-                  </div>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="truncate font-display font-bold text-foreground">{u.name}</span>
-                      {isSuper && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
-                          <HiOutlineShieldCheck size={10} />
-                          Super Admin
-                        </span>
-                      )}
-                      {isMe && (
-                        <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-500">
-                          You
-                        </span>
-                      )}
-                    </div>
-                    <div className="text-xs text-text_muted">@{u.id}</div>
-                  </div>
-                </div>
+              const isOpen = expanded[u.id];
+              const detailCls = isOpen ? "" : "max-md:hidden";
 
-                {/* Access Config */}
-                <div className="flex-1 space-y-4">
-                  {/* Page Access */}
-                  <div>
-                    <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-text_muted">
-                      <HiOutlineGlobeAlt size={12} />
-                      Page Access
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {PAGE_OPTIONS.map((p) => {
-                        const has = pages.includes(p.id);
-                        const locked = isSuper || (isMe && p.id === "access");
-                        return (
-                          <button
-                            key={p.id}
-                            type="button"
-                            disabled={locked}
-                            onClick={() => !locked && togglePage(u.id, p.id)}
-                            className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
-                              has
-                                ? "bg-primary/10 text-primary border border-primary/20"
-                                : "bg-muted text-text_secondary border border-transparent hover:border-border"
-                            } ${locked ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}`}
-                          >
-                            <p.icon size={12} />
-                            {p.label}
-                            {has && <HiOutlineCheck size={10} />}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Dashboard Components */}
-                  {pages.includes("dashboard") && (
-                    <div>
-                      <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-text_muted">
-                        <HiOutlineChartBar size={12} />
-                        Dashboard Components
+              return (
+                <Fragment key={u.id}>
+                  <tr className="block border-b border-border last:border-0 md:table-row md:border-0">
+                    {/* User */}
+                    <td data-label="User" className={cellBase}>
+                      <div className="flex items-center gap-3">
+                        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-bold text-white ${isSuper ? "bg-primary" : "bg-muted text-foreground"}`}>
+                          {isSuper ? <HiOutlineShieldCheck size={18} /> : u.name[0]}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="truncate font-display font-bold text-foreground">{u.name}</span>
+                            {isSuper && (
+                              <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
+                                <HiOutlineShieldCheck size={10} />
+                                Super Admin
+                              </span>
+                            )}
+                            {isMe && (
+                              <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-500">
+                                You
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-xs text-text_muted">@{u.id}</div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => toggleExpand(u.id)}
+                          aria-label={isOpen ? "Collapse row" : "Expand row"}
+                          aria-expanded={isOpen}
+                          className="shrink-0 rounded-lg p-1.5 text-text_secondary hover:bg-muted md:hidden"
+                        >
+                          <HiOutlineChevronDown size={18} className={`transition-transform ${isOpen ? "rotate-180" : ""}`} />
+                        </button>
                       </div>
+                    </td>
+
+                    {/* Page Access */}
+                    <td data-label="Page Access" className={`${cellBase} ${detailCls}`}>
                       <div className="flex flex-wrap gap-1.5">
-                        {DASHBOARD_COMPONENTS.map((c) => {
-                          const has = dashComps.includes(c.id);
+                        {PAGE_OPTIONS.map((p) => {
+                          const has = pages.includes(p.id);
+                          const locked = isSuper || (isMe && p.id === "access");
                           return (
                             <button
-                              key={c.id}
+                              key={p.id}
                               type="button"
-                              disabled={isSuper}
-                              onClick={() => !isSuper && toggleDashboardComponent(u.id, c.id)}
-                              className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
+                              disabled={locked}
+                              onClick={() => !locked && togglePage(u.id, p.id)}
+                              className={`inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium transition-all ${
                                 has
-                                  ? "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
+                                  ? "bg-primary/10 text-primary border border-primary/20"
                                   : "bg-muted text-text_secondary border border-transparent hover:border-border"
-                              } ${isSuper ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}`}
+                              } ${locked ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}`}
                             >
-                              {c.label}
-                              {has && <HiOutlineCheck size={10} />}
+                              <p.icon size={11} />
+                              {p.label}
+                              {has && <HiOutlineCheck size={9} />}
                             </button>
                           );
                         })}
                       </div>
-                    </div>
-                  )}
+                    </td>
 
-                  {/* Project & Expense Access */}
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <div>
-                      <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-text_muted">
-                        <HiOutlineFolder size={12} />
-                        Project Access
-                      </div>
+                    {/* Dashboard Components */}
+                    <td data-label="Dashboard" className={`${cellBase} ${detailCls}`}>
+                      {pages.includes("dashboard") ? (
+                        <div className="flex flex-wrap gap-1.5">
+                          {DASHBOARD_COMPONENTS.map((c) => {
+                            const has = dashComps.includes(c.id);
+                            return (
+                              <button
+                                key={c.id}
+                                type="button"
+                                disabled={isSuper}
+                                onClick={() => !isSuper && toggleDashboardComponent(u.id, c.id)}
+                                className={`inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium transition-all ${
+                                  has
+                                    ? "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
+                                    : "bg-muted text-text_secondary border border-transparent hover:border-border"
+                                } ${isSuper ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}`}
+                              >
+                                {c.label}
+                                {has && <HiOutlineCheck size={9} />}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <span className="text-xs text-text_muted">—</span>
+                      )}
+                    </td>
+
+                    {/* Project Access */}
+                    <td data-label="Project Access" className={`${cellBase} ${detailCls}`}>
                       <PremiumSelect
                         value={projAccess}
                         onChange={(val) => !isSuper && handleUpdateAccess(u.id, { ...u.access, projectAccess: val })}
                         options={PROJECT_ACCESS_OPTIONS}
                         compact
-                        className="max-w-[180px]"
+                        className="w-full max-w-[170px]"
                       />
-                    </div>
-                    <div>
-                      <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-text_muted">
-                        <HiOutlineCurrencyDollar size={12} />
-                        Expense Access
-                      </div>
+                    </td>
+
+                    {/* Expense Access */}
+                    <td data-label="Expense Access" className={`${cellBase} ${detailCls}`}>
                       <PremiumSelect
                         value={expenseAcc}
                         onChange={(val) => !isSuper && handleUpdateAccess(u.id, { ...u.access, expenseAccess: val })}
                         options={EXPENSE_ACCESS_OPTIONS}
                         compact
-                        className="max-w-[180px]"
+                        className="w-full max-w-[170px]"
                       />
-                    </div>
-                  </div>
-                </div>
+                    </td>
 
-                {/* Actions */}
-                {isCallerSuperAdmin && (
-                  <div className="flex gap-1.5 lg:flex-col shrink-0">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setShowPassword(u.id);
-                        setNewPassword("");
-                      }}
-                      className="rounded-lg border border-border p-2 text-text_secondary hover:bg-muted hover:text-foreground"
-                      title="Change password"
-                    >
-                      <HiOutlineKey size={15} />
-                    </button>
-                    {!isSuper && (
-                      <button
-                        type="button"
-                        onClick={() => setDeleting(u)}
-                        className="rounded-lg border border-border p-2 text-text_secondary hover:bg-rose-500/10 hover:text-rose-500"
-                        title="Delete user"
-                      >
-                        <HiOutlineTrash size={15} />
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
+                    {/* Actions */}
+                    <td data-label="Actions" className={`${cellBase} ${detailCls}`}>
+                      {isCallerSuperAdmin ? (
+                        <div className="flex gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setShowPassword(u.id);
+                              setNewPassword("");
+                            }}
+                            className="rounded-lg border border-border p-2 text-text_secondary hover:bg-muted hover:text-foreground"
+                            title="Change password"
+                          >
+                            <HiOutlineKey size={15} />
+                          </button>
+                          {!isSuper && (
+                            <button
+                              type="button"
+                              onClick={() => setDeleting(u)}
+                              className="rounded-lg border border-border p-2 text-text_secondary hover:bg-rose-500/10 hover:text-rose-500"
+                              title="Delete user"
+                            >
+                              <HiOutlineTrash size={15} />
+                            </button>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-xs text-text_muted">—</span>
+                      )}
+                    </td>
+                  </tr>
 
-              {/* Password Change */}
-              {showPassword === u.id && (
-                <div className="mt-4 flex items-center gap-2 rounded-xl border border-border bg-muted/40 p-3">
-                  <HiOutlineLockClosed size={14} className="text-text_muted" />
-                  <input
-                    type="password"
-                    className="input-field flex-1"
-                    placeholder="New password (min 6 chars)"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleChangePassword(u.id)}
-                    className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-white hover:bg-primary_hover"
-                  >
-                    Save
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(null)}
-                    className="rounded-lg p-1.5 text-text_secondary hover:bg-muted"
-                  >
-                    <HiOutlineX size={14} />
-                  </button>
-                </div>
-              )}
-            </div>
-          );
-        })}
+                  {/* Password Change */}
+                  {showPassword === u.id && (
+                    <tr className="block border-b border-border bg-muted/30 md:table-row md:border-0">
+                      <td colSpan={6} className="block px-4 py-3 md:table-cell">
+                        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                          <HiOutlineLockClosed size={14} className="shrink-0 text-text_muted" />
+                          <input
+                            type="password"
+                            className="input-field flex-1"
+                            placeholder="New password (min 6 chars)"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                          />
+                          <div className="flex gap-2">
+                            <button
+                              type="button"
+                              onClick={() => handleChangePassword(u.id)}
+                              className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-white hover:bg-primary_hover"
+                            >
+                              Save
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setShowPassword(null)}
+                              className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text_secondary hover:bg-muted"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
 
       <ConfirmDialog

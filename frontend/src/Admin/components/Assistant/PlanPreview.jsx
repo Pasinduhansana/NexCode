@@ -170,7 +170,7 @@ function PlanPreview({ plan, input, onConfirm, onModify, creating }) {
                   <span className="text-[10px] font-medium uppercase tracking-wide text-text_muted">{d.phase}</span>
                 </div>
                 <div className="mt-1 text-xs text-text_secondary">
-                  {d.tasks.map((t) => t.title).join(" · ")}
+                  {(d.tasks || []).map((t) => t.title).join(" · ")}
                 </div>
               </div>
             ))}

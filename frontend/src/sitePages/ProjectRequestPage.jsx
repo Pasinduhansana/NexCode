@@ -50,7 +50,7 @@ export default function ProjectRequestPage() {
 
   // Surface Formspree-side failures (quota, spam block, etc.) so it's never silent
   useEffect(() => {
-    if (state.errors && state.errors.length > 0 && !state.succeeded && !state.submitting) {
+    if (state.errors && Object.keys(state.errors).length > 0 && !state.succeeded && !state.submitting) {
       toast.error("Something went wrong sending your request. Please try again or contact us on WhatsApp.");
       console.error("Formspree submission errors:", state.errors);
     }

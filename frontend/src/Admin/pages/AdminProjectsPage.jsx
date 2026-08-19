@@ -233,8 +233,8 @@ export default function AdminProjectsPage() {
 
                 {(p.tags || []).length > 0 && (
                   <div className="mt-3 flex flex-wrap gap-1.5">
-                    {p.tags.slice(0, 3).map((tag) => (
-                      <span key={tag} className="rounded-md bg-muted px-2 py-0.5 text-[11px] text-text_secondary">
+                    {p.tags.slice(0, 3).map((tag, i) => (
+                      <span key={`${p._id}-${tag}-${i}`} className="rounded-md bg-muted px-2 py-0.5 text-[11px] text-text_secondary">
                         #{tag}
                       </span>
                     ))}

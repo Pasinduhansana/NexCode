@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { HiOutlinePlus, HiOutlineTrash, HiOutlinePencilAlt, HiOutlineX } from "react-icons/hi";
 import ConfirmDialog from "../ConfirmDialog";
+import SearchBar from "./SearchBar";
 
 const GROUPS = ["Today", "Yesterday", "Older"];
 
@@ -130,38 +131,59 @@ export default function ConversationSidebar({
   onDelete,
   onCloseMobile,
 }) {
-  const grouped = useMemo(() => groupConversations(conversations), [conversations]);
+  const [query, setQuery] = useState("");
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return conversations;
+    return conversations.filter((c) => (c.title || "").toLowerCase().includes(q));
+  }, [conversations, query]);
+
+  const grouped = useMemo(() => groupConversations(filtered), [filtered]);
 
   return (
     <div className="flex h-full w-full flex-col bg-card">
-      <div className="flex flex-col items-center justify-between gap-2 p-3 text-left">
-        <div>
-        <h1 className="font-display text-2xl font-extrabold text-foreground sm:text-2xl w-full">AI Assistant</h1>
-          <p className="mt-1 text-[13px] text-text_secondary">
-            Get instant help with your projects, tasks, and finances.
-          </p></div>
+      <div className="flex flex-col gap-3 p-3">
+        <div className="flex items-start justify-between gap-2">
+          <div>
+            <h1 className="font-display text-2xl font-extrabold text-foreground sm:text-2xl">AI Assistant</h1>
+            <p className="mt-1 text-[13px] text-text_secondary">
+              Get instant help with your projects, tasks, and finances.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onCloseMobile}
+            className="rounded-lg p-2 text-text_secondary hover:bg-muted hover:text-foreground lg:hidden"
+            aria-label="Close conversation list"
+          >
+            <HiOutlineX size={18} />
+          </button>
+        </div>
         <button
           type="button"
           onClick={onNewChat}
-          className="inline-flex flex-1 w-full items-center justify-center gap-2 pr-5 rounded-xl bg-primary px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary_hover"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary_hover"
         >
           <HiOutlinePlus size={16} />
           New Chat
         </button>
-        <button
-          type="button"
-          onClick={onCloseMobile}
-          className="rounded-lg p-2 text-text_secondary hover:bg-muted hover:text-foreground lg:hidden"
-          aria-label="Close conversation list"
-        >
-          <HiOutlineX size={18} />
-        </button>
+        <SearchBar
+          value={query}
+          onChange={setQuery}
+          placeholder="Search conversations…"
+          ariaLabel="Search conversations"
+        />
       </div>
 
       <nav className="flex-1 space-y-4 overflow-y-auto px-2 pb-4" aria-label="Conversations">
         {conversations.length === 0 ? (
           <p className="px-2 py-6 text-center text-xs text-text_muted">
             No conversations yet.
+          </p>
+        ) : filtered.length === 0 ? (
+          <p className="px-2 py-6 text-center text-xs text-text_muted">
+            No conversations match “{query}”.
           </p>
         ) : (
           GROUPS.map((label) => {

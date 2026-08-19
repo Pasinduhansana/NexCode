@@ -18,7 +18,7 @@ export default function SettlementSummary({ settlement, byPaidBy }) {
       <h3 className="mb-4 font-display text-sm font-bold text-foreground">Expense Settlement</h3>
 
       <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-        {balances.map((b) => (
+        {balances.map((b, i) => (
           <div key={b.name} className="rounded-xl border border-border bg-muted/30 p-3">
             <div className="flex items-center gap-2.5">
               <div className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-white ${PERSON_COLORS[b.name] || "bg-gray-400"}`}>

@@ -21,7 +21,7 @@ export const NexCodeDocumentTheme = {
 
   page: {
     size: "A4",
-    margins: { top: 44, right: 44, bottom: 44, left: 44 },
+    margins: { top: 40, right: 44, bottom: 40, left: 44 },
   },
 
   type: {
@@ -44,8 +44,8 @@ export const NexCodeDocumentTheme = {
     contentTop: 96,
     sectionGap: 18,
     rowGap: 8,
-    cellPadY: 6,
-    cellPadX: 8,
+    cellPadY: 5,
+    cellPadX: 7,
   },
 };
 

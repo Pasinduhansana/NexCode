@@ -39,7 +39,11 @@ export default function ContactPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-    formspreeHandleSubmit(e);
+    try {
+      await formspreeHandleSubmit(e);
+    } catch (err) {
+      toast.error("Couldn't send your message. Please check your connection and try again.");
+    }
   };
 
   const contacts = [

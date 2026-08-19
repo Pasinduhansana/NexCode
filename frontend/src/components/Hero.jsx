@@ -492,7 +492,7 @@ export default function Hero({ stats = [] }) {
     const link = document.createElement("link");
     link.rel = "preload";
     link.as = "image";
-    link.href = laptopMockup.src;
+    link.href = laptopMockup;
     document.head.appendChild(link);
     return () => link.remove();
   }, []);
