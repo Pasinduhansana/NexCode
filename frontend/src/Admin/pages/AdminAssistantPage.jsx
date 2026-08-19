@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { HiOutlineSparkles, HiOutlineMenu, HiOutlineChatAlt2 } from "react-icons/hi";
 import usePageTitle from "../../utils/usePageTitle";
@@ -277,7 +279,7 @@ export default function AdminAssistantPage() {
     <div className="space-y-6">
 
 
-      <div className="flex h-[calc(100dvh-15rem)] min-h-[22rem] gap-4 sm:h-[calc(100dvh-16rem)] lg:h-[calc(100dvh-18rem)]">
+      <div className="flex h-[calc(100dvh-2rem)] min-h-[24rem] gap-4 sm:h-[calc(100dvh-3rem)] lg:h-[calc(100dvh-4rem)]">
         <aside className="hidden w-64 shrink-0 overflow-hidden rounded-2xl border border-border lg:block">
           <ConversationSidebar
             conversations={conversations}

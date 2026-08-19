@@ -1,5 +1,8 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { HiOutlineArrowLeft, HiOutlinePlus, HiOutlinePencilAlt, HiOutlineTrash, HiOutlineFolder, HiOutlineUser, HiOutlineCalendar, HiOutlineCurrencyDollar, HiOutlineCheck, HiOutlineDocumentText, HiOutlineTag } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
@@ -23,7 +26,7 @@ const PAID_STATUS_META = {
 
 export default function AdminProjectDetailPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const [project, setProject] = useState(null);
   const [tasks, setTasks] = useState([]);
@@ -45,7 +48,7 @@ export default function AdminProjectDetailPage() {
       setTasks(data.tasks || []);
     } catch (err) {
       toast.error(err.response?.data?.error || "Failed to load project");
-      navigate("/admin/projects", { replace: true });
+      router.replace("/admin/projects");
     } finally {
       setLoading(false);
     }
@@ -60,7 +63,7 @@ export default function AdminProjectDetailPage() {
     try {
       await adminApi.delete(`/projects/${id}`);
       toast.success("Project deleted");
-      navigate("/admin/projects", { replace: true });
+      router.replace("/admin/projects");
     } catch (err) {
       toast.error(err.response?.data?.error || "Failed to delete project");
       setDeletingLoading(false);
@@ -106,6 +109,7 @@ export default function AdminProjectDetailPage() {
   };
 
   if (loading) return <Spinner label="Loading project..." />;
+  if (!project) return null;
 
   const due = daysUntil(project.dueDate);
   const taskCountByStatus = (status) => tasks.filter((t) => t.status === status).length;
@@ -114,7 +118,7 @@ export default function AdminProjectDetailPage() {
 
   return (
     <div className="space-y-6">
-      <Link to="/admin/projects" className="inline-flex items-center gap-1.5 text-sm font-medium text-text_secondary hover:text-primary">
+      <Link href="/admin/projects" className="inline-flex items-center gap-1.5 text-sm font-medium text-text_secondary hover:text-primary">
         <HiOutlineArrowLeft size={15} />
         Back to projects
       </Link>

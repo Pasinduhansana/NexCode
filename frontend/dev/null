@@ -1,0 +1,123 @@
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import adminApi from "../utils/adminApi";
+import { getToken, setToken, setUser, clearSession } from "../utils/auth";
+const AdminAuthContext = createContext();
+function decodeJwt(token) {
+  try {
+    const parts = String(token).split(".");
+    if (parts.length < 2) return null;
+    const b64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    const bin = atob(b64);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return JSON.parse(new TextDecoder().decode(bytes));
+  } catch {
+    return null;
+  }
+}
+function decodeJwtUser(token) {
+  const payload = decodeJwt(token);
+  if (!payload) return null;
+  return {
+    id: payload.uid,
+    name: payload.name,
+    superAdmin: payload.superAdmin,
+    access: payload.access
+  };
+}
+export const AdminAuthProvider = ({ children }) => {
+  const [token, setTokenState] = useState(getToken());
+  const [user, setUserState] = useState(() => {
+    const t = getToken();
+    return t ? decodeJwtUser(t) : null;
+  });
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    let cancelled = false;
+    if (!token) {
+      setReady(true);
+      return;
+    }
+    const decoded = decodeJwtUser(token);
+    if (decoded) {
+      setUserState(decoded);
+      setUser(decoded);
+      setReady(true);
+    }
+    const verify = () => {
+      adminApi.get("/auth/verify").then(({ data }) => {
+        if (cancelled) return;
+        if (data.valid && data.user) {
+          setUserState(data.user);
+          setUser(data.user);
+        }
+        setReady(true);
+      }).catch(() => {
+        if (cancelled) return;
+        clearSession();
+        setTokenState(null);
+        setUserState(null);
+        setReady(true);
+      });
+    };
+    verify();
+    const interval = setInterval(verify, 5 * 60 * 1e3);
+    window.addEventListener("focus", verify);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+      window.removeEventListener("focus", verify);
+    };
+  }, [token]);
+  const login = useCallback((nextToken, nextUser) => {
+    setToken(nextToken);
+    setUser(nextUser);
+    setTokenState(nextToken);
+    setUserState(nextUser);
+  }, []);
+  const logout = useCallback(() => {
+    clearSession();
+    setTokenState(null);
+    setUserState(null);
+  }, []);
+  const hasAccess = useCallback(
+    (pageId) => {
+      if (!user) return false;
+      if (user.superAdmin) return true;
+      return user.access?.pages?.includes(pageId) || false;
+    },
+    [user]
+  );
+  const hasExpenseAccess = useCallback(
+    () => {
+      if (!user) return "none";
+      if (user.superAdmin) return "edit";
+      return user.access?.expenseAccess || "none";
+    },
+    [user]
+  );
+  const hasProjectAccess = useCallback(
+    () => {
+      if (!user) return "none";
+      if (user.superAdmin) return "all";
+      return user.access?.projectAccess || "all";
+    },
+    [user]
+  );
+  const hasDashboardComponent = useCallback(
+    (compId) => {
+      if (!user) return false;
+      if (user.superAdmin) return true;
+      return user.access?.dashboardComponents?.includes(compId) || false;
+    },
+    [user]
+  );
+  return /* @__PURE__ */ React.createElement(AdminAuthContext.Provider, { value: { token, user, ready, isAuthenticated: Boolean(token), login, logout, hasAccess, hasExpenseAccess, hasProjectAccess, hasDashboardComponent } }, children);
+};
+export const useAdminAuth = () => {
+  const context = useContext(AdminAuthContext);
+  if (!context) {
+    throw new Error("useAdminAuth must be used within AdminAuthProvider");
+  }
+  return context;
+};

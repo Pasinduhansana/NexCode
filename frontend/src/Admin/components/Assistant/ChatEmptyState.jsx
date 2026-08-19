@@ -26,8 +26,7 @@ export default function ChatEmptyState({ userName, onSuggestion, isTyping }) {
         </h2>
         <p className="mt-2 text-sm text-text_secondary">
           {userName ? `Hi ${userName}, ` : ""}ask me anything about your projects, tasks, finances, or
-          describe a new website idea and I'll draft a full project plan with pricing, timeline and
-          tasks for your review. Pick a suggestion below or type your own message to get started.
+          describe a new website idea and I'll draft a full project plan with pricing.
         </p>
       </div>
       </div>

@@ -1,12 +1,14 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { Utensils, Hotel, Truck, GraduationCap, ShoppingBag, Building2, ArrowRight } from "lucide-react";
-//IMport images
-import Cafe from "../../assets/Industry_Images/Cafe.webp";
-import Hostitality from "../../assets/Industry_Images/Hostitality.webp";
-import Logistics from "../../assets/Industry_Images/Logistic.webp";
-import Education from "../../assets/Industry_Images/Education.webp";
-import Retail from "../../assets/Industry_Images/Retail.webp";
-import Office from "../../assets/Industry_Images/Office.webp";
+
+const Cafe        = "/assets/Industry_Images/Cafe.webp";
+const Hostitality = "/assets/Industry_Images/Hostitality.webp";
+const Logistics   = "/assets/Industry_Images/Logistic.webp";
+const Education   = "/assets/Industry_Images/Education.webp";
+const Retail      = "/assets/Industry_Images/Retail.webp";
+const Office      = "/assets/Industry_Images/Office.webp";
 
 const industries = [
   {

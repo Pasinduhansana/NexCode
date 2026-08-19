@@ -74,7 +74,7 @@ export async function createTransaction(input = {}, user) {
     const collection = await getCollection("transactions");
     const { insertedId } = await collection.insertOne(transaction);
 
-    invalidate("finance");
+    invalidate("finance", "dashboard:");
 
     await logActivity(user, {
       action: "create",
@@ -213,7 +213,7 @@ export async function updateTransaction(id, body = {}, user) {
       throw new FinanceServiceError("Transaction not found", 404);
     }
 
-    invalidate("finance");
+    invalidate("finance", "dashboard:");
 
     await logActivity(user, {
       action: "update",
@@ -243,7 +243,7 @@ export async function deleteTransaction(id, user) {
       throw new FinanceServiceError("Transaction not found", 404);
     }
 
-    invalidate("finance");
+    invalidate("finance", "dashboard:");
 
     await logActivity(user, {
       action: "delete",

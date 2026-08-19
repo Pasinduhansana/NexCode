@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import toast from "react-hot-toast";
 import { HiOutlinePlus, HiOutlineSearch, HiOutlineFolder, HiOutlinePencilAlt, HiOutlineTrash, HiOutlineClipboardList, HiOutlineViewList, HiOutlineTemplate } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
@@ -14,13 +16,21 @@ import AdminProjectTableView from "../components/AdminProjectTableView";
 import { PROJECT_STATUSES } from "../data/constants";
 import PremiumSelect from "../components/PremiumSelect";
 import { formatDate, daysUntil } from "../utils/date";
+import { usePagination } from "../hooks/usePagination";
+import Pagination from "../components/Pagination";
 
 export default function AdminProjectsPage() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [viewMode, setViewMode] = useState(() => localStorage.getItem("admin_projects_view") || "grid");
+  const [viewMode, setViewMode] = useState(() => {
+    try {
+      return localStorage.getItem("admin_projects_view") || "grid";
+    } catch {
+      return "grid";
+    }
+  });
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [deleting, setDeleting] = useState(null);
@@ -57,6 +67,8 @@ export default function AdminProjectsPage() {
       return matchesSearch && matchesStatus;
     });
   }, [projects, search, statusFilter]);
+
+  const { page, setPage, pageSize, setPageSize, total, slice: paged } = usePagination(filtered);
 
   const handleDelete = async () => {
     if (!deleting) return;
@@ -104,7 +116,7 @@ export default function AdminProjectsPage() {
         <div className="relative flex-1">
           <HiOutlineSearch size={18} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-text_muted" />
           <input
-            className="input-field pl-11"
+            className="input-field pl-20"
             placeholder="Search by name, client, or tag..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -166,7 +178,7 @@ export default function AdminProjectsPage() {
         />
       ) : viewMode === "table" ? (
         <AdminProjectTableView
-          projects={filtered}
+          projects={paged}
           onEdit={(p) => {
             setEditing(p);
             setFormOpen(true);
@@ -175,7 +187,7 @@ export default function AdminProjectsPage() {
         />
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((p) => {
+          {paged.map((p) => {
             const due = daysUntil(p.dueDate);
             return (
               <div key={String(p._id)} className="group flex flex-col rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:shadow-md">
@@ -188,7 +200,7 @@ export default function AdminProjectsPage() {
                       <HiOutlineFolder size={18} />
                     </div>
                     <div className="min-w-0">
-                      <Link to={`/admin/projects/${p._id}`} className="block truncate font-display font-bold text-foreground hover:text-primary">
+                      <Link href={`/admin/projects/${p._id}`} className="block truncate font-display font-bold text-foreground hover:text-primary">
                         {p.name}
                       </Link>
                       <div className="truncate text-xs text-text_muted">{p.client || "No client"}</div>
@@ -225,8 +237,8 @@ export default function AdminProjectsPage() {
 
                 {(p.tags || []).length > 0 && (
                   <div className="mt-3 flex flex-wrap gap-1.5">
-                    {p.tags.slice(0, 3).map((tag) => (
-                      <span key={tag} className="rounded-md bg-muted px-2 py-0.5 text-[11px] text-text_secondary">
+                    {p.tags.slice(0, 3).map((tag, i) => (
+                      <span key={`${p._id}-${tag}-${i}`} className="rounded-md bg-muted px-2 py-0.5 text-[11px] text-text_secondary">
                         #{tag}
                       </span>
                     ))}
@@ -237,7 +249,7 @@ export default function AdminProjectsPage() {
                   <span className={due !== null && due < 0 ? "text-rose-500 font-medium" : ""}>
                     {p.dueDate ? `Due ${formatDate(p.dueDate)}` : "No due date"}
                   </span>
-                  <Link to={`/admin/projects/${p._id}`} className="inline-flex items-center gap-1 font-medium text-primary hover:text-primary_hover">
+                  <Link href={`/admin/projects/${p._id}`} className="inline-flex items-center gap-1 font-medium text-primary hover:text-primary_hover">
                     <HiOutlineClipboardList size={14} />
                     Manage
                   </Link>
@@ -246,6 +258,16 @@ export default function AdminProjectsPage() {
             );
           })}
         </div>
+      )}
+
+      {filtered.length > 0 && (
+        <Pagination
+          page={page}
+          pageSize={pageSize}
+          total={total}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+        />
       )}
 
       <ProjectFormModal

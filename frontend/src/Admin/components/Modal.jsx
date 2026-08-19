@@ -1,17 +1,21 @@
 import { useEffect } from "react";
 import { HiX } from "react-icons/hi";
 
+let openModalCount = 0;
+
 export default function Modal({ open, title, subtitle, onClose, children, size = "max-w-lg" }) {
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => {
       if (e.key === "Escape") onClose();
     };
-    document.body.style.overflow = "hidden";
+    openModalCount += 1;
+    if (openModalCount === 1) document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = "";
       window.removeEventListener("keydown", onKey);
+      openModalCount = Math.max(0, openModalCount - 1);
+      if (openModalCount === 0) document.body.style.overflow = "";
     };
   }, [open, onClose]);
 

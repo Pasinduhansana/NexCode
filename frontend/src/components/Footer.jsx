@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { FaWhatsapp, FaPhone, FaGlobe } from "react-icons/fa";
 import { useThemeClasses } from "../utils/useThemeClasses";
 import { footerSocialLinks } from "../data/socialLinks";
-import logo from "../../assets/Logo.webp";
+
+const logo = "/assets/Logo.webp";
 
 const quickLinks = [
   { label: "Home", path: "/" },
@@ -28,7 +29,7 @@ export default function Footer() {
             <div className="space-y-4 flex flex-col items-center lg:items-start">
 
               {/* LOGO + BRAND (MOBILE FIXED ROW) */}
-              <Link to="/" className="flex w-full flex-col md:flex-row items-center justify-center lg:justify-start gap-2 lg:gap-3">
+              <Link href="/" className="flex w-full flex-col md:flex-row items-center justify-center lg:justify-start gap-2 lg:gap-3">
                 
                 {/* Left: Logo */}
                 <img
@@ -100,7 +101,7 @@ export default function Footer() {
                 {quickLinks.map((l) => (
                   <Link
                     key={l.path}
-                    to={l.path}
+                    href={l.path}
                     className={`text-sm ${themeClasses.text.secondary} hover:text-primary transition-colors `}
                   >
                     <span className="mr-2 ">•</span> {l.label}
@@ -146,10 +147,10 @@ export default function Footer() {
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
-              <Link to="/privacy-policy" className={`${themeClasses.text.secondary} hover:text-primary transition-colors`}>
+              <Link href="/privacy-policy" className={`${themeClasses.text.secondary} hover:text-primary transition-colors`}>
                 Privacy Policy
               </Link>
-              <Link to="/terms-of-service" className={`${themeClasses.text.secondary} hover:text-primary transition-colors`}>
+              <Link href="/terms-of-service" className={`${themeClasses.text.secondary} hover:text-primary transition-colors`}>
                 Terms of Service
               </Link>
             </div>

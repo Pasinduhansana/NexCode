@@ -130,6 +130,8 @@ async function ensureIndexes(client) {
   await Promise.all([
     db.collection("projects").createIndex({ updatedAt: -1 }).catch(() => {}),
     db.collection("projects").createIndex({ status: 1 }).catch(() => {}),
+    // Login lookup: getUserByCredentials queries by keyHash (single indexed findOne).
+    db.collection("users").createIndex({ keyHash: 1 }, { unique: true }).catch(() => {}),
     db.collection("tasks").createIndex({ projectId: 1, order: 1 }).catch(() => {}),
     db.collection("tasks").createIndex({ status: 1 }).catch(() => {}),
     db.collection("tasks").createIndex({ status: 1, dueDate: 1 }).catch(() => {}),
@@ -153,6 +155,26 @@ async function ensureIndexes(client) {
     db.collection("reports").createIndex({ userId: 1, documentType: 1 }).catch(() => {}),
     db.collection("reports").createIndex({ userId: 1, projectId: 1 }).catch(() => {}),
     db.collection("reports").createIndex({ docNumber: 1 }, { unique: true }).catch(() => {}),
+    // Calendar events: per-user timeline, type, and status queries, plus source
+    // lookups so a derived event always maps back to its project/task/expense.
+    db.collection("calendarevents").createIndex({ userId: 1, startAt: 1 }).catch(() => {}),
+    db.collection("calendarevents").createIndex({ userId: 1, eventType: 1 }).catch(() => {}),
+    db.collection("calendarevents").createIndex({ userId: 1, status: 1 }).catch(() => {}),
+    db.collection("calendarevents").createIndex({ sourceType: 1, sourceId: 1 }).catch(() => {}),
+    // Reminder scheduling: idempotent fingerprint + due-time scans.
+    db.collection("calendarreminders").createIndex({ userId: 1, fingerprint: 1 }, { unique: true }).catch(() => {}),
+    db.collection("calendarreminders").createIndex({ status: 1, triggerAt: 1 }).catch(() => {}),
+    // Derived-event source scans.
+    db.collection("projects").createIndex({ handoverDate: 1 }).catch(() => {}),
+    db.collection("tasks").createIndex({ dueDate: 1 }).catch(() => {}),
+    // Derived task query filters {dueDate:{$gte,$lte}, status:{$ne:"done"}} — range on
+    // dueDate first, then status, so a single IXSCAN serves it.
+    db.collection("tasks").createIndex({ dueDate: 1, status: 1 }).catch(() => {}),
+    db.collection("transactions").createIndex({ showOnCalendar: 1 }).catch(() => {}),
+    db.collection("transactions").createIndex({ category: 1 }).catch(() => {}),
+    // Derived expense query filters by date + (showOnCalendar | category).
+    db.collection("transactions").createIndex({ date: 1, category: 1 }).catch(() => {}),
+    db.collection("transactions").createIndex({ date: 1, showOnCalendar: 1 }).catch(() => {}),
   ]);
   cached.indexesEnsured = true;
 }

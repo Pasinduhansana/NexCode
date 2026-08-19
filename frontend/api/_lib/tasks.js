@@ -71,7 +71,7 @@ export async function createTask(input = {}, user) {
 
     const { insertedId } = await tasks.insertOne(task);
 
-    invalidate("kanban", "stats");
+    invalidate("kanban", "stats", "dashboard:");
 
     await logActivity(user, {
       action: "create",
@@ -201,7 +201,7 @@ export async function updateTask(id, input = {}, user) {
       throw new TaskServiceError("Task not found", 404);
     }
 
-    invalidate("kanban", "stats");
+    invalidate("kanban", "stats", "dashboard:");
 
     await logActivity(user, {
       action: "update",
@@ -235,7 +235,7 @@ export async function deleteTask(id, user) {
       throw new TaskServiceError("Task not found", 404);
     }
 
-    invalidate("kanban", "stats");
+    invalidate("kanban", "stats", "dashboard:");
 
     await logActivity(user, {
       action: "delete",

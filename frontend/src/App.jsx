@@ -4,15 +4,15 @@ import { ThemeProvider } from "./context/ThemeContext";
 import { Analytics } from "@vercel/analytics/react";
 
 
-import HomePage from "./pages/HomePage";
-import ServicesPage from "./pages/ServicesPage";
-import AboutPage from "./pages/AboutPage";
-import ContactPage from "./pages/ContactPage";
-import ProjectRequestPage from "./pages/ProjectRequestPage";
-import ShowcasePage from "./pages/ShowcasePage";
-import ProjectDetailPage from "./pages/ProjectDetailPage";
-import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
-import TermsOfServicePage from "./pages/TermsOfServicePage";
+import HomePage from "./sitePages/HomePage";
+import ServicesPage from "./sitePages/ServicesPage";
+import AboutPage from "./sitePages/AboutPage";
+import ContactPage from "./sitePages/ContactPage";
+import ProjectRequestPage from "./sitePages/ProjectRequestPage";
+import ShowcasePage from "./sitePages/ShowcasePage";
+import ProjectDetailPage from "./sitePages/ProjectDetailPage";
+import PrivacyPolicyPage from "./sitePages/PrivacyPolicyPage";
+import TermsOfServicePage from "./sitePages/TermsOfServicePage";
 
 // Layout
 import Navbar from "./components/Navbar";
@@ -38,6 +38,7 @@ import AdminActivityPage from "./Admin/pages/AdminActivityPage";
 import AdminAccessPage from "./Admin/pages/AdminAccessPage";
 import AdminAssistantPage from "./Admin/pages/AdminAssistantPage";
 import AdminReportingPage from "./Admin/pages/AdminReportingPage";
+import AdminCalendarPage from "./Admin/pages/AdminCalendarPage";
 
 const PublicLayout = ({ children }) => (
   <>
@@ -142,6 +143,7 @@ const AppContent = () => {
             <Route path="access" element={<AdminAccessPage />} />
             <Route path="assistant" element={<AdminAssistantPage />} />
             <Route path="reporting" element={<AdminReportingPage />} />
+            <Route path="calendar" element={<AdminCalendarPage />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

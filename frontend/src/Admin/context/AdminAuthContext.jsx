@@ -1,12 +1,43 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import adminApi from "../utils/adminApi";
-import { getToken, getUser, setToken, setUser, clearSession } from "../utils/auth";
+import { getToken, setToken, setUser, clearSession } from "../utils/auth";
 
 const AdminAuthContext = createContext();
 
+// Decode the JWT payload client-side (no signature check — routing/access only).
+// The server still verifies the token on every real API call, and we re-verify in
+// the background, so this is safe for gating the UI without a DB round-trip.
+function decodeJwt(token) {
+  try {
+    const parts = String(token).split(".");
+    if (parts.length < 2) return null;
+    const b64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    const bin = atob(b64);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return JSON.parse(new TextDecoder().decode(bytes));
+  } catch {
+    return null;
+  }
+}
+
+function decodeJwtUser(token) {
+  const payload = decodeJwt(token);
+  if (!payload) return null;
+  return {
+    id: payload.uid,
+    name: payload.name,
+    superAdmin: payload.superAdmin,
+    access: payload.access,
+  };
+}
+
 export const AdminAuthProvider = ({ children }) => {
   const [token, setTokenState] = useState(getToken());
-  const [user, setUserState] = useState(getUser());
+  const [user, setUserState] = useState(() => {
+    const t = getToken();
+    return t ? decodeJwtUser(t) : null;
+  });
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -17,24 +48,45 @@ export const AdminAuthProvider = ({ children }) => {
       return;
     }
 
-    adminApi
-      .get("/auth/verify")
-      .then(({ data }) => {
-        if (data.valid && data.user) {
-          setUserState(data.user);
-          setUser(data.user);
-        }
-        if (!cancelled) setReady(true);
-      })
-      .catch(() => {
-        clearSession();
-        setTokenState(null);
-        setUserState(null);
-        if (!cancelled) setReady(true);
-      });
+    // Decode the JWT immediately so routing/access decisions are instant — no DB
+    // round-trip blocking every admin mount/navigation.
+    const decoded = decodeJwtUser(token);
+    if (decoded) {
+      setUserState(decoded);
+      setUser(decoded);
+      setReady(true);
+    }
+
+    // Confirm in the background (and on focus) to catch revocation/expiry. Actual
+    // API calls are still rejected by the server if the token is truly invalid.
+    const verify = () => {
+      adminApi
+        .get("/auth/verify")
+        .then(({ data }) => {
+          if (cancelled) return;
+          if (data.valid && data.user) {
+            setUserState(data.user);
+            setUser(data.user);
+          }
+          setReady(true);
+        })
+        .catch(() => {
+          if (cancelled) return;
+          clearSession();
+          setTokenState(null);
+          setUserState(null);
+          setReady(true);
+        });
+    };
+
+    verify();
+    const interval = setInterval(verify, 5 * 60 * 1000);
+    window.addEventListener("focus", verify);
 
     return () => {
       cancelled = true;
+      clearInterval(interval);
+      window.removeEventListener("focus", verify);
     };
   }, [token]);
 

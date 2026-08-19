@@ -1,6 +1,6 @@
-import ad1 from "../../assets/advertisement/ad1.webp";
-import ad2 from "../../assets/advertisement/ad2.webp";
-import ad3 from "../../assets/advertisement/ad3.webp";
+const ad1 = "/assets/advertisement/ad1.webp";
+const ad2 = "/assets/advertisement/ad2.webp";
+const ad3 = "/assets/advertisement/ad3.webp";
 
 export const adSlides = [
   {

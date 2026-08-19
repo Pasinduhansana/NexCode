@@ -1,14 +1,18 @@
+"use client";
+
 import { useState, useEffect } from "react";
-import { Navigate, Outlet } from "react-router-dom";
-import { HiOutlineMenu, HiOutlineUserCircle } from "react-icons/hi";
+import { useRouter, usePathname } from "next/navigation";
+import { HiOutlineMenu } from "react-icons/hi";
 import { useAdminAuth } from "../context/AdminAuthContext";
 import AdminSidebar from "./AdminSidebar";
 import Spinner from "./Spinner";
 
 const SIDEBAR_KEY = "nexcode_sidebar_collapsed";
 
-export default function AdminLayout() {
+export default function AdminLayout({ children }) {
   const { isAuthenticated, ready, user } = useAdminAuth();
+  const router = useRouter();
+  const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(() => {
     try {
@@ -24,6 +28,12 @@ export default function AdminLayout() {
     } catch {}
   }, [collapsed]);
 
+  useEffect(() => {
+    if (ready && !isAuthenticated && pathname !== "/admin/login") {
+      router.replace("/admin/login");
+    }
+  }, [ready, isAuthenticated, pathname, router]);
+
   if (!ready) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
@@ -32,42 +42,38 @@ export default function AdminLayout() {
     );
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to="/admin/login" replace />;
+  if (!isAuthenticated && pathname !== "/admin/login") {
+    return null;
   }
 
-  return (
-    <div className="min-h-screen bg-background text-foreground">
-      <AdminSidebar
-        open={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        collapsed={collapsed}
-        onToggleCollapse={() => setCollapsed((c) => !c)}
-      />
+  // The login route is a standalone, centered screen — no sidebar or chrome.
+  const isLoginPage = pathname === "/admin/login";
 
-      <div className={`transition-all duration-300 ${collapsed ? "lg:pl-[68px]" : "lg:pl-64"}`}>
-        <header className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-border bg-card/90 px-4 py-3 backdrop-blur sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => setSidebarOpen(true)}
-              className="rounded-lg p-2 text-text_secondary hover:bg-muted hover:text-foreground lg:hidden"
-              aria-label="Open menu"
-            >
-              <HiOutlineMenu size={20} />
-            </button>
-            <div className="font-display text-sm font-semibold text-text_secondary">
-              Company Project Management
-            </div>
-          </div>
-          <div className="flex items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-1.5">
-            <HiOutlineUserCircle size={18} className="text-primary" />
-            <span className="text-sm font-medium text-foreground">{user?.name || "Admin"}</span>
-          </div>
-        </header>
+  return (
+    <div className="admin-shell min-h-screen bg-background text-foreground">
+      {!isLoginPage && (
+        <AdminSidebar
+          open={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+          collapsed={collapsed}
+          onToggleCollapse={() => setCollapsed((c) => !c)}
+        />
+      )}
+
+      <div className={`transition-all duration-300 ${!isLoginPage && (collapsed ? "lg:pl-[68px]" : "lg:pl-64")}`}>
+        {!isLoginPage && (
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(true)}
+            className="fixed left-4 top-4 z-30 rounded-lg p-2 text-text_secondary hover:bg-muted hover:text-foreground lg:hidden"
+            aria-label="Open menu"
+          >
+            <HiOutlineMenu size={20} />
+          </button>
+        )}
 
         <main className="p-4 sm:p-6 lg:p-8">
-          <Outlet />
+          {children}
         </main>
       </div>
     </div>

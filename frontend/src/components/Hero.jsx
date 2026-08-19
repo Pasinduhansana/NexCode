@@ -1,16 +1,19 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { motion, useAnimation } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
-import laptopMockup from "../../assets/laptop_mockup.webp";
-import phoneMockup from "../../assets/phone_mockup.webp";
-import palm_tree from "../../assets/palm-leave.webp";
-import laptop_display from "../../assets/project_image.webp";
-import dark_L_display from "../../assets/dark_desktop.webp";
-import light_L_display from "../../assets/light_desktop.webp";
-import dark_m_display from "../../assets/dark_mobile.webp";
-import light_m_display from "../../assets/light_mobile.webp";
 import Button from "../components/Button";
+
+const laptopMockup    = "/assets/laptop_mockup.webp";
+const phoneMockup     = "/assets/phone_mockup.webp";
+const palm_tree       = "/assets/palm-leave.webp";
+const laptop_display  = "/assets/project_image.webp";
+const dark_L_display  = "/assets/dark_desktop.webp";
+const light_L_display = "/assets/light_desktop.webp";
+const dark_m_display  = "/assets/dark_mobile.webp";
+const light_m_display = "/assets/light_mobile.webp";
 /* ─────────────────────────────────────────────────────────────
    THEME TOKENS
 ───────────────────────────────────────────────────────────── */
@@ -489,7 +492,7 @@ export default function Hero({ stats = [] }) {
     const link = document.createElement("link");
     link.rel = "preload";
     link.as = "image";
-    link.href = laptopMockup.src;
+    link.href = laptopMockup;
     document.head.appendChild(link);
     return () => link.remove();
   }, []);
