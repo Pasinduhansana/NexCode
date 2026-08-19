@@ -151,7 +151,7 @@ export function drawDocumentTitle(flow, { title, subtitle, docNumber, dateLabel 
     metaY += 9;
   }
 
-  flow.y = startY + 66;
+  flow.y = startY + 58;
   return flow.y;
 }
 
@@ -217,8 +217,8 @@ export function drawCoverPage(flow, meta) {
 export function drawSectionHeader(flow, label, opts = {}) {
   const { doc } = flow;
   const brand = T.brand;
-  flow.ensure(30);
-  flow.y += opts.offset || 8;
+  flow.ensure(26);
+  flow.y += opts.offset || 4;
   doc.rect(flow.left, flow.y, 3, 12, { fill: brand.primary });
   doc.font(T.type.accent, T.sizes.heading).fillColor(brand.ink);
   doc.text(String(label), flow.left + 10, flow.y, {
@@ -230,7 +230,7 @@ export function drawSectionHeader(flow, label, opts = {}) {
     stroke: brand.border,
     width: 0.6,
   });
-  flow.y += 26;
+  flow.y += 22;
   return flow.y;
 }
 
@@ -442,7 +442,7 @@ export function drawFeatureList(flow, items) {
   for (const item of items) {
     const text = String(item || "");
     const lines = doc.wrapText(text, flow.width - 16, T.sizes.body);
-    const height = lines.length * T.sizes.body * 1.15 + 4;
+    const height = lines.length * T.sizes.body * 1.15 + 2;
     flow.ensure(height);
     doc.circle(flow.left + 4, flow.y + 4, 1.6, { fill: brand.primary });
     doc.font(T.type.body, T.sizes.body).fillColor(brand.ink);
@@ -451,9 +451,9 @@ export function drawFeatureList(flow, items) {
       width: flow.width - 16,
       family: T.type.body,
     });
-    flow.y += height + 2;
+    flow.y += height + 1;
   }
-  flow.y += 4;
+  flow.y += 3;
   return flow.y;
 }
 
@@ -514,7 +514,7 @@ export function drawNotesSection(flow, notes) {
   for (const note of notes) {
     const text = String(note || "");
     const lines = doc.wrapText(text, flow.width - 16, T.sizes.small);
-    const height = lines.length * T.sizes.small * 1.2 + 4;
+    const height = lines.length * T.sizes.small * 1.2 + 3;
     flow.ensure(height);
     doc.circle(flow.left + 3, flow.y + 3.5, 1.2, { fill: brand.muted });
     doc.font(T.type.small, T.sizes.small).fillColor(brand.muted);
@@ -523,16 +523,16 @@ export function drawNotesSection(flow, notes) {
       width: flow.width - 12,
       family: T.type.small,
     });
-    flow.y += height + 1;
+    flow.y += height;
   }
-  flow.y += 4;
+  flow.y += 2;
   return flow.y;
 }
 
 export function drawSignatureSection(flow, meta) {
   const { doc } = flow;
   const brand = T.brand;
-  flow.ensure(80);
+  flow.ensure(52);
   const cols = 2;
   const colWidth = flow.width / cols;
   const labelY = flow.y;
@@ -567,16 +567,16 @@ export function drawSignatureSection(flow, meta) {
 export function drawThankYou(flow, text = "Thank you for choosing NexCode Digital Innovations.") {
   const { doc } = flow;
   const brand = T.brand;
-  flow.ensure(30);
-  flow.y += 6;
-  doc.rect(flow.left, flow.y, flow.width, 24, { fill: T.brand.card });
+  flow.ensure(24);
+  flow.y += 4;
+  doc.rect(flow.left, flow.y, flow.width, 20, { fill: T.brand.card });
   doc.font(T.type.body, T.sizes.small).fillColor(brand.muted);
-  doc.text(String(text), flow.left + 10, flow.y + 8, {
+  doc.text(String(text), flow.left + 10, flow.y + 7, {
     size: T.sizes.small,
     width: flow.width - 20,
     align: "center",
     family: T.type.body,
   });
-  flow.y += 30;
+  flow.y += 26;
   return flow.y;
 }
