@@ -153,6 +153,20 @@ async function ensureIndexes(client) {
     db.collection("reports").createIndex({ userId: 1, documentType: 1 }).catch(() => {}),
     db.collection("reports").createIndex({ userId: 1, projectId: 1 }).catch(() => {}),
     db.collection("reports").createIndex({ docNumber: 1 }, { unique: true }).catch(() => {}),
+    // Calendar events: per-user timeline, type, and status queries, plus source
+    // lookups so a derived event always maps back to its project/task/expense.
+    db.collection("calendarevents").createIndex({ userId: 1, startAt: 1 }).catch(() => {}),
+    db.collection("calendarevents").createIndex({ userId: 1, eventType: 1 }).catch(() => {}),
+    db.collection("calendarevents").createIndex({ userId: 1, status: 1 }).catch(() => {}),
+    db.collection("calendarevents").createIndex({ sourceType: 1, sourceId: 1 }).catch(() => {}),
+    // Reminder scheduling: idempotent fingerprint + due-time scans.
+    db.collection("calendarreminders").createIndex({ userId: 1, fingerprint: 1 }, { unique: true }).catch(() => {}),
+    db.collection("calendarreminders").createIndex({ status: 1, triggerAt: 1 }).catch(() => {}),
+    // Derived-event source scans.
+    db.collection("projects").createIndex({ handoverDate: 1 }).catch(() => {}),
+    db.collection("tasks").createIndex({ dueDate: 1 }).catch(() => {}),
+    db.collection("transactions").createIndex({ showOnCalendar: 1 }).catch(() => {}),
+    db.collection("transactions").createIndex({ category: 1 }).catch(() => {}),
   ]);
   cached.indexesEnsured = true;
 }

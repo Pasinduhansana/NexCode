@@ -36,6 +36,10 @@ const handlers = {
   "designreferences/:id": () => import("../../api/designreferences/[id].js"),
   designnotes: () => import("../../api/designnotes.js"),
   "designnotes/:id": () => import("../../api/designnotes/[id].js"),
+  calendar: () => import("../../api/calendar.js"),
+  "calendar/:id": () => import("../../api/calendar/[id].js"),
+  "calendar/reminders": () => import("../../api/calendar/reminders.js"),
+  "calendar/reminders/process": () => import("../../api/calendar/reminders/process.js"),
 };
 
 const handlerKeys = Object.keys(handlers);
@@ -79,6 +83,12 @@ export function pathParamsFromSegments(parts) {
 
   if (parts[0] === "reports") {
     if (parts.length >= 2 && parts[1] !== "ai") extra.id = parts[1];
+    return extra;
+  }
+
+  if (parts[0] === "calendar") {
+    // "calendar/reminders" and "calendar/reminders/process" are not id routes.
+    if (parts.length === 2 && parts[1] !== "reminders") extra.id = parts[1];
     return extra;
   }
 
