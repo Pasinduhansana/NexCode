@@ -6,7 +6,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
+import { Link as RRLink } from "react-router-dom";
 import {
   HiCheckCircle,
   HiLightBulb,

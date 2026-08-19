@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { Link as RRLink } from "react-router-dom";
 import {
   HiOutlineFolder,
   HiOutlineClipboardList,
@@ -235,10 +235,10 @@ export default function AdminDashboardPage() {
         <div className="rounded-2xl border border-border bg-card p-5 xl:col-span-2">
           <div className="flex items-center justify-between">
             <h2 className="font-display text-base font-bold text-foreground">Recent Projects</h2>
-            <Link href="/admin/projects" className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary_hover">
+            <RRLink to="/admin/projects" className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary_hover">
               View all
               <HiChevronRight size={16} />
-            </Link>
+            </RRLink>
           </div>
 
           {recentProjects.length === 0 ? (
@@ -260,9 +260,9 @@ export default function AdminDashboardPage() {
                   {recentProjects.map((p) => (
                     <tr key={String(p._id)} className="border-b border-border/60 last:border-0 hover:bg-muted/40">
                       <td className="py-3 pr-4">
-                        <Link href={`/admin/projects/${p._id}`} className="font-semibold text-foreground hover:text-primary">
+                        <RRLink to={`/admin/projects/${p._id}`} className="font-semibold text-foreground hover:text-primary">
                           {p.name}
-                        </Link>
+                        </RRLink>
                       </td>
                       <td className="py-3 pr-4 text-text_secondary">{p.client || "—"}</td>
                       <td className="py-3 pr-4">
@@ -280,10 +280,10 @@ export default function AdminDashboardPage() {
         <div className="rounded-2xl border border-border bg-card p-5">
           <div className="flex items-center justify-between">
             <h2 className="font-display text-base font-bold text-foreground">Recent Activity</h2>
-            <Link href="/admin/activity" className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary_hover">
+            <RRLink to="/admin/activity" className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary_hover">
               View all
               <HiChevronRight size={16} />
-            </Link>
+            </RRLink>
           </div>
 
           {activities.length === 0 ? (

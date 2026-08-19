@@ -8,7 +8,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import useGsapReveal from "../utils/useGsapReveal";
-import Link from "next/link";
+import { Link as RRLink } from "react-router-dom";
 import Button from "../components/Button";
 import {
   HiGlobe,

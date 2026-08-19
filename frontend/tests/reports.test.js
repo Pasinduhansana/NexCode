@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { ObjectId } from "mongodb";
 import { seedProject, reset, newUser } from "./helpers/setup.js";
 
-mock.module("../api/_lib/gemini.js", {
+mock.module("../lib/api-handlers/_lib/gemini.js", {
   namedExports: {
     generateReportContent: async ({ prompt }) => {
       const aiDraft = {
@@ -46,7 +46,7 @@ const {
   normalizeReportContent,
   sanitizeReportContent,
   generateReportDraftFromAI,
-} = await import("../api/_lib/reports.js");
+} = await import("../lib/api-handlers/_lib/reports.js");
 
 const user = newUser();
 const otherUser = { uid: "user-2", name: "Other", role: "member" };

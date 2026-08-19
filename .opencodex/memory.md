@@ -1,0 +1,1 @@
+useFilterSync fix: Changed `const searchParams = useSearchParams()` to `const [searchParams, setSearchParams] = useSearchParams()` in frontend/src/hooks/useFilterSync.js to properly destructure the tuple returned by useSearchParams hook.

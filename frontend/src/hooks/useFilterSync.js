@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import { useMemo, useCallback } from "react";
 
 const INDUSTRY_LABELS = {
@@ -12,9 +12,9 @@ const INDUSTRY_LABELS = {
 };
 
 export function useFilterSync(projects) {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const industry = searchParams?.get("industry") || "";
   const category = searchParams?.get("category") || "";
@@ -24,9 +24,9 @@ export function useFilterSync(projects) {
       const next = new URLSearchParams(searchParams?.toString() || "");
       updater(next);
       const query = next.toString();
-      router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
+      navigate(query ? `${pathname}?${query}` : pathname, { scroll: false });
     },
-    [searchParams, router, pathname]
+    [searchParams, pathname]
   );
 
   const setIndustry = useCallback(
@@ -57,8 +57,8 @@ export function useFilterSync(projects) {
   );
 
   const clearFilters = useCallback(() => {
-    router.push(pathname, { scroll: false });
-  }, [router, pathname]);
+    navigate(pathname, { scroll: false });
+  }, [pathname]);
 
   const allIndustries = useMemo(() => {
     const industrySet = new Set((projects || []).map((p) => p.industry).filter(Boolean));

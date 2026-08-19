@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { Link as RRLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const palmLeave              = "/assets/palm-leave.webp";
 const project_image          = "/assets/project_image.webp";
 const project_image2_mobile  = "/assets/project_image1_mob.webp";
@@ -379,7 +379,7 @@ function App() {
   const [isSummaryExpanded, setIsSummaryExpanded] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const { theme } = useTheme();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const watermarkRef = useParallaxRef(-34);
   const palmRef = useParallaxRef(22);
@@ -544,9 +544,9 @@ const relatedProjects = (project.relatedSlugs ?? [])
               size="sm"
               onClick={() => {
                 if (window.history.length > 2) {
-                  router.back();
+                  navigate(-1);
                 } else {
-                  router.push("/showcase");
+                  navigate("/showcase");
                 }
               }}
               leftIcon={<HiArrowLeft />}

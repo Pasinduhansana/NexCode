@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link as RRLink } from "react-router-dom";
 import clsx from "clsx";
 
 export default function Button({
@@ -121,9 +121,9 @@ export default function Button({
 
   if (to) {
     return (
-      <Link href={to} className={baseClasses} style={customStyle} {...props}>
+      <RRLink to={to} className={baseClasses} style={customStyle} {...props}>
         {content}
-      </Link>
+      </RRLink>
     );
   }
 

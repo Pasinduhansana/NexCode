@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link as RRLink } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiMenu, HiX, HiChevronDown, HiSun, HiMoon } from "react-icons/hi";
 import { useTheme } from "../context/ThemeContext";
@@ -66,7 +66,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [themeDropdownOpen, setThemeDropdownOpen] = useState(false);
-  const pathname = usePathname();
+  const { pathname } = useLocation();
   const { theme, updateTheme } = useTheme();
   const themeClasses = useThemeClasses();
 
@@ -91,26 +91,26 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex items-center justify-between h-14 sm:h-16 py-2 sm:py-3">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
+          <RRLink to="/" className="flex items-center gap-2 group">
           <div className={`w-8 h-8 rounded-md overflow-hidden shadow-md ${ui.logoBg} flex items-center justify-center group-hover:scale-110 transition-transform`}>
             <img src={logo} alt="NexCode" className="object-cover" loading="lazy" decoding="async" /></div>
             <span className={`font-display font-bold text-lg ${themeClasses.text.primary}`}>
               Nex<span className="text-foreground">Code</span>
             </span>
-          </Link>
+          </RRLink>
 
           {/* Desktop Nav (centered) */}
           <div className="hidden md:flex items-center gap-1 absolute left-1/2 transform -translate-x-1/2">
             {navLinks.map((link) => (
-              <Link
+              <RRLink
                 key={link.path}
-                href={link.path}
+                to={link.path}
                 className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 ${
                   pathname === link.path ? ui.linkActive : ui.linkIdle
                 }`}
               >
                 {link.label}
-              </Link>
+              </RRLink>
             ))}
           </div>
 
@@ -210,15 +210,15 @@ export default function Navbar() {
             </div>
             <div className="px-4 pb-4 pt-2 space-y-2">
               {navLinks.map((link) => (
-                <Link
+                <RRLink
                   key={link.path}
-                  href={link.path}
+                  to={link.path}
                   className={`block px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                     pathname === link.path ? ui.linkActive : ui.mobileLinkIdle
                   }`}
                 >
                   {link.label}
-                </Link>
+                </RRLink>
               ))}
               <Button size="sm" variant="navbar" to="/start-project" className="w-full mt-2">
                 Start Project

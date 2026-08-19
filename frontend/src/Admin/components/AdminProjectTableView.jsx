@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link as RRLink } from "react-router-dom";
 import { HiOutlinePencilAlt, HiOutlineTrash, HiOutlineFolder, HiOutlineClipboardList, HiOutlineCalendar } from "react-icons/hi";
 import { PROJECT_STATUSES, PRIORITIES } from "../data/constants";
 import StatusBadge from "./StatusBadge";
@@ -43,9 +43,9 @@ export default function AdminProjectTableView({ projects, onEdit, onDelete }) {
                       >
                         <HiOutlineFolder size={14} />
                       </div>
-                      <Link href={`/admin/projects/${p._id}`} className="truncate font-semibold text-foreground hover:text-primary transition-colors">
+                      <RRLink to={`/admin/projects/${p._id}`} className="truncate font-semibold text-foreground hover:text-primary transition-colors">
                         {p.name}
-                      </Link>
+                      </RRLink>
                     </div>
                   </td>
                   <td className="px-3 py-2.5 text-text_secondary">{p.client || "—"}</td>
@@ -83,13 +83,13 @@ export default function AdminProjectTableView({ projects, onEdit, onDelete }) {
                   </td>
                   <td className="px-3 py-2.5 text-right">
                     <div className="flex items-center justify-end gap-1">
-                      <Link
+                      <RRLink
                         href={`/admin/projects/${p._id}`}
                         className="rounded-lg p-1.5 text-text_muted hover:bg-muted hover:text-foreground"
                         title="View details"
                       >
                         <HiOutlineFolder size={15} />
-                      </Link>
+                      </RRLink>
                       <button
                         type="button"
                         onClick={() => onEdit(p)}

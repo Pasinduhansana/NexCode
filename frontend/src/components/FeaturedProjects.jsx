@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { HiSparkles, HiArrowRight, HiCheckCircle } from "react-icons/hi";
 import { showcaseProjects } from "../data/showcaseProjects";
 import Button from "./Button";
@@ -89,7 +89,7 @@ function FeaturedProjectCard({ project, idx, onNavigate }) {
 }
 
 export default function FeaturedProjects() {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   let featured = showcaseProjects.filter((p) => p.featured).slice(0, 6);
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
@@ -148,7 +148,7 @@ export default function FeaturedProjects() {
         {/* cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {featured.map((project, idx) => (
-            <FeaturedProjectCard key={project.slug} project={project} idx={idx} onNavigate={(to) => router.push(to)} />
+            <FeaturedProjectCard key={project.slug} project={project} idx={idx} onNavigate={(to) => navigate(to)} />
           ))}
         </div>
 

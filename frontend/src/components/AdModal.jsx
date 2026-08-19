@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { adSlides } from "../data/adSlides";
 import { FaArrowRight } from "react-icons/fa";
 import Button from "./Button";

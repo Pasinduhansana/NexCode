@@ -1,23 +1,23 @@
 import { requireAuth } from "../_lib/auth.js";
-import { getIssueById, updateIssue, deleteIssue, IssueServiceError } from "../_lib/issues.js";
+import { getTaskById, updateTask, deleteTask, TaskServiceError } from "../_lib/tasks.js";
 
 export default requireAuth(async (req, res) => {
   const { id } = req.query;
 
   try {
     if (req.method === "GET") {
-      return res.status(200).json(await getIssueById(id));
+      return res.status(200).json(await getTaskById(id));
     }
 
     if (req.method === "PUT") {
-      return res.status(200).json(await updateIssue(id, req.body || {}, req.user));
+      return res.status(200).json(await updateTask(id, req.body || {}, req.user));
     }
 
     if (req.method === "DELETE") {
-      return res.status(200).json(await deleteIssue(id, req.user));
+      return res.status(200).json(await deleteTask(id, req.user));
     }
   } catch (err) {
-    if (err instanceof IssueServiceError) return res.status(err.status).json({ error: err.message });
+    if (err instanceof TaskServiceError) return res.status(err.status).json({ error: err.message });
     return res.status(500).json({ error: "Something went wrong" });
   }
 

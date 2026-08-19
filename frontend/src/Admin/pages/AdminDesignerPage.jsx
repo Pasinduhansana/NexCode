@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Link from "next/link";
+import { Link as RRLink } from "react-router-dom";
 import toast from "react-hot-toast";
 import {
   HiOutlinePlus,
@@ -420,13 +420,13 @@ export default function AdminDesignerPage() {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <Link
-            href="/admin/assistant"
+          <RRLink
+            to="/admin/assistant"
             className="inline-flex items-center gap-2 rounded-lg border border-border px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
           >
             <HiOutlineChatAlt2 size={16} className="text-primary" />
             <span className="hidden sm:inline">Ask AI</span>
-          </Link>
+          </RRLink>
           <button
             type="button"
             onClick={refreshAll}

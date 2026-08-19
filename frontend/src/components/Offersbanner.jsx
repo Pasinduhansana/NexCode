@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { adSlides } from "../data/adSlides";
 import { FaArrowRight } from "react-icons/fa";
@@ -53,7 +53,7 @@ function OfferCard({ offer, onCta }) {
 export default function OffersBanner({ offers = adSlides, speed = 32 }) {
   const [paused, setPaused] = useState(false);
   const wrapperRef = useRef(null);
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleCta = (offer) => {
     // Open the story modal (AdModal) when an offer card is clicked.
@@ -65,7 +65,7 @@ export default function OffersBanner({ offers = adSlides, speed = 32 }) {
     } catch (_) {}
 
     // Keep existing behavior (route) as fallback/navigation.
-    router.push("/start-project");
+    navigate("/start-project");
   };
 
   // Duplicate the list once — the track animates from 0% to -50%,

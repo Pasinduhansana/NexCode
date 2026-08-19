@@ -4,10 +4,10 @@ import Navbar from "@/src/components/Navbar";
 import Footer from "@/src/components/Footer";
 import ScrollToTop from "@/src/components/ScrollToTop";
 import WhatsAppFloat from "@/src/components/WhatsAppFloat";
-import { usePathname } from "next/navigation";
+import { useLocation } from "react-router-dom";
 
 export default function PublicSiteLayout({ children }) {
-  const pathname = usePathname();
+  const { pathname } = useLocation();
   const isAdminRoute = pathname?.startsWith("/admin");
 
   return (
