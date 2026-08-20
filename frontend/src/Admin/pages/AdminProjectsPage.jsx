@@ -3,11 +3,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link as RRLink } from "react-router-dom";
 import toast from "react-hot-toast";
-import { HiOutlinePlus, HiOutlineSearch, HiOutlineFolder, HiOutlinePencilAlt, HiOutlineTrash, HiOutlineClipboardList, HiOutlineViewList, HiOutlineTemplate } from "react-icons/hi";
+import { HiOutlinePlus, HiOutlineFolder, HiOutlinePencilAlt, HiOutlineTrash, HiOutlineClipboardList, HiOutlineViewList, HiOutlineTemplate } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
 import { clientLog } from "../utils/perfClient";
 import usePageTitle from "../../utils/usePageTitle";
 import Spinner from "../components/Spinner";
+import SearchBar from "../components/SearchBar";
 import EmptyState from "../components/EmptyState";
 import StatusBadge from "../components/StatusBadge";
 import ProjectFormModal from "../components/ProjectFormModal";
@@ -113,15 +114,7 @@ export default function AdminProjectsPage() {
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <div className="relative flex-1">
-          <HiOutlineSearch size={18} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-text_muted" />
-          <input
-            className="input-field pl-20"
-            placeholder="Search by name, client, or tag..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
+        <SearchBar value={search} onChange={setSearch} />
         <PremiumSelect
           value={statusFilter}
           onChange={setStatusFilter}
