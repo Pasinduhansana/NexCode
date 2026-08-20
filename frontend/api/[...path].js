@@ -30,11 +30,23 @@ export default async function handler(req, res) {
     return;
   }
 
-  const segments = Array.isArray(req.query.path)
-    ? req.query.path
-    : req.query.path
-    ? [req.query.path]
-    : [];
+  // Derive path segments from the query param or fall back to req.path
+  let segments;
+  if (req.query.path) {
+    segments = Array.isArray(req.query.path) ? req.query.path : [req.query.path];
+  } else {
+    // fallback: infer from the request path (e.g. /api/auth/login)
+    const path = (req.path || '').replace(/^\/api/i, '').trim();
+    segments = path ? path.split('/').filter((s) => s) : [];
+  }
+
+  // Ensure POST for auth/login (the consolidated handler delegates to per‑route handlers,
+  // but some calls may hit this file directly – return a clear 405 instead of a generic error).
+  const joined = segments.join("/");
+  if (joined === "auth/login" && req.method !== "POST") {
+    res.status(405).json({ error: "Method not allowed" });
+    return;
+  }
 
   const routeHandler = await resolveApiHandler(segments);
   if (!routeHandler) {
