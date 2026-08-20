@@ -5,6 +5,12 @@ import { resolveApiHandler, pathParamsFromSegments } from "../lib/api/resolve-ha
  * Keeps the project on 1 deployed function (Hobby plan cap: 12) instead of
  * one function per route — see lib/api/resolve-handler.js for the routing table
  * and lib/api-handlers/ for the actual handler implementations.
+ *
+ * Vercel's frameworkless `api/` directory does not support Next.js-style
+ * catch-all files ([...path].js is a Next.js-only feature), so every /api/*
+ * request is funnelled here by the `/api/(.*)` rewrite in vercel.json, which
+ * forwards the original path as the `path` query parameter. Segments are also
+ * derived from req.path / req.url as a fallback.
  */
 
 function buildCors(req) {
@@ -30,14 +36,37 @@ export default async function handler(req, res) {
     return;
   }
 
-  // Derive path segments from the query param or fall back to req.path
+  // Derive the route path segments. Priority:
+  //  1. `path` query param set by the vercel.json rewrite (or dev server).
+  //  2. `path` in the raw request URL's query string.
+  //  3. req.path / req.url pathname (stripped of the /api prefix).
+  const decode = (s) => {
+    try {
+      return decodeURIComponent(s);
+    } catch {
+      return s;
+    }
+  };
+  const splitSegments = (value) =>
+    String(value)
+      .split("/")
+      .map((s) => decode(s))
+      .filter(Boolean);
+
   let segments;
-  if (req.query.path) {
-    segments = Array.isArray(req.query.path) ? req.query.path : [req.query.path];
+  if (req.query && req.query.path !== undefined && req.query.path !== null && req.query.path !== "") {
+    segments = Array.isArray(req.query.path)
+      ? req.query.path.map((s) => decode(s)).filter(Boolean)
+      : splitSegments(req.query.path);
   } else {
-    // fallback: infer from the request path (e.g. /api/auth/login)
-    const path = (req.path || '').replace(/^\/api/i, '').trim();
-    segments = path ? path.split('/').filter((s) => s) : [];
+    const urlQuery = (req.url || "").split("?")[1] || "";
+    const pathFromUrlQuery = new URLSearchParams(urlQuery).get("path");
+    if (pathFromUrlQuery) {
+      segments = splitSegments(pathFromUrlQuery);
+    } else {
+      const path = (req.path || (req.url || "").split("?")[0]).replace(/^\/api\/?/, "");
+      segments = splitSegments(path);
+    }
   }
 
   // Ensure POST for auth/login (the consolidated handler delegates to per‑route handlers,

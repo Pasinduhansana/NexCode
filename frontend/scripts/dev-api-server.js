@@ -1,4 +1,4 @@
-// Local dev-only API server. Mounts the real Vercel handler (api/[...path].js)
+// Local dev-only API server. Mounts the real Vercel handler (api/index.js)
 // on plain Node http so `vite`'s /api proxy has something to talk to, without
 // depending on `vercel dev` (which fights this project's own "dev" script —
 // see the recursive-invocation guard in the Vercel CLI).
@@ -24,7 +24,7 @@ if (existsSync(envPath)) {
   }
 }
 
-const { default: handler } = await import("../api/[...path].js");
+const { default: handler } = await import("../api/index.js");
 
 const PORT = Number(process.env.API_DEV_PORT) || 3000;
 const MAX_BODY_BYTES = 4 * 1024 * 1024;
