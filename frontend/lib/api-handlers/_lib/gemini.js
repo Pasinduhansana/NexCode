@@ -126,6 +126,47 @@ function errorMessage(err) {
   return err instanceof Error ? err.message : String(err);
 }
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Walk down the error cause chain (undici wraps the real failure, e.g.
+// TypeError "fetch failed" → cause { code: "ECONNREFUSED" }).
+function rootCause(err) {
+  let current = err;
+  for (let i = 0; i < 6 && current; i++) {
+    if (current.cause) current = current.cause;
+    else break;
+  }
+  return current;
+}
+
+// A transport-level failure (DNS, TCP, TLS, socket) rather than an HTTP error
+// with a body. These can be transient (cold-start DNS, brief reset), so we
+// retry them — but they can also be a permanent egress block, so we must not
+// swallow the real cause when logging.
+function isNetworkError(err) {
+  if (err instanceof TypeError) return true;
+  const root = rootCause(err);
+  const message = `${errorMessage(err)} ${errorMessage(root)} ${root?.code || ""}`.toLowerCase();
+  return /fetch failed|enetrefused|enotfound|econnreset|econnaborted|socket|timed.?out|getaddrinfo|tls|undici/i.test(message);
+}
+
+// One-line, safe summary of an error and its cause chain for logs. Never
+// includes request bodies, API keys, or other secret content.
+function describeError(err) {
+  if (!(err instanceof Error)) return String(err);
+  const parts = [];
+  const seen = new Set();
+  let current = err;
+  for (let i = 0; i < 6 && current && !seen.has(current); i++) {
+    seen.add(current);
+    parts.push(`${current.code ? `[${current.code}] ` : ""}${current.message || ""}`.trim());
+    current = current.cause;
+  }
+  return parts.filter(Boolean).join(" → ");
+}
+
 function log(level, payload) {
   const line = `[ai:${level}] ${JSON.stringify(payload)}`;
   if (level === "error") console.error(line);
@@ -170,11 +211,13 @@ function classifyError(err) {
     err instanceof TypeError ||
     /fetch failed|enetrefused|enotfound|econnreset|econnaborted|network|socket|timed.?out/i.test(lower)
   ) {
-    return new GeminiServiceError(
+    const serviceError = new GeminiServiceError(
       GEMINI_ERROR.NETWORK_ERROR,
       "Could not reach the AI service. Please check your connection and try again.",
       502
     );
+    if (err instanceof Error) serviceError.cause = err;
+    return serviceError;
   }
   if (err instanceof ApiError && (err.status === 401 || err.status === 403)) {
     return new GeminiServiceError(
@@ -259,6 +302,7 @@ function forwardToolResult(name, result) {
 async function generateWithFallback(ai, contents, config) {
   const chain = getModelChain();
   let lastRetryableError = null;
+  let lastNetworkError = null;
 
   for (const model of chain) {
     try {
@@ -266,13 +310,21 @@ async function generateWithFallback(ai, contents, config) {
       return { model, response };
     } catch (err) {
       if (err instanceof GeminiServiceError) throw err;
+      // A transport failure on one model may be transient (or a permanent
+      // egress block). Try the next model before giving up, but remember the
+      // real cause so we never mask it as a generic "model unavailable".
+      if (isNetworkError(err)) {
+        lastNetworkError = err;
+        await sleep(500);
+        continue;
+      }
       if (!isRetryable(err)) throw classifyError(err);
       lastRetryableError = err;
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      await sleep(300);
     }
   }
 
-  throw classifyError(lastRetryableError || new Error("AI service unavailable"));
+  throw classifyError(lastNetworkError || lastRetryableError || new Error("AI service unavailable"));
 }
 
 async function generateWithRetry(ai, model, contents, config, attempts = 3) {
@@ -283,9 +335,9 @@ async function generateWithRetry(ai, model, contents, config, attempts = 3) {
       return await ai.models.generateContent({ model, contents, config });
     } catch (err) {
       if (err instanceof GeminiServiceError) throw err;
-      if (!isRetryable(err)) throw classifyError(err);
       lastError = err;
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      if (!isRetryable(err) && !isNetworkError(err)) throw classifyError(err);
+      await sleep(300 * (attempt + 1));
     }
   }
 
@@ -366,6 +418,7 @@ export async function generateReply({ messages, user }) {
       ok: false,
       code: err?.code || "UNEXPECTED",
       error: safeMessage,
+      detail: describeError(err),
       durationMs: Date.now() - startedAt,
     });
     throw err;

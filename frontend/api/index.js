@@ -77,7 +77,13 @@ export default async function handler(req, res) {
     return;
   }
 
-  const routeHandler = await resolveApiHandler(segments);
+  let routeHandler;
+  try {
+    routeHandler = await resolveApiHandler(segments);
+  } catch (err) {
+    console.error("[api] handler resolution failed", err);
+    return res.status(500).json({ error: "Handler failed to load" });
+  }
   if (!routeHandler) {
     res.status(404).json({ error: "Not found" });
     return;
