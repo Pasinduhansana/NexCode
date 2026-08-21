@@ -61,6 +61,7 @@ export function parseTransaction(body) {
     projectId: body.projectId ? String(body.projectId) : null,
     paidBy: body.paidBy ? String(body.paidBy).trim() : "",
     paymentStatus: body.paymentStatus ? String(body.paymentStatus) : "paid",
+    skipDistribution: body.skipDistribution === true || body.skipDistribution === "true",
     date,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -195,6 +196,7 @@ export async function updateTransaction(id, body = {}, user) {
   if (body.projectId !== undefined) patch.projectId = body.projectId ? String(body.projectId) : null;
   if (body.paidBy !== undefined) patch.paidBy = String(body.paidBy).trim();
   if (body.paymentStatus !== undefined) patch.paymentStatus = String(body.paymentStatus);
+  if (body.skipDistribution !== undefined) patch.skipDistribution = body.skipDistribution === true || body.skipDistribution === "true";
   if (body.date !== undefined) {
     const date = parseDate(body.date);
     patch.date = date || new Date();
@@ -307,7 +309,7 @@ export async function buildFinanceSummary() {
   const rows = await collection
     .find(
       {},
-      { projection: { type: 1, amount: 1, paidBy: 1, paymentStatus: 1, category: 1, date: 1 } }
+      { projection: { type: 1, amount: 1, paidBy: 1, paymentStatus: 1, category: 1, date: 1, skipDistribution: 1 } }
     )
     .sort({ date: 1 })
     .toArray();
@@ -327,8 +329,10 @@ export async function buildFinanceSummary() {
     const amount = r.amount || 0;
     if (r.type === "expense") {
       totalExpense += amount;
-      const who = r.paidBy || "NexCode";
-      byPaidBy[who] = (byPaidBy[who] || 0) + amount;
+      if (!r.skipDistribution) {
+        const who = r.paidBy || "NexCode";
+        byPaidBy[who] = (byPaidBy[who] || 0) + amount;
+      }
     } else if (r.type === "payment") {
       totalPayments += amount;
       if (r.paymentStatus === "pending") {
@@ -392,7 +396,7 @@ export async function buildFinanceSummary() {
 }
 
 function calculateSettlement(rows) {
-  const expenses = rows.filter((r) => r.type === "expense");
+  const expenses = rows.filter((r) => r.type === "expense" && !r.skipDistribution);
   if (expenses.length === 0) return { balances: [], transfers: [] };
 
   const totals = {};
