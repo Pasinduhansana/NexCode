@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { HiOutlineArrowLeft, HiOutlinePlus, HiOutlinePencilAlt, HiOutlineTrash, HiOutlineFolder, HiOutlineUser, HiOutlineCalendar, HiOutlineCurrencyDollar, HiOutlineCheck, HiOutlineDocumentText, HiOutlineTag } from "react-icons/hi";
 import adminApi from "../utils/adminApi";
@@ -48,7 +47,7 @@ export default function AdminProjectDetailPage() {
       setTasks(data.tasks || []);
     } catch (err) {
       toast.error(err.response?.data?.error || "Failed to load project");
-      router.replace("/admin/projects");
+      navigate("/admin/projects");
     } finally {
       setLoading(false);
     }
