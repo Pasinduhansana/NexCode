@@ -91,11 +91,14 @@ export default function TransactionFormModal({ open, transaction, projects = [],
     setSaving(true);
     try {
       const payload = {
-        ...form,
+        type: form.type,
         amount,
         description: form.description.trim(),
         category: form.category || (FINANCE_CATEGORIES[form.type]?.[0]?.value ?? "Other"),
+        date: form.date,
         projectId: form.projectId || null,
+        paidBy: form.type === "expense" ? form.paidBy : "",
+        paymentStatus: form.type === "payment" ? form.paymentStatus : "paid",
         skipDistribution: form.skipDistribution,
       };
 

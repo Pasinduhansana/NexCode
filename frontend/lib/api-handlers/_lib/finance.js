@@ -329,9 +329,8 @@ export async function buildFinanceSummary() {
     const amount = r.amount || 0;
     if (r.type === "expense") {
       totalExpense += amount;
-      if (!r.skipDistribution) {
-        const who = r.paidBy || "NexCode";
-        byPaidBy[who] = (byPaidBy[who] || 0) + amount;
+      if (!r.skipDistribution && r.paidBy && r.paidBy !== "NexCode") {
+        byPaidBy[r.paidBy] = (byPaidBy[r.paidBy] || 0) + amount;
       }
     } else if (r.type === "payment") {
       totalPayments += amount;
@@ -395,25 +394,29 @@ export async function buildFinanceSummary() {
   };
 }
 
+const SPLIT_PERSONS = ["Pasindu", "Chamara"];
+
 function calculateSettlement(rows) {
-  const expenses = rows.filter((r) => r.type === "expense" && !r.skipDistribution);
+  const expenses = rows.filter(
+    (r) => r.type === "expense" && !r.skipDistribution && SPLIT_PERSONS.includes(r.paidBy)
+  );
   if (expenses.length === 0) return { balances: [], transfers: [] };
 
   const totals = {};
-  for (const who of PAID_BY_OPTIONS) {
+  for (const who of SPLIT_PERSONS) {
     totals[who] = 0;
   }
 
   for (const r of expenses) {
-    const who = r.paidBy || "NexCode";
+    const who = r.paidBy;
     if (!totals[who]) totals[who] = 0;
     totals[who] += r.amount || 0;
   }
 
   const totalExpenses = Object.values(totals).reduce((a, b) => a + b, 0);
-  const perPerson = PAID_BY_OPTIONS.length > 0 ? totalExpenses / PAID_BY_OPTIONS.length : 0;
+  const perPerson = totalExpenses / SPLIT_PERSONS.length;
 
-  const balances = PAID_BY_OPTIONS.map((name) => ({
+  const balances = SPLIT_PERSONS.map((name) => ({
     name,
     paid: Math.round((totals[name] || 0) * 100) / 100,
     fairShare: Math.round(perPerson * 100) / 100,
