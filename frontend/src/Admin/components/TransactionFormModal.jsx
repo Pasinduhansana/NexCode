@@ -42,6 +42,7 @@ const emptyForm = () => ({
   projectId: "",
   paidBy: "",
   paymentStatus: "paid",
+  skipDistribution: false,
 });
 
 export default function TransactionFormModal({ open, transaction, projects = [], onClose, onSaved }) {
@@ -62,6 +63,7 @@ export default function TransactionFormModal({ open, transaction, projects = [],
             projectId: transaction.projectId || "",
             paidBy: transaction.paidBy || "",
             paymentStatus: transaction.paymentStatus || "paid",
+            skipDistribution: transaction.skipDistribution || false,
           }
         : emptyForm()
     );
@@ -89,11 +91,15 @@ export default function TransactionFormModal({ open, transaction, projects = [],
     setSaving(true);
     try {
       const payload = {
-        ...form,
+        type: form.type,
         amount,
         description: form.description.trim(),
         category: form.category || (FINANCE_CATEGORIES[form.type]?.[0]?.value ?? "Other"),
+        date: form.date,
         projectId: form.projectId || null,
+        paidBy: form.type === "expense" ? form.paidBy : "",
+        paymentStatus: form.type === "payment" ? form.paymentStatus : "paid",
+        skipDistribution: form.skipDistribution,
       };
 
       if (isEdit) {
@@ -199,6 +205,20 @@ export default function TransactionFormModal({ open, transaction, projects = [],
             value={form.description}
             onChange={set("description")}
           />
+        </div>
+
+        <div className="flex items-center gap-3 rounded-lg border border-border bg-muted/30 px-4 py-3">
+          <input
+            id="skipDistribution"
+            type="checkbox"
+            checked={form.skipDistribution}
+            onChange={(e) => setForm((f) => ({ ...f, skipDistribution: e.target.checked }))}
+            className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
+          />
+          <label htmlFor="skipDistribution" className="cursor-pointer text-sm">
+            <span className="font-medium text-foreground">Skip Distribution</span>
+            <span className="ml-2 text-text_muted">Amount will not be included in Chamara/Pasindu settlement calculations</span>
+          </label>
         </div>
 
         <div className="flex justify-end gap-2 pt-2">

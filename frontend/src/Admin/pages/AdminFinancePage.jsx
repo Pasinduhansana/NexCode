@@ -318,6 +318,11 @@ export default function AdminFinancePage() {
                       </td>
                       <td className={`whitespace-nowrap px-4 py-3 text-right font-bold ${r.type === "expense" ? "text-rose-500" : "text-emerald-500"}`}>
                         {r.type === "expense" ? "-" : "+"}Rs. {amount.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                        {r.skipDistribution && (
+                          <span className="ml-1 inline-flex items-center rounded-full bg-amber-500/10 px-1.5 py-0.5 text-[9px] font-medium text-amber-500 border border-amber-500/30" title="Skipped from distribution">
+                            No Split
+                          </span>
+                        )}
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
