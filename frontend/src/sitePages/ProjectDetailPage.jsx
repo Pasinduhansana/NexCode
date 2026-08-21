@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Link as RRLink, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 const palmLeave              = "/assets/palm-leave.webp";
 const project_image          = "/assets/project_image.webp";
 const project_image2_mobile  = "/assets/project_image1_mob.webp";
