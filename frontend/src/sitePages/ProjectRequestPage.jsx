@@ -52,7 +52,6 @@ export default function ProjectRequestPage() {
   useEffect(() => {
     if (state.errors && Object.keys(state.errors).length > 0 && !state.succeeded && !state.submitting) {
       toast.error("Something went wrong sending your request. Please try again or contact us on WhatsApp.");
-      console.error("Formspree submission errors:", state.errors);
     }
   }, [state.errors, state.succeeded, state.submitting]);
 
@@ -108,7 +107,6 @@ export default function ProjectRequestPage() {
     try {
       await formspreeHandleSubmit(e);
     } catch (err) {
-      console.error("Submit failed:", err);
       toast.error("Couldn't send your request. Please check your connection and try again.");
     }
   };

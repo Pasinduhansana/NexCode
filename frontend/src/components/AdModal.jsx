@@ -16,7 +16,7 @@ export default function AdModal({ open, onClose }) {
   const [isMobile, setIsMobile] = useState(typeof window !== "undefined" ? window.innerWidth < 768 : false);
   const [paused, setPaused] = useState(false);
 
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const startX = useRef(0);
   const deltaX = useRef(0);
@@ -128,7 +128,7 @@ export default function AdModal({ open, onClose }) {
     // Navigate to the home page and scroll to the "Advertise" section.
     // Home's <section id="advertise"> is the target; HomePage also listens
     // for location.state.scrollTo in a useEffect for cross-route navigation.
-    router.push("/");
+    navigate("/");
 
     // If we're already on "/", react-router won't remount Home, so nudge
     // the scroll directly too.

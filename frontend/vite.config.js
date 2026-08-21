@@ -58,6 +58,11 @@ function nextShims() {
 }
 
 export default defineConfig({
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './tests/setup-vitest.js',
+  },
   plugins: [
     nextShims(),
     react(),

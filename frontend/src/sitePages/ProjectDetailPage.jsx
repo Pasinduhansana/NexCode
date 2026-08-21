@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Link as RRLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 const palmLeave              = "/assets/palm-leave.webp";
 const project_image          = "/assets/project_image.webp";
 const project_image2_mobile  = "/assets/project_image1_mob.webp";
@@ -439,7 +438,7 @@ function App() {
     return (
       <div className="flex items-center justify-center p-4">
         <button
-          onClick={() => router.back()}
+          onClick={() => navigate(-1)}
           className="flex items-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 transition-colors"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
