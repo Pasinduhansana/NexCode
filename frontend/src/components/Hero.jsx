@@ -210,7 +210,7 @@ function LaptopScreenContent({ theme }) {
             <div className="flex gap-4 mt-5">
               {[
                 ["100%", "Satisfaction"],
-                ["20+", "Projects"],
+                ["15+", "Projects"],
                 ["10+", "Services"],
               ].map(([v, l]) => (
                 <div key={l} className="flex flex-col items-center">
@@ -434,7 +434,7 @@ function PhoneScreenContent({ theme }) {
         <div className="flex justify-around px-2 flex-shrink-0">
           {[
             ["100%", "Satisfaction"],
-            ["20+", "Projects"],
+            ["15+", "Projects"],
             ["10+", "Services"],
           ].map(([v, l]) => (
             <div key={l} className="flex flex-col items-center">
@@ -597,7 +597,7 @@ export default function Hero({ stats = [] }) {
       ? stats.slice(0, 3)
       : [
           { value: "98%", label: "Client satisfaction" },
-          { value: "150+", label: "Projects shipped" },
+          { value: "15+", label: "Projects shipped" },
           { value: "6yr", label: "In the industry" },
         ];
 
