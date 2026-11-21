@@ -1,16 +1,19 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { motion, useAnimation, useReducedMotion } from "framer-motion";
+import { Link as RRLink } from "react-router-dom";
+import { motion, useAnimation } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
-import laptopMockup from "../../assets/laptop_mockup.png";
-import phoneMockup from "../../assets/phone_mockup.png";
-import palm_tree from "../../assets/palm-leave.png";
-import laptop_display from "../../assets/project_image.png";
-import dark_L_display from "../../assets/dark_desktop.png";
-import light_L_display from "../../assets/light_desktop.png";
-import dark_m_display from "../../assets/dark_mobile.png";
-import light_m_display from "../../assets/light_mobile.png";
 import Button from "../components/Button";
+
+const laptopMockup    = "/assets/laptop_mockup.webp";
+const phoneMockup     = "/assets/phone_mockup.webp";
+const palm_tree       = "/assets/palm-leave.webp";
+const laptop_display  = "/assets/project_image.webp";
+const dark_L_display  = "/assets/dark_desktop.webp";
+const light_L_display = "/assets/light_desktop.webp";
+const dark_m_display  = "/assets/dark_mobile.webp";
+const light_m_display = "/assets/light_mobile.webp";
 /* ─────────────────────────────────────────────────────────────
    THEME TOKENS
 ───────────────────────────────────────────────────────────── */
@@ -68,7 +71,7 @@ function FloatCard({ style = {}, className = "", children, delay = 0 }) {
       transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
       className={`absolute rounded-2xl border border-border/80
                   bg-card backdrop-blur-xl shadow-2xl pointer-events-none ${className} `}
-      style={style}
+      style={{ willChange: "transform", ...style }}
     >
       {children}
     </motion.div>
@@ -224,13 +227,13 @@ function LaptopScreenContent({ theme }) {
           </div>
           {/* Right Panel with image */}
           <div className="w-full relative h-full flex items-center justify-center ">
-            <img src={palm_tree} alt="Palm Tree" className="absolute w-[60%] object-cover -right-10 -bottom-4 z-50" />
+              <img src={palm_tree} alt="Palm Tree" loading="lazy" decoding="async" className="absolute w-[60%] object-cover -right-10 -bottom-4 z-50" />
             <div className="w-full scale-125 flex relative  mr-20 mt-16 overflow-hidden">
               <div className="absolute z-0 inset-0 overflow-hidden  text-center flex items-center justify-center p-3.5 pt-6">
-                <img src={laptop_display} alt="Palm Tree" className="object-cover w-[90%] " />
+                <img src={laptop_display} alt="Palm Tree" loading="lazy" decoding="async" className="object-cover w-[90%] " />
               </div>
 
-              <img src={laptopMockup} alt="Palm Tree" className="object-cover z-10" />
+              <img src={laptopMockup} alt="Palm Tree" loading="lazy" fetchpriority="low" decoding="async" className="object-cover z-10" />
             </div>
 
             {/* Revenue sparkline — mid right */}
@@ -357,7 +360,13 @@ function LaptopScreenContent({ theme }) {
         />
       </div>
       <div className="w-full h-full flex flex-col items-center justify-center  select-none overflow-hidden md:hidden">
-        <img src={theme === "dark" ? dark_L_display : light_L_display} alt="Mobile Display" className="object-cover w-[100%] h-[100%]" />
+        <img
+                src={theme === "dark" ? dark_L_display : light_L_display}
+                alt="Mobile Display"
+                loading="lazy"
+                decoding="async"
+                className="object-cover w-[100%] h-[100%]"
+              />
       </div>
     </>
   );
@@ -466,7 +475,7 @@ function PhoneScreenContent({ theme }) {
         </div>
       </div>
       <div className="w-full h-full  flex flex-col items-center justify-center  select-none overflow-hidden md:hidden">
-        <img src={theme === "dark" ? dark_m_display : light_m_display} alt="Mobile Display" className="object-cover w-[90%] h-[95%]" />
+        <img src={theme === "dark" ? dark_m_display : light_m_display} alt="Mobile Display" loading="lazy" decoding="async" className="object-cover w-[90%] h-[95%]" />
       </div>
     </>
   );
@@ -478,7 +487,15 @@ function PhoneScreenContent({ theme }) {
 export default function Hero({ stats = [] }) {
   const { theme } = useTheme();
   const tokens = tv(theme);
-  const prefersRed = useReducedMotion();
+  /* preload critical hero image */
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = laptopMockup;
+    document.head.appendChild(link);
+    return () => link.remove();
+  }, []);
 
   /* refs */
   const sceneRef = useRef(null);
@@ -496,15 +513,6 @@ export default function Hero({ stats = [] }) {
 
   /* ── Entry: laptop unfold sequence ───────────────────────── */
   useEffect(() => {
-    if (prefersRed) {
-      setLidDone(true);
-      return;
-    }
-
-    /* 1. Start closed (lid flat, scene scaled down) */
-    lidCtrl.set({ rotateX: 75, opacity: 0.3, scale: 0.88, y: 40 });
-
-    /* 2. Short pause, then unfold */
     const t = setTimeout(async () => {
       await lidCtrl.start({
         rotateX: 0,
@@ -517,7 +525,7 @@ export default function Hero({ stats = [] }) {
     }, 280);
 
     return () => clearTimeout(t);
-  }, [lidCtrl, prefersRed]);
+  }, [lidCtrl]);
 
   /* ── Parallax RAF ─────────────────────────────────────────── */
   useEffect(() => {
@@ -545,9 +553,24 @@ export default function Hero({ stats = [] }) {
     el.addEventListener("touchmove", onTouch, { passive: true });
     el.addEventListener("touchend", onLeave);
 
+    let idleFrames = 0;
     const tick = () => {
-      cur.current.x += (mouse.current.x - cur.current.x) * 0.055;
-      cur.current.y += (mouse.current.y - cur.current.y) * 0.055;
+      const dx = mouse.current.x - cur.current.x;
+      const dy = mouse.current.y - cur.current.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < 0.001) {
+        idleFrames++;
+        if (idleFrames > 30) {
+          rafRef.current = requestAnimationFrame(tick);
+          return;
+        }
+      } else {
+        idleFrames = 0;
+      }
+
+      cur.current.x += dx * 0.055;
+      cur.current.y += dy * 0.055;
       const { x: cx, y: cy } = cur.current;
 
       if (tiltRef.current) tiltRef.current.style.transform = `rotateX(${cy * -12}deg) rotateY(${cx * 12}deg)`;
@@ -581,7 +604,7 @@ export default function Hero({ stats = [] }) {
   return (
     <section
       ref={sceneRef}
-      className="relative min-h-screen w-full overflow-hidden bg-background
+      className="relative h-full md:min-h-screen pb-44 md:pb-0  w-full overflow-hidden bg-background
                  flex flex-col items-center md:justify-center -pt-10 md:pt-0 -mt-16 md:-mt-20"
     >
       {/* ══ BACKGROUND ══════════════════════════════════════════ */}
@@ -673,8 +696,8 @@ export default function Hero({ stats = [] }) {
 
       {/* ══ LARGE WATERMARK TEXT ════════════════════════════════ */}
       <div
-        className="absolute inset-0 flex flex-col items-center justify-center
-                      pointer-events-none select-none px-2"
+        className="absolute inset-0 flex flex-col items-center justify-center pt-40 md:pt-36
+                      pointer-events-none select-none overflow-hidden px-2"
         style={{ zIndex: 1 }}
       >
         <span
@@ -695,21 +718,21 @@ export default function Hero({ stats = [] }) {
         initial={{ opacity: 0, y: 28 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="relative text-center  px-5 pt-24 md:pt-28 pb-10
+        className="relative text-center  px-5 pt-20 md:pt-28 pb-10
                    flex flex-col items-center gap-4"
         style={{ zIndex: 10 }}
       >
         {/* headline */}
         <h1
           className="text-[clamp(2rem,5.2vw,3rem)] font-bold
-                     leading-[1.05] tracking-tight text-foreground mt-0"
+                     leading-[1.3] tracking-tight text-foreground mt-0 md:mt-0"
           style={{ fontFamily: "'Syne', sans-serif" }}
         >
-          Empower Your <em className="not-italic text-primary">Digital</em> Growth
+          Build Digital Solutions That<em className="not-italic text-primary"><br className="hidden md:block"/> Grow Your Business</em>
         </h1>
 
-        <p className="section-subtitle">
-          From sleek websites to powerful enterprise systems — NexCode ships software that moves fast, scales further, and delights every user.
+        <p className="section-subtitle mt-2 md:mt-0">
+          From modern websites to custom business systems, NexCode helps companies automate operations, improve efficiency, and create better digital experiences for their customers.
         </p>
       </motion.div>
 
@@ -718,9 +741,10 @@ export default function Hero({ stats = [] }) {
           Perspective wrapper → motion div (lid unfold) →
           tilt wrapper (mouse parallax) → laptop + floating cards
       */}
-      <div className="relative z-10 w-full h-auto flex justify-center items-start " style={{ perspective: "1100px" }}>
+      <div className="relative z-10 w-full h-auto flex justify-center items-start mt-12 md:mt-0 " style={{ perspective: "1100px" }}>
         {/* lid unfold motion */}
         <motion.div
+          initial={{ rotateX: 75, opacity: 0.3, scale: 0.88, y: 40 }}
           animate={lidCtrl}
           style={{
             transformStyle: "preserve-3d",
@@ -741,17 +765,20 @@ export default function Hero({ stats = [] }) {
           >
             {/* ── laptop frame ─────────────────────────────────── */}
             <div className="relative" style={{ width: "min(800px, 88vw)" }}>
-              {/* the PNG frame */}
+              {/* the webp frame */}
               <img
                 src={laptopMockup}
                 alt="Laptop"
+                loading="eager"
+                fetchpriority="high"
+                decoding="sync"
                 className="w-full h-auto relative select-none drop-shadow-2xl"
                 style={{ zIndex: 20, pointerEvents: "none" }}
                 draggable={false}
               />
 
               {/* ── SCREEN CONTENT inside bezel ──────────────────
-                  Adjust these % to match your laptop_mockup.png exactly.
+                  Adjust these % to match your laptop_mockup.webp exactly.
                   width/height/top/left are relative to the img size.       */}
               <div
                 className="absolute overflow-hidden"
@@ -786,7 +813,7 @@ export default function Hero({ stats = [] }) {
               {/* ── phone mockup — bottom-left ──────────────────── */}
               <div className="absolute z-30" style={{ bottom: "-1%", left: "1%", width: "12%" }}>
                 <div className="relative">
-                  <img src={phoneMockup} alt="Phone" className="w-full h-auto relative z-20 drop-shadow-xl" draggable={false} />
+                  <img src={phoneMockup} alt="Phone" loading="lazy" fetchpriority="low" decoding="async" className="w-full h-auto relative z-20 drop-shadow-xl" draggable={false} />
                   <div className="absolute inset-0 z-10 overflow-hidden" style={{ borderRadius: "18%" }}>
                     <PhoneScreenContent theme={theme} />
                   </div>

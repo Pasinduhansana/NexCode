@@ -69,3 +69,6 @@ storage/*.key
 # Temporary files
 tmp/
 temp/
+
+PERFORMANCE.md
+.vercel

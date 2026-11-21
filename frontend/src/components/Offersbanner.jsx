@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
@@ -22,6 +24,7 @@ function OfferCard({ offer, onCta }) {
         <img
           src={offer.image}
           alt={offer.title}
+          loading="lazy"
           className="absolute inset-0 w-full h-full object-contain"
           draggable={false}
         />
@@ -62,7 +65,7 @@ export default function OffersBanner({ offers = adSlides, speed = 32 }) {
     } catch (_) {}
 
     // Keep existing behavior (route) as fallback/navigation.
-    navigate("/start-project", { state: { ad: offer } });
+    navigate("/start-project");
   };
 
   // Duplicate the list once — the track animates from 0% to -50%,

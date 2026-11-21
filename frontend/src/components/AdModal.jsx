@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
@@ -75,7 +77,7 @@ export default function AdModal({ open, onClose }) {
     return () => (document.body.style.overflow = "auto");
   }, [open]);
 
-  if (!open) return null;
+  if (!open || typeof window === "undefined") return null;
 
   const goNext = () => {
     setAnimating(true);
@@ -126,7 +128,7 @@ export default function AdModal({ open, onClose }) {
     // Navigate to the home page and scroll to the "Advertise" section.
     // Home's <section id="advertise"> is the target; HomePage also listens
     // for location.state.scrollTo in a useEffect for cross-route navigation.
-    navigate("/", { state: { scrollTo: "advertise" } });
+    navigate("/");
 
     // If we're already on "/", react-router won't remount Home, so nudge
     // the scroll directly too.

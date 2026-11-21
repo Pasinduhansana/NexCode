@@ -181,8 +181,16 @@ for (const [themeName, palette] of Object.entries(themePalettes)) {
     color: toRgb(palette.foreground),
     borderColor: toRgb(palette.border),
     fontSize: "0.875rem",
+    outline: "none",
     transitionProperty: "color, background-color, border-color, text-decoration-color, fill, stroke, box-shadow",
     transitionDuration: "200ms",
+  };
+  themeComponents[`${scope}.input-field:hover`] = {
+    borderColor: "rgb(54 153 243 / 0.4)",
+  };
+  themeComponents[`${scope}.input-field:focus`] = {
+    borderColor: "rgb(54 153 243 / 0.4)",
+    boxShadow: "0 0 0 2px rgb(54 153 243 / 0.1)",
   };
   themeComponents[`${scope}.input-field::placeholder`] = {
     color: toRgb(palette.mutedForeground),

@@ -1,18 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/assets/Logo.png" />
+    <link rel="icon" type="image/svg+xml" href="/assets/Logo.webp" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="NexCode Software Development - Custom Solutions. Modern Technology. Real Results." />
     <meta name="keywords" content="software development, web development, mobile app, AI automation, Sri Lanka" />
     <title>NexCode | Software Development</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TMK2FJK46Z"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-TMK2FJK46Z");
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <script>
+        (function(){
+          var t = localStorage.getItem('nexcode_theme') || 'light';
+          var bg, fg, pr;
+          if(t==='light'){bg='#f8fafc';fg='#0a0f2e';pr='#4f7bff'}
+          else if(t==='primary'){bg='#060d2a';fg='#f0f4ff';pr='#4f7bff'}
+          else{bg='#0b0f1e';fg='#f0f4ff';pr='#4f7bff'}
+          document.write(
+            '<div id="app-loader" style="position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;background:'+bg+';color:'+fg+';font-family:\'DM Sans\',sans-serif;transition:opacity .5s">'+
+              '<div style="font-family:\'Syne\',sans-serif;font-size:30px;font-weight:800;letter-spacing:-.03em">Nex<span style="color:'+pr+'">Code</span></div>'+
+              '<div style="width:140px;height:3px;border-radius:4px;background:'+fg+'15;overflow:hidden">'+
+                '<div style="width:40%;height:100%;border-radius:4px;background:linear-gradient(90deg,'+pr+','+pr+'88,'+pr+');animation:lBar 1.2s ease-in-out infinite"></div>'+
+              '</div>'+
+              '<div style="font-size:11px;color:'+fg+'55;margin-top:-8px;letter-spacing:.15em;text-transform:uppercase;font-weight:500">Processing</div>'+
+            '</div>'
+          );
+        })();
+      </script>
+      <style>
+        @keyframes lBar{0%{transform:translateX(-40px)}100%{transform:translateX(240px)}}
+      </style>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
