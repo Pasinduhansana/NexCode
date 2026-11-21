@@ -67,8 +67,8 @@ const PROCESS = [
 ];
 
 const STATS = [
-  { value: "20+", label: "Projects" },
-  { value: "18+", label: "Client Work" },
+  { value: "15+", label: "Projects" },
+  { value: "10+", label: "Client Work" },
   { value: "Flexible", label: "Service Scope" },
   { value: "24h", label: "Support" },
 ];

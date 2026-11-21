@@ -395,8 +395,8 @@ export default function ShowcasePage() {
                 className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8 border-t border-border max-w-xl mx-auto lg:mx-0"
               >
                 {[
-                  { value: "20+", label: "Delivered Work" },
-                  { value: "18+", label: "Client Experience" },
+                  { value: "15+", label: "Delivered Work" },
+                  { value: "10+", label: "Client Experience" },
                   { value: "10+", label: "Tech Stack" },
                 ].map((stat, i) => (
                   <div key={i} className="text-center lg:text-left">

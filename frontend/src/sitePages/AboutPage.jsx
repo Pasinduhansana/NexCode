@@ -29,10 +29,10 @@ import SectionLabel from "../components/SectionLabel";
    DATA
    ═══════════════════════════════════════════════════════════════════════ */
 const stats = [
-  { value: "20+", label: "Projects", description: "Built around each client need" },
-  { value: "17+", label: "Clientele", description: "Focused on close collaboration" },
-  { value: "2025", label: "Founded", description: "Started in 2025" },
-  { value: "10+", label: "Team", description: "Sri Lankan talent, global standards" },
+  { value: "15+", label: "Projects", description: "Built around each client need" },
+  { value: "10+", label: "Clientele", description: "Focused on close collaboration" },
+  { value: "2026", label: "Founded", description: "Started in May 2026" },
+  { value: "15+", label: "Technologies", description: "Modern tools and frameworks" },
 ];
 
 const STATS = [
@@ -51,12 +51,12 @@ const values = [
 
 const timeline = [
   {
-    year: "2025",
+    year: "2026",
     title: "NexCode Founded",
-    description: "Started with a small team and a clear goal: build high-quality software for ambitious clients.",
+    description: "Started in May 2026 with a small team and a clear goal: build high-quality software for ambitious clients.",
   },
   {
-    year: "2025",
+    year: "2026",
     title: "First Client Projects",
     description: "Delivered our first custom builds, establishing our process and design standards.",
   },
