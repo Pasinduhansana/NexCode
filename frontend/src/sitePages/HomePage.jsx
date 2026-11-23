@@ -58,8 +58,7 @@ export default function HomePage() {
             </motion.div>
 
             <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="section-title mb-4">
-              Everything You Need to <br className="hidden sm:block" />
-              <span className="gradient-text">Build Digitally</span>
+              Everything You Need to Build Digitally
             </motion.h2>
 
             <motion.p
@@ -104,7 +103,7 @@ export default function HomePage() {
 
               <h2 className="section-title mb-6 text-center md:text-left lg:text-left">
                 We Build Products That <br className="hidden sm:block" />
-                <span className="gradient-text">Actually Work</span>
+                <span >Actually Work</span>
               </h2>
 
               <p className="section-subtitle mb-8 leading-relaxed text-gray-500 text-center md:text-left lg:text-left">
@@ -200,8 +199,7 @@ export default function HomePage() {
           </motion.div>
 
           <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="section-title mb-4">
-            Stay Updated with <br className="hidden sm:block" />
-            <span className="gradient-text">Latest News & Offers</span>
+           Latest News & Offers
           </motion.h2>
 
           <motion.p

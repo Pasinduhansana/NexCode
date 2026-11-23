@@ -120,8 +120,7 @@ export default function FeaturedProjects() {
               transition={{ duration: 0.55, delay: 0.05 }}
               className="section-title mb-4 text-center"
             >
-              Our Selected
-              <br className="hidden lg:block" /> <span className="gradient-text">Projects</span>
+              Our Selected Projects
             </motion.h2>
 
             <motion.p
