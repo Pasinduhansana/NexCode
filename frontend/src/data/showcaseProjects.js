@@ -1,112 +1,213 @@
+// ─── WildArt by Vinod ─────────────────────────────────────────────────────────
+const wildartHomeImg = "/assets/wildartbyvinod/home.webp";
+const wildartMobile = "/assets/wildartbyvinod/mobile.webp";
+const wildartExpeditionsImg = "/assets/wildartbyvinod/expeditions.webp";
+const wildartAboutImg = "/assets/wildartbyvinod/about.webp";
+const wildartCollectionView = "/assets/wildartbyvinod/CollectionView.webp";
+const wildartCollectionView1 = "/assets/wildartbyvinod/CollectionView1.webp";
+const wildartAwards = "/assets/wildartbyvinod/Awards.webp";
+const wildartadmingallery = "/assets/wildartbyvinod/admingallery.webp";
+const wildartadmindashboard = "/assets/wildartbyvinod/admindashboard.webp";
+const wildartinquary = "/assets/wildartbyvinod/inquary.webp";
+const wildartadmincollection = "/assets/wildartbyvinod/admincollection.webp";
+const wildartcourses = "/assets/wildartbyvinod/courses.webp";
+const wildartVideo = "/assets/wildartbyvinod/WildArt by Vinod Intro.mp4";
+
 // ─── Portfolio Project ─────────────────────────────────────────────────────────
-const aboutImg                  = "/assets/portfolio_project/About_Section.webp";
-const aboutDarkImg              = "/assets/portfolio_project/About_Section_dark.webp";
-const aboutImg2                 = "/assets/portfolio_project/About_Section_2.webp";
-const aboutDarkImg2             = "/assets/portfolio_project/About_Section_2_dark.webp";
-const certificateImg            = "/assets/portfolio_project/Certificate_Section.webp";
-const certificateDarkImg        = "/assets/portfolio_project/Certificate_Section_dark.webp";
-const experienceImg             = "/assets/portfolio_project/Experience_Section.webp";
-const experienceDarkImg         = "/assets/portfolio_project/Experience_Section_dark.webp";
-const heroImg                   = "/assets/portfolio_project/Hero_Section.webp";
-const heroDarkImg               = "/assets/portfolio_project/Hero_Section_dark.webp";
-const projectSectionDarkImg     = "/assets/portfolio_project/Project_Section_dark.webp";
-const project2DarkImg           = "/assets/portfolio_project/Project_Section_2_dark.webp";
-const project3DarkImg           = "/assets/portfolio_project/Project_Section_3_dark.webp";
-const project4DarkImg           = "/assets/portfolio_project/Project_Section_4_dark.webp";
-const testimonialImg            = "/assets/portfolio_project/Testtimonial_Section.webp";
-const testimonialDarkImg        = "/assets/portfolio_project/Testtimonial_Section_dark.webp";
-const portfoliovideo            = "/assets/portfolio_project/portfolio-intro.mp4";
-const Portfolio_mobile          = "/assets/portfolio_project/Home_mobile_light.webp";
-const Portfolio_mobile_dark     = "/assets/portfolio_project/Home_mobile.webp";
+const aboutImg = "/assets/portfolio_project/About_Section.webp";
+const aboutDarkImg = "/assets/portfolio_project/About_Section_dark.webp";
+const aboutImg2 = "/assets/portfolio_project/About_Section_2.webp";
+const aboutDarkImg2 = "/assets/portfolio_project/About_Section_2_dark.webp";
+const certificateImg = "/assets/portfolio_project/Certificate_Section.webp";
+const certificateDarkImg = "/assets/portfolio_project/Certificate_Section_dark.webp";
+const experienceImg = "/assets/portfolio_project/Experience_Section.webp";
+const experienceDarkImg = "/assets/portfolio_project/Experience_Section_dark.webp";
+const heroImg = "/assets/portfolio_project/Hero_Section.webp";
+const heroDarkImg = "/assets/portfolio_project/Hero_Section_dark.webp";
+const projectSectionDarkImg = "/assets/portfolio_project/Project_Section_dark.webp";
+const project2DarkImg = "/assets/portfolio_project/Project_Section_2_dark.webp";
+const project3DarkImg = "/assets/portfolio_project/Project_Section_3_dark.webp";
+const project4DarkImg = "/assets/portfolio_project/Project_Section_4_dark.webp";
+const testimonialImg = "/assets/portfolio_project/Testtimonial_Section.webp";
+const testimonialDarkImg = "/assets/portfolio_project/Testtimonial_Section_dark.webp";
+const portfoliovideo = "/assets/portfolio_project/portfolio-intro.mp4";
+const Portfolio_mobile = "/assets/portfolio_project/Home_mobile_light.webp";
+const Portfolio_mobile_dark = "/assets/portfolio_project/Home_mobile.webp";
 
 // ─── Velmora Travels ──────────────────────────────────────────────────────────
-const velmoraHomeImg            = "/assets/velmora_travels/homepage.webp";
-const velmoraAboutImg           = "/assets/velmora_travels/AboutUsPage.webp";
-const velmoraFaqImg             = "/assets/velmora_travels/Faq.webp";
-const velmoraTestimonialImg     = "/assets/velmora_travels/testimonial.webp";
-const velmoraPackageDetailsImg  = "/assets/velmora_travels/packageDetails.webp";
-const velmoraPackagesImg        = "/assets/velmora_travels/packages.webp";
-const velmoraPricesImg          = "/assets/velmora_travels/prices.webp";
-const velmoraGalleryImg         = "/assets/velmora_travels/gallery.webp";
-const velmoraOffersImg          = "/assets/velmora_travels/offers.webp";
-const velmoraToursImg           = "/assets/velmora_travels/tours.webp";
-const velmoraContactImg         = "/assets/velmora_travels/Contact_form.webp";
-const velmoraMobileImg          = "/assets/velmora_travels/mobile.webp";
-const velmoraVideo              = "/assets/velmora_travels/Velmora Travels Intro.mp4";
-const velmoraHomefullImg        = "/assets/velmora_travels/homepage_fullscreen.webp";
+const velmoraHomeImg = "/assets/velmora_travels/homepage.webp";
+const velmoraAboutImg = "/assets/velmora_travels/AboutUsPage.webp";
+const velmoraFaqImg = "/assets/velmora_travels/Faq.webp";
+const velmoraTestimonialImg = "/assets/velmora_travels/testimonial.webp";
+const velmoraPackageDetailsImg = "/assets/velmora_travels/packageDetails.webp";
+const velmoraPackagesImg = "/assets/velmora_travels/packages.webp";
+const velmoraPricesImg = "/assets/velmora_travels/prices.webp";
+const velmoraGalleryImg = "/assets/velmora_travels/gallery.webp";
+const velmoraOffersImg = "/assets/velmora_travels/offers.webp";
+const velmoraToursImg = "/assets/velmora_travels/tours.webp";
+const velmoraContactImg = "/assets/velmora_travels/Contact_form.webp";
+const velmoraMobileImg = "/assets/velmora_travels/mobile.webp";
+const velmoraVideo = "/assets/velmora_travels/Velmora Travels Intro.mp4";
+const velmoraHomefullImg = "/assets/velmora_travels/homepage_fullscreen.webp";
 
 // ─── Employee Transport Management System ─────────────────────────────────────
-const transportHeroImg          = "/assets/transport_powerBi/Seat_allocation.webp";
-const transportDataImg          = "/assets/transport_powerBi/dataset.webp";
-const transportwindowImg        = "/assets/transport_powerBi/allocation_window.webp";
-const transportMobileImg        = "/assets/transport_powerBi/mobile_view.webp";
-const transportVideo            = "/assets/transport_powerBi/Transport Intro.mp4";
+const transportHeroImg = "/assets/transport_powerBi/Seat_allocation.webp";
+const transportDataImg = "/assets/transport_powerBi/dataset.webp";
+const transportwindowImg = "/assets/transport_powerBi/allocation_window.webp";
+const transportMobileImg = "/assets/transport_powerBi/mobile_view.webp";
+const transportVideo = "/assets/transport_powerBi/Transport Intro.mp4";
 
 // ─── LogiManage ───────────────────────────────────────────────────────────────
-const logisticDashboardImg      = "/assets/Logistic_project/logistic_Dashboard.webp";
-const gateCheckImg              = "/assets/Logistic_project/GateCheck.webp";
-const inspectionHistoryImg      = "/assets/Logistic_project/Inspection_History.webp";
-const manageOrdersImg           = "/assets/Logistic_project/Manage_Orders.webp";
-const newOrderImg               = "/assets/Logistic_project/New_order.webp";
-const notificationsImg          = "/assets/Logistic_project/Notifications.webp";
-const orderHistoryImg           = "/assets/Logistic_project/Order_History.webp";
-const orderTransferImg          = "/assets/Logistic_project/Order_Transfer.webp";
-const qualityDashboardImg       = "/assets/Logistic_project/Quality_Dashboard.webp";
-const qualityInspectionImg      = "/assets/Logistic_project/Quality_inspection.webp";
-const reportExportImg           = "/assets/Logistic_project/Report_export.webp";
-const securityCheckImg          = "/assets/Logistic_project/Security_Check.webp";
-const securityDashboardImg      = "/assets/Logistic_project/Security_Dashboard.webp";
-const userProfileImg            = "/assets/Logistic_project/User_profile.webp";
-const mobileCoverImg            = "/assets/Logistic_project/Mobile_Cover.webp";
-const laptopCoverImg            = "/assets/Logistic_project/coverpage.webp";
-const LogimanageVideo           = "/assets/Logistic_project/LogiManage_intro.mp4";
+const logisticDashboardImg = "/assets/Logistic_project/logistic_Dashboard.webp";
+const gateCheckImg = "/assets/Logistic_project/GateCheck.webp";
+const inspectionHistoryImg = "/assets/Logistic_project/Inspection_History.webp";
+const manageOrdersImg = "/assets/Logistic_project/Manage_Orders.webp";
+const newOrderImg = "/assets/Logistic_project/New_order.webp";
+const notificationsImg = "/assets/Logistic_project/Notifications.webp";
+const orderHistoryImg = "/assets/Logistic_project/Order_History.webp";
+const orderTransferImg = "/assets/Logistic_project/Order_Transfer.webp";
+const qualityDashboardImg = "/assets/Logistic_project/Quality_Dashboard.webp";
+const qualityInspectionImg = "/assets/Logistic_project/Quality_inspection.webp";
+const reportExportImg = "/assets/Logistic_project/Report_export.webp";
+const securityCheckImg = "/assets/Logistic_project/Security_Check.webp";
+const securityDashboardImg = "/assets/Logistic_project/Security_Dashboard.webp";
+const userProfileImg = "/assets/Logistic_project/User_profile.webp";
+const mobileCoverImg = "/assets/Logistic_project/Mobile_Cover.webp";
+const laptopCoverImg = "/assets/Logistic_project/coverpage.webp";
+const LogimanageVideo = "/assets/Logistic_project/LogiManage_intro.mp4";
 
 // ─── Thineth Villa ────────────────────────────────────────────────────────────
-const thinethHeroImg            = "/assets/Thineth_Villa/Landing.webp";
-const thinethBookingImg         = "/assets/Thineth_Villa/booking.webp";
-const thinethContactImg         = "/assets/Thineth_Villa/contactus.webp";
-const thinethFeaturesImg        = "/assets/Thineth_Villa/features.webp";
-const thinethGalleryImg         = "/assets/Thineth_Villa/gallery.webp";
-const thinethGalleryFullImg     = "/assets/Thineth_Villa/galleryfull.webp";
-const thinethImg1               = "/assets/Thineth_Villa/img1.webp";
-const thinethImg2               = "/assets/Thineth_Villa/img2.webp";
-const thinethImg4               = "/assets/Thineth_Villa/img4.webp";
-const thinethPackageOpenImg     = "/assets/Thineth_Villa/packageopen.webp";
-const thinethPackagesImg        = "/assets/Thineth_Villa/packages.webp";
-const thinethTestimonialImg     = "/assets/Thineth_Villa/testimonial.webp";
-const thinethmobileImg          = "/assets/Thineth_Villa/mobilecover.webp";
-const thinethVideo              = "/assets/Thineth_Villa/Thineth_Promo.mp4";
+const thinethHeroImg = "/assets/Thineth_Villa/Landing.webp";
+const thinethBookingImg = "/assets/Thineth_Villa/booking.webp";
+const thinethContactImg = "/assets/Thineth_Villa/contactus.webp";
+const thinethFeaturesImg = "/assets/Thineth_Villa/features.webp";
+const thinethGalleryImg = "/assets/Thineth_Villa/gallery.webp";
+const thinethGalleryFullImg = "/assets/Thineth_Villa/galleryfull.webp";
+const thinethImg1 = "/assets/Thineth_Villa/img1.webp";
+const thinethImg2 = "/assets/Thineth_Villa/img2.webp";
+const thinethImg4 = "/assets/Thineth_Villa/img4.webp";
+const thinethPackageOpenImg = "/assets/Thineth_Villa/packageopen.webp";
+const thinethPackagesImg = "/assets/Thineth_Villa/packages.webp";
+const thinethTestimonialImg = "/assets/Thineth_Villa/testimonial.webp";
+const thinethmobileImg = "/assets/Thineth_Villa/mobilecover.webp";
+const thinethVideo = "/assets/Thineth_Villa/Thineth_Promo.mp4";
 
 // ─── BuildBit POS ─────────────────────────────────────────────────────────────
-const BuildBit_POS_dashboard_dark   = "/assets/BuildBit_POS/dashboard_dark.webp";
-const BuildBit_POS_dashboard_light  = "/assets/BuildBit_POS/dashboard_light.webp";
-const BuildBit_POS_pos              = "/assets/BuildBit_POS/pos.webp";
-const BuildBit_POS_mobile_dark      = "/assets/BuildBit_POS/mobile_dark.webp";
-const BuildBit_POS_mobile_light     = "/assets/BuildBit_POS/mobile_light.webp";
-const BuildBit_POS_customers        = "/assets/BuildBit_POS/customers.webp";
-const BuildBit_POS_suppliers        = "/assets/BuildBit_POS/suppliers.webp";
-const BuildBit_POS_inventory        = "/assets/BuildBit_POS/inventory.webp";
-const BuildBit_POS_invoices         = "/assets/BuildBit_POS/invoices.webp";
-const BuildBit_POS_purchases        = "/assets/BuildBit_POS/purchases.webp";
-const BuildBit_POS_sales_history    = "/assets/BuildBit_POS/sales_history.webp";
-const BuildBit_POS_expenses         = "/assets/BuildBit_POS/expenses.webp";
-const BuildBit_POS_reports2         = "/assets/BuildBit_POS/reports2.webp";
-const BuildBit_POS_settings         = "/assets/BuildBit_POS/settings.webp";
-const BuildBit_POS_notification     = "/assets/BuildBit_POS/notification.webp";
-const BuildBit_POS_Video            = "/assets/BuildBit_POS/Buildbit_Pos_Intro.mp4";
+const BuildBit_POS_dashboard_dark = "/assets/BuildBit_POS/dashboard_dark.webp";
+const BuildBit_POS_dashboard_light = "/assets/BuildBit_POS/dashboard_light.webp";
+const BuildBit_POS_pos = "/assets/BuildBit_POS/pos.webp";
+const BuildBit_POS_mobile_dark = "/assets/BuildBit_POS/mobile_dark.webp";
+const BuildBit_POS_mobile_light = "/assets/BuildBit_POS/mobile_light.webp";
+const BuildBit_POS_customers = "/assets/BuildBit_POS/customers.webp";
+const BuildBit_POS_suppliers = "/assets/BuildBit_POS/suppliers.webp";
+const BuildBit_POS_inventory = "/assets/BuildBit_POS/inventory.webp";
+const BuildBit_POS_invoices = "/assets/BuildBit_POS/invoices.webp";
+const BuildBit_POS_purchases = "/assets/BuildBit_POS/purchases.webp";
+const BuildBit_POS_sales_history = "/assets/BuildBit_POS/sales_history.webp";
+const BuildBit_POS_expenses = "/assets/BuildBit_POS/expenses.webp";
+const BuildBit_POS_reports2 = "/assets/BuildBit_POS/reports2.webp";
+const BuildBit_POS_settings = "/assets/BuildBit_POS/settings.webp";
+const BuildBit_POS_notification = "/assets/BuildBit_POS/notification.webp";
+const BuildBit_POS_Video = "/assets/BuildBit_POS/Buildbit_Pos_Intro.mp4";
 
 // ─── Bashitha Ceramics ────────────────────────────────────────────────────────
-const bashithaActivityImg       = "/assets/Bashitha_Ceramics/activity.webp";
-const bashithaAddProductsImg    = "/assets/Bashitha_Ceramics/add_products.webp";
-const bashithaBillingImg        = "/assets/Bashitha_Ceramics/Billing.webp";
-const bashithaLoginImg          = "/assets/Bashitha_Ceramics/login.webp";
-const bashithaProductListImg    = "/assets/Bashitha_Ceramics/product List.webp";
-const bashithaRegisterImg       = "/assets/Bashitha_Ceramics/register.webp";
-const bashithaReportingImg      = "/assets/Bashitha_Ceramics/reporting.webp";
+const bashithaActivityImg = "/assets/Bashitha_Ceramics/activity.webp";
+const bashithaAddProductsImg = "/assets/Bashitha_Ceramics/add_products.webp";
+const bashithaBillingImg = "/assets/Bashitha_Ceramics/Billing.webp";
+const bashithaLoginImg = "/assets/Bashitha_Ceramics/login.webp";
+const bashithaProductListImg = "/assets/Bashitha_Ceramics/product List.webp";
+const bashithaRegisterImg = "/assets/Bashitha_Ceramics/register.webp";
+const bashithaReportingImg = "/assets/Bashitha_Ceramics/reporting.webp";
 const bashithaUserManagementImg = "/assets/Bashitha_Ceramics/user_management.webp";
-const bashithaMobileimg         = "/assets/Bashitha_Ceramics/Mobile_Cover.webp";
+const bashithaMobileimg = "/assets/Bashitha_Ceramics/Mobile_Cover.webp";
 
 export const showcaseProjects = [
+  {
+    featured: true,
+
+    slug: "wildart-by-vinod",
+
+    name: "WildArt by Vinod",
+
+    type: "Wildlife Photography Portfolio",
+    industry: "media & creative",
+
+    summary:
+      "WildArt by Vinod is a cinematic wildlife photography portfolio built to showcase award-winning Sri Lankan wildlife imagery, fine art collections, field stories, and print enquiries through an immersive, high-performance web experience.",
+
+    whatIs:
+      "A premium photography portfolio and storytelling platform that presents wildlife collections, expeditions, archive imagery, and artist-led services in a polished digital brand experience.",
+
+    whyDeveloped:
+      "Created to give an award-winning wildlife photographer a distinctive online presence that elevates the art, supports conservation storytelling, and converts visitors into print, workshop, and safari enquiries.",
+
+    businessValue:
+      "Strengthens personal brand credibility, presents work in a gallery-grade format, improves audience engagement, and creates a clear path for enquiries around prints, courses, and tours.",
+
+    challengeBefore: [
+      "No single premium platform to present collections, stories, and services together",
+      "Hard to convey the cinematic quality of wildlife work in a generic portfolio",
+      "Limited structure for promoting workshops, tours, and print enquiries",
+      "Needed a fast, image-forward experience without sacrificing visual impact",
+    ],
+
+    features: [
+      "Cinematic hero and immersive homepage storytelling",
+      "Curated expedition and wildlife collection galleries",
+      "Archive browsing for complete field catalog",
+      "Artist profile and award-focused storytelling",
+      "Courses, tours, and print enquiry journeys",
+      "Image-forward responsive layout",
+      "Motion-driven transitions and smooth scrolling",
+      "SEO-ready metadata and structured content pages",
+    ],
+
+    outcomes: [
+      "Stronger premium brand presence for the photographer",
+      "Clearer presentation of collections and services",
+      "Improved visitor engagement through immersive storytelling",
+      "Professional digital channel for enquiries and sales",
+    ],
+
+    relatedSlugs: ["student-portfolio-showcase", "velmora-travels"],
+
+    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion", "MongoDB", "Cloudflare R2"],
+
+    results: [
+      "Cinematic photography-first web experience",
+      "Unified portfolio, archive, and enquiry platform",
+      "Premium digital presence for wildlife art brand",
+    ],
+
+    color: "from-stone-700 to-amber-700",
+
+    cover: wildartHomeImg,
+
+    laptop_mockup: [wildartHomeImg, wildartHomeImg],
+
+    phone_mockup: [wildartMobile, wildartMobile],
+
+    resources: {
+      images: [
+        { url: wildartHomeImg, caption: "Homepage hero and brand experience" },
+        { url: wildartExpeditionsImg, caption: "Featured collections and expedition gallery" },
+        { url: wildartAboutImg, caption: "Artist story and award highlights" },
+        { url: wildartadmingallery, caption: "Admin gallery management interface" },
+        { url: wildartAwards, caption: "Awards Section" },
+        { url: wildartadmindashboard, caption: "Admin dashboard and website overview" },
+        { url: wildartCollectionView, caption: "Detailed View of paticular portrait of a collection" },
+        { url: wildartadmincollection, caption: "Admin collection management interface" },
+        { url: wildartcourses, caption: "Photography courses and learning experience" },
+        { url: wildartinquary, caption: "Customer inquiry management interface" },
+        { url: wildartCollectionView1, caption: "Detailed View of paticular portrait of a collection" },
+      ],
+      videos: [        {
+          url: wildartVideo,
+          thumbnail: wildartHomeImg,
+          caption: "WildArt by Vinod website walkthrough",
+        },],
+    },
+  },
   {
     featured: true,
     slug: "velmora-travels",
