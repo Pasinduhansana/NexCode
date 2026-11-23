@@ -15,7 +15,8 @@ import usePageTitle from "../utils/usePageTitle";
 import Button from "../components/Button";
 import SectionLabel from "../components/SectionLabel";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
-import { HiArrowLeft } from "react-icons/hi";
+import { HiArrowLeft, HiExternalLink } from "react-icons/hi";
+import { motion } from "framer-motion";
 
 const limitWords = (text, maxWords) => {
   if (typeof text !== "string") return "";
@@ -176,6 +177,48 @@ function HeroDeviceStack({ laptop_mockup, phone_mockup, project_image, project_i
         />
       </div>
     </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Live-site shortcut — fixed FAB beside the WhatsApp float           */
+/* ------------------------------------------------------------------ */
+function LiveSiteButton({ url, projectName }) {
+  if (!url) return null;
+
+  const href = /^https?:\/\//i.test(url) ? url : `https://${url}`;
+
+  return (
+    <motion.button
+      type="button"
+      onClick={() => window.open(href, "_blank", "noopener,noreferrer")}
+      whileHover={{ scale: 1.08 }}
+      whileTap={{ scale: 0.95 }}
+      aria-label={`Visit the live site of ${projectName}`}
+      title={`Visit ${projectName} live site`}
+      className="
+        fixed
+        bottom-6
+        right-24
+        z-[999]
+        h-14
+        px-8
+        rounded-full
+        bg-primary
+        text-white
+        flex
+        items-center
+        justify-center
+        gap-2
+        text-sm
+        font-semibold
+        whitespace-nowrap
+        shadow-2xl
+      "
+    >
+      <HiExternalLink size={18} />
+      <span>Live Site</span>
+    </motion.button>
   );
 }
 
@@ -599,6 +642,7 @@ const relatedProjects = (project.relatedSlugs ?? [])
               className="w-full h-auto relative z-20 origin-bottom-left animate-[heroSway_7s_ease-in-out_infinite]"
             />
           </div>
+
         </div>
 
         {/* Main Content Area */}
@@ -866,6 +910,7 @@ const relatedProjects = (project.relatedSlugs ?? [])
         </div>
       </div>
 
+      <LiveSiteButton url={project.liveUrl} projectName={project.name} />
       {lightboxIndex !== null && <MediaLightbox media={media} index={lightboxIndex} onClose={closeLightbox} onPrev={goPrev} onNext={goNext} />}
     </>
   );

@@ -84,8 +84,7 @@ export default function IndustrySolutions() {
             className="section-title mb-4"
             style={{ fontFamily: "'Syne',sans-serif" }}
           >
-            Technology Built Around<br className="hidden sm:block" />
-            <span className="text-primary"> Your Business</span>
+            Technology Built Around Your Business
           </h2>
 
           <p className="section-subtitle mx-auto max-w-2xl">
