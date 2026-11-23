@@ -1,3 +1,14 @@
+// ─── Midnight Masalaa ─────────────────────────────────────────────────────────
+const midnightHomeImg        = "/assets/midnightmasalaa/home.webp";
+const midnightHomeFullImg    = "/assets/midnightmasalaa/home_full.webp";
+const midnightMobileImg      = "/assets/midnightmasalaa/mobile.webp";
+const midnightOurStoryImg    = "/assets/midnightmasalaa/our_story.webp";
+const midnightFindCafeImg    = "/assets/midnightmasalaa/find_cafe.webp";
+const midnightFranchisingImg = "/assets/midnightmasalaa/franchising.webp";
+const midnightGalleryImg     = "/assets/midnightmasalaa/gallery.webp";
+const midnightNewsImg        = "/assets/midnightmasalaa/news.webp";
+const midnightContactImg     = "/assets/midnightmasalaa/contact.webp";
+
 // ─── WildArt by Vinod ─────────────────────────────────────────────────────────
 const wildartHomeImg = "/assets/wildartbyvinod/home.webp";
 const wildartMobile = "/assets/wildartbyvinod/mobile.webp";
@@ -127,6 +138,8 @@ export const showcaseProjects = [
 
     slug: "wildart-by-vinod",
 
+    liveUrl: "www.wildartbyvinod.com",
+
     name: "WildArt by Vinod",
 
     type: "Wildlife Photography Portfolio",
@@ -208,9 +221,97 @@ export const showcaseProjects = [
         },],
     },
   },
+    {
+    featured: true,
+
+    slug: "midnight-masalaa",
+
+    liveUrl: "www.midnightmasalaa.lk",
+
+    name: "Midnight Masalaa",
+
+    type: "Restaurant & Franchise Website",
+    industry: "Food & Beverage",
+
+    summary:
+      "Midnight Masalaa is a bold digital experience for a Sri Lankan fast-convenience food brand, bringing the energy of late-night street food online. The website showcases the brand story, signature menu, cafe locations, franchise opportunities and the latest stories through a vibrant, image-rich and responsive platform.",
+
+    whatIs:
+      "A multi-page brand website for a growing food franchise that presents the menu, brand story, cafe locator, franchise opportunities and news through an engaging digital experience.",
+
+    whyDeveloped:
+      "Built to give a growing Sri Lankan food brand a strong online home that reflects its energetic identity, helps customers find outlets, and opens a clear path for franchise enquiries.",
+
+    businessValue:
+      "Strengthens brand identity, improves customer access to outlet information, supports franchise lead generation, and creates a scalable digital foundation for a growing cafe network.",
+
+    challengeBefore: [
+      "No unified digital platform to present the brand, menu and locations",
+      "Customers had no easy way to find nearby outlets and opening hours",
+      "Franchise opportunities were difficult to discover and enquire about",
+      "Needed a vibrant, mobile-first experience to match a youthful food brand",
+    ],
+
+    features: [
+      "Immersive hero experience with bold food photography",
+      "Brand story with polaroid gallery, vision and milestone timeline",
+      "Featured menu and signature product showcase",
+      "Interactive cafe locator with search and district filters",
+      "Direct phone dialers and Google Maps directions",
+      "Franchise models, partner support and inquiry form",
+      "Filterable visual gallery with lightbox",
+      "News and stories magazine with newsletter signup",
+      "Dedicated contact page with department channels",
+      "Scroll-driven animations and smooth interactions",
+      "Fully responsive mobile-first design",
+      "SEO-ready metadata and structured content pages",
+    ],
+
+    outcomes: [
+      "Stronger and more memorable brand presence",
+      "Easier discovery of outlets and franchise opportunities",
+      "Higher engagement through rich visuals and storytelling",
+      "Clearer customer and franchise inquiry journeys",
+    ],
+
+    relatedSlugs: ["velmora-travels", "thineth-villa"],
+
+    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "GSAP", "Motion"],
+
+    results: [
+      "Bold, brand-focused digital experience",
+      "Responsive multi-page website",
+      "Streamlined location and franchise discovery",
+    ],
+
+    color: "from-amber-500 to-red-600",
+
+    cover: midnightHomeImg,
+
+    laptop_mockup: [midnightHomeImg, midnightHomeImg],
+
+    phone_mockup: [midnightMobileImg, midnightMobileImg],
+
+    resources: {
+      images: [
+        { url: midnightHomeImg, caption: "Homepage hero and brand experience" },
+        { url: midnightHomeFullImg, caption: "Full homepage walkthrough" },
+        { url: midnightOurStoryImg, caption: "Our Story, vision and milestone timeline" },
+        { url: midnightFindCafeImg, caption: "Interactive cafe locator with map" },
+        { url: midnightFranchisingImg, caption: "Franchise models and inquiry section" },
+        { url: midnightGalleryImg, caption: "Visual gallery with filter tabs" },
+        { url: midnightNewsImg, caption: "News and stories magazine" },
+        { url: midnightContactImg, caption: "Contact page and department channels" },
+        { url: midnightMobileImg, caption: "Mobile homepage experience" },
+      ],
+      videos: [],
+    },
+  },
   {
     featured: true,
     slug: "velmora-travels",
+
+    liveUrl: "",
 
     name: "Velmora Travels",
     type: "Luxury Travel Website",
@@ -298,6 +399,8 @@ export const showcaseProjects = [
     featured: true,
 
     slug: "thineth-villa",
+
+    liveUrl: "",
 
     name: "Thineth Villa",
 
@@ -424,6 +527,8 @@ export const showcaseProjects = [
 
     slug: "buildbit-hardware-pos",
 
+    liveUrl: "",
+
     name: "BuildBit POS",
 
     type: "Retail Management System",
@@ -504,6 +609,9 @@ export const showcaseProjects = [
   {
     featured: true,
     slug: "bashita-ceramic-inventory",
+
+    liveUrl: "",
+
     name: "Bashita Ceramic Inventory",
     type: "Retail Management System",
     industry: "retail",
@@ -576,6 +684,8 @@ export const showcaseProjects = [
     featured: true,
 
     slug: "logimanage",
+
+    liveUrl: "",
 
     name: "LogiManage",
 
@@ -693,6 +803,8 @@ export const showcaseProjects = [
 
     slug: "transport-management-powerbi",
 
+    liveUrl: "",
+
     name: "Employee Transport Management System",
 
     type: "Business Intelligence Solution",
@@ -775,6 +887,8 @@ export const showcaseProjects = [
 
     slug: "student-portfolio-showcase",
 
+    liveUrl: "",
+
     name: "Student Portfolio Showcase",
 
     type: "Personal Branding Platform",
@@ -849,4 +963,5 @@ export const showcaseProjects = [
       ],
     },
   },
+
 ];
