@@ -47,12 +47,8 @@ export default function HomePage() {
     <div className="min-h-screen h-full">
       {/* HERO */}
       <Hero stats={stats} className="bg-green-800" />
-
+      <FeaturedProjects />
       <IndustrySolutions />
-
-      {/* FEATURED PROJECTS */}
-        <FeaturedProjects />
-
       {/* SERVICES PREVIEW */}
       <section className="bg-background py-16 lg:py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-7 lg:px-8">
@@ -194,7 +190,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FAQ */}
       <FAQ />
 
       {/* Advertiestment BANNER */}
